@@ -1,0 +1,33 @@
+{
+    "roboto": {
+        "300": "C:\\xampppp\\htdocs\\bpbd\\application\\libraries\\dompdf\\vendor\\dompdf\\dompdf\/lib\/fonts\/roboto_300_32acfcb296f555e063ebba2be7db9e2f",
+        "normal": "C:\\xampppp\\htdocs\\bpbd\\application\\libraries\\dompdf\\vendor\\dompdf\\dompdf\/lib\/fonts\/roboto_normal_7bc701b343c10631f60048716b96e4f7",
+        "500": "C:\\xampppp\\htdocs\\bpbd\\application\\libraries\\dompdf\\vendor\\dompdf\\dompdf\/lib\/fonts\/roboto_500_5774d6fb05eba3d096525f821dbe4137",
+        "bold": "C:\\xampppp\\htdocs\\bpbd\\application\\libraries\\dompdf\\vendor\\dompdf\\dompdf\/lib\/fonts\/roboto_bold_8db5cb5d0586c1e891426d13097b1d04",
+        "900": "roboto_900_7bf41cacaff90e7097ddd49fb9296601"
+    },
+    "feather": {
+        "normal": "feather_normal_7f1a80ccb10db6236e038209b0ac3b6e"
+    },
+    "dropify": {
+        "normal": "dropify_normal_090c450edd101e49c8acdfc316b384a4"
+    },
+    "fontawesome": {
+        "normal": "fontawesome_normal_a184736fe2ca68315c776d33c8a97c65"
+    },
+    "font awesome 5 brands": {
+        "normal": "font_awesome_5_brands_normal_24a87a7222305ed3f4a652aff47f632e"
+    },
+    "font awesome 5 free": {
+        "normal": "C:\\xampppp\\htdocs\\bpbd\\application\\libraries\\dompdf\\vendor\\dompdf\\dompdf\/lib\/fonts\/font_awesome_5_free_normal_82cc59cf82ca4c2d27fc1eb68561cf56",
+        "900": "font_awesome_5_free_900_796ed8c1776ce96112de6784ce6899d8"
+    },
+    "font awesome 5 duotone": {
+        "900": "font_awesome_5_duotone_900_20a0e8f81dc6f7ee2dcab3d276aa805a"
+    },
+    "font awesome 5 pro": {
+        "300": "C:\\xampppp\\htdocs\\bpbd\\application\\libraries\\dompdf\\vendor\\dompdf\\dompdf\/lib\/fonts\/font_awesome_5_pro_300_4bec0b8ca49bb68053fda512501f29b6",
+        "normal": "C:\\xampppp\\htdocs\\bpbd\\application\\libraries\\dompdf\\vendor\\dompdf\\dompdf\/lib\/fonts\/font_awesome_5_pro_normal_7aa1a46b9292c32ce9a03cf3d801bd3b",
+        "900": "font_awesome_5_pro_900_7c795cecc4e67b381f182ef4691a382f"
+    }
+}
