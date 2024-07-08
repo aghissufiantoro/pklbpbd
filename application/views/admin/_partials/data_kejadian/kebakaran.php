@@ -112,8 +112,8 @@
                                 <input id="Kondisi Bangunan" class="form-control" name="kondisi_bangunan" type="text" required>
                             </div>
                         </div>
-                    </div>
-                    
+                    </div>  
+                       
                     <button class="btn btn-success" type="submit">Save</button>
                 </form>
             </div>
