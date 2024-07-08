@@ -146,17 +146,17 @@
 
     function closePopup() {
         if (document.getElementById('hidePopupCheckbox').checked) {
-            localStorage.setItem('hideReviewPopup', 'true');
+            localStorage.setItem('dontShowReviewPopup', 'true');
         }
         document.getElementById('reviewPopup').style.display = 'none';
     }
 
     document.addEventListener('DOMContentLoaded', function() {
-        const hideReviewPopup = localStorage.getItem('hideReviewPopup');
-        if (!hideReviewPopup) {
+        const dontShowReviewPopup = localStorage.getItem('dontShowReviewPopup');
+        if (!dontShowReviewPopup) {
             setTimeout(function() {
                 document.getElementById('reviewPopup').style.display = 'block';
-            }, 5000); // Delay popup display by 5 seconds
+            }, 5*60*1000); // Delay popup display by 5 seconds
         }
     });
 

@@ -24,7 +24,7 @@
 
     // Function to handle "Jangan tampilkan lagi" checkbox
     function doNotShowAgain() {
-        if (document.getElementById('dontShowAgain').checked) {
+        if (document.getElementById('hidePopupCheckbox').checked) {
             localStorage.setItem('dontShowReviewPopup', 'true');
         }
         closePopup();
@@ -87,16 +87,17 @@
         const dontShowAgain = localStorage.getItem('dontShowReviewPopup');
         const lastShownTime = localStorage.getItem('lastReviewPopupTime');
         const currentTime = new Date().getTime();
-        const fiveMinutes = 5 * 60 * 1000; // 5 minutes in milliseconds
+        const fiveMinutes = 5*60*1000; // 5 minutes in milliseconds
 
         if (!dontShowAgain && (!lastShownTime || (currentTime - lastShownTime > fiveMinutes))) {
             setTimeout(function() {
                 showPopup();
                 localStorage.setItem('lastReviewPopupTime', new Date().getTime()); // Set the current time as the last shown time
-            }, 1000); // Show popup after 1 second (1000 milliseconds)
+            }, 5*60*1000); // Show popup after 1 second (1000 milliseconds)
         }
     });
 </script>
+
 
 
 </div>
