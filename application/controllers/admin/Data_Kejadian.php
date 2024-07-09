@@ -95,19 +95,49 @@ public function add()
             $formatted_date = date('dmy', strtotime($tanggal));
             $new_id_kejadian = $this->m_data_kejadian->getLastIDkejadian($formatted_date);
 
-            // Log data yang diterima dan ID yang dihasilkan
-            log_message('debug', 'Form Data - tanggal: ' . $tanggal);
-            log_message('debug', 'Generated new_id_kejadian: ' . $new_id_kejadian);
-
             // Simpan data dengan ID transaksi baru dan id_kejadian
             $data_kejadian->save($new_id_kejadian, $new_id_kejadian);
+
+            // Simpan ID kejadian baru ke session
+            $this->session->set_flashdata('new_id_kejadian', $new_id_kejadian);
+
+            // Menentukan form tujuan berdasarkan jenis kejadian
+            $kejadian = $this->input->post('kejadian');
+            switch ($kejadian) {
+                case 'Kecelakaan Lalu Lintas':
+                    $redirect_url = 'admin/data_kejadian/kecelakaan_lalu_lintas';
+                    break;
+                case 'Darurat Medis':
+                    $redirect_url = 'admin/data_kejadian/darurat_medis';
+                    break;
+                case 'Kebakaran':
+                    $redirect_url = 'admin/data_kejadian/kebakaran';
+                    break;
+                case 'Pohon Tumbang':
+                    $redirect_url = 'admin/data_kejadian/pohon_tumbang';
+                    break;
+                case 'Penemuan Jenazah':
+                    $redirect_url = 'admin/data_kejadian/penemuan_jenazah';
+                    break;
+                case 'Orang Tenggelam':
+                    $redirect_url = 'admin/data_kejadian/orang_tenggelam';
+                    break;
+                case 'Lainnya':
+                    $redirect_url = 'admin/data_kejadian/lainnya';
+                    break;
+                default:
+                    $redirect_url = 'admin/data_kejadian';
+            }
+
+            // Mengatur flashdata untuk menampilkan pesan sukses
             $this->session->set_flashdata('success', '<i class="fa fa-check"></i> Alhamdulillah, Data berhasil disimpan');
-            redirect(site_url('admin/data_kejadian'));
+
+            // Redirect ke form tujuan dengan ID kejadian
+            redirect(site_url($redirect_url));
         }
         else
         {
-            // Jika validasi gagal, muat ulang formulir dan log pesan kesalahan
-            log_message('error', 'Validation failed: ' . validation_errors());
+            // Jika validasi gagal, muat ulang formulir
             $this->load->view("admin/data_kejadian/new_form_datakejadian");
         }
     }
@@ -116,6 +146,9 @@ public function add()
         show_404();
     }
 }
+
+
+
 
 
 
@@ -161,6 +194,7 @@ public function add()
             show_404();
         }
     }
+
 	public function detail($id = null)
 {
     if ($this->session->userdata('role') == "1") {
@@ -266,25 +300,44 @@ public function add()
     {
         if ($this->session->userdata('role') == "1")
         {
-            $data_kejadian = $this->m_data_kejadian;
+            $this->load->model('M_form_darurat_medis'); // Load the M_form_darurat_medis model
+            $data_kejadian = $this->M_form_darurat_medis;
             $validation = $this->form_validation;
-            $validation->set_rules($data_kejadian->rules2());
-
+            $validation->set_rules($data_kejadian->rules());
+    
             if ($validation->run())
             {
-				 $new_id_kejadian = $this->input->post('new_id_kejadian');
-                $data_kejadian->save_darurat_medis();
-                redirect(site_url('admin/data_kejadian'));
+                $new_id_kejadian = $this->session->flashdata('new_id_kejadian'); // Ambil new_id_kejadian dari session
+    
+                // Prepare the data to be saved
+                $data = array(
+                    'id_kejadian' => $new_id_kejadian,
+                    'nama' => $this->input->post('nama'),
+                    'jenis_kelamin' => $this->input->post('jenis_kelamin'),
+                    'alamat' => $this->input->post('alamat'),
+                    'usia' => $this->input->post('usia'),
+                    'kondisi' => $this->input->post('kondisi'),
+                    'riwayat_penyakit' => $this->input->post('riwayat_penyakit'),
+                    // Add more fields as needed
+                );
+    
+                $data_kejadian->save($data); // Save the data
                 $this->session->set_flashdata('success', '<i class="fa fa-check"></i> Alhamdulillah, Data berhasil disimpan');
+                redirect(site_url('admin/data_kejadian'));
             }
-
-            $this->load->view("admin/data_kejadian/new_form_darurat_medis");
+            else
+            {
+                $this->load->view("admin/data_kejadian/new_form_darurat_medis");
+            }
         }
         else
         {
             show_404();
         }
     }
+    
+
+
 
     public function kebakaran()
     {

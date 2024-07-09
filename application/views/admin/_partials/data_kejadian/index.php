@@ -82,8 +82,8 @@
                     <?php endif; ?>
                   </td>
                   <td>
-                    <a href="<?= site_url('admin/data_kejadian/edit/' . $res_data_kejadian->tanggal) ?>" class="btn btn-outline-primary btn-xs"><i class='fal fa-pencil'></i></a>
-                    <a href="<?= site_url('admin/data_kejadian/detail/' . $res_data_kejadian->tanggal) ?>" class="btn btn-outline-primary btn-xs"><i class='fal fa-list-ul'></i></a>
+                    <a href="<?= site_url('admin/data_kejadian/edit/' . $res_data_kejadian->id_kejadian) ?>" class="btn btn-outline-primary btn-xs"><i class='fal fa-pencil'></i></a>
+                    <a href="<?= site_url('admin/data_kejadian/detail/' . $res_data_kejadian->id_kejadian) ?>" class="btn btn-outline-primary btn-xs"><i class='fal fa-list-ul'></i></a>
                     <a data-bs-toggle="modal" data-bs-target="#deleteConfirm<?= $res_data_kejadian->tanggal ?>" class="ms-3 btn btn-outline-danger btn-xs"><i class="fal fa-trash-alt"></i></a>
                     <div class="modal fade" id="deleteConfirm<?= $res_data_kejadian->tanggal ?>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                       <div class="modal-dialog modal-lg">
