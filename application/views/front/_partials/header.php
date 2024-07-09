@@ -30,7 +30,7 @@
                 <a href="<?= base_url('view/dokumentasi') ?>" <?php if ($this->uri->segment(2) == "dokumentasi") {echo 'class="dropdown-item active"';} else {echo 'class="dropdown-item"';} ?>>Dokumentasi</a>
                 <a href="<?= base_url('view/dok_pb') ?>" <?php if ($this->uri->segment(2) == "dok_pb") {echo 'class="dropdown-item active"';} else {echo 'class="dropdown-item"';} ?>>Dok. Penanggulangan Bencana</a>
                 <a href="<?= base_url('view/laporan') ?>" <?php if ($this->uri->segment(2) == "laporan") {echo 'class="dropdown-item active"';} else {echo 'class="dropdown-item"';} ?>>Laporan</a>
-                <a href="<?= base_url('view/hukum_kebencanaan') ?>" <?php if ($this->uri->segment(2) == "hukum_kebencanaan") {echo 'class="dropdown-item active"';} else {echo 'class="dropdown-item"';} ?>>Hukum Kebencanaan</a>
+                <a href="<?= base_url('view/hukum_kebencanaan') ?>" <?php if ($this->uri->segment(2) == "hukum_kebencanaan") {echo 'class="dropdown-item active"';} else {echo 'class="dropdown-item"';} ?>>Peraturan Perundangan</a>
                 <a href="<?= base_url('view/edukasi_kebencanaan') ?>" <?php if ($this->uri->segment(2) == "edukasi_kebencanaan") {echo 'class="dropdown-item active"';} else {echo 'class="dropdown-item"';} ?>>Edukasi Kebencanaan</a>
             </div>
           </div>
@@ -41,7 +41,7 @@
               <a href="<?= base_url('view/infografi') ?>" class="dropdown-item">Infografi</a>
             </div>
           </div> -->
-          <a href="<?= base_url('view/lokasi_pos') ?>" <?php if ($this->uri->segment(2) == "lokasi_pos") {echo 'class="nav-item nav-link active"';} else {echo 'class="nav-item nav-link"';} ?>>Lokasi POS Pantau</a>
+          <a href="<?= base_url('view/lokasi_pos') ?>" <?php if ($this->uri->segment(2) == "lokasi_pos") {echo 'class="nav-item nav-link active"';} else {echo 'class="nav-item nav-link"';} ?>>Lokasi POS</a>
           <a href="<?= base_url('view/contact') ?>" <?php if ($this->uri->segment(2) == "contact") {echo 'class="nav-item nav-link active"';} else {echo 'class="nav-item nav-link"';} ?>>Contact</a>
         </div>
         <div class="ms-auto d-none d-lg-block">
