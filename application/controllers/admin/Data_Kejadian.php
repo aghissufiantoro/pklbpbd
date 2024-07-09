@@ -477,6 +477,36 @@ public function add()
         }
     }
 
+    public function get_kabkota() {
+        $wilayah = $this->input->get('wilayah');
+        $result = $this->db->select('kab_kota as value, kab_kota as text')
+                           ->where('wilayah', $wilayah)
+                           ->group_by('kab_kota')
+                           ->get('wilayah_2022')
+                           ->result();
+        echo json_encode($result);
+    }
+
+    public function get_kecamatan() {
+        $kabkota = $this->input->get('kabkota');
+        $result = $this->db->select('kecamatan as value, kecamatan as text')
+                           ->where('kab_kota', $kabkota)
+                           ->group_by('kecamatan')
+                           ->get('wilayah_2022')
+                           ->result();
+        echo json_encode($result);
+    }
+
+    public function get_kelurahan() {
+        $kecamatan = $this->input->get('kecamatan');
+        $result = $this->db->select('kelurahan as value, kelurahan as text')
+                           ->where('kecamatan', $kecamatan)
+                           ->group_by('kelurahan')
+                           ->get('wilayah_2022')
+                           ->result();
+        echo json_encode($result);
+    }
+
 
 
 }

@@ -1,4 +1,5 @@
 <?php
+$wilayah_value = "";
 if ($this->session->flashdata('success')) {
 ?>
   <div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -76,11 +77,14 @@ if ($this->session->flashdata('success')) {
                 <label class="form-label" for="lokasi_kejadian">Lokasi Kejadian</label>
                 <select class="form-select" id="lokasi_kejadian" name="lokasi_kejadian" data-width="100%">
                   <option value="">--- Pilih Lokasi Kejadian ---</option>
-                  <option value="Surabaya Pusat">Surabaya Pusat</option>
-                  <option value="Surabaya Timur">Surabaya Timur</option>
-                  <option value="Surabaya Barat">Surabaya Barat</option>
-                  <option value="Surabaya Selatan">Surabaya Selatan</option>
-                  <option value="Surabaya Utara">Surabaya Utara</option>
+                  <?php
+                  $ql = $this->db->query('SELECT wilayah FROM wilayah_2022 GROUP BY wilayah')->result();
+                  foreach ($ql as $qz) {
+                  ?>
+                    <option value="<?= $qz->wilayah ?>"><?= $qz->wilayah ?></option>
+                  <?php
+                  }
+                  ?>
                 </select>
               </div>
             </div>
@@ -97,21 +101,12 @@ if ($this->session->flashdata('success')) {
               <label class="form-label" for="kabkota_kejadian">Kota</label>
               <select class="js-example-basic-single form-select" id="kabkota_kejadian" name="kabkota_kejadian" data-width="100%" required>
                 <option value="">--- Pilih Kota ---</option>
-                <?php
-                $ql = $this->db->query('SELECT kode,nama FROM wilayah_2022 WHERE kode="35.78" ORDER BY nama')->result();
-                foreach ($ql as $qz) {
-                ?>
-                  <option value="<?= $qz->kode ?>"><?= $qz->nama ?></option>
-                <?php
-                }
-                ?>
               </select>
             </div>
             <div class="mb-3">
               <label class="form-label" for="kecamatan_kejadian">Kecamatan</label>
               <select class="js-example-basic-single form-select" id="kecamatan_kejadian" name="kecamatan_kejadian" data-width="100%" required>
                 <option value="">--- Pilih Kota Terlebih Dahulu ---</option>
-                
               </select>
             </div>
             <div class="mb-3">
@@ -164,6 +159,65 @@ if ($this->session->flashdata('success')) {
 </div>
 
 <script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const lokasiKejadianSelect = document.getElementById('lokasi_kejadian');
+    const kabkotaSelect = document.getElementById('kabkota_kejadian');
+    const kecamatanSelect = document.getElementById('kecamatan_kejadian');
+    const kelurahanSelect = document.getElementById('kelurahan_kejadian');
+
+    lokasiKejadianSelect.addEventListener('change', function() {
+      const selectedWilayah = this.value;
+      fetchKabkota(selectedWilayah);
+    });
+
+    kabkotaSelect.addEventListener('change', function() {
+      const selectedKabkota = this.value;
+      fetchKecamatan(selectedKabkota);
+    });
+
+    kecamatanSelect.addEventListener('change', function() {
+      const selectedKecamatan = this.value;
+      fetchKelurahan(selectedKecamatan);
+    });
+
+    function fetchKabkota(wilayah) {
+      fetch(`<?= base_url('admin/data_kejadian/get_kabkota') ?>?wilayah=${wilayah}`)
+        .then(response => response.json())
+        .then(data => {
+          populateSelect(kabkotaSelect, data);
+          kecamatanSelect.innerHTML = '<option value="">--- Pilih Kota Terlebih Dahulu ---</option>';
+          kelurahanSelect.innerHTML = '<option value="">--- Pilih Kecamatan Terlebih Dahulu ---</option>';
+        });
+    }
+
+    function fetchKecamatan(kabkota) {
+      fetch(`<?= base_url('admin/data_kejadian/get_kecamatan') ?>?kabkota=${kabkota}`)
+        .then(response => response.json())
+        .then(data => {
+          populateSelect(kecamatanSelect, data);
+          kelurahanSelect.innerHTML = '<option value="">--- Pilih Kecamatan Terlebih Dahulu ---</option>';
+        });
+    }
+
+    function fetchKelurahan(kecamatan) {
+      fetch(`<?= base_url('admin/data_kejadian/get_kelurahan') ?>?kecamatan=${kecamatan}`)
+        .then(response => response.json())
+        .then(data => {
+          populateSelect(kelurahanSelect, data);
+        });
+    }
+
+    function populateSelect(selectElement, data) {
+      selectElement.innerHTML = '<option value="">--- Pilih ---</option>';
+      data.forEach(item => {
+        const option = document.createElement('option');
+        option.value = item.value;
+        option.textContent = item.text;
+        selectElement.appendChild(option);
+      });
+    }
+  });
+
   function handleSubmitAndRedirect(event) {
     event.preventDefault(); // Mencegah form dikirim secara default
 
