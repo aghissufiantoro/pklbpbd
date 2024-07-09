@@ -18,7 +18,6 @@
   <?php $this->load->view('front/_partials/header') ?>
   <!-- Navbar End -->
 
-
   <!-- Page Header Start -->
     <div class="container-fluid page-header py-5 mb-5 wow fadeIn" data-wow-delay="0.1s">
       <div class="container text-center py-5">
@@ -26,7 +25,6 @@
       </div>
     </div>
     <!-- Page Header End -->
-
 
     <!-- Contact Start -->
     <div class="container-xxl py-5">
@@ -40,54 +38,71 @@
             <h3 class="mb-4">Contact Details</h3>
               <div class="d-flex border-bottom pb-3 mb-3">
                   <div class="flex-shrink-0 btn-square bg-primary rounded-circle">
-                      <a href="https://www.google.com/maps/dir//Jl.+Jemursari+Tim.+II+No.2,+Jemur+Wonosari,+Kec.+Wonocolo,+Surabaya,+Jawa+Timur+60237/@-7.3216028,112.7010725,13z/data=!4m8!4m7!1m0!1m5!1m1!1s0x2dd7fb17958e2ef5:0xa6093e97d9ed114e!2m2!1d112.742619!2d-7.3242493?hl=in-ID&entry=ttu" class="text-white">
-                          <i class="fa fa-map-marker-alt text-white"></i>
-                      </a>
+                      <a href="https://www.google.com/maps/dir//Jl.+Jemursari+Tim.+II+No.2,+Jemur+Wonosari,+Kec.+Wonocolo,+Surabaya,+Jawa+Timur+60237/@-7.3225733,112.7316827,18.46z/data=!4m8!4m7!1m0!1m5!1m1!1s0x2dd7fbec92c3f0a1:0x6ed86a88c742f8e9!2m2!1d112.7321457!2d-7.3223395" target="_blank" rel="noreferrer"><i class="bi bi-geo-alt-fill text-white"></i></a>
                   </div>
-                  <div class="ms-3">
-                      <h6>Kantor BPBD Kota Surabaya</h6>
-                      <span>Jl. Jemursari Tim. II No. 2, Surabaya</span>
+                  <div class="ms-4">
+                      <h6 class="mb-2">Office</h6>
+                      <span>Jl. Jemursari Timur II No. 2, Surabaya 60237</span>
                   </div>
               </div>
               <div class="d-flex border-bottom pb-3 mb-3">
                   <div class="flex-shrink-0 btn-square bg-primary rounded-circle">
-                      <a href="tel:112">
-                          <i class="fa fa-phone-alt text-white"></i>
-                      </a>
+                      <a href="https://wa.me/62811321323" target="_blank" rel="noreferrer"><i class="bi bi-whatsapp text-white"></i></a>
                   </div>
-                  <div class="ms-3">
-                      <h6>Panggil Kami</h6>
-                      <span>112</span>
+                  <div class="ms-4">
+                      <h6 class="mb-2">WhatsApp</h6>
+                      <span>0811 3213 23</span>
                   </div>
               </div>
-              <div class="d-flex border-bottom-0 pb-3 mb-3">
+              <div class="d-flex border-bottom pb-3 mb-3">
                   <div class="flex-shrink-0 btn-square bg-primary rounded-circle">
-                      <a href="mailto:bpbd@surabaya.go.id" class="text-white">
-                          <i class="fa fa-envelope text-white"></i>
-                      </a>
+                      <a href="tel:+62318484813"><i class="bi bi-telephone-fill text-white"></i></a>
                   </div>
-                  <div class="ms-3">
-                      <h6>E-Mail</h6>
-                      <span>bpbd@surabaya.go.id</span>
+                  <div class="ms-4">
+                      <h6 class="mb-2">Telepon</h6>
+                      <span>031 8484813</span>
                   </div>
               </div>
-
-            <iframe class="w-100 rounded" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3957.2653549481897!2d112.74210401246492!3d-7.324063069976452!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2dd7fb17958e2ef5%3A0xa6093e97d9ed114e!2sBPBD%20Kota%20Surabaya!5e0!3m2!1sid!2sid!4v1687247031910!5m2!1sid!2sid" frameborder="0" style="height: 500px; border:0;" allowfullscreen="" aria-hidden="false" tabindex="0"></iframe>
+              <div class="d-flex border-bottom pb-3 mb-3">
+                  <div class="flex-shrink-0 btn-square bg-primary rounded-circle">
+                      <a href="mailto:pertamina.ubpn3@gmail.com" target="_blank" rel="noreferrer"><i class="bi bi-envelope-fill text-white"></i></a>
+                  </div>
+                  <div class="ms-4">
+                      <h6 class="mb-2">Email</h6>
+                      <span>pertamina.ubpn3@gmail.com</span>
+                  </div>
+              </div>
+              <div class="d-flex border-bottom pb-3 mb-3">
+                  <div class="flex-shrink-0 btn-square bg-primary rounded-circle">
+                      <a href="https://instagram.com/pertaminapatraniaga" target="_blank" rel="noreferrer"><i class="bi bi-instagram text-white"></i></a>
+                  </div>
+                  <div class="ms-4">
+                      <h6 class="mb-2">Instagram</h6>
+                      <span>@pertaminapatraniaga</span>
+                  </div>
+              </div>
+              <div class="d-flex border-bottom pb-3 mb-3">
+                  <div class="flex-shrink-0 btn-square bg-primary rounded-circle">
+                      <a href="https://www.facebook.com/pertaminapatraniaga" target="_blank" rel="noreferrer"><i class="bi bi-facebook text-white"></i></a>
+                  </div>
+                  <div class="ms-4">
+                      <h6 class="mb-2">Facebook</h6>
+                      <span>@pertaminapatraniaga</span>
+                  </div>
+              </div>
           </div>
         </div>
       </div>
     </div>
     <!-- Contact End -->
 
+    <!-- Footer Start -->
+    <?php $this->load->view('front/_partials/footer') ?>
+    <!-- Footer End -->
+
+    <!-- Back to Top -->
+    <a href="#" class="btn btn-lg btn-primary btn-lg-square rounded-circle back-to-top"><i class="bi bi-arrow-up"></i></a>
+    <?php $this->load->view('front/_partials/js') ?>
     <?php $this->load->view('front/_partials/survey') ?>
-  <?php $this->load->view('front/_partials/footer') ?>
-  
-
-  <!-- Back to Top -->
-  <!-- <a href="#" class="btn btn-lg btn-primary btn-lg-square rounded-circle back-to-top"><i class="bi bi-arrow-up"></i></a> -->
-
-
-  <?php $this->load->view('front/_partials/js') ?>
 </body>
-
 </html>
