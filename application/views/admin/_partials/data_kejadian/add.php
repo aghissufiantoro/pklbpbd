@@ -111,6 +111,7 @@ if ($this->session->flashdata('success')) {
               <label class="form-label" for="kecamatan_kejadian">Kecamatan</label>
               <select class="js-example-basic-single form-select" id="kecamatan_kejadian" name="kecamatan_kejadian" data-width="100%" required>
                 <option value="">--- Pilih Kota Terlebih Dahulu ---</option>
+                
               </select>
             </div>
             <div class="mb-3">
