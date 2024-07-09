@@ -1,4 +1,3 @@
-
 <style>
     .popup {
         display: none;
@@ -78,9 +77,11 @@
         color: #ecc739;
         margin-bottom: 2rem;
     }
+
     .rating .star {
         cursor: pointer;
     }
+
     .rating .star.active {
         opacity: 0;
         animation: animate .5s calc(var(--i) * .1s) ease-in-out forwards;
@@ -91,10 +92,12 @@
             opacity: 0;
             transform: scale(1);
         }
+
         50% {
             opacity: 1;
             transform: scale(1.2);
         }
+
         100% {
             opacity: 1;
             transform: scale(1);
@@ -109,81 +112,62 @@
 <link href='https://unpkg.com/boxicons@2.1.1/css/boxicons.min.css' rel='stylesheet'>
 
 <div id="reviewPopup" class="popup">
-	<div class="popup-content">
-		<span class="close-button" onclick="closePopup()">&times;</span>
-		<h3>Bagaimana websitenya?</h3>
-		<p>Tolong berikan review dan saran!</p>
-		<div class="rating">
-			<input type="number" name="rating" id="ratingValue" hidden>
-			<i class='bx bx-star star' style="--i: 0;"></i>
-			<i class='bx bx-star star' style="--i: 1;"></i>
-			<i class='bx bx-star star' style="--i: 2;"></i>
-			<i class='bx bx-star star' style="--i: 3;"></i>
-			<i class='bx bx-star star' style="--i: 4;"></i>
-		</div>
-		<input type="text" id="userName" placeholder="Nama (Max 20 Huruf)">
-		<div id="nameError" class="error"></div>
-		<textarea id="feedbackText" rows="4" cols="50" placeholder="Tuliskan review..."></textarea>
-		<div id="feedbackError" class="error"></div>
-		<div>
-			<input type="checkbox" id="hidePopupCheckbox"> Jangan tampilkan lagi
-		</div>
-		<button onclick="submitFeedback()">Submit</button>
-	</div>
+    <div class="popup-content">
+        <span class="close-button" onclick="closePopup()">&times;</span>
+        <h3>Bagaimana websitenya?</h3>
+        <p>Tolong berikan review dan saran!</p>
+        <div class="rating">
+            <input type="hidden" name="rating" id="ratingValue">
+            <i class='bx bx-star star' onclick="setRating(1)"></i>
+            <i class='bx bx-star star' onclick="setRating(2)"></i>
+            <i class='bx bx-star star' onclick="setRating(3)"></i>
+            <i class='bx bx-star star' onclick="setRating(4)"></i>
+            <i class='bx bx-star star' onclick="setRating(5)"></i>
+        </div>
+        <input type="text" id="userName" placeholder="Nama (Max 20 Huruf)">
+        <div id="nameError" class="error"></div>
+        <textarea id="feedbackText" rows="4" placeholder="Tuliskan review..."></textarea>
+        <div id="feedbackError" class="error"></div>
+        <div>
+            <input type="checkbox" id="hidePopupCheckbox"> Jangan tampilkan lagi
+        </div>
+        <button onclick="submitFeedback()">Submit</button>
+    </div>
 </div>
 
-
 <script>
-    const allStar = document.querySelectorAll('.rating .star')
-    const ratingValue = document.querySelector('.rating input')
-
-    allStar.forEach((item, idx)=> {
-        item.addEventListener('click', function () {
-            let click = 0
-            ratingValue.value = idx + 1
-
-            allStar.forEach(i=> {
-                i.classList.replace('bxs-star', 'bx-star')
-                i.classList.remove('active')
-            })
-            for(let i=0; i<allStar.length; i++) {
-                if(i <= idx) {
-                    allStar[i].classList.replace('bx-star', 'bxs-star')
-                    allStar[i].classList.add('active')
-                } else {
-                    allStar[i].style.setProperty('--i', click)
-                    click++
-                }
-            }
-        })
-    })
-
-    setTimeout(function () {
-        if (!localStorage.getItem('hideReviewPopup')) {
-            document.getElementById('reviewPopup').style.display = 'block';
-        }
-    }, 5000);
+    function setRating(value) {
+        document.getElementById('ratingValue').value = value;
+        const stars = document.querySelectorAll('.rating .star');
+        stars.forEach((star, index) => {
+            star.classList.toggle('active', index < value);
+        });
+    }
 
     function closePopup() {
         if (document.getElementById('hidePopupCheckbox').checked) {
-            localStorage.setItem('hideReviewPopup', 'true');
+            localStorage.setItem('dontShowReviewPopup', 'true');
         }
         document.getElementById('reviewPopup').style.display = 'none';
     }
 
-    if (document.getElementById('hidePopupCheckbox').checked) {
-        localStorage.setItem('hideReviewPopup', 'true');
-    }
+    document.addEventListener('DOMContentLoaded', function() {
+        const dontShowReviewPopup = localStorage.getItem('dontShowReviewPopup');
+        if (!dontShowReviewPopup) {
+            setTimeout(function() {
+                document.getElementById('reviewPopup').style.display = 'block';
+            }, 5*60*1000); // Delay popup display by 5 seconds
+        }
+    });
 
     function submitFeedback() {
         const feedbackText = document.getElementById('feedbackText').value.trim();
         const userName = document.getElementById('userName').value.trim();
-        const rating = ratingValue.value;
+        const rating = document.getElementById('ratingValue').value;
         let valid = true;
 
         document.getElementById('nameError').innerText = '';
         document.getElementById('feedbackError').innerText = '';
-
 
         if (!userName) {
             document.getElementById('nameError').innerText = 'Kolom tidak boleh kosong!';
@@ -207,7 +191,7 @@
             return;
         }
 
-
+        // Submit feedback via AJAX
         $.ajax({
             url: '<?= site_url('view/submit_feedback') ?>',
             method: 'POST',

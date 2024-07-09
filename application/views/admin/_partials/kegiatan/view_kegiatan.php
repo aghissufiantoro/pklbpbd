@@ -22,7 +22,7 @@
                                 <th width="20px">Giat</th>
                                 <th width="20px">Waktu Kegiatan</th>
                                 <th width="30px">Kegiatan</th>
-                                <th width="20px">Lokasi Kejadian</th>
+                                <th width="20px">Lokasi Kegiatan</th>
                                 <th width="20px">Jumlah Personel</th>
                                 <th width="30px">Jumlah Jarko</th>
                                 <th width="30px">Keterangan</th>

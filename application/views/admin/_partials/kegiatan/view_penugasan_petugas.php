@@ -1,16 +1,9 @@
 <div class="row">
     <div class="col-md-12 grid-margin stretch-card">
         <div class="card">
-            <div class="card-title">
-                <div style="margin: 20px;">
-                    <a href="<?= base_url("admin/kegiatan/tambah_petugas") ?>">
-                        <button class="btn btn-primary btn-icon-text mb-md-0">Tambah Data</button>
-                    </a>
-                </div>
-            </div>
             <div class="card-body">
-                <h6 class="card-title">Data di Kota Surabaya</h6>
-                <p class="text-muted mb-3">Data di Pemerintah Kota Surabaya</p>
+                <h6 class="card-title">Data Plot Kegiatan di Kota Surabaya</h6>
+                <p class="text-muted mb-3">Data Plot Kegiatan di Pemerintah Kota Surabaya</p>
                 <div class="table-responsive">
                     <table id="dataTableExample" class="table">
                         <thead>

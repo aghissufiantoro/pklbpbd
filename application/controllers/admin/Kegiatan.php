@@ -39,7 +39,11 @@ class Kegiatan extends CI_Controller {
         $this->form_validation->set_rules('giat', 'Giat', 'required');
         $this->form_validation->set_rules('waktu_kegiatan', 'Waktu Kegiatan', 'required');
         $this->form_validation->set_rules('kegiatan', 'Kegiatan', 'required');
+<<<<<<< HEAD
         $this->form_validation->set_rules('lokasi_kegiatan', 'Lokasi Kejadian', 'required');
+=======
+        $this->form_validation->set_rules('lokasi_kegiatan', 'Lokasi Kegiatan', 'required');
+>>>>>>> 8074227b45149f82d60f9b08343eff88085c2470
         $this->form_validation->set_rules('jumlah_personel', 'Jumlah Personel', 'required|numeric');
         $this->form_validation->set_rules('jumlah_jarko', 'Jumlah Jarko', 'required|numeric');
         $this->form_validation->set_rules('keterangan', 'Keterangan', 'required');
