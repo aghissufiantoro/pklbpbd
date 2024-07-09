@@ -4,11 +4,6 @@
     <?php echo form_open('admin/kegiatan/plot_kegiatan', 'class="needs-validation"'); ?>
 
     <div class="form-group">
-        <label for="tanggal">Tanggal</label>
-        <input type="date" class="form-control" name="tanggal" required>
-    </div>
-
-    <div class="form-group">
         <label for="shift">Shift</label>
         <input type="text" class="form-control" name="shift" required>
     </div>

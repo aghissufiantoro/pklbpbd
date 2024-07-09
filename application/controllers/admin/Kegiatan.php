@@ -58,8 +58,6 @@ class Kegiatan extends CI_Controller {
             $kegiatan_data = array(
                 'tanggal' => $tanggal,
                 'shift' => $shift,
-                'giat' => $giat,
-                'waktu_kegiatan' => $waktu_kegiatan,
                 'kegiatan' => $kegiatan,
                 'lokasi_kegiatan' => $lokasi_kegiatan,
                 'jumlah_personel' => $jumlah_personel,
@@ -104,7 +102,6 @@ class Kegiatan extends CI_Controller {
                 return;
             }
             $tanggal = $kegiatan->tanggal;
-    
             // Begin transaction
             $this->db->trans_start();
     
