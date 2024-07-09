@@ -1,6 +1,13 @@
 <div class="row">
     <div class="col-md-12 grid-margin stretch-card">
         <div class="card">
+            <div class="card-title">
+                <div style="margin: 20px;">
+                    <a href="<?= base_url("admin/kegiatan/plot_kegiatan") ?>">
+                        <button class="btn btn-primary btn-icon-text mb-md-0">Tambah Data</button>
+                    </a>
+                </div>
+            </div>
             <div class="card-body">
                 <h6 class="card-title">Data Kegiatan di Kota Surabaya</h6>
                 <p class="text-muted mb-3">Data Kegiatan di Pemerintah Kota Surabaya</p>
