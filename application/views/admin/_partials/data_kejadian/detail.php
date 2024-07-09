@@ -1,9 +1,31 @@
 <?php
 $id_kejadian = $this->uri->segment(4);
 
-$db_data_kejadian = $this->db->query("SELECT * FROM kejadian WHERE id_kejadian = ?", array($id_kejadian))->row();
+// Query to get the data kejadian based on id_kejadian
+$db_data_kejadian = $this->db->query("SELECT * FROM data_kejadian WHERE id_kejadian = ?", array($id_kejadian))->row();
 
-if ($db_data_kejadian) {
+// Determine the table name based on the value of the kejadian column
+$kejadian = $db_data_kejadian->kejadian;
+
+if ($kejadian == 'Kecelakaan Lalu Lintas') {
+    $table = 'form_laka';
+} elseif ($kejadian == 'Darurat Medis') {
+    $table = 'form_darurat_medis';
+} elseif ($kejadian == 'Kebakaran') {
+    $table = 'form_kebakaran';
+} elseif ($kejadian == 'Pohon Tumbang') {
+    $table = 'form_pohon_tumbang';
+} elseif ($kejadian == 'Penemuan Jenazah') {
+    $table = 'form_penemuan_jenazah';
+} elseif ($kejadian == 'Orang Tenggelam') {
+    $table = 'form_orang_tenggelam';
+} else {
+    $table = 'form_lain';
+}
+
+// Query to get the korban kejadian based on the dynamically determined table
+$db_korban_kejadian = $this->db->query("SELECT * FROM $table WHERE id_kejadian = ?", array($id_kejadian))->row();
+if ($db_data_kejadian ) {
 ?>
 <div class="row">
     <div class="col-md-12 grid-margin stretch-card">
@@ -18,7 +40,7 @@ if ($db_data_kejadian) {
                             <ol>
                                 <li>Tanggal Kejadian: <?= $db_data_kejadian->tanggal ?></li>
                                 <li>Kejadian: <?= $db_data_kejadian->kejadian ?></li>
-                                <li>Deskripsi Kejadian: <?= $db_data_kejadian->deskripsi_kejadian ?></li>
+                                <li>Kronologi Kejadian: <?= $db_data_kejadian->kronologi ?></li>
                                 <li>Lokasi Kejadian: <?= $db_data_kejadian->lokasi_kejadian ?></li>
                                 <li>Waktu Berita: <?= $db_data_kejadian->waktu_berita ?></li>
                                 <li>Waktu Tiba: <?= $db_data_kejadian->waktu_tiba ?></li>
@@ -28,36 +50,22 @@ if ($db_data_kejadian) {
                     <div class="card-body">
                         <p class="text-muted mb-3">Keterangan Subjek yang Terlibat</p>
                         <div class="table-responsive">
-                            <table id="dataTableExample" class="table">
-                                <thead>
-                                    <tr>
-                                        <th>No</th>
-                                        <th>Nama</th>
-                                        <th>Jenis Kelamin</th>
-                                        <th>Usia</th>
-                                        <th>Status Kependudukan</th>
-                                        <th>Alamat KTP</th>
-                                        <th>Keterlibatan Subjek</th>
-                                        <th>Objek</th>
-                                        <th>Kondisi</th>
-                                        <th>Keterangan</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>1</td>
-                                        <td><?= $db_data_kejadian->nama ?></td>
-                                        <td><?= $db_data_kejadian->jenis_kelamin ?></td>
-                                        <td><?= $db_data_kejadian->usia ?></td>
-                                        <td><?= $db_data_kejadian->status_kependudukan ?></td>
-                                        <td><?= $db_data_kejadian->alamat_ktp ?></td>
-                                        <td><?= $db_data_kejadian->keterlibatan_subjek ?></td>
-                                        <td><?= $db_data_kejadian->objek ?></td>
-                                        <td><?= $db_data_kejadian->kondisi_subjek ?></td>
-                                        <td><?= $db_data_kejadian->keterangan_kondisi ?></td>
-                                    </tr>
-                                </tbody>
-                            </table>
+                        <table id="dataTableExample" class="table">
+                                    <thead>
+                                        <tr>
+                                            <?php foreach ($db_korban_kejadian as $column => $value): ?>
+                                                <th><?= $column ?></th>
+                                            <?php endforeach; ?>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <?php foreach ($db_korban_kejadian as $column => $value): ?>
+                                                <td><?= $value ?></td>
+                                            <?php endforeach; ?>
+                                        </tr>
+                                    </tbody>
+                                </table>
                         </div>
                     </div>
 
@@ -65,8 +73,8 @@ if ($db_data_kejadian) {
                         <div class="ms-3">
                             <ol>
                                 <li>Kronologi: <?= $db_data_kejadian->kronologi ?></li>
-                                <li>Catatan Tindaklanjut: <?= $db_data_kejadian->catatan_tindaklanjut ?></li>
-                                <li>Petugas Lapangan: <?= $db_data_kejadian->petugas_lapangan ?></li>
+                                <li>Catatan Tindaklanjut: <?= $db_data_kejadian->tindak_lanjut ?></li>
+                                <li>Petugas Lapangan: <?= $db_data_kejadian->petugas_lokasi ?></li>
                                 <li>Lokasi Kejadian: <?= $db_data_kejadian->lokasi_kejadian ?></li>
                                 <li>Alamat Lengkap Kejadian: <?= $db_data_kejadian->alamat_kejadian ?></li>
                                 <li class="dokumentasi-section">Dokumentasi:</li>
