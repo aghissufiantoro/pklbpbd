@@ -29,13 +29,18 @@
             </div>
 
             <div class="form-group">
-                <label for="lokasi_kejadian">Lokasi Kejadian</label>
-                <input type="text" class="form-control" name="lokasi_kejadian" required>
+                <label for="lokasi_kegiatan">Lokasi Kegiatan</label>
+                <input type="text" class="form-control" name="lokasi_kegiatan" required>
             </div>
 
             <div class="form-group">
                 <label for="jumlah_personel">Jumlah Personel</label>
                 <input type="number" class="form-control" name="jumlah_personel" id="jumlah_personel" required>
+            </div>
+
+            <div class="form-group">
+                <label for="jumlah_jarko">Jumlah Jarko</label>
+                <input type="number" class="form-control" name="jumlah_jarko" id="jumlah_jarko" required>
             </div>
 
             <div class="form-group">
