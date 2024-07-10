@@ -17,6 +17,7 @@ class Kegiatan extends CI_Controller {
         $this->load->model('DataKompi_model');
         $this->load->model('Kegiatan_model');
         $this->load->model('PenugasanPetugas_model');
+        $this->load->library('form_validation');
         $this->load->helper('url_helper');
     }
 
@@ -76,6 +77,47 @@ class Kegiatan extends CI_Controller {
             }
 
             redirect('admin/kegiatan/plot_kegiatan');
+        }
+    }
+
+    public function edit_plot_kegiatan($id = null)
+    {
+        if ($this->session->userdata('role') == "1")
+        {
+            if (!isset($id)) redirect('admin/kegiatan');
+           
+            $kegiatan = $this->Kegiatan_model;
+            $validation = $this->form_validation;
+
+            if ($validation->run()) {
+                $kegiatan->update();
+                $this->session->set_flashdata('success', '<i class="fa fa-check"></i> Alhamdulillah, Data berhasil diupdate');
+            }
+
+            $data["kegiatan"] = $kegiatan->get_kegiatan_by_id($id);
+            if (!$data["kegiatan"]) show_404();
+            
+            $this->load->view("admin/kegiatan/edit_kegiatan", $data);
+        }
+        else
+        {
+            show_404();
+        }
+    }
+
+    public function delete_plot_kegiatan($id = null)
+    {
+        if ($this->session->userdata('role') == "1")
+        {
+            if (!isset($id)) show_404();
+            
+            if ($this->Kegiatan_model->delete_kegiatan($id)) {
+                redirect(site_url('admin/kegiatan/view_kegiatan'));
+            }
+        }
+        else
+        {
+            show_404();
         }
     }
 
