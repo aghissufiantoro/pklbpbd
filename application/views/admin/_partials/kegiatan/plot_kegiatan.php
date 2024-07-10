@@ -13,16 +13,6 @@
                 <input type="text" class="form-control" name="shift" required>
          </div>
 
-            <div class="form-group">
-                <label for="giat">Giat</label>
-                <input type="text" class="form-control" name="giat" required>
-            </div>
-
-            <div class="form-group">
-                <label for="waktu_kegiatan">Waktu Kegiatan</label>
-                <input type="text" class="form-control" name="waktu_kegiatan" required>
-            </div>
-
 
     <div class="form-group">
         <label for="kegiatan">Kegiatan</label>

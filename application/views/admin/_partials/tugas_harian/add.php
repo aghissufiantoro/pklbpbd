@@ -20,8 +20,7 @@ if ($this->session->flashdata('success')) {
 <div class="row wrapper border-bottom white-bg page-heading">
   <div class="col-lg-10">
     <h2><i class="fad fa-plus"></i> Tambah Data Laporan Tugas Harian</h2>
-    <ol class="breadcrumb">
-    </ol>
+    
   </div>
   <div class="col-lg-2"></div>
 </div>

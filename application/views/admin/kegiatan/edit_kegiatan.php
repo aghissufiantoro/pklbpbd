@@ -16,7 +16,7 @@
 
 			<div class="page-content">
 
-				<?php $this->load->view("admin/_partials/kegiatan/edit") ?>
+				<?php $this->load->view("admin/_partials/kegiatan/edit_kegiatan") ?>
 
 			</div>
 
