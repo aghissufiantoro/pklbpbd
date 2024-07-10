@@ -104,5 +104,6 @@
     <a href="#" class="btn btn-lg btn-primary btn-lg-square rounded-circle back-to-top"><i class="bi bi-arrow-up"></i></a>
     <?php $this->load->view('front/_partials/js') ?>
     <?php $this->load->view('front/_partials/survey') ?>
+    
 </body>
 </html>
