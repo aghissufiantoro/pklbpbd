@@ -44,7 +44,11 @@
                                     <td><?= $tugas->uraian_kegiatan; ?></td>
                                     <td><?= $tugas->penanggung_jawab; ?></td>
                                     <td><?= $tugas->hasil_kegiatan; ?></td>
-                                    <td><?= $tugas->dokumentasi; ?></td>
+                                    <td>
+									<button type="button" class="btn btn-outline-danger" data-bs-target="#view_images-<?= $tugas->id_tugas_harian?>" data-bs-toggle="modal">
+										<i class="far fa-file-image"></i> Lihat Foto
+									</button>
+								    </td>
                                     <td>
                                         <a href="<?= site_url('admin/tugas_harian/edit/' . $tugas->id_tugas_harian) ?>" class="btn btn-outline-primary btn-xs"><i class='fal fa-pencil'></i></a>
                                         <a data-bs-toggle="modal" data-bs-target="#deleteConfirm<?= $tugas->id_tugas_harian ?>" class="ms-3 btn btn-outline-danger btn-xs"><i class="fal fa-trash-alt"></i></a>
@@ -69,6 +73,43 @@
                                         </div>
                                     </td>
                                 </tr>
+                                <div class="modal fade" id="view_images-<?= $tugas->id_tugas_harian ?>" data-bs-backdrop="static" data-bs-keyboard="false" aria-hidden="true" aria-labelledby="exampleModalToggleLabel2" tabindex="-1">
+								<div class="modal-dialog modal-xl">
+									<div class="modal-content">
+										<div class="modal-header">
+											<h5 class="modal-title" id="exampleModalToggleLabel2"><?= $tugas->uraian_kegiatan ?></h5>
+											<button type="button" class="btn-close" data-bs-target="#alur_pelayanan" data-bs-toggle="modal" aria-label="Close"></button>
+										</div>
+										<div class="modal-body">
+											<div class="row">
+												<?php
+												$images = json_decode($tugas->dokumentasi);
+												if (is_array($images)) {
+													foreach ($images as $image) {
+														?>
+														<div class="col-md-4 mb-3">
+															<img src="<?= base_url('upload/tugas_harian/' . $image) ?>" class="img-fluid" alt="<?= $tugas->uraian_kegiatan ?>">
+														</div>
+														<?php
+													}
+												} else {
+													?>
+													<div class="col-md-4 mb-3">
+														<img src="<?= base_url('upload/tugas_harian/' . $tugas->dokumentasi) ?>" class="img-fluid" alt="<?= $tugas->uraian_kegiatan ?>">
+													</div>
+													<?php
+												}
+												?>
+											</div>
+										</div>
+										<div class="modal-footer">
+											<button class="btn btn-primary" data-bs-target="#alur_pelayanan" data-bs-toggle="modal">
+												Kembali
+											</button>
+										</div>
+									</div>
+								</div>
+							</div>
                             <?php
                             }
                             ?>

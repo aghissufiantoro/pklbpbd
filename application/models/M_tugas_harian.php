@@ -7,13 +7,35 @@ class M_tugas_harian extends CI_Model
     public function rules_harian()
     {
         return [
+            ['field' => 'nama_staff',
+            'label' => 'Nama Staff',
+            'rules' => 'required'],
+
             ['field' => 'tanggal',
             'label' => 'Tanggal',
             'rules' => 'required'],
 
+            ['field' => 'waktu',
+            'label' => 'Waktu',
+            'rules' => 'required'],
+
             ['field' => 'lokasi',
             'label' => 'Lokasi',
-            'rules' => 'required']
+            'rules' => 'required'],
+
+            ['field' => 'uraian_kegiatan',
+            'label' => 'Uraian Kegiatan',
+            'rules' => 'required'],
+
+            ['field' => 'penanggung_jawab',
+            'label' => 'Penanggung Jawab',
+            'rules' => 'required'],
+
+            ['field' => 'hasil_kegiatan',
+            'label' => 'Hasil Kegiatan',
+            'rules' => 'required'],
+
+            
         ];
     }
 
@@ -21,7 +43,7 @@ class M_tugas_harian extends CI_Model
     {
         $post = $this->input->post();
 
-        $this->id_tugas_harian  = $post['id_tugas_harian'];
+        $this->id_tugas_harian  = $this->generate_id_tugas_harian($post['tanggal']);
         $this->nama_staff       = $post['nama_staff'];
         $this->tanggal          = $post['tanggal'];
         $this->waktu            = $post['waktu'];
@@ -30,7 +52,7 @@ class M_tugas_harian extends CI_Model
         $this->penanggung_jawab = $post['penanggung_jawab'];
         $this->hasil_kegiatan   = $post['hasil_kegiatan'];
         $this->dokumentasi      = $this->_uploadImage();
-        $this->date_created     = date('Y-m-d H:i:s');
+
         $this->db->insert($this->_table, $this);
     }
 
@@ -38,7 +60,7 @@ class M_tugas_harian extends CI_Model
     {
         $post = $this->input->post();
         
-        $this->id_tugas_harian  = $post['id_tugas_harian'];
+        $this->id_tugas_harian  = $post["id_tugas_harian"];
         $this->nama_staff       = $post['nama_staff'];
         $this->tanggal          = $post['tanggal'];
         $this->waktu            = $post['waktu'];
@@ -47,7 +69,6 @@ class M_tugas_harian extends CI_Model
         $this->penanggung_jawab = $post['penanggung_jawab'];
         $this->hasil_kegiatan   = $post['hasil_kegiatan'];
         $this->dokumentasi      = $this->_uploadImage();
-        $this->date_updated     = date('Y-m-d H:i:s');
 
         $this->db->update($this->_table, $this, array('id_tugas_harian' => $post['id_tugas_harian']));
     }
@@ -59,55 +80,47 @@ class M_tugas_harian extends CI_Model
     }
 
     private function _uploadImage()
-    {
-        $post = $this->input->post();
+{
+    $config['upload_path'] = './upload/tugas_harian/';
+    $config['allowed_types'] = 'gif|jpg|png|jpeg|bmp';
+    $config['encrypt_name'] = TRUE;
 
-        $config['upload_path']          = './upload/dokumentasi_tugas_harian/';
-        $config['allowed_types']        = 'png|jpg|jpeg|JPG';
-        $config['file_name']            = uniqid();
-        $config['max_size']             = 50024;
+    $this->load->library('upload', $config);
 
-        $this->load->library('upload', $config);
+    $file_names = array();
 
-        if ($this->upload->do_upload('foto_pegawai'))
-        {
-            $gbr = $this->upload->data();
-            //Compress Image
-            $config['image_library']    = 'gd2';
-            $config['source_image']     = './upload/dokumentasi_tugas_harian/'.$gbr['file_name'];
-            $config['create_thumb']     = FALSE;
-            $config['maintain_ratio']   = FALSE;
-            $config['quality']          = '70%';
-            $config['width']            = 720;
-            $config['height']           = 1280;
-            $config['new_image']        = './upload/dokumentasi_tugas_harian/'.$gbr['file_name'];
-            $this->load->library('image_lib', $config);
-            $this->image_lib->resize();
+    if (isset($_FILES['dokumentasi']) && count($_FILES['dokumentasi']['name']) > 0) {
+        $files = $_FILES;
+        $file_count = count($_FILES['dokumentasi']['name']);
 
-            return $gbr['file_name'];
+        for ($i = 0; $i < $file_count; $i++) {
+            $_FILES['dokumentasi']['name'] = $files['dokumentasi']['name'][$i];
+            $_FILES['dokumentasi']['type'] = $files['dokumentasi']['type'][$i];
+            $_FILES['dokumentasi']['tmp_name'] = $files['dokumentasi']['tmp_name'][$i];
+            $_FILES['dokumentasi']['error'] = $files['dokumentasi']['error'][$i];
+            $_FILES['dokumentasi']['size'] = $files['dokumentasi']['size'][$i];
+
+            if ($this->upload->do_upload('dokumentasi')) {
+                $file_data = $this->upload->data();
+                $file_names[] = $file_data['file_name'];
+            }
         }
-        
-        return "default.png";
     }
+
+    if (count($file_names) > 0) {
+        return json_encode($file_names);
+    }
+
+    return json_encode(['default.png']);
+}
+
 
     private function _deleteImage($id)
     {
-        $artikel = $this->getById($id);
-        if ($artikel->foto_pegawai != "default.png") {
-            $filename = explode(".", $artikel->foto_pegawai)[0];
-            return array_map('unlink', glob(FCPATH."upload/foto_pegawai/$filename.*"));
-        }
-    }
-
-
-    public function insert_tugas_harian($data) {
-        $data['id_tugas_harian'] = $this->generate_id_tugas_harian($data['tanggal']);
-        if ($this->db->insert('tugas_harian', $data)) {
-            log_message('debug', 'Tugas Harian inserted: ' . $data['id_tugas_harian']);
-            return $data['id_tugas_harian'];
-        } else {
-            log_message('error', 'Failed to insert tugas harian: ' . $this->db->error()['message']);
-            return false;
+        $dokumentasi = $this->get_tugas_harian_by_id($id);
+        if ($dokumentasi->dokumentasi != "default.png") {
+            $filename = explode(".", $dokumentasi->dokumentasi)[0];
+            return array_map('unlink', glob(FCPATH."upload/tugas_harian/$filename.*"));
         }
     }
 
@@ -131,14 +144,6 @@ class M_tugas_harian extends CI_Model
         return $id;
     }
 
-    public function is_tugas_harian_exists($id_tugas_harian) {
-        $this->db->select('id_tugas_harian');
-        $this->db->from('tugas_harian');
-        $this->db->where('id_tugas_harian', $id_tugas_harian);
-        $query = $this->db->get();
-        return $query->num_rows() > 0;
-    }
-
     public function get_tugas_harian_by_id($id_tugas_harian)
     {
         $this->db->where('id_tugas_harian', $id_tugas_harian);
@@ -146,14 +151,13 @@ class M_tugas_harian extends CI_Model
         return $query->row();
     }
 
-
     public function get_all_tugas_harian() {
         $query = $this->db->get('tugas_harian');
         return $query->result();
     }
 
     public function get_all_staff() {
-        // Fungsi untuk mendapatkan semua personel
+        // Fungsi untuk mendapatkan semua staff
         $query = $this->db->get('kontak_opd');
         return $query->result();
     }

@@ -1,126 +1,86 @@
-<?php
-if ($this->session->flashdata('success')) {
-  ?>
-  <div class="alert alert-success alert-dismissible fade show" role="alert">
-    <strong>SUKSES!</strong> Data tugas harian telah dirubah.
-    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="btn-close"></button>
-  </div>
-  <?php
-}
-?>
+<div class="container mt-2">
+    <h4 class="mb-3">UBAH DATA TUGAS HARIAN</h4>
+    <?php echo validation_errors(); ?>
+    <?php echo form_open('admin/tugas_harian/edit', 'class="needs-validation" enctype="multipart/form-data"'); ?>
+        <div class="row">
+            <div class="col-md-6">
 
-<!-- <nav class="page-breadcrumb">
-  <ol class="breadcrumb">
-    <li class="breadcrumb-item"><a href="#">Tables</a></li>
-    <li class="breadcrumb-item active" aria-current="page">Data Table</li>
-  </ol>
-</nav> -->
+                <div class="mb-3">
+                    <label for="nama_staff" class="form-label">Nama Staff</label>
+                    <select class="form-select" id="nama_staff" name="nama_staff" required>
+                        <option value="">--- Pilih Nama Staff ---</option>
+                        <?php foreach ($staff_options as $staff): ?>
+                            <option value="<?= $staff->nama_kontak_opd ?>"><?= $staff->nama_kontak_opd ?></option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
 
-<div class="row">
-  <div class="col-md-12 grid-margin stretch-card">
-    <div class="card">
-      <div class="card-body">
-        <h4 class="card-title">Edit Data Tugas Harian</h4>
-        <p class="text-muted mb-3">Mohon di isi dengan sebenar-benarnya</p>
-        <form id="addForm" action="" method="post" enctype="multipart/form-data">
-          <input type="hidden" name="id_tugas_harian" value="<?= $tugas_harian->id_tugas_harian ?>">
-          <div class="mb-3">
-            <label for="tanggungjawab_tugas_harian" class="form-label">Tanggung Jawab</label>
-            <select class="form-control" name="tanggungjawab_tugas_harian" id="tanggungjawab_tugas_harian">
-              <option value="">--- Pilih Tanggung Jawab ---</option>
-              <option <?php if ($tugas_harian->tanggungjawab_tugas_harian == "Sekretaris Kecamatan") {
-                echo "selected";
-              } ?>
-                value="Sekretaris Kecamatan">Sekretaris Kecamatan</option>
-              <option <?php if ($tugas_harian->tanggungjawab_tugas_harian == "Kasi Kesejahteraan Rakyat dan Perekonomian") {
-                echo "selected";
-              } ?> value="Kasi Kesejahteraan Rakyat dan Perekonomian">Kasi Kesejahteraan Rakyat dan
-                Perekonomian</option>
-              <option <?php if ($tugas_harian->tanggungjawab_tugas_harian == "Kasi Pemerintahan dan Pelayanan Publik") {
-                echo "selected";
-              } ?> value="Kasi Pemerintahan dan Pelayanan Publik">Kasi Pemerintahan</option>
-              <option <?php if ($tugas_harian->tanggungjawab_tugas_harian == "Kasi Trantibum") {
-                echo "selected";
-              } ?>
-                value="Kasi Trantibum">Kasi Trantibum</option>
-              <option <?php if ($tugas_harian->tanggungjawab_tugas_harian == "Kasi Pembangunan") {
-                echo "selected";
-              } ?>
-                value="Kasi Pembangunan">Kasi Pembangunan</option>
-              <option <?php if ($tugas_harian->tanggungjawab_tugas_harian == "Kasubag Keuangan") {
-                echo "selected";
-              } ?>
-                value="Kasubag Keuangan">Kasubag Keuangan</option>
-              <option <?php if ($tugas_harian->tanggungjawab_tugas_harian == "Kasubag Umum dan Kepegawaian") {
-                echo "selected";
-              } ?> value="Kasubag Umum dan Kepegawaian">Kasubag Umum Kepegawaian</option>
-              <option <?php if ($tugas_harian->tanggungjawab_tugas_harian == "Pengurus Barang") {
-                echo "selected";
-              } ?>
-                value="Pengurus Barang">Pengurus Barang</option>
-            </select>
-          </div>
-          <div class="mb-3">
-            <label for="tanggal_artikel" class="form-label">Tanggal Kegiatan</label>
-            <div class="input-group date datepicker" id="datePickerExample">
-              <input type="date" class="form-control" name="tgl_tugas_harian" required autocomplete="off"
-                value="<?= $tugas_harian->tgl_tugas_harian ?>">
-              <span class="input-group-text input-group-addon"><i data-feather=""></i></span>
+                <div class="mb-3">
+                    <label class="form-label">Tanggal Kegiatan</label>
+                    <input type="date" class="form-control" id="datepicker" required name="tanggal" autocomplete="off">
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Waktu Kegiatan</label>
+                    <input type="time" class="form-control" id="jam" required name="waktu" autocomplete="off">
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Lokasi Kegiatan</label>
+                    <input class="form-control" required name="lokasi" autocomplete="off"
+                    placeholder="Masukkan lokasi kegiatan" id="hurufbesar" onkeyup="hurufBesar();"></input>
+                </div>
+
             </div>
-          </div>
-          <div class="mb-3">
-            <label for="tanggal_artikel" class="form-label">Jam Kegiatan</label>
-            <div class="input-group date datepicker" id="jam">
-              <input type="time" class="form-control" name="jam_tugas_harian" required
-                data-inputmask="'alias': 'datetime'" data-inputmask-inputformat="HH:MM"
-                value="<?= $tugas_harian->jam_tugas_harian ?>">
-              <span class="input-group-text input-group-addon"><i data-feather=""></i></span>
+
+            <div class="col-md-6">
+
+                <div class="mb-3">
+                    <label class="form-label">Uraian Kegiatan</label>
+                    <input class="form-control" required name="uraian_kegiatan" autocomplete="off"
+                    placeholder="Uraikan kegiatan yang telah dilakukan" id="hurufbesar5" onkeyup="hurufBesar5();"></input>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Penanggung Jawab</label>
+                    <select class="form-select" required name="penanggung_jawab" autocomplete="off"
+                    id="hurufbesar3" onkeyup="hurufBesar3();">
+                        <option value="">--- Pilih Salah Satu ---</option>
+                        <option value="Kepala Badan">Kepala Badan</option>
+                        <option value="Sekretaris Badan">Sekretaris Badan</option>
+                        <option value="Kasubbag Keuangan">Kasubbag Keuangan</option>
+                        <option value="Kabid PK">Kabid PK</option>
+                        <option value="Kabid Darlog RR">Kabid Darlog RR</option>
+                    </select>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Hasil Kegiatan</label>
+                    <textarea class="form-control" name="hasil_kegiatan" autocomplete="off"
+                    placeholder="Masukkan hasil kegiatan" id="hurufbesar4" onkeyup="hurufBesar4();"></textarea>
+                </div>
+                <label class="form-label">Dokumentasi</label>
+                <input type="file" class="form-control" id="dokumentasi" name="dokumentasi[]" accept="image/*" multiple />
+                
+                <div class="form-group">
+
+                </div>
+
             </div>
-          </div>
-          <div class="mb-3">
-            <label for="no_surat_tugas_harian" class="form-label">No. Surat</label>
-            <input id="no_surat_tugas_harian" class="form-control" name="no_surat_tugas_harian" type="text"
-              value="<?= $tugas_harian->no_surat_tugas_harian ?>">
-          </div>
-          <div class="mb-3">
-            <label for="perihal_tugas_harian" class="form-label">Uraian / Nama Kegiatan</label>
-            <input id="perihal_tugas_harian" class="form-control" name="perihal_tugas_harian" type="text"
-              value="<?= $tugas_harian->perihal_tugas_harian ?>">
-          </div>
-          <div class="mb-3">
-            <label for="tempat_tugas_harian" class="form-label">Tempat / Alamat Kegiatan</label>
-            <input id="tempat_tugas_harian" class="form-control" name="tempat_tugas_harian" type="text"
-              value="<?= $tugas_harian->tempat_tugas_harian ?>">
-          </div>
-          <div class="mb-3">
-            <label for="petugas_tugas_harian" class="form-label">Petugas</label>
-            <input id="petugas_tugas_harian" class="form-control" name="petugas_tugas_harian" type="text"
-              value="<?= $tugas_harian->petugas_tugas_harian ?>">
-          </div>
-          <div class="mb-3">
-            <label for="hasil_tugas_harian" class="form-label">Hasil Tugas</label>
-            <input id="hasil_tugas_harian" class="form-control" name="hasil_tugas_harian" type="text"
-              value="<?= $tugas_harian->hasil_tugas_harian ?>">
-          </div>
-          <div class="mb-3">
-            <label for="ket_tugas_harian" class="form-label">Keterangan</label>
-            <input id="ket_tugas_harian" class="form-control" name="ket_tugas_harian" type="text"
-              value="<?= $tugas_harian->ket_tugas_harian ?>">
-          </div>
-          <!-- <div class="mb-3">
-            <div class="form-check">
-              <label class="form-check-label" for="termsCheck">
-                Agree to <a href="#"> terms and conditions </a>
-              </label>
-              <input type="checkbox" class="form-check-input" name="terms_agree" id="termsCheck">
-            </div>
-          </div> -->
-          <a href="<?= base_url('admin/tugas_harian') ?>">
-            <button type="button" class="btn btn-outline-warning">Kembali</button>
-          </a>
-          <input class="btn btn-primary" type="submit" value="Submit">
-        </form>
-      </div>
-    </div>
-  </div>
+        </div>
+        <a href="<?= base_url("admin/tugas_harian") ?>">
+            <input class="btn btn-warning" type="button" value="Kembali">
+        </a>
+        <button class="btn btn-primary" type="submit">Submit</button>
+    <?php echo form_close(); ?>
 </div>
+
+<script>
+document.getElementById('nama_staff').addEventListener('change', function() {
+    var selectedNamaStaff = this.value;
+    
+    // Assuming you have a map of nama_staff to id_kontak_opd
+    var staffMap = <?php echo json_encode(array_column($staff_options, 'id_kontak_opd', 'nama_staff')); ?>;
+    document.getElementById('id_kontak_opd').value = staffMap[selectedNamaStaff] || '';
+});
+</script>
