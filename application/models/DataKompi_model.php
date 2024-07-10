@@ -18,6 +18,8 @@ class DataKompi_model extends CI_Model {
 
 class Kegiatan_model extends CI_Model {
 
+   private $_table ="tabel_kegiatan";
+
     public function insert_kegiatan($data) {
         $data['id_kegiatan'] = $this->generate_id_kegiatan($data['tanggal']);
         if ($this->db->insert('tabel_kegiatan', $data)) {
@@ -68,6 +70,27 @@ class Kegiatan_model extends CI_Model {
     public function get_all_kegiatan() {
         $query = $this->db->get('tabel_kegiatan');
         return $query->result();
+    }
+
+    public function update_kegiatan()
+    {
+        $post = $this->input->post();
+
+        $this->tanggal              = $post['tanggal'];
+        $this->shift                = $post['shift'];
+        $this->lokasi_kegiatan      = $post['lokasi_kegiatan'];
+        $this->jumlah_personel      = $post['jumlah_personel'];
+        $this->jumlah_jarko         = $post['jumlah_jarko'];
+        $this->keterangan           = $post['keterangan'];
+
+        $this->date_updated     = date('Y-m-d H:i:s');
+
+        $this->db->update($this->_table, $this, array('id_kegiatan' => $post['id_kegiatan']));
+    }
+
+    public function delete_kegiatan($id)
+    {
+        return $this->db->delete($this->_table, array("id_kegiatan" => $id));
     }
 }
 

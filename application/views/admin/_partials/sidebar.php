@@ -115,6 +115,20 @@
                     </li>
                 <?php
                 }
+                if ($this->session->userdata('username') == "tugas_harian" || $this->session->userdata('role') == "1") {
+                ?>
+                    <li <?php if ($this->uri->segment(2) == "tugas_harian") {
+                            echo 'class="nav-item active"';
+                        } else {
+                            echo 'class="nav-item"';
+                        } ?>>
+                        <a href="<?= base_url('admin/tugas_harian') ?>" class="nav-link ">
+                            <i class="link-icon" data-feather="layers"></i>
+                            <span class="link-title">Tugas Harian</span>
+                        </a>
+                    </li>
+                <?php
+                }
                 // if ($this->session->userdata('username') == "kegiatan" || $this->session->userdata('role') == "1") {
                 // ?>
                      <li <?php if ($this->uri->segment(2) == "kegiatan") {

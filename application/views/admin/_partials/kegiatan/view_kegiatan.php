@@ -25,13 +25,15 @@
                                 <th width="30px">Jumlah Jarko</th>
                                 <th width="30px">Keterangan</th>
                                 <th width="20px">Aksi</th>
+                                <th width="20px">#</th>
                             </tr>
                         </thead>
                         <tbody>
                             <?php
                             $no = 1;
                             $db_data_kejadian = $this->db->query("SELECT * FROM tabel_kegiatan")->result();
-                            foreach ($kegiatan as $kg) {
+                            foreach ($kegiatan as $kg) 
+                            {
                             ?>
                                 <tr>
                                     <td><?= $no++ ?></td>
@@ -46,10 +48,34 @@
                                     <td>
                                         <a href="<?php echo base_url('admin/kegiatan/tambah_petugas/' . $kg->id_kegiatan); ?>">Tambah Petugas</a>
                                     </td>
+                                    <td>
+                                        <a href="<?= site_url('admin/kegiatan/edit_plot_kegiatan/'.$kg->id_kegiatan) ?>" class="btn btn-outline-primary btn-xs"><i class='fal fa-pencil'></i></a>
+
+                                        <a data-bs-toggle="modal" data-bs-target="#deleteConfirm<?= $kg->id_kegiatan ?>" class="ms-3 btn btn-outline-danger btn-xs"><i class="fal fa-trash-alt"></i></a>
+                                        <div class="modal fade" id="deleteConfirm<?= $kg->id_kegiatan ?>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                            <div class="modal-dialog modal-lg">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                <h5 class="modal-title" id="exampleModalLabel">APAKAH ANDA YAKIN INGIN MENGHAPUS DATA INI?</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                Data yang akan dihapus adalah data dengan ID Kegiatan <?= $kg->id_kegiatan ?>
+                                                </div>
+                                                <div class="modal-footer d-flex align-items-center">
+                                                <a href="<?= base_url('admin/kegiatan/delete_plot_kegiatan/'.$kg->id_kegiatan) ?>" class="btn btn-outline-danger">
+                                                    <i class="fad fa-trash-alt"></i>
+                                                </a>
+                                                <button class="btn btn-outline-success mr-auto" type="button" data-bs-dismiss="modal"><i class="fa fa-times"></i> Cancel</button>
+                                                </div>
+                                            </div>
+                                            </div>
+                                        </div>
+                                    </td>
                                 </tr>
                             <?php
                             }
-                            ?>
+                        ?>
                         </tbody>
                     </table>
                 </div>
