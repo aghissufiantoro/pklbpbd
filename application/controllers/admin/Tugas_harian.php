@@ -16,8 +16,7 @@ class tugas_harian extends CI_Controller
             redirect(base_url("login"));
         }
         
-        $this->load->model("m_tugas_harian");
-        $this->load->library('PDF_MC_Table');
+        $this->load->model("M_tugas_harian");
         $this->load->library('form_validation');
         $this->load->helper('indonesian_date');
         
@@ -25,27 +24,72 @@ class tugas_harian extends CI_Controller
 
     public function index()
     {
-        $data["tugas_harian"] = $this->m_tugas_harian->getAll();
+        $data["tugas_harian"] = $this->M_tugas_harian->get_all_tugas_harian();
         $this->load->view("admin/tugas_harian/list_tugas_harian", $data);
     }
 
-    public function Printtugasharian()
-    {
-        $data["tugas_harian"] = $this->m_tugas_harian->getAll();
-        $this->load->view("admin/tugas_harian/print_tugas_harian", $data);
+    public function tugas_harian() {
+        $this->load->helper('form');
+        $this->load->library('form_validation');
+
+        $this->form_validation->set_rules('nama_staff', 'Nama Staff', 'required');
+        $this->form_validation->set_rules('tanggal', 'Tanggal', 'required');
+        $this->form_validation->set_rules('waktu', 'Waktu', 'required');
+        $this->form_validation->set_rules('lokasi', 'Lokasi', 'required');
+        $this->form_validation->set_rules('uraian_kegiatan', 'Uraian Kegiatan', 'required');
+        $this->form_validation->set_rules('penanggung_jawab', 'Penanggung Jawab', 'required');
+        $this->form_validation->set_rules('hasil_kegiatan', 'Hasil Kegiatan', 'required');
+        $this->form_validation->set_rules('dokumentasi', 'Dokumentasi', 'required');
+
+        if ($this->form_validation->run() === FALSE) {
+            $data['staff'] = $this->M_tugas_harian->get_all_staff();
+            $this->load->view('admin/tugas_harian/tugas_harian', $data);
+        } else {
+            // Collect form data
+            $nama_staff = $this->input->post('nama_staff');
+            $tanggal = $this->input->post('tanggal');
+            $waktu= $this->input->post('waktu');
+            $lokasi = $this->input->post('lokasi');
+            $uraian_kegiatan = $this->input->post('uraian_kegiatan');
+            $penanggung_jawab = $this->input->post('penanggung_jawab');
+            $hasil_kegiatan = $this->input->post('hasil_kegiatan');
+            $dokumentasi = $this->input->post('dokumentasi');
+
+            // Insert into tugas_harian
+            $tugas_harian_data = array(
+                'nama_staff' => $nama_staff,
+                'tanggal' => $tanggal,
+                'waktu' => $waktu,
+                'lokasi' => $lokasi,
+                'uraian_kegiatan' => $uraian_kegiatan,
+                'penanggung_jawab' => $penanggung_jawab,
+                'hasil_kegiatan' => $hasil_kegiatan,
+                'dokumentasi' => $dokumentasi,
+            );
+
+            $id_tugas_harian = $this->M_tugas_harian->insert_tugas_harian($tugas_harian_data);
+
+            if ($id_tugas_harian) {
+                log_message('debug', 'Tugas harian inserted with ID: ' . $id_tugas_harian);
+                $this->session->set_flashdata('success', 'Tugas harian berhasil ditambahkan dengan ID: ' . $id_tugas_harian);
+            } else {
+                log_message('error', 'Failed to insert tugas harian.');
+                $this->session->set_flashdata('error', 'Gagal menambahkan tugas harian.');
+            }
+
+            redirect('admin/tugas_harian/index');
+        }
     }
 
-    public function printbydate()
-    {
-        $tgl = $this->uri->segment(4);
-        $que = $this->db->query("SELECT * FROM tugas_harian WHERE DATE(tgl_tugas_harian) = ?", array($tgl));
-        $data["tgltugas"] = $que ->row();
-        $this->load->view("admin/tugas_harian/print_tugas_harian", $data);
+    public function get_all_staff() {
+        $staff = $this->M_tugas_harian->get_all_staff();
+        echo json_encode($staff);
     }
+
 
     public function add()
     {
-        $tugasharian = $this->m_tugas_harian;
+        $tugasharian = $this->M_tugas_harian;
         $validation = $this->form_validation;
         $validation->set_rules($tugasharian->rules_harian());
 
@@ -64,7 +108,7 @@ class tugas_harian extends CI_Controller
     {
         if (!isset($id)) redirect('admin/tugas_harian');
        
-        $tugasharian = $this->m_tugas_harian;
+        $tugasharian = $this->M_tugas_harian;
         $validation = $this->form_validation;
         $validation->set_rules($tugasharian->rules_harian());
 
@@ -83,7 +127,7 @@ class tugas_harian extends CI_Controller
     public function delete($id = null)
     {
         if (!isset($id)) show_404();
-        if ($this->m_tugas_harian->delete($id)) {
+        if ($this->M_tugas_harian->delete($id)) {
             redirect(site_url('admin/tugas_harian'));
         }
     }

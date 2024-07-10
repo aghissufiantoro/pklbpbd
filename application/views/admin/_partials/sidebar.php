@@ -73,20 +73,6 @@
             <!-- New menu added below -->
             <li class="nav-item nav-category">TIM EMAK</li>
                 <?php
-                if ($this->session->userdata('username') == "kompi" || $this->session->userdata('role') == "1") {
-                ?>
-                    <li <?php if ($this->uri->segment(2) == "kompi") {
-                            echo 'class="nav-item active"';
-                        } else {
-                            echo 'class="nav-item"';
-                        } ?>>
-                        <a href="<?= base_url('admin/kompi/index') ?>" class="nav-link ">
-                            <i class="link-icon" data-feather="users"></i>
-                            <span class="link-title">Kompi</span>
-                        </a>
-                    </li>
-                <?php
-                }
                 if ($this->session->userdata('username') == "kegiatan" || $this->session->userdata('role') == "1") {
                 ?>
                     <li <?php if ($this->uri->segment(2) == "kegiatan" && $this->uri->segment(3) == "view_kegiatan") {
@@ -96,7 +82,7 @@
                         } ?>>
                         <a href="<?= base_url('admin/kegiatan/view_kegiatan') ?>" class="nav-link">
                             <i class="link-icon" data-feather="check-square"></i>
-                            <span class="link-title">Kegiatan</span>
+                            <span class="link-title">Jadwal Ploting</span>
                         </a>
                     </li>
                 <?php
@@ -110,11 +96,26 @@
                         } ?>>
                         <a href="<?= base_url('admin/kegiatan/view_penugasan_petugas') ?>" class="nav-link">
                             <i class="link-icon" data-feather="clipboard"></i>
-                            <span class="link-title">Plot Kegiatan</span>
+                            <span class="link-title">Giat Personil</span>
                         </a>
                     </li>
                 <?php
                 }
+                if ($this->session->userdata('username') == "tugas_harian" || $this->session->userdata('role') == "1") {
+                ?>
+                    <li <?php if ($this->uri->segment(2) == "tugas_harian") {
+                            echo 'class="nav-item active"';
+                        } else {
+                            echo 'class="nav-item"';
+                        } ?>>
+                        <a href="<?= base_url('admin/tugas_harian') ?>" class="nav-link ">
+                            <i class="link-icon" data-feather="clipboard"></i>
+                            <span class="link-title">Tugas Harian</span>
+                        </a>
+                    </li>
+                <?php
+                }
+                
                 // if ($this->session->userdata('username') == "kegiatan" || $this->session->userdata('role') == "1") {
                 // ?>
                      <li <?php if ($this->uri->segment(2) == "kegiatan") {

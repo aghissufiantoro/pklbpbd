@@ -134,11 +134,6 @@ class Kegiatan extends CI_Controller {
         }
     }
 
-    public function get_personel_by_kompi($jenis_kompi) {
-        $personel = $this->DataKompi_model->get_personel_by_kompi($jenis_kompi);
-        echo json_encode($personel);
-    }
-
     public function laporan_kegiatan($id_kegiatan) {
         if (!$id_kegiatan) {
             log_message('error', 'No ID provided to laporan_kegiatan');

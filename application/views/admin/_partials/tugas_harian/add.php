@@ -1,139 +1,119 @@
-<?php
-if ($this->session->flashdata('success')) {
-  ?>
-  <script>
-    setTimeout(function () {
-      toastr.options = {
-        closeButton: true,
-        progressBar: true,
-        showMethod: 'slideDown',
-        timeOut: 7000
-      };
-      toastr.success('Alhamdulillah, Data laporan berhasil di-TAMBAH', 'SUCCESS!');
+<div class="container mt-5">
+    <h1>Tambah Data Tugas Harian</h1>
+      <?php echo validation_errors(); ?>
+        <?php echo form_open('admin/tugas_harian/tugas_harian', 'class="needs-validation"'); ?>
+          <div class="row">
+            <div class="col-md-6">
 
-    }, 1000);
-  </script>
-  <?php
-}
-?>
+              <div class="form-group">
+                <label>Nama Staff<span class="text-danger">*</span></label>
+                <select class="form-select" required name="nama_staff" autocomplete="off"
+                  placeholder="Pilih nama staff" id="staff-container" onkeyup="hurufBesar();"></select>
+              </div>
 
-<div class="row wrapper border-bottom white-bg page-heading">
-  <div class="col-lg-10">
-    <h2><i class="fad fa-plus"></i> Tambah Data Laporan Tugas Harian</h2>
-    <ol class="breadcrumb">
-      <li class="breadcrumb-item">
-        <a href="<?= site_url('admin/overview') ?>">Home</a>
-      </li>
-      <li class="breadcrumb-item active">
-        <strong>Tambah data laporan tugas harian</strong>
-      </li>
-    </ol>
-  </div>
-  <div class="col-lg-2"></div>
+              <div class="form-group">
+                <label>Tanggal Kegiatan<span class="text-danger">*</span></label>
+                <input type="date" class="form-control" id="datepicker" required name="tanggal"
+                  autocomplete="off" placeholder="Masukkan tanggal kegiatan">
+              </div>
+
+              <div class="form-group">
+                <label>Waktu Kegiatan<span class="text-danger">*</span></label>
+                <input type="time" class="form-control" id="jam" required name="waktu" autocomplete="off"
+                  placeholder="Masukkan waktu kegiatan">
+              </div>
+
+              <div class="form-group">
+                <label>Lokasi Kegiatan<span class="text-danger">*</span></label>
+                <input class="form-control" required name="lokasi" autocomplete="off"
+                  placeholder="Masukkan lokasi kegiatan" id="hurufbesar" onkeyup="hurufBesar();"></input>
+              </div>
+
+            </div>
+
+            <div class="col-md-6">
+
+              <div class="form-group">
+                <label>Uraian Kegiatan<span class="text-danger">*</span></label>
+                <textarea class="form-control" required name="uraian_kegiatan" autocomplete="off"
+                  placeholder="Uraikan kegiatan yang telah dilakukan" id="hurufbesar5" onkeyup="hurufBesar5();"></textarea>
+              </div>
+
+              <div class="form-group">
+                <label>Penanggung Jawab<span class="text-danger">*</span></label>
+                <select class="form-select" required name="penanggung_jawab" autocomplete="off"
+                id="hurufbesar3" onkeyup="hurufBesar3();">
+                  <option value="">--- Pilih Salah Satu ---</option>
+                  <option value="kepala_badan">Kepala Badan</option>
+                  <option value="sekretaris_badan">Sekretaris Badan</option>
+                  <option value="kasubbag_keuangan">Kasubbag Keuangan</option>
+                  <option value="kabid_pk">Kabid PK</option>
+                  <option value="kabid_darlog_rr">Kabid Darlog RR</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label>Hasil Kegiatan</label>
+                <textarea class="form-control" name="hasil_kegiatan" autocomplete="off"
+                  placeholder="Masukkan hasil kegiatan" id="hurufbesar4" onkeyup="hurufBesar4();"></textarea>
+              </div>
+
+            </div>
+          </div>
+
+          <button type="submit" class="btn btn-primary">Submit</button>
+        <?php echo form_close(); ?>
 </div>
 
-<div class="wrapper wrapper-content animated fadeInRight">
-  <form action="" method="post" enctype="multipart/form-data">
-    <div class="ibox">
-      <div class="ibox-title">
-        <h5>Laporan Tugas Harian di <small><?= SITE_NAME ?></small></h5>
-        <div class="ibox-tools">
-          <a class="collapse-link">
-            <i class="fa fa-chevron-up"></i>
-          </a>
-        </div>
-      </div>
-      <div class="ibox-content">
-        <div class="row">
-          <div class="col-md-6">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+    function loadStaffOptions() {
+        // if (jenisKompi && jumlahPersonel > 0) {
+        //     $.ajax({
+                url: "<?php echo base_url('admin/tugas_harian/get_all_staff/'); ?>",
+                method: 'GET',
+                success: function(data) {
+                    try {
+                        var staffData = JSON.parse(data);
+                        console.log("Received data:", staffData);
+                        $('#staff-container').empty();
+                        //for (var i = 0; i < jumlahPersonel; i++) {
+                            var select = $('<select class="form-select" name="staff[]" required></select>');
+                            select.append('<option value="">Pilih Staff</option>');
+                            $.each(staffData, function(index, staff) {
+                                var option = $('<option></option>').attr('value', staff.id_kontak_opd).text(staff.nama_kontak_opd);
+                                select.append(option);
+                            });
+                            $('#staff-container').append('<div class="form-group"><label>Staff ' + (i + 1) + '</label>' + select.prop('outerHTML') + '</div>');
+                        //}
+                    } catch (e) {
+                        console.error("Error parsing JSON:", e);
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error("Failed to load staff data:", error);
+                }
+    //         });
+    //     } else {
+    //         $('#petugas-container').empty();
+    //     }
+    }
 
-            <div class="form-group">
-              <label>Tanggal Jadwal<span class="text-danger">*</span></label>
-              <input type="date" class="form-control" id="datepicker" required name="tgl_tugas_harian"
-                autocomplete="off" placeholder="Masukkan jadwal kegiatan">
-            </div>
+    // $(document).ready(function() {
+    //     $('#jenis_kompi').change(function() {
+    //         var jenisKompi = $(this).val();
+    //         var jumlahPersonel = $('#jumlah_personel').val();
+    //         loadPetugasOptions(jenisKompi, jumlahPersonel);
+    //     });
 
-            <div class="form-group">
-              <label>Jam Kegiatan<span class="text-danger">*</span></label>
-              <input type="time" class="form-control" id="jam" required name="jam_tugas_harian" autocomplete="off"
-                placeholder="Masukkan jam kegiatan">
-            </div>
+    //     $('#jumlah_personel').change(function() {
+    //         var jumlahPersonel = $(this).val();
+    //         var jenisKompi = $('#jenis_kompi').val();
+    //         loadPetugasOptions(jenisKompi, jumlahPersonel);
+    //     });
 
-            <div class="form-group">
-              <label>Uraian / Nama Kegiatan<span class="text-danger">*</span></label>
-              <textarea class="form-control" required name="perihal_tugas_harian" autocomplete="off"
-                placeholder="Masukkan nama perihal / kegiatan" id="hurufbesar" onkeyup="hurufBesar();"></textarea>
-            </div>
-
-            <div class="form-group">
-              <label>Tempat Kegiatan<span class="text-danger">*</span></label>
-              <textarea class="form-control" required name="tempat_tugas_harian" autocomplete="off"
-                placeholder="Masukkan tempat tugas harian" id="hurufbesar2" onkeyup="hurufBesar2();"></textarea>
-            </div>
-
-          </div>
-
-          <div class="col-md-6">
-
-            <div class="form-group">
-              <label>No. Surat Tugas<span class="text-danger">*</span></label>
-              <textarea class="form-control" required name="no_surat_tugas_harian" autocomplete="off"
-                placeholder="Masukkan nomor surat tugas harian" id="hurufbesar5" onkeyup="hurufBesar5();"></textarea>
-            </div>
-
-            <div class="form-group">
-              <label>Penanggung Jawab<span class="text-danger">*</span></label>
-              <textarea class="form-control" required name="tanggungjawab_tugas_harian" autocomplete="off"
-                placeholder="Masukkan penanggung jawab" id="hurufbesar3" onkeyup="hurufBesar3();"></textarea>
-            </div>
-
-            <div class="form-group">
-              <label>Keterangan</label>
-              <textarea class="form-control" name="ket_tugas_harian" autocomplete="off"
-                placeholder="Masukkan keterangan" id="hurufbesar4" onkeyup="hurufBesar4();"></textarea>
-              <small>*Tidak perlu di isi jika tidak perlu</small>
-            </div>
-
-
-
-          </div>
-        </div>
-      </div>
-      <div class="ibox-footer">
-        <div class="row">
-          <div class="col-lg-6">
-            <a href="<?= site_url('admin/tugas_harian') ?>">
-              <button type="button" class="btn btn-warning btn-lg"><i class="fa fa-reply"></i> Kembali</button>
-            </a>
-          </div>
-          <div class="col-lg-6" style="text-align: right;">
-            <button type="submit" name="submit" class="btn btn-primary btn-lg"><i class="far fa-save"></i> Tambah
-              Laporan</button>
-          </div>
-        </div>
-      </div>
-    </div>
-  </form>
-</div>
-
-<style>
-  .form-group {
-    margin-bottom: 20px;
-  }
-
-  .form-control {
-    width: 100%;
-  }
-
-  .ibox-title h5 {
-    font-size: 16px;
-  }
-
-  .ibox-footer {
-    padding-top: 20px;
-  }
-
-  .btn {
-    padding: 10px 20px;
-  }
-</style>
+    //     var initialKompi = $('#jenis_kompi').val();
+    //     var initialJumlah = $('#jumlah_personel').val();
+    //     loadPetugasOptions(initialKompi, initialJumlah);
+    // });
+</script>
