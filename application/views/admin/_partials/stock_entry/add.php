@@ -99,15 +99,30 @@
               </div>
             </div>
             <div class="col-md-4">
-              <div class="mb-3">
-                <label for="kelurahan" class="form-label">Kelurahan</label>
-                <input id="kelurahan" class="form-control" name="kelurahan" type="text" required>
-              </div>
-            </div>
+                <div class="mb-3">
+                    <label for="kelurahan">Desa*</label>
+                    <select class="form-control <?= form_error('kelurahan') ? 'is-invalid' : '' ?>" id="kelurahan" name="kelurahan" required>
+                        <option value="">--- Pilih Desa ---</option>
+                        <?php foreach ($kelurahan_options as $kelurahan): ?>
+                      <option value="<?= $kelurahan->kelurahan ?>"><?= $kelurahan->kelurahan ?></option>
+                  <?php endforeach; ?>
+                    </select>
+                    <div class="invalid-feedback">
+                        <?= form_error('kelurahan') ?>
+                    </div>
+                </div>
+            </div> 
             <div class="col-md-4">
               <div class="mb-3">
-                <label for="kecamatan" class="form-label">Kecamatan</label>
-                <input id="kecamatan" class="form-control" name="kecamatan" type="text" required>
+                <label for="kecamatan">Kecamatan*</label>
+                <select class="form-control <?= form_error('kecamatan') ? 'is-invalid' : '' ?>" id="kecamatan" name="kecamatan" required>
+                <option value="">--- Pilih Kecamatan ---</option>
+                  <?php foreach ($kecamatan_options as $kecamatan): ?>
+                      <option value="<?= $kecamatan->kecamatan ?>"><?= $kecamatan->kecamatan ?></option>
+                  <?php endforeach; ?>
+                 </select>
+              <div class="invalid-feedback">
+                <?= form_error('kecamatan') ?>
               </div>
             </div>
           </div>
@@ -212,3 +227,25 @@ document.getElementById('addForm').addEventListener('submit', function(event) {
     }
 });
 </script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+$(document).ready(function() {
+    $('#kecamatan').change(function() {
+        var kecamatan = $(this).val();
+        $.ajax({
+            url: '<?= site_url('admin/stock_entry/get_kelurahan_by_kecamatan') ?>',
+            type: 'POST',
+            data: {kecamatan: kecamatan},
+            dataType: 'json',
+            success: function(data) {
+                $('#kelurahan').empty();
+                $('#kelurahan').append('<option value="">--- Pilih Desa ---</option>');
+                $.each(data, function(key, value) {
+                    $('#kelurahan').append('<option value="'+ value.desa +'">'+ value.desa +'</option>');
+                });
+            }
+        });
+    });
+});
+</script>
+
