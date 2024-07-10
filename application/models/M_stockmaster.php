@@ -30,7 +30,7 @@ class m_stockmaster extends CI_Model
         $this->kode_barang     = $post['kode_barang'];
         $this->nama_barang     = $post['nama_barang'];
         $this->kategori_barang = $post['kategori_barang'];
-        $this->unit_barang     = $post['unit_barang'];
+        $this->satuan_barang     = $post['satuan_barang'];
     
         $this->db->insert($this->_table, $this);
     }
@@ -44,7 +44,7 @@ class m_stockmaster extends CI_Model
         $this->kode_barang     = $post['kode_barang'];
         $this->nama_barang     = $post['nama_barang'];
         $this->kategori_barang = $post['kategori_barang'];
-        $this->unit_barang     = $post['unit_barang'];
+        $this->satuan_barang     = $post['satuan_barang'];
 
 
         $this->db->update($this->_table, $this, array('kode_barang' => $post['kode_barang']));

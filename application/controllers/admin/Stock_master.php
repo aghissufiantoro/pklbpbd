@@ -209,8 +209,4 @@ class stock_master extends CI_Controller
             show_404();
         }
     }
-    
-
-    
-
 }

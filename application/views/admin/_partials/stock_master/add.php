@@ -16,12 +16,12 @@
         <h4 class="card-title">Tambah Data Barang</h4>
         <p class="text-muted mb-3">Mohon di isi dengan sebenar-benarnya</p>
         <form id="addForm" action="" method="post" enctype="multipart/form-data">
-          <div class="col-md-12">
+          <!-- <div class="col-md-12">
             <div class="mb-3">
               <label for="kode_barang" class="form-label">Kode Barang</label>
               <input id="kode_barang" class="form-control" name="kode_barang" type="text">
             </div>
-          </div>
+          </div> -->
           <div class="col-md-12">
             <div class="mb-3">
               <label for="nama_barang" class="form-label">Nama Barang</label>
@@ -30,16 +30,46 @@
           </div>
           <div class="col-md-12">
           <div class="col-md-12">
-            <div class="mb-3">
+            <!-- <div class="mb-3">
               <label for="kategori_barang" class="form-label">Kategori Barang</label>
               <input id="kategori_barang" class="form-control" name="kategori_barang" type="text">
+            </div> -->
+            <div class="mb-3">
+                <label for="kategori_barang" class="form-label">Kategori Barang</label>
+                <select class="form-select" id="kategori_barang" name="kategori_barang" data-width="100%" required>
+                <option value="">--- Pilih Kategori Barang ---</option>
+                  <?php
+                      $query = $this->db->query('SELECT kategori FROM kategori_barang')->result();
+                      foreach ($query as $qz) 
+                      {
+                          ?>
+                          <option value="<?= htmlspecialchars($qz->kategori) ?>"><?= htmlspecialchars($qz->kategori) ?></option>
+                          <?php
+                      }
+                  ?>
+                </select>
             </div>
           </div>
           </div>
           <div class="col-md-12">
-            <div class="mb-3">
+            <!-- <div class="mb-3">
               <label for="unit_barang" class="form-label">Unit Barang</label>
               <input id="unit_barang" class="form-control" name="unit_barang" type="text">
+            </div> -->
+            <div class="mb-3">
+                <label for="satuan_barang" class="form-label">Satuan Barang</label>
+                <select class="form-select" id="satuan_barang" name="satuan_barang" data-width="100%" required>
+                <option value="">--- Pilih Satuan Barang ---</option>
+                  <?php
+                    $query = $this->db->query('SELECT satuan FROM satuan_barang')->result();
+                    foreach ($query as $qz) 
+                      {
+                        ?>
+                        <option value="<?= htmlspecialchars($qz->satuan) ?>"><?= htmlspecialchars($qz->satuan) ?></option>
+                        <?php
+                      }
+                  ?>
+                </select>
             </div>
           </div>
           <div class="col-md-12">
