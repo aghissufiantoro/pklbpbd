@@ -149,19 +149,33 @@
     z-index: 1;
 }
 
-.carousel-control-prev,
-.carousel-control-next {
-    width: 15%;
-}
-
-.carousel-control-prev-icon,
-.carousel-control-next-icon {
-    width: 3.5rem;
-    height: 3.5rem;
-    border-radius: 3.5rem;
-    background-color: var(--primary);
-    border: 15px solid var(--primary);
-}
+/* CSS */
+.carousel-control-prev, .carousel-control-next {
+    width: auto; /* Atur lebar tombol agar sesuai dengan konten */
+    background: none; /* Hapus latar belakang default */
+  }
+  
+  .carousel-control-prev-icon, .carousel-control-next-icon {
+    display: inline-block;
+    width: 30px; /* Lebar ikon */
+    height: 30px; /* Tinggi ikon */
+    background-size: 100% 100%; /* Ukuran latar belakang */
+  }
+  
+  .carousel-control-prev, .carousel-control-next {
+    position: absolute; /* Posisi absolut untuk menempatkan tombol di sisi kanan dan kiri */
+    top: 50%;
+    transform: translateY(-50%);
+  }
+  
+  .carousel-control-prev {
+    left: 10px; /* Posisi di sebelah kiri */
+  }
+  
+  .carousel-control-next {
+    right: 10px; /* Posisi di sebelah kanan */
+  }
+  
 
 @media (max-width: 768px) {
     #header-carousel .carousel-item {

@@ -27,6 +27,7 @@
                                 <th width="30px">Jumlah Jarko</th>
                                 <th width="30px">Keterangan</th>
                                 <th width="20px">Aksi</th>
+                                <th width="20px"># </th>
                             </tr>
                         </thead>
                         <tbody>

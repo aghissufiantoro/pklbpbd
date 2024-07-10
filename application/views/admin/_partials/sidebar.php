@@ -81,11 +81,7 @@
                             echo 'class="nav-item"';
                         } ?>>
                         <a href="<?= base_url('admin/kompi/index') ?>" class="nav-link ">
-<<<<<<< HEAD
-                            <i class="link-icon" data-feather="users" ></i>
-=======
                             <i class="link-icon" data-feather="users"></i>
->>>>>>> 8074227b45149f82d60f9b08343eff88085c2470
                             <span class="link-title">Kompi</span>
                         </a>
                     </li>
@@ -93,21 +89,13 @@
                 }
                 if ($this->session->userdata('username') == "kegiatan" || $this->session->userdata('role') == "1") {
                 ?>
-<<<<<<< HEAD
-                    <li <?php if ($this->uri->segment(2) == "kegiatan" && $this->uri->segment(3)=="view_kegiatan") {
-=======
                     <li <?php if ($this->uri->segment(2) == "kegiatan" && $this->uri->segment(3) == "view_kegiatan") {
->>>>>>> 8074227b45149f82d60f9b08343eff88085c2470
                             echo 'class="nav-item active"';
                         } else {
                             echo 'class="nav-item"';
                         } ?>>
                         <a href="<?= base_url('admin/kegiatan/view_kegiatan') ?>" class="nav-link">
-<<<<<<< HEAD
-                            <i class="link-icon" data-feather="message-square"></i>
-=======
                             <i class="link-icon" data-feather="check-square"></i>
->>>>>>> 8074227b45149f82d60f9b08343eff88085c2470
                             <span class="link-title">Kegiatan</span>
                         </a>
                     </li>
@@ -115,22 +103,28 @@
                 }
                 if ($this->session->userdata('username') == "kegiatan" || $this->session->userdata('role') == "1") {
                 ?>
-<<<<<<< HEAD
-                    <li <?php if ($this->uri->segment(2) == "kegiatan" && $this->uri->segment(3)=="view_penugasan_petugas") {
-=======
                     <li <?php if ($this->uri->segment(2) == "kegiatan" && $this->uri->segment(3) == "view_penugasan_petugas") {
->>>>>>> 8074227b45149f82d60f9b08343eff88085c2470
                             echo 'class="nav-item active"';
                         } else {
                             echo 'class="nav-item"';
                         } ?>>
                         <a href="<?= base_url('admin/kegiatan/view_penugasan_petugas') ?>" class="nav-link">
-<<<<<<< HEAD
-                            <i class="link-icon" data-feather="message-square"></i>
-=======
                             <i class="link-icon" data-feather="clipboard"></i>
->>>>>>> 8074227b45149f82d60f9b08343eff88085c2470
                             <span class="link-title">Plot Kegiatan</span>
+                        </a>
+                    </li>
+                <?php
+                }
+                if ($this->session->userdata('username') == "tugas_harian" || $this->session->userdata('role') == "1") {
+                ?>
+                    <li <?php if ($this->uri->segment(2) == "tugas_harian") {
+                            echo 'class="nav-item active"';
+                        } else {
+                            echo 'class="nav-item"';
+                        } ?>>
+                        <a href="<?= base_url('admin/tugas_harian') ?>" class="nav-link ">
+                            <i class="link-icon" data-feather="layers"></i>
+                            <span class="link-title">Tugas Harian</span>
                         </a>
                     </li>
                 <?php
