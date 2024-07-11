@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
 	<?php $this->load->view("admin/_partials/head") ?>
+
 </head>
 <body>
 	<div class="main-wrapper">
@@ -28,6 +29,10 @@
 	</div>
 
 	<?php $this->load->view("admin/_partials/js") ?>
+
+	<script>
+ 
+</script>
 
 </body>
 </html>
