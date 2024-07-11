@@ -55,25 +55,26 @@ class tugas_harian extends CI_Controller
     }
 
     public function edit($id = null)
-    {
-        if (!isset($id)) redirect('admin/tugas_harian');
-       
-        $tugasharian = $this->M_tugas_harian;
-        $validation = $this->form_validation;
-        $validation->set_rules($tugasharian->rules_harian());
+{
+    if (!isset($id)) redirect('admin/tugas_harian');
 
-        if ($validation->run()) {
-            $tugasharian->update($id);
-            $this->session->set_flashdata('success', '<i class="fa fa-check"></i> Alhamdulillah, Data berhasil disimpan');
-            redirect('admin/tugas_harian');
-        }
+    $this->load->model('M_tugas_harian');
+    $tugasharian = $this->M_tugas_harian;
+    $validation = $this->form_validation;
+    $validation->set_rules($tugasharian->rules_harian());
 
-        $data['staff_options'] = $this->M_tugas_harian->get_all_staff();
-        $data["tugas_harian"] = $tugasharian->get_tugas_harian_by_id($id);
-        if (!$data["tugas_harian"]) show_404();
+    if ($validation->run()) {
+        $tugasharian->update($id);
+        $this->session->set_flashdata('success', '<i class="fa fa-check"></i> Alhamdulillah, Data berhasil disimpan');
+        redirect('admin/tugas_harian');
+    }
 
-        $this->load->view("admin/tugas_harian/edit_form_tugas_harian", $data);
-    } 
+    $data['staff_options'] = $tugasharian->get_all_staff();
+    $data['tugas_harian'] = $tugasharian->get_tugas_harian_by_id($id);
+    if (!$data['tugas_harian']) show_404();
+
+    $this->load->view("admin/tugas_harian/edit_form_tugas_harian", $data);
+}
 
     public function delete($id = null)
     {

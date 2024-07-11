@@ -56,22 +56,23 @@ class M_tugas_harian extends CI_Model
         $this->db->insert($this->_table, $this);
     }
 
-    public function update()
-    {
-        $post = $this->input->post();
-        
-        $this->id_tugas_harian  = $post["id_tugas_harian"];
-        $this->nama_staff       = $post['nama_staff'];
-        $this->tanggal          = $post['tanggal'];
-        $this->waktu            = $post['waktu'];
-        $this->lokasi           = $post['lokasi'];
-        $this->uraian_kegiatan  = $post['uraian_kegiatan'];
-        $this->penanggung_jawab = $post['penanggung_jawab'];
-        $this->hasil_kegiatan   = $post['hasil_kegiatan'];
-        $this->dokumentasi      = $this->_uploadImage();
+    public function update($id)
+{
+    $post = $this->input->post();
+    $this->nama_staff = $post["nama_staff"];
+    $this->tanggal = $post["tanggal"];
+    $this->waktu = $post["waktu"];
+    $this->lokasi = $post["lokasi"];
+    $this->uraian_kegiatan = $post["uraian_kegiatan"];
+    $this->penanggung_jawab = $post["penanggung_jawab"];
+    $this->hasil_kegiatan = $post["hasil_kegiatan"];
+    $this->dokumentasi      = $this->_uploadImage();
 
-        $this->db->update($this->_table, $this, array('id_tugas_harian' => $post['id_tugas_harian']));
-    }
+    // Tambahkan debug output
+    print_r($post); // Lihat data yang diterima
+    $this->db->update($this->_table, $this, array('id_tugas_harian' => $id));
+    echo $this->db->last_query(); // Lihat query yang dihasilkan
+}
 
     public function delete($id)
     {
