@@ -7,7 +7,7 @@
 
                 <div class="mb-3">
                     <label for="nama_staff" class="form-label">Nama Staff</label>
-                    <select class="form-select" id="nama_staff" name="nama_staff" required>
+                    <select class="form-select select2" id="nama_staff" name="nama_staff" required>
                         <option value="">--- Pilih Nama Staff ---</option>
                         <?php foreach ($staff_options as $staff): ?>
                             <option value="<?= $staff->nama_kontak_opd ?>"><?= $staff->nama_kontak_opd ?></option>
@@ -28,7 +28,7 @@
                 <div class="mb-3">
                     <label class="form-label">Lokasi Kegiatan</label>
                     <input class="form-control" required name="lokasi" autocomplete="off"
-                    placeholder="Masukkan lokasi kegiatan" id="hurufbesar" onkeyup="hurufBesar();"></input>
+                    placeholder="Masukkan lokasi kegiatan">
                 </div>
 
             </div>
@@ -38,7 +38,7 @@
                 <div class="mb-3">
                     <label class="form-label">Uraian Kegiatan</label>
                     <input class="form-control" required name="uraian_kegiatan" autocomplete="off"
-                    placeholder="Uraikan kegiatan yang telah dilakukan" id="hurufbesar5" onkeyup="hurufBesar5();"></input>
+                    placeholder="Uraikan kegiatan yang telah dilakukan">
                 </div>
 
                 <div class="mb-3">
@@ -57,14 +57,10 @@
                 <div class="mb-3">
                     <label class="form-label">Hasil Kegiatan</label>
                     <textarea class="form-control" name="hasil_kegiatan" autocomplete="off"
-                    placeholder="Masukkan hasil kegiatan" id="hurufbesar4" onkeyup="hurufBesar4();"></textarea>
+                    placeholder="Masukkan hasil kegiatan"></textarea>
                 </div>
                 <label class="form-label">Dokumentasi</label>
                 <input type="file" class="form-control" id="dokumentasi" name="dokumentasi[]" accept="image/*" multiple />
-                
-                <div class="form-group">
-
-                </div>
 
             </div>
         </div>
@@ -83,4 +79,16 @@ document.getElementById('nama_staff').addEventListener('change', function() {
     var staffMap = <?php echo json_encode(array_column($staff_options, 'id_kontak_opd', 'nama_staff')); ?>;
     document.getElementById('id_kontak_opd').value = staffMap[selectedNamaStaff] || '';
 });
+</script>
+<!-- jQuery (required by Select2) -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<!-- Select2 JS -->
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $('.select2').select2({
+            placeholder: "--- Pilih Nama Staff ---",
+            allowClear: true
+        });
+    });
 </script>
