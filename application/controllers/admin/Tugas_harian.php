@@ -16,8 +16,7 @@ class tugas_harian extends CI_Controller
             redirect(base_url("login"));
         }
         
-        $this->load->model("m_tugas_harian");
-        $this->load->library('PDF_MC_Table');
+        $this->load->model("M_tugas_harian");
         $this->load->library('form_validation');
         $this->load->helper('indonesian_date');
         
@@ -25,29 +24,24 @@ class tugas_harian extends CI_Controller
 
     public function index()
     {
-        $data["tugas_harian"] = $this->m_tugas_harian->getAll();
+        $data["tugas_harian"] = $this->M_tugas_harian->get_all_tugas_harian();
         $this->load->view("admin/tugas_harian/list_tugas_harian", $data);
     }
 
-    public function Printtugasharian()
-    {
-        $data["tugas_harian"] = $this->m_tugas_harian->getAll();
-        $this->load->view("admin/tugas_harian/print_tugas_harian", $data);
+    public function get_all_staff() {
+        $staff = $this->M_tugas_harian->get_all_staff();
+        echo json_encode($staff);
     }
 
-    public function printbydate()
-    {
-        $tgl = $this->uri->segment(4);
-        $que = $this->db->query("SELECT * FROM tugas_harian WHERE DATE(tgl_tugas_harian) = ?", array($tgl));
-        $data["tgltugas"] = $que ->row();
-        $this->load->view("admin/tugas_harian/print_tugas_harian", $data);
-    }
 
     public function add()
     {
-        $tugasharian = $this->m_tugas_harian;
+        $tugasharian = $this->M_tugas_harian;
         $validation = $this->form_validation;
         $validation->set_rules($tugasharian->rules_harian());
+
+        // Fetch options for nama staff
+        $data['staff_options'] = $this->M_tugas_harian->get_all_staff();
 
         if ($validation->run()) {
             $tugasharian->save();
@@ -57,14 +51,14 @@ class tugas_harian extends CI_Controller
             $this->session->set_flashdata('error', 'Error');
         }
 
-        $this->load->view("admin/tugas_harian/new_form_tugas_harian");
+        $this->load->view("admin/tugas_harian/new_form_tugas_harian", $data);
     }
 
     public function edit($id = null)
     {
         if (!isset($id)) redirect('admin/tugas_harian');
        
-        $tugasharian = $this->m_tugas_harian;
+        $tugasharian = $this->M_tugas_harian;
         $validation = $this->form_validation;
         $validation->set_rules($tugasharian->rules_harian());
 
@@ -74,16 +68,17 @@ class tugas_harian extends CI_Controller
             redirect('admin/tugas_harian');
         }
 
-        $data["tugas_harian"] = $tugasharian->getById($id);
+        $data['staff_options'] = $this->M_tugas_harian->get_all_staff();
+        $data["tugas_harian"] = $tugasharian->get_tugas_harian_by_id($id);
         if (!$data["tugas_harian"]) show_404();
 
         $this->load->view("admin/tugas_harian/edit_form_tugas_harian", $data);
-    }
+    } 
 
     public function delete($id = null)
     {
         if (!isset($id)) show_404();
-        if ($this->m_tugas_harian->delete($id)) {
+        if ($this->M_tugas_harian->delete($id)) {
             redirect(site_url('admin/tugas_harian'));
         }
     }

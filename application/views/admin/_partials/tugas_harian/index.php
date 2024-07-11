@@ -1,173 +1,122 @@
-<style type="text/css">
-  @media (min-width: 1200px) {
-    .modal-xlg {
-      width: 90%;
-    }
-  }
-</style>
-<div class="row wrapper border-bottom white-bg page-heading">
-  <div class="col-lg-9 mr-5">
-    <h2 style="text-transform: uppercase;">
-      <i class="fad fa-clipboard-list-check"></i>
-      Laporan Tugas Harian
-    </h2>
-    <ol class="breadcrumb">
-      <li class="breadcrumb-item">
-        <a href="<?= site_url('admin') ?>">Home</a>
-      </li>
-      <li class="breadcrumb-item active">
-        <strong>
-          Laporan Tugas Harian
-        </strong>
-      </li>
-    </ol>
-  </div>
-  <div class="col-lg-2">
-    <?php
-    if ($this->session->userdata('username') == "admin") {
-      ?>
-      <a href="<?= base_url('admin/tugas_harian/add') ?>">
-        <button type="button" style="margin-top: 30px;" class="btn btn-success">
-          <i class="fal fa-plus-circle"></i> Tambah data / Entry data
-        </button>
-      </a>
-      <?php
-    }
-    ?>
-
-  </div>
-</div>
-<br>
-<div class="wrapper wrapper-content animated fadeInRight">
-  <?php
-
-  function formatAngka($angka)
-  {
-    $hasil = number_format($angka, 0, '.', '.');
-    return $hasil;
-  }
-  ?>
-  <div class="row">
-
-    <div class="col-lg-12">
-      <?php
-
-      $qq = $this->db->query("SELECT * FROM tugas_harian")->result();
-      $all = $this->db->query("SELECT * FROM tugas_harian")->result();
-      ?>
-
-      <div class="ibox">
-        <div class="ibox-title" style="padding-right: 15px;">
-          <h3 style="text-align: center; text-transform: uppercase;">
-            Laporan by tanggal
-          </h3>
-          <div class="ibox-tools">
-            <a class="collapse-link">
-              <i class="fa fa-chevron-up"></i>
-            </a>
-          </div>
-        </div>
-        <div class="ibox-content">
-          <form action="<?php echo base_url() . 'admin/tugas_harian/printbydate' ?>" method="post"
-            enctype="multipart/form-data">
-            <div class="form-group">
-              <label>Pilih Tanggal</label>
-              <input type="date" name="tgl_tugas" class="form-control" id="datetimepicker1" required autocomplete="off"
-                placeholder="Pilih tanggal">
+<div class="row">
+    <div class="col-md-12 grid-margin stretch-card">
+        <div class="card">
+            <div class="card-title">
+                <div style="margin: 20px;">
+                    <a href="<?= base_url("admin/tugas_harian/add") ?>">
+                        <button class="btn btn-primary btn-icon-text mb-md-0">Tambah Data</button>
+                    </a>
+                </div>
             </div>
-            <br>
-            <div class="form-group">
-              <button type="submit" name="submit" class="btn btn-danger btn-outline"><span
-                  class="far fa-file-pdf"></span> Convert to PDF</button>
+            <div class="card-body">
+                <h6 class="card-title">Tugas Harian Staff BPBD Kota Surabaya</h6>
+                <p class="text-muted mb-3">Data berisi tugas harian Staff BPBD Kota Surabaya</p>
+                <div class="table-responsive">
+                    <table id="dataTableExample" class="table">
+                        <thead>
+                            <tr>
+                                <th width="20px">No</th>
+                                <th width="20px">ID Tugas Harian</th>
+                                <th width="20px">Nama Staff</th>
+                                <th width="30px">Tanggal</th>
+                                <th width="20px">Waktu</th>
+                                <th width="20px">Lokasi</th>
+                                <th width="20px">Uraian Kegiatan</th>
+                                <th width="30px">Penanggung Jawab</th>
+                                <th width="20px">Hasil Kegiatan</th>
+                                <th width="20px">Dokumentasi</th>
+                                <th width="20px">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php
+                            $no = 1;
+                            $tugas_harian = $this->db->query("SELECT * FROM tugas_harian")->result();
+                            foreach ($tugas_harian as $tugas) {
+                            ?>
+                                <tr>
+                                    <td><?= $no++ ?></td>
+                                    <td><?= $tugas->id_tugas_harian; ?></td>
+                                    <td><?= $tugas->nama_staff; ?></td>
+                                    <td><?= $tugas->tanggal; ?></td>
+                                    <td><?= $tugas->waktu; ?></td>
+                                    <td><?= $tugas->lokasi; ?></td>
+                                    <td><?= $tugas->uraian_kegiatan; ?></td>
+                                    <td><?= $tugas->penanggung_jawab; ?></td>
+                                    <td><?= $tugas->hasil_kegiatan; ?></td>
+                                    <td>
+									<button type="button" class="btn btn-outline-danger" data-bs-target="#view_images-<?= $tugas->id_tugas_harian?>" data-bs-toggle="modal">
+										<i class="far fa-file-image"></i> Lihat Foto
+									</button>
+								    </td>
+                                    <td>
+                                        <a href="<?= site_url('admin/tugas_harian/edit/' . $tugas->id_tugas_harian) ?>" class="btn btn-outline-primary btn-xs"><i class='fal fa-pencil'></i></a>
+                                        <a data-bs-toggle="modal" data-bs-target="#deleteConfirm<?= $tugas->id_tugas_harian ?>" class="ms-3 btn btn-outline-danger btn-xs"><i class="fal fa-trash-alt"></i></a>
+                                        <div class="modal fade" id="deleteConfirm<?= $tugas->id_tugas_harian ?>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                            <div class="modal-dialog modal-lg">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="exampleModalLabel">APAKAH ANDA YAKIN INGIN MENGHAPUS DATA INI?</h5>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        Data yang akan dihapus adalah <?= $tugas->id_tugas_harian ?>
+                                                    </div>
+                                                    <div class="modal-footer d-flex align-items-center">
+                                                        <a href="<?= base_url('admin/tugas_harian/delete/' . $tugas->id_tugas_harian) ?>" class="btn btn-outline-danger">
+                                                            <i class="fad fa-trash-alt"></i>
+                                                        </a>
+                                                        <button class="btn btn-outline-success mr-auto" type="button" data-bs-dismiss="modal"><i class="fa fa-times"></i> Cancel</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <div class="modal fade" id="view_images-<?= $tugas->id_tugas_harian ?>" data-bs-backdrop="static" data-bs-keyboard="false" aria-hidden="true" aria-labelledby="exampleModalToggleLabel2" tabindex="-1">
+								<div class="modal-dialog modal-xl">
+									<div class="modal-content">
+										<div class="modal-header">
+											<h5 class="modal-title" id="exampleModalToggleLabel2"><?= $tugas->uraian_kegiatan ?></h5>
+											<button type="button" class="btn-close" data-bs-target="#alur_pelayanan" data-bs-toggle="modal" aria-label="Close"></button>
+										</div>
+										<div class="modal-body">
+											<div class="row">
+												<?php
+												$images = json_decode($tugas->dokumentasi);
+												if (is_array($images)) {
+													foreach ($images as $image) {
+														?>
+														<div class="col-md-4 mb-3">
+															<img src="<?= base_url('upload/tugas_harian/' . $image) ?>" class="img-fluid" alt="<?= $tugas->uraian_kegiatan ?>">
+														</div>
+														<?php
+													}
+												} else {
+													?>
+													<div class="col-md-4 mb-3">
+														<img src="<?= base_url('upload/tugas_harian/' . $tugas->dokumentasi) ?>" class="img-fluid" alt="<?= $tugas->uraian_kegiatan ?>">
+													</div>
+													<?php
+												}
+												?>
+											</div>
+										</div>
+										<div class="modal-footer">
+											<button class="btn btn-primary" data-bs-target="#alur_pelayanan" data-bs-toggle="modal">
+												Kembali
+											</button>
+										</div>
+									</div>
+								</div>
+							</div>
+                            <?php
+                            }
+                            ?>
+                        </tbody>
+                    </table>
+                </div>
             </div>
-          </form>
         </div>
-      </div>
-
-      <div class="ibox">
-        <div class="ibox-title" style="padding-right: 15px;">
-          <h3 style="text-align: center; text-transform: uppercase;">
-            Laporan Tugas Harian<br>
-            di Kecamatan Asemrowo
-          </h3>
-          <div class="ibox-tools">
-            <a class="collapse-link">
-              <i class="fa fa-chevron-up"></i>
-            </a>
-          </div>
-        </div>
-        <div class="ibox-content">
-          <div class="table-responsive">
-            <table class="table table-striped table-bordered table-hover dataTables-review">
-              <thead>
-                <tr>
-                  <th>No.</th>
-                  <th>Tanggal</th>
-                  <th>Jam / Pukul</th>
-                  <th>Uraian</th>
-                  <th>Tempat</th>
-                  <th>Penanggung Jawab</th>
-                  <th>Keterangan</th>
-                  <th>Opsi</th>
-                </tr>
-              </thead>
-              <tbody>
-                <?php
-                $no = 1;
-                function limit_words($string, $word_limit)
-                {
-                  $words = explode(" ", $string);
-                  return implode(" ", array_splice($words, 0, $word_limit));
-                }
-
-                foreach ($qq as $tampil_tugasharian) {
-                  ?>
-                  <tr>
-                    <td><?= $no++ ?></td>
-                    <td><?= indonesian_date($tampil_tugasharian->tgl_tugas_harian, 'l, d F Y') ?></td>
-                    <td><?= indonesian_date($tampil_tugasharian->jam_tugas_harian, 'H:i') ?> WIB</td>
-                    <td><?= $tampil_tugasharian->perihal_tugas_harian ?></td>
-                    <td><?= $tampil_tugasharian->tempat_tugas_harian ?></td>
-                    <td><?= $tampil_tugasharian->tanggungjawab_tugas_harian ?></td>
-                    <td><?= $tampil_tugasharian->ket_tugas_harian ?></td>
-                    <td style="text-align: center;">
-
-                      <?php
-                      if ($this->session->userdata('username') == "admin") {
-                        ?>
-                        <!-- EDIT -->
-                        <a href="<?php echo site_url('admin/tugas_harian/edit/' . $tampil_tugasharian->id_tugas_harian) ?>">
-                          <button class="btn btn-outline btn-success" type="button">
-                            <i class="fad fa-edit"></i> Ubah
-                          </button>
-                        </a>
-
-                        <!-- HAPUS -->
-                        <a href="<?php echo site_url('admin/tugas_harian/delete/' . $tampil_tugasharian->id_tugas_harian) ?>">
-                          <button class="btn btn-outline btn-danger" type="button">
-                            <i class="fad fa-trash-alt"></i> Hapus
-                          </button>
-                        </a>
-                        <?php
-                      }
-                      ?>
-                    </td>
-                  </tr>
-                  <?php
-                }
-                ?>
-              </tbody>
-            </table>
-          </div>
-
-        </div>
-        <div class="ibox-footer">
-          <button class="btn btn-outline btn-info" type="button" data-toggle="modal" data-target="#modal_info">
-            <i class="fad fa-clipboard-list-check"></i> Rekap kegiatan
-          </button>
-        </div>
-      </div>
     </div>
-  </div>
 </div>
-

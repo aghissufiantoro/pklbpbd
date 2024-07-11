@@ -76,34 +76,44 @@ class Kegiatan extends CI_Controller {
                 $this->session->set_flashdata('error', 'Gagal menambahkan kegiatan.');
             }
 
-            redirect('admin/kegiatan/plot_kegiatan');
+            redirect('admin/kegiatan/view_kegiatan');
         }
     }
 
     public function edit_plot_kegiatan($id = null)
+{
+    if ($this->session->userdata('role') == "1")
     {
-        if ($this->session->userdata('role') == "1")
-        {
-            if (!isset($id)) redirect('admin/kegiatan');
-           
-            $kegiatan = $this->Kegiatan_model;
-            $validation = $this->form_validation;
+        if (!isset($id)) redirect('admin/kegiatan');
+       
+        $kegiatan = $this->Kegiatan_model;
+        $validation = $this->form_validation;
 
-            if ($validation->run()) {
-                $kegiatan->update();
-                $this->session->set_flashdata('success', '<i class="fa fa-check"></i> Alhamdulillah, Data berhasil diupdate');
-            }
+        // Set validation rules
+        $validation->set_rules('tanggal', 'Tanggal', 'required');
+        $validation->set_rules('shift', 'Shift', 'required');
+        $validation->set_rules('kegiatan', 'Kegiatan', 'required');
+        $validation->set_rules('lokasi_kegiatan', 'Lokasi Kegiatan', 'required');
+        $validation->set_rules('jumlah_personel', 'Jumlah Personel', 'required|numeric');
+        $validation->set_rules('jumlah_jarko', 'Jumlah Jarko', 'required|numeric');
+        $validation->set_rules('keterangan', 'Keterangan', 'required');
 
-            $data["kegiatan"] = $kegiatan->get_kegiatan_by_id($id);
-            if (!$data["kegiatan"]) show_404();
-            
-            $this->load->view("admin/kegiatan/edit_kegiatan", $data);
+        if ($validation->run()) {
+            $kegiatan->update_kegiatan();
+            $this->session->set_flashdata('success', '<i class="fa fa-check"></i> Alhamdulillah, Data berhasil diupdate');
+            redirect('admin/kegiatan/edit_plot_kegiatan/'.$id);
         }
-        else
-        {
-            show_404();
-        }
+
+        $data["kegiatan"] = $kegiatan->get_kegiatan_by_id($id);
+        if (!$data["kegiatan"]) show_404();
+        
+        $this->load->view("admin/kegiatan/edit_kegiatan", $data);
     }
+    else
+    {
+        show_404();
+    }
+}
 
     public function delete_plot_kegiatan($id = null)
     {
@@ -167,11 +177,6 @@ class Kegiatan extends CI_Controller {
     
             redirect('admin/kegiatan/view_kegiatan');
         }
-    }
-
-    public function get_personel_by_kompi($jenis_kompi) {
-        $personel = $this->DataKompi_model->get_personel_by_kompi($jenis_kompi);
-        echo json_encode($personel);
     }
 
     public function laporan_kegiatan($id_kegiatan) {
