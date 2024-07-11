@@ -39,13 +39,13 @@
                 $keca = $res_data_kejadian->kecamatan_kejadian;
                 $kelu = $res_data_kejadian->kelurahan_kejadian;
 
-                $n3 = strlen($keca);
-                $n4 = strlen($kelu);
+                // $n3 = strlen($keca);
+                // $n4 = strlen($kelu);
 
-                $m3 = ($n3==2?5:($n3==5?8:13));
-                $m4 = ($n4==2?5:($n4==5?8:13));
-                $rsl_keca = $this->db->query("SELECT nama FROM wilayah_2022 WHERE kode = '$keca'")->row();
-                $rsl_kelu = $this->db->query("SELECT nama FROM wilayah_2022 WHERE kode = '$kelu'")->row();
+                // $m3 = ($n3==2?5:($n3==5?8:13));
+                // $m4 = ($n4==2?5:($n4==5?8:13));
+                $rsl_keca = $this->db->query("SELECT kecamatan FROM wilayah_2022 WHERE kecamatan = '$keca'")->row();
+                $rsl_kelu = $this->db->query("SELECT desa FROM wilayah_2022 WHERE desa = '$kelu'")->row();
 
                 if ($rsl_keca) {
                   $keca_kcl = strtolower($rsl_keca->nama); // Mengonversi nama kecamatan menjadi huruf kecil

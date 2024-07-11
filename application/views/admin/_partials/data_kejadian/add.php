@@ -159,65 +159,6 @@ if ($this->session->flashdata('success')) {
 </div>
 
 <script>
-  document.addEventListener('DOMContentLoaded', function() {
-    const lokasiKejadianSelect = document.getElementById('lokasi_kejadian');
-    const kabkotaSelect = document.getElementById('kabkota_kejadian');
-    const kecamatanSelect = document.getElementById('kecamatan_kejadian');
-    const kelurahanSelect = document.getElementById('kelurahan_kejadian');
-
-    lokasiKejadianSelect.addEventListener('change', function() {
-      const selectedWilayah = this.value;
-      fetchKabkota(selectedWilayah);
-    });
-
-    kabkotaSelect.addEventListener('change', function() {
-      const selectedKabkota = this.value;
-      fetchKecamatan(selectedKabkota);
-    });
-
-    kecamatanSelect.addEventListener('change', function() {
-      const selectedKecamatan = this.value;
-      fetchKelurahan(selectedKecamatan);
-    });
-
-    function fetchKabkota(wilayah) {
-      fetch(`<?= base_url('admin/data_kejadian/get_kabkota') ?>?wilayah=${wilayah}`)
-        .then(response => response.json())
-        .then(data => {
-          populateSelect(kabkotaSelect, data);
-          kecamatanSelect.innerHTML = '<option value="">--- Pilih Kota Terlebih Dahulu ---</option>';
-          kelurahanSelect.innerHTML = '<option value="">--- Pilih Kecamatan Terlebih Dahulu ---</option>';
-        });
-    }
-
-    function fetchKecamatan(kabkota) {
-      fetch(`<?= base_url('admin/data_kejadian/get_kecamatan') ?>?kabkota=${kabkota}`)
-        .then(response => response.json())
-        .then(data => {
-          populateSelect(kecamatanSelect, data);
-          kelurahanSelect.innerHTML = '<option value="">--- Pilih Kecamatan Terlebih Dahulu ---</option>';
-        });
-    }
-
-    function fetchKelurahan(kecamatan) {
-      fetch(`<?= base_url('admin/data_kejadian/get_kelurahan') ?>?kecamatan=${kecamatan}`)
-        .then(response => response.json())
-        .then(data => {
-          populateSelect(kelurahanSelect, data);
-        });
-    }
-
-    function populateSelect(selectElement, data) {
-      selectElement.innerHTML = '<option value="">--- Pilih ---</option>';
-      data.forEach(item => {
-        const option = document.createElement('option');
-        option.value = item.value;
-        option.textContent = item.text;
-        selectElement.appendChild(option);
-      });
-    }
-  });
-
   function handleSubmitAndRedirect(event) {
     event.preventDefault(); // Mencegah form dikirim secara default
 

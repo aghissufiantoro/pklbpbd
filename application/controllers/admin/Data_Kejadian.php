@@ -228,10 +228,10 @@ public function add()
     public function get_daerah()
     {
         $data = $_POST['data'];
-        $id   = $_POST['id'];
+        $value_wilayah = $_POST['wilayah'];
 
-        $n    = strlen($id);
-        $m    = ($n==2?5:($n==5?8:13));
+        // $n    = strlen($id);
+        // $m    = ($n==2?5:($n==5?8:13));
         // $wil=($n==2?'Kota/Kab':($n==5?'Kecamatan':'Desa/Kelurahan'));
 
         if ($data == "kabupaten")
@@ -242,11 +242,11 @@ public function add()
                 <select class="js-example-basic-single form-select" id="kabkota_kejadian" name="kabkota_kejadian" required>
                     <option value="">--- Pilih Kabupaten / Kota ---</option>
                     <?php
-                        $daerah = $this->db->query("SELECT kode,nama FROM wilayah_2022 WHERE LEFT(kode,'$n')='$id' AND CHAR_LENGTH(kode)=$m ORDER BY nama")->result();
+                        $daerah = $this->db->query("SELECT wilayah,kab_kota FROM wilayah_2022 WHERE wilayah='$value_wilayah'")->result();
                         foreach ($daerah as $d)
                         {
                             ?>
-                            <option value="<?= $d->kode ?>"><?= $d->nama ?></option>
+                            <option value="<?= $d->wilayah ?>"><?= $d->kab_kota ?></option>
                             <?php
                         }
                     ?>
@@ -262,11 +262,11 @@ public function add()
                 <select class="js-example-basic-single form-select" id="kecamatan_kejadian" name="kecamatan_kejadian" required>
                     <option value="">--- Pilih Kecamatan ---</option>
                     <?php
-                        $daerah = $this->db->query("SELECT kode,nama FROM wilayah_2022 WHERE LEFT(kode,'$n')='$id' AND CHAR_LENGTH(kode)=$m ORDER BY nama")->result();
+                        $daerah = $this->db->query("SELECT wilayah,kecamatan FROM wilayah_2022 WHERE wilayah='$value_wilayah' ORDER BY kecamatan")->result();
                         foreach ($daerah as $d)
                         {
                             ?>
-                            <option value="<?= $d->kode ?>"><?= $d->nama ?></option>
+                            <option value="<?= $d->wilayah ?>"><?= $d->kecamatan ?></option>
                             <?php
                         }
                     ?>
@@ -282,11 +282,11 @@ public function add()
                 <select class="js-example-basic-single form-select" id="kelurahan_kejadian" name="kelurahan_kejadian" required>
                     <option value="">--- Pilih Kelurahan / Desa ---</option>
                     <?php
-                        $daerah = $this->db->query("SELECT kode,nama FROM wilayah_2022 WHERE LEFT(kode,'$n')='$id' AND CHAR_LENGTH(kode)=$m ORDER BY nama")->result();
+                        $daerah = $this->db->query("SELECT wilayah,desa FROM wilayah_2022 WHERE wilayah='$value_wilayah' ORDER BY desa")->result();
                         foreach ($daerah as $d)
                         {
                             ?>
-                            <option value="<?= $d->kode ?>"><?= $d->nama ?></option>
+                            <option value="<?= $d->wilayah ?>"><?= $d->desa ?></option>
                             <?php
                         }
                     ?>
@@ -501,7 +501,7 @@ public function add()
         $kecamatan = $this->input->get('kecamatan');
         $result = $this->db->select('kelurahan as value, kelurahan as text')
                            ->where('kecamatan', $kecamatan)
-                           ->group_by('kelurahan')
+                           ->group_by('desa')
                            ->get('wilayah_2022')
                            ->result();
         echo json_encode($result);
