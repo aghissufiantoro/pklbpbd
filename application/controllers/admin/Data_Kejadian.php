@@ -80,17 +80,15 @@ public function getLastIDkejadian($formatted_date) {
     return $new_id_kejadian;
 }
 
-    
+//perbaiki penyimpananan ke sub form
 public function add()
 {
-    if ($this->session->userdata('role') == "1")
-    {
+    if ($this->session->userdata('role') == "1") {
         $data_kejadian = $this->m_data_kejadian;
         $validation = $this->form_validation;
         $validation->set_rules($data_kejadian->rules());
 
-        if ($validation->run())
-        {
+        if ($validation->run()) {
             $tanggal = $this->input->post('tanggal');
             $formatted_date = date('dmy', strtotime($tanggal));
             $new_id_kejadian = $this->m_data_kejadian->getLastIDkejadian($formatted_date);
@@ -101,48 +99,58 @@ public function add()
             // Simpan ID kejadian baru ke session
             $this->session->set_flashdata('new_id_kejadian', $new_id_kejadian);
 
-            // Menentukan form tujuan berdasarkan jenis kejadian
-            $kejadian = $this->input->post('kejadian');
-            switch ($kejadian) {
-                case 'Kecelakaan Lalu Lintas':
-                    $redirect_url = 'admin/data_kejadian/kecelakaan_lalu_lintas';
-                    break;
-                case 'Darurat Medis':
-                    $redirect_url = 'admin/data_kejadian/darurat_medis';
-                    break;
-                case 'Kebakaran':
-                    $redirect_url = 'admin/data_kejadian/kebakaran';
-                    break;
-                case 'Pohon Tumbang':
-                    $redirect_url = 'admin/data_kejadian/pohon_tumbang';
-                    break;
-                case 'Penemuan Jenazah':
-                    $redirect_url = 'admin/data_kejadian/penemuan_jenazah';
-                    break;
-                case 'Orang Tenggelam':
-                    $redirect_url = 'admin/data_kejadian/orang_tenggelam';
-                    break;
-                case 'Lainnya':
-                    $redirect_url = 'admin/data_kejadian/lainnya';
-                    break;
-                default:
-                    $redirect_url = 'admin/data_kejadian';
-            }
-
             // Mengatur flashdata untuk menampilkan pesan sukses
             $this->session->set_flashdata('success', '<i class="fa fa-check"></i> Alhamdulillah, Data berhasil disimpan');
 
-            // Redirect ke form tujuan dengan ID kejadian
-            redirect(site_url($redirect_url));
+            // Menentukan form tujuan berdasarkan jenis kejadian
+            $kejadian = $this->input->post('kejadian');
+            $partialView = '';
+            switch ($kejadian) {
+                case 'Kecelakaan Lalu Lintas':
+                    $partialView = 'admin/data_kejadian/new_form_kecelakaan_lalu_lintas';
+                    break;
+                case 'Darurat Medis':
+                    $partialView = 'admin/data_kejadian/new_form_darurat_medis';
+                    break;
+                case 'Kebakaran':
+                    $partialView = 'admin/data_kejadian/new_form_kebakaran';
+                    break;
+                case 'Pohon Tumbang':
+                    $partialView = 'admin/data_kejadian/new_form_pohon_tumbang';
+                    break;
+                case 'Penemuan Jenazah':
+                    $partialView = 'admin/data_kejadian/new_form_penemuan_jenazah';
+                    break;
+                case 'Orang Tenggelam':
+                    $partialView = 'admin/data_kejadian/new_form_orang_tenggelam';
+                    break;
+                case 'Lainnya':
+                    $partialView = 'admin/data_kejadian/new_form_lainnya';
+                    break;
+                default:
+                    $partialView = '';
+            }
+
+            if ($this->input->is_ajax_request()) {
+                if (!empty($partialView)) {
+                    $partialContent = $this->load->view($partialView, NULL, TRUE);
+                    echo $partialContent;
+                } else {
+                    echo '';
+                }
+            } else {
+                // Jika bukan AJAX, tetap redirect ke halaman utama
+                redirect(site_url('admin/data_kejadian'));
+            }
+        } else {
+            if ($this->input->is_ajax_request()) {
+                echo validation_errors();
+            } else {
+                // Jika validasi gagal, muat ulang formulir
+                $this->load->view("admin/data_kejadian/new_form_datakejadian");
+            }
         }
-        else
-        {
-            // Jika validasi gagal, muat ulang formulir
-            $this->load->view("admin/data_kejadian/new_form_datakejadian");
-        }
-    }
-    else
-    {
+    } else {
         show_404();
     }
 }
@@ -296,46 +304,124 @@ public function add()
         }
     }
 
-    public function darurat_medis()
-    {
-        if ($this->session->userdata('role') == "1")
-        {
-            $this->load->model('M_form_darurat_medis'); // Load the M_form_darurat_medis model
-            $data_kejadian = $this->M_form_darurat_medis;
-            $validation = $this->form_validation;
-            $validation->set_rules($data_kejadian->rules());
-    
-            if ($validation->run())
-            {
-                $new_id_kejadian = $this->session->flashdata('new_id_kejadian'); // Ambil new_id_kejadian dari session
-    
-                // Prepare the data to be saved
-                $data = array(
-                    'id_kejadian' => $new_id_kejadian,
-                    'nama' => $this->input->post('nama'),
-                    'jenis_kelamin' => $this->input->post('jenis_kelamin'),
-                    'alamat' => $this->input->post('alamat'),
-                    'usia' => $this->input->post('usia'),
-                    'kondisi' => $this->input->post('kondisi'),
-                    'riwayat_penyakit' => $this->input->post('riwayat_penyakit'),
-                    // Add more fields as needed
-                );
-    
-                $data_kejadian->save($data); // Save the data
-                $this->session->set_flashdata('success', '<i class="fa fa-check"></i> Alhamdulillah, Data berhasil disimpan');
-                redirect(site_url('admin/data_kejadian'));
-            }
-            else
-            {
-                $this->load->view("admin/data_kejadian/new_form_darurat_medis");
-            }
-        }
-        else
-        {
-            show_404();
-        }
+// menyimpan data korbann
+public function darurat_medis()
+{
+    if ($this->session->userdata('role') != "1") {
+        show_404();
+        return;
     }
-    
+
+    $new_id_kejadian = $this->session->flashdata('new_id_kejadian');
+    if (empty($new_id_kejadian)) {
+        show_404();
+        return;
+    }
+
+    $data['new_id_kejadian'] = $new_id_kejadian;
+    $this->load->view("admin/data_kejadian/new_form_darurat_medis", $data);
+}
+
+function debug_to_console($data) {
+    $output = $data;
+    if (is_array($output))
+        $output = implode(',', $output);
+
+    echo "<script>console.log('Debug Objects: " . $output . "' );</script>";
+}
+
+public function save_darurat_medis()
+{
+    // Check user role
+    if ($this->session->userdata('role') != "1") {
+        $this->output->set_status_header(403); // Set HTTP response code 403 Forbidden
+        echo json_encode(['status' => 'error', 'message' => 'Unauthorized access']);
+        return;
+    }
+
+    // Load model
+    $this->load->model('M_form_darurat_medis');
+    $data_kejadian = $this->M_form_darurat_medis;
+
+    // Get the raw POST data
+    $inputJSON = file_get_contents('php://input');
+    $input = json_decode($inputJSON, true);
+
+
+    log_message('info', 'Received JSON data: ' . $inputJSON); 
+
+    // Check if JSON is valid
+    if ($input === null && json_last_error() !== JSON_ERROR_NONE) {
+        // Handle JSON decode error
+        $response = [
+            'status' => 'error',
+            'message' => $inputJSON
+        ];
+        $this->output
+             ->set_content_type('application/json')
+             ->set_output(json_encode($response));
+        return;
+    }
+
+    // Log the incoming request data
+    log_message('info', 'Incoming request data: ' . json_encode($input));
+
+    // Set validation rules
+    if ($input) {
+        $this->form_validation->set_data($input); // Set data for validation
+        $this->form_validation->set_rules($data_kejadian->rules());
+
+        if ($this->form_validation->run() === TRUE) {
+            // Validation success, prepare data to save
+            $data = [
+                'id_kejadian' => $input['id_kejadian'],
+                'nama' => $input['nama'],
+                'jenis_kelamin' => $input['jenis_kelamin'],
+                'alamat' => $input['alamat'],
+                'usia' => $input['usia'],
+                'kondisi' => $input['kondisi'],
+                'riwayat_penyakit' => $input['riwayat_penyakit'],
+            ];
+
+            // Log the data to be saved
+            log_message('info', 'Data to be saved: ' . json_encode($data));
+
+            // Save data using model
+            $data_kejadian->save($data);
+
+            // Prepare success response
+            $response = [
+                'status' => 'success',
+                'data' => $data
+            ];
+        } else {
+            // Validation failed, prepare error response
+            $response = [
+                'status' => 'error',
+                'message' => validation_errors() // Return validation errors as a string
+            ];
+
+            // Log the validation errors
+            log_message('error', 'Validation errors: ' . validation_errors());
+        }
+    } else {
+        // If input data is null
+        $response = [
+            'status' => 'error',
+            'message' => 'No valid input data received'
+        ];
+    }
+
+    // Send JSON response
+    $this->output
+         ->set_content_type('application/json')
+         ->set_output(json_encode($inputJSON));
+}
+
+
+
+
+
 
 
 

@@ -32,7 +32,7 @@ if ($this->session->flashdata('success')) {
             <div class="col-md-15">
               <div class="mb-3">
                 <label for="id_kejadian" class="form-label">ID KEJADIAN</label>
-                <input id="id_kejadian" class="form-control" name="id_kejadian" type="text" readonly>
+                <input id="id_kejadian" class="form-control" name="id_kejadian" type="text"  value="<?= $this->session->flashdata('new_id_kejadian'); ?>" readonly>
               </div>
             </div>
           </div>
@@ -156,66 +156,63 @@ if ($this->session->flashdata('success')) {
             <input type="file" class="form-control" required name="dokumentasi" accept="image/*" />
           </div>
 
-          <input type="submit" value="Submit" class="btn btn-primary" onclick="handleSubmitAndRedirect(event)">
+          <button type="submit" value="Submit" class="btn btn-primary" >Submit</button>
         </form>
+        <div id="partialContainer"></div>
       </div>
     </div>
   </div>
 </div>
 
 <script>
-  function handleSubmitAndRedirect(event) {
-    event.preventDefault(); // Mencegah form dikirim secara default
 
-    const kejadian = document.getElementById('kejadian').value;
+// Pastikan untuk menangani partial container yang berubah secara dinamis
+document.addEventListener('DOMContentLoaded', function() {
+    const form = document.getElementById('addForm');
+    form.addEventListener('submit', handleSubmitAndRedirect);
 
-    let nextFormUrl = '';
+    function handleSubmitAndRedirect(event) {
+        event.preventDefault(); // Menghentikan pengiriman form secara default
+        
+        const formData = new FormData(form);
 
-    switch (kejadian) {
-      case 'Kecelakaan Lalu Lintas':
-        nextFormUrl = '<?= base_url("admin/data_kejadian/kecelakaan_lalu_lintas") ?>';
-        break;
-      case 'Darurat Medis':
-        nextFormUrl = '<?= base_url("admin/data_kejadian/darurat_medis") ?>';
-        break;
-      case 'Kebakaran':
-        nextFormUrl = '<?= base_url("admin/data_kejadian/kebakaran") ?>';
-        break;
-      case 'Pohon Tumbang':
-        nextFormUrl = '<?= base_url("admin/data_kejadian/pohon_tumbang") ?>';
-        break;
-      case 'Penemuan Jenazah':
-        nextFormUrl = '<?= base_url("admin/data_kejadian/penemuan_jenazah") ?>';
-        break;
-      case 'Orang Tenggelam':
-        nextFormUrl = '<?= base_url("admin/data_kejadian/orang_tenggelam") ?>';
-        break;
-      case 'Lainnya':
-        nextFormUrl = '<?= base_url("admin/data_kejadian/lainnya") ?>';
-        break;
-      default:
-        alert('Pilih kejadian terlebih dahulu.');
-        return;
+        fetch(form.action, {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest' // Pastikan server mengenali ini sebagai permintaan AJAX
+            }
+        })
+        .then(response => response.text())
+        .then(html => {
+            const partialContainer = document.getElementById('partialContainer');
+            partialContainer.innerHTML = html;
+
+            // Menjalankan tag <script> yang ada di dalam partialContainer
+          
+            // Event listener untuk partial form yang baru dimuat
+            //setupEventListenersInPartial();
+           const scripts = partialContainer.getElementsByTagName('script');
+            for (let i = 0; i < scripts.length; i++) {
+                const script = document.createElement('script');
+                script.text = scripts[i].text;
+                document.head.appendChild(script).parentNode.removeChild(script);
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Terjadi kesalahan saat mengirim data.');
+        });
     }
 
-    // Kirim form menggunakan JavaScript
-    const form = document.getElementById('addForm');
-    const formData = new FormData(form);
+    // Fungsi di dalam partial form (seperti yang ada di dalam partialContainer)
 
-    fetch(form.action, {
-        method: 'POST',
-        body: formData
-      })
-      .then(response => {
-        if (response.ok) {
-          window.location.href = nextFormUrl; // Redirect jika berhasil
-        } else {
-          alert('Gagal mengirim data.'); // Tampilkan pesan jika gagal
-        }
-      })
-      .catch(error => {
-        console.error('Error:', error);
-        alert('Terjadi kesalahan saat mengirim data.');
-      });
-  }
+
+    // Panggil setupEventListenersInPartial() pertama kali
+   
+});
+
+
+
+
 </script>
