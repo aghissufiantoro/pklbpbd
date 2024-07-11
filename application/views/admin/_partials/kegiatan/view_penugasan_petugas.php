@@ -11,7 +11,11 @@
                                 <th width="20px">No</th>
                                 <th width="20px">ID Penugasan</th>
                                 <th width="30px">ID Kegiatan</th>
-                                <th width="20px">ID Petugas</th>
+                                <th width="30px">ID Petugas</th>
+                                <th width="20px">Lokasi Kegiatan</th>
+                                <th width="20px">Tanggal</th>
+                                <th width="20px">Shift</th>
+                                <th width="20px">No WA</th>
                                 <th width="20px">Laporan</th>
                                 <th width="20px">Dokumentasi</th>
                                 <th width="20px">Aksi</th>
@@ -28,20 +32,16 @@
                                     <td><?php echo $penugasan->id_penugasan; ?></td>
                                     <td><?php echo $penugasan->id_kegiatan; ?></td>
                                     <td><?php echo $penugasan->id_petugas; ?></td>
+                                    <td><?php echo $penugasan->lokasi_kegiatan; ?></td>
+                                    <td><?php echo $penugasan->tanggal; ?></td>
+                                    <td><?php echo $penugasan->shift; ?></td>
+                                    <td><?php echo $penugasan->uraian_kegiatan; ?></td>
+                                    <td><?php echo $penugasan->no_wa; ?></td>
                                     <td>
-                                        <?php if ($penugasan->uraian_kegiatan) : ?>
-                                            <a href="<?php echo base_url('path_to_laporan/' . $penugasan->uraian_kegiatan); ?>">View</a>
-                                        <?php else : ?>
-                                            No Laporan
-                                        <?php endif; ?>
-                                    </td>
-                                    <td>
-                                        <?php if ($penugasan->dokumentasi) : ?>
-                                            <a href="<?php echo base_url('path_to_dokumentasi/' . $penugasan->dokumentasi); ?>">View</a>
-                                        <?php else : ?>
-                                            No Dokumentasi
-                                        <?php endif; ?>
-                                    </td>
+									<button type="button" class="btn btn-outline-danger" data-bs-target="#view_images-<?= $penugasan->id_penugasan ?>" data-bs-toggle="modal">
+										<i class="far fa-file-image"></i> Lihat Foto
+									</button>
+								    </td>
                                     <td>
                                         <a href="<?= site_url('admin/data_kejadian/edit/' . $penugasan->id_penugasan) ?>" class="btn btn-outline-primary btn-xs"><i class='fal fa-pencil'></i></a>
                                         <a href="<?= site_url('admin/data_kejadian/detail/' . $penugasan->id_penugasan) ?>" class="btn btn-outline-primary btn-xs"><i class='fal fa-list-ul'></i></a>

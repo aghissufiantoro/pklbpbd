@@ -12,6 +12,19 @@
                     <label for="id_kegiatan">ID Kegiatan</label>
                     <input type="text" class="form-control" name="id_kegiatan" id="id_kegiatan" value="<?php echo isset($id_kegiatan) ? $id_kegiatan : ''; ?>" readonly>
                 </div>
+                
+                <div class="form-group">
+                    <label for="lokasi_kegiatan">Lokasi Kegiatan</label>
+                    <input type="text" class="form-control" name="lokasi_kegiatan" id="lokasi_kegiatan" required>
+                </div>
+                <div class="form-group">
+                    <label for="tanggal">Tanggal</label>
+                    <input type="date" class="form-control" name="tanggal" id="tanggal" required>
+                </div>
+                <div class="form-group">
+                    <label for="shift">Shift</label>
+                    <input type="text" class="form-control" name="shift" id="shift" required>
+                </div>
                 <div class="form-group">
                     <label for="jenis_kompi">Jenis Kompi</label>
                     <select class="form-control" name="jenis_kompi" id="jenis_kompi" required>
@@ -24,6 +37,18 @@
                 <div class="form-group">
                     <label for="jumlah_personel">Jumlah Personel</label>
                     <input type="number" class="form-control" name="jumlah_personel" id="jumlah_personel" required>
+                </div>
+                <div class="form-group">
+                    <label for="uraian_kegiatan">Uraian Kegiatan</label>
+                    <input type="text" class="form-control" name="uraian_kegiatan" id="uraian_kegiatan" required>
+                </div>
+                <div class="form-group">
+                    <label for="no_wa">No WA</label>
+                    <input type="number" class="form-control" name="no_wa" id="no_wa" required>
+                </div>
+                <div class="form-group">
+                    <label for="dokumentasi">Dokumentasi</label>
+                    <input type="file" class="form-control" name="dokumentasi[]" id="dokumentasi" accept="image/*" multiple>
                 </div>
                 <div id="petugas-container"></div>
                 <button type="submit" class="btn btn-success">Submit</button>
