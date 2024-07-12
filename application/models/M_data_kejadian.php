@@ -16,7 +16,7 @@ class M_data_kejadian extends CI_Model
         return [
             [
                 'field' => 'tanggal',
-                'label' => 'Alamat artikel',
+                'label' => 'tanggal',
                 'rules' => 'required'
             ]
         ];

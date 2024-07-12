@@ -25,19 +25,6 @@ class Data_Kejadian extends CI_Controller
         $this->load->helper('indonesian_date');
         $this->load->helper('usia');
     }
-
-    private function konv_uang($angka)
-    {
-        $jadi = str_replace(".", "", $angka);
-        return $jadi;
-    }
-    private function generateIDkejadian($date) {
-        // Format the date as ddmmyy
-        $formatted_date = date('dmy', strtotime($date));
-        // Generate new transaction ID based on the current date
-        $new_id_kejadian = $this->m_data_kejadian->getLastIDKejadian($formatted_date);
-        return $new_id_kejadian;
-    }
     public function index()
     {
         if($this->session->userdata('role') == "1")
@@ -50,6 +37,20 @@ class Data_Kejadian extends CI_Controller
             show_404();
         }
     }
+    private function konv_uang($angka)
+    {
+        $jadi = str_replace(".", "", $angka);
+        return $jadi;
+    }              
+    private function generateIDkejadian($date) {
+        // Format the date as ddmmyy
+        $formatted_date = date('dmy', strtotime($date));
+        // Generate new transaction ID based on the current date
+        $new_id_kejadian = $this->m_data_kejadian->getLastIDKejadian($formatted_date);
+        return $new_id_kejadian;
+    }
+    
+// Function to generate the last ID kejadian based on the formatted date
 public function getLastIDkejadian($formatted_date) {
     // Query to fetch the last ID Kejadian for the given date
     $this->db->select('id_kejadian');
@@ -58,31 +59,26 @@ public function getLastIDkejadian($formatted_date) {
     $this->db->order_by('id_kejadian', 'DESC');
     $this->db->limit(1);
     $query = $this->db->get();
-
+    
     if ($query->num_rows() > 0) {
-        // If there are transactions for the given date, extract the last transaction ID
+        // Extract the last transaction ID and increment the numeric part by 1
         $last_id_kejadian = $query->row()->id_kejadian;
-        // Extract the numeric part of the ID kejadian (e.g., if ID is DK010124001, extract 001)
         $numeric_part = substr($last_id_kejadian, -3);
-        // Convert the numeric part to an integer and increment by 1
         $new_numeric_part = (int)$numeric_part + 1;
     } else {
-        // If there are no transactions for the current date, start with 001
+        // Start with 001 if no transactions for the current date
         $new_numeric_part = 1;
     }
 
-    // Pad the numeric part with leading zeros (e.g., 1 becomes 001)
+    // Pad the numeric part with leading zeros and construct the new ID
     $padded_new_numeric_part = str_pad($new_numeric_part, 3, '0', STR_PAD_LEFT);
-
-    // Construct the new transaction ID by concatenating 'DK', the current date, and the padded numeric part
     $new_id_kejadian = 'DK' . $formatted_date . $padded_new_numeric_part;
 
     return $new_id_kejadian;
 }
 
-//perbaiki penyimpananan ke sub form
-public function add()
-{
+// Function to handle adding new kejadian data
+public function add() {
     if ($this->session->userdata('role') == "1") {
         $data_kejadian = $this->m_data_kejadian;
         $validation = $this->form_validation;
@@ -153,9 +149,8 @@ public function add()
     } else {
         show_404();
     }
-}
-
-    public function edit($id = null)
+}   
+  public function edit($id = null)
     {
         if ($this->session->userdata('role') == "1")
         {
@@ -228,76 +223,28 @@ public function add()
 }
 
 
-    public function get_daerah()
-    {
-        $data = $_POST['data'];
-        $value_wilayah = $_POST['wilayah'];
+public function get_daerah()
+{
+    $data = $this->input->post('data');
+    $value_wilayah = $this->input->post('wilayah');
 
-        // $n    = strlen($id);
-        // $m    = ($n==2?5:($n==5?8:13));
-        // $wil=($n==2?'Kota/Kab':($n==5?'Kecamatan':'Desa/Kelurahan'));
+    $response = [];
 
-        if ($data == "kabupaten")
-        {
-            ?>
-            <div class="col-md-6">
-                <label>Kabupaten / Kota</label>
-                <select class="js-example-basic-single form-select" id="kabkota_kejadian" name="kabkota_kejadian" required>
-                    <option value="">--- Pilih Kabupaten / Kota ---</option>
-                    <?php
-                        $daerah = $this->db->query("SELECT wilayah,kab_kota FROM wilayah_2022 WHERE wilayah='$value_wilayah'")->result();
-                        foreach ($daerah as $d)
-                        {
-                            ?>
-                            <option value="<?= $d->wilayah ?>"><?= $d->kab_kota ?></option>
-                            <?php
-                        }
-                    ?>
-                </select>
-            </div>                
-            <?php
+    if ($data == "kecamatan") {
+        $daerah = $this->db->query("SELECT kecamatan FROM wilayah_2022 WHERE wilayah=? GROUP BY kecamatan ORDER BY kecamatan", [$value_wilayah])->result();
+        foreach ($daerah as $d) {
+            $response[] = ['value' => $d->kecamatan, 'label' => $d->kecamatan];
         }
-        else if ($data == "kecamatan")
-        {
-            ?>
-            <div class="col-md-6">
-                <label>Kecamatan</label>
-                <select class="js-example-basic-single form-select" id="kecamatan_kejadian" name="kecamatan_kejadian" required>
-                    <option value="">--- Pilih Kecamatan ---</option>
-                    <?php
-                        $daerah = $this->db->query("SELECT wilayah,kecamatan FROM wilayah_2022 WHERE wilayah='$value_wilayah' ORDER BY kecamatan")->result();
-                        foreach ($daerah as $d)
-                        {
-                            ?>
-                            <option value="<?= $d->wilayah ?>"><?= $d->kecamatan ?></option>
-                            <?php
-                        }
-                    ?>
-                </select>
-            </div>
-            <?php
-        }
-        else if ($data == "kelurahan")
-        {
-            ?>
-            <div class="col-md-6">
-                <label>Kelurahan / Desa</label>
-                <select class="js-example-basic-single form-select" id="kelurahan_kejadian" name="kelurahan_kejadian" required>
-                    <option value="">--- Pilih Kelurahan / Desa ---</option>
-                    <?php
-                        $daerah = $this->db->query("SELECT wilayah,desa FROM wilayah_2022 WHERE wilayah='$value_wilayah' ORDER BY desa")->result();
-                        foreach ($daerah as $d)
-                        {
-                            ?>
-                            <option value="<?= $d->wilayah ?>"><?= $d->desa ?></option>
-                            <?php
-                        }
-                    ?>
-                </select>
-            </div>
-            <?php
+    } else if ($data == "desa") {
+        $daerah = $this->db->query("SELECT desa FROM wilayah_2022 WHERE kecamatan=? ORDER BY desa", [$value_wilayah])->result();
+        foreach ($daerah as $d) {
+            $response[] = ['value' => $d->desa, 'label' => $d->desa];
         }
     }
+
+    echo json_encode($response);
+}
+
 
 // menyimpan data korbann
 public function darurat_medis()
