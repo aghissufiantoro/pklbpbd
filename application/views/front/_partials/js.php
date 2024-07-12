@@ -25,7 +25,7 @@
     // Function to handle "Jangan tampilkan lagi" checkbox
     function doNotShowAgain() {
         if (document.getElementById('hidePopupCheckbox').checked) {
-            localStorage.setItem('dontShowReviewPopup', 'true');
+            sessionStorage.setItem('dontShowReviewPopup', 'true');
         }
         closePopup();
     }
@@ -82,22 +82,24 @@
         });
     }
 
-    // Check localStorage on page load
+    // Check sessionStorage on page load
     document.addEventListener('DOMContentLoaded', function() {
-        const dontShowAgain = localStorage.getItem('dontShowReviewPopup');
-        const lastShownTime = localStorage.getItem('lastReviewPopupTime');
+        const dontShowAgain = sessionStorage.getItem('dontShowReviewPopup');
+        const lastShownTime = sessionStorage.getItem('lastReviewPopupTime');
         const currentTime = new Date().getTime();
-        const fiveMinutes = 5*60*1000; // 5 minutes in milliseconds
+        const fiveMinutes = 5 * 60 * 1000; // 5 minutes in milliseconds
 
         if (!dontShowAgain && (!lastShownTime || (currentTime - lastShownTime > fiveMinutes))) {
             setTimeout(function() {
                 showPopup();
-                localStorage.setItem('lastReviewPopupTime', new Date().getTime()); // Set the current time as the last shown time
-            }, 5*60*1000); // Show popup after 1 second (1000 milliseconds)
+                sessionStorage.setItem('lastReviewPopupTime', new Date().getTime()); // Set the current time as the last shown time
+            }, 1000); // Show popup after 1 second (1000 milliseconds)
         }
     });
+
+    // Do not clear sessionStorage on unload
+    // window.addEventListener('beforeunload', function() {
+    //     sessionStorage.removeItem('dontShowReviewPopup');
+    //     sessionStorage.removeItem('lastReviewPopupTime');
+    // });
 </script>
-
-
-
-</div>

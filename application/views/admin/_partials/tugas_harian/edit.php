@@ -1,13 +1,15 @@
 <div class="container mt-2">
     <h4 class="mb-3">UBAH DATA TUGAS HARIAN</h4>
     <?php echo validation_errors(); ?>
-    <?php echo form_open('admin/tugas_harian/edit', 'class="needs-validation" enctype="multipart/form-data"'); ?>
+    <?php echo form_open('admin/tugas_harian/edit/'.$tugas_harian->id_tugas_harian, 'class="needs-validation" enctype="multipart/form-data"'); ?>
+
+    <input type="hidden" name="id_tugas_harian" value="<?= $tugas_harian->id_tugas_harian ?>">
         <div class="row">
             <div class="col-md-6">
 
                 <div class="mb-3">
                     <label for="nama_staff" class="form-label">Nama Staff</label>
-                    <select class="form-select" id="nama_staff" name="nama_staff" required>
+                    <select class="form-select select2" id="nama_staff" name="nama_staff" required>
                         <option value="">--- Pilih Nama Staff ---</option>
                         <?php foreach ($staff_options as $staff): ?>
                             <option value="<?= $staff->nama_kontak_opd ?>"><?= $staff->nama_kontak_opd ?></option>
@@ -17,18 +19,17 @@
 
                 <div class="mb-3">
                     <label class="form-label">Tanggal Kegiatan</label>
-                    <input type="date" class="form-control" id="datepicker" required name="tanggal" autocomplete="off">
+                    <input type="date" class="form-control" id="tanggal" required name="tanggal" value="<?= $tugas_harian->tanggal ?>">
                 </div>
 
                 <div class="mb-3">
                     <label class="form-label">Waktu Kegiatan</label>
-                    <input type="time" class="form-control" id="jam" required name="waktu" autocomplete="off">
+                    <input type="time" class="form-control" id="jam" required name="waktu" value="<?= $tugas_harian->waktu ?>">
                 </div>
 
                 <div class="mb-3">
                     <label class="form-label">Lokasi Kegiatan</label>
-                    <input class="form-control" required name="lokasi" autocomplete="off"
-                    placeholder="Masukkan lokasi kegiatan" id="hurufbesar" onkeyup="hurufBesar();"></input>
+                    <input class="form-control" required name="lokasi" value="<?= $tugas_harian->lokasi ?>">
                 </div>
 
             </div>
@@ -37,37 +38,30 @@
 
                 <div class="mb-3">
                     <label class="form-label">Uraian Kegiatan</label>
-                    <input class="form-control" required name="uraian_kegiatan" autocomplete="off"
-                    placeholder="Uraikan kegiatan yang telah dilakukan" id="hurufbesar5" onkeyup="hurufBesar5();"></input>
+                    <input class="form-control" required name="uraian_kegiatan" value="<?= $tugas_harian->uraian_kegiatan ?>">
                 </div>
 
                 <div class="mb-3">
                     <label class="form-label">Penanggung Jawab</label>
-                    <select class="form-select" required name="penanggung_jawab" autocomplete="off"
-                    id="hurufbesar3" onkeyup="hurufBesar3();">
+                    <select class="form-select" required name="penanggung_jawab" id="penanggung_jawab">
                         <option value="">--- Pilih Salah Satu ---</option>
-                        <option value="Kepala Badan">Kepala Badan</option>
-                        <option value="Sekretaris Badan">Sekretaris Badan</option>
-                        <option value="Kasubbag Keuangan">Kasubbag Keuangan</option>
-                        <option value="Kabid PK">Kabid PK</option>
-                        <option value="Kabid Darlog RR">Kabid Darlog RR</option>
+                        <option <?php if ($tugas_harian->penanggung_jawab == "Kepala Badan"){echo "selected";} ?> value="Kepala Badan">Kepala Badan</option>
+                        <option <?php if ($tugas_harian->penanggung_jawab == "Sekretaris Badan"){echo "selected";} ?> value="Sekretaris Badan">Sekretaris Badan</option>
+                        <option <?php if ($tugas_harian->penanggung_jawab == "Kasubbag Keuangan"){echo "selected";} ?> value="Kasubbag Keuangan">Kasubbag Keuangan</option>
+                        <option <?php if ($tugas_harian->penanggung_jawab == "Kabid PK"){echo "selected";} ?> value="Kabid PK">Kabid PK</option>
+                        <option <?php if ($tugas_harian->penanggung_jawab == "Kabid Darlog RR"){echo "selected";} ?> value="Kabid Darlog RR">Kabid Darlog RR</option>
                     </select>
                 </div>
 
                 <div class="mb-3">
                     <label class="form-label">Hasil Kegiatan</label>
-                    <textarea class="form-control" name="hasil_kegiatan" autocomplete="off"
-                    placeholder="Masukkan hasil kegiatan" id="hurufbesar4" onkeyup="hurufBesar4();"></textarea>
+                    <textarea class="form-control" name="hasil_kegiatan" value="<?= $tugas_harian->hasil_kegiatan ?>"></textarea>
                 </div>
                 <label class="form-label">Dokumentasi</label>
                 <input type="file" class="form-control" id="dokumentasi" name="dokumentasi[]" accept="image/*" multiple />
-                
-                <div class="form-group">
-
-                </div>
 
             </div>
-        </div>
+        </div>   
         <a href="<?= base_url("admin/tugas_harian") ?>">
             <input class="btn btn-warning" type="button" value="Kembali">
         </a>
@@ -83,4 +77,16 @@ document.getElementById('nama_staff').addEventListener('change', function() {
     var staffMap = <?php echo json_encode(array_column($staff_options, 'id_kontak_opd', 'nama_staff')); ?>;
     document.getElementById('id_kontak_opd').value = staffMap[selectedNamaStaff] || '';
 });
+</script>
+<!-- jQuery (required by Select2) -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<!-- Select2 JS -->
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $('.select2').select2({
+            placeholder: "--- Pilih Nama Staff ---",
+            allowClear: true
+        });
+    });
 </script>

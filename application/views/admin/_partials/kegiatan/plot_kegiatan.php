@@ -3,16 +3,28 @@
     <?php echo validation_errors(); ?>
     <?php echo form_open('admin/kegiatan/plot_kegiatan', 'class="needs-validation"'); ?>
 
-    <div class="form-group">
-					<label for="tanggal">Tanggal</label>
-					<input type="date" class="form-control" name="tanggal" required>
-				</div>
+    <?php if($this->session->flashdata('success')): ?>
+    <div class="alert alert-success" id="success-alert">
+        <?php echo $this->session->flashdata('success'); ?>
+    </div>
+    <?php endif; ?>
+
+    <?php if($this->session->flashdata('error')): ?>
+        <div class="alert alert-danger" id="error-alert">
+            <?php echo $this->session->flashdata('error'); ?>
+        </div>
+    <?php endif; ?>
+
 
     <div class="form-group">
-                <label for="shift">Shift</label>
-                <input type="text" class="form-control" name="shift" required>
-         </div>
+        <label for="tanggal">Tanggal</label>
+        <input type="date" class="form-control" name="tanggal" required>
+    </div>
 
+    <div class="form-group">
+        <label for="shift">Shift</label>
+        <input type="text" class="form-control" name="shift" required>
+    </div>
 
     <div class="form-group">
         <label for="kegiatan">Kegiatan</label>
@@ -109,4 +121,16 @@
             }
         }
     }
+
+    // Hide flash messages after 5 seconds
+    setTimeout(function() {
+        const successAlert = document.getElementById('success-alert');
+        const errorAlert = document.getElementById('error-alert');
+        if (successAlert) {
+            successAlert.style.display = 'none';
+        }
+        if (errorAlert) {
+            errorAlert.style.display = 'none';
+        }
+    }, 5000);
 </script>
