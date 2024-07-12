@@ -91,7 +91,46 @@
             $('#petugas-container').empty();
         }
     }
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+    function loadPetugasOptions(jenisKompi, jumlahPersonel) {
+        if (jenisKompi && jumlahPersonel > 0) {
+            $.ajax({
+                url: "<?php echo base_url('admin/kegiatan/get_personel_by_kompi/'); ?>" + jenisKompi,
+                method: 'GET',
+                success: function(data) {
+                    try {
+                        var petugasData = JSON.parse(data);
+                        console.log("Received data:", petugasData);
+                        $('#petugas-container').empty();
+                        for (var i = 0; i < jumlahPersonel; i++) {
+                            var select = $('<select class="form-control" name="petugas[]" required></select>');
+                            select.append('<option value="">Pilih Petugas</option>');
+                            $.each(petugasData, function(index, petugas) {
+                                var option = $('<option></option>').attr('value', petugas.id_petugas).text(petugas.nama_petugas);
+                                select.append(option);
+                            });
+                            $('#petugas-container').append('<div class="form-group"><label>Petugas ' + (i + 1) + '</label>' + select.prop('outerHTML') + '</div>');
+                        }
+                    } catch (e) {
+                        console.error("Error parsing JSON:", e);
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error("Failed to load petugas data:", error);
+                }
+            });
+        } else {
+            $('#petugas-container').empty();
+        }
+    }
 
+    $(document).ready(function() {
+        $('#jenis_kompi').change(function() {
+            var jenisKompi = $(this).val();
+            var jumlahPersonel = $('#jumlah_personel').val();
+            loadPetugasOptions(jenisKompi, jumlahPersonel);
+        });
     $(document).ready(function() {
         $('#jenis_kompi').change(function() {
             var jenisKompi = $(this).val();
@@ -104,7 +143,17 @@
             var jenisKompi = $('#jenis_kompi').val();
             loadPetugasOptions(jenisKompi, jumlahPersonel);
         });
+        $('#jumlah_personel').change(function() {
+            var jumlahPersonel = $(this).val();
+            var jenisKompi = $('#jenis_kompi').val();
+            loadPetugasOptions(jenisKompi, jumlahPersonel);
+        });
 
+        var initialKompi = $('#jenis_kompi').val();
+        var initialJumlah = $('#jumlah_personel').val();
+        loadPetugasOptions(initialKompi, initialJumlah);
+    });
+</script>
         var initialKompi = $('#jenis_kompi').val();
         var initialJumlah = $('#jumlah_personel').val();
         loadPetugasOptions(initialKompi, initialJumlah);

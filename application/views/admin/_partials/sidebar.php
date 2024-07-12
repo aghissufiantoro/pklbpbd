@@ -73,7 +73,7 @@
             <!-- New menu added below -->
             <li class="nav-item nav-category">TIM EMAK</li>
                 <?php
-                if ($this->session->userdata('username') == "kegiatan" || $this->session->userdata('role') == "1") {
+                if ($this->session->userdata('username') == "kompi" || $this->session->userdata('role') == "1") {
                 ?>
                     <li <?php if ($this->uri->segment(2) == "kegiatan" && $this->uri->segment(3) == "view_kegiatan") {
                             echo 'class="nav-item active"';

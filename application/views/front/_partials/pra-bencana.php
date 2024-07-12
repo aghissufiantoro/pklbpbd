@@ -75,10 +75,17 @@
         <form method="GET" action="<?= base_url('view/index') ?>">
             <div class="row mb-4">
                 <div class="col-md-4">
+<<<<<<< HEAD
+                    <input type="date" name="start_date" class="form-control" value="<?= htmlspecialchars($this->input->get('start_date') ?? '') ?>" />
+                </div>
+                <div class="col-md-4">
+                    <input type="date" name="end_date" class="form-control" value="<?= htmlspecialchars($this->input->get('end_date') ?? '') ?>" />
+=======
                     <input type="date" name="start_date" class="form-control" value="<?= htmlspecialchars($this->input->get('start_date')?? '') ?>" />
                 </div>
                 <div class="col-md-4">
                     <input type="date" name="end_date" class="form-control" value="<?= htmlspecialchars($this->input->get('end_date')  ?? '') ?>" />
+>>>>>>> 3478b9971414e5b9475c3cd0251e0cecad29fccf
                 </div>
                 <div class="col-md-4">
                     <button type="submit" class="btn btn-primary">Filter</button>

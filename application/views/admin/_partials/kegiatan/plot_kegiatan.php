@@ -9,8 +9,10 @@
 				</div>
 
     <div class="form-group">
+    <div class="form-group">
                 <label for="shift">Shift</label>
                 <input type="text" class="form-control" name="shift" required>
+         </div>
          </div>
 
 
@@ -34,6 +36,12 @@
             <option value="">Pilih Lokasi</option>
         </select>
     </div>
+    <div class="form-group">
+        <label for="lokasi_kegiatan">Lokasi Kegiatan</label>
+        <select class="form-control" name="lokasi_kegiatan" id="lokasi_kegiatan" required>
+            <option value="">Pilih Lokasi</option>
+        </select>
+    </div>
 
     <div class="form-group">
         <label for="jumlah_personel">Jumlah Personel</label>
@@ -44,7 +52,20 @@
         <label for="jumlah_jarko">Jumlah Jarko</label>
         <input type="number" class="form-control" name="jumlah_jarko" required>
     </div>
+    <div class="form-group">
+        <label for="jumlah_personel">Jumlah Personel</label>
+        <input type="number" class="form-control" name="jumlah_personel" required>
+    </div>
 
+    <div class="form-group">
+        <label for="jumlah_jarko">Jumlah Jarko</label>
+        <input type="number" class="form-control" name="jumlah_jarko" required>
+    </div>
+
+    <div class="form-group">
+        <label for="keterangan">Keterangan</label>
+        <input type="text" class="form-control" name="keterangan" required>
+    </div>
     <div class="form-group">
         <label for="keterangan">Keterangan</label>
         <input type="text" class="form-control" name="keterangan" required>
