@@ -163,6 +163,8 @@ if ($this->session->flashdata('success')) {
 
 // Pastikan untuk menangani partial container yang berubah secara dinamis
 document.addEventListener('DOMContentLoaded', function() {
+  const id_kejadian = document.getElementById('id_kejadian').value;
+  console.log(id_kejadian);
     const form = document.getElementById('addForm');
     form.addEventListener('submit', handleSubmitAndRedirect);
 
