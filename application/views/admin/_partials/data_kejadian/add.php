@@ -33,7 +33,8 @@ if ($this->session->flashdata('success')) {
             <div class="col-md-15">
               <div class="mb-3">
                 <label for="id_kejadian" class="form-label">ID KEJADIAN</label>
-                <input id="id_kejadian" class="form-control" name="id_kejadian" type="text"  value="<?= $this->session->flashdata('new_id_kejadian'); ?>" readonly>
+                <input id="id_kejadian" class="form-control" name="id_kejadian" type="text"  value="<?=  $this->session->flashdata('new_id_kejadian'); ?>" readonly>
+              
               </div>
             </div>
           </div>
@@ -100,19 +101,19 @@ if ($this->session->flashdata('success')) {
             <div class="mb-3">
               <label class="form-label" for="kabkota_kejadian">Kota</label>
               <select class="js-example-basic-single form-select" id="kabkota_kejadian" name="kabkota_kejadian" data-width="100%" required>
-                <option value="">--- Pilih Kota ---</option>
+                <option value="surabaya">SURABAYA</option>
               </select>
             </div>
             <div class="mb-3">
               <label class="form-label" for="kecamatan_kejadian">Kecamatan</label>
               <select class="js-example-basic-single form-select" id="kecamatan_kejadian" name="kecamatan_kejadian" data-width="100%" required>
-                <option value="">--- Pilih Kota Terlebih Dahulu ---</option>
+                <option value="">--- Mohon Pilih Kecamatan ---</option>
               </select>
             </div>
-            <div class="mb-3">
+            <div class="mb-3" id="kecamatan">
               <label class="form-label" for="kelurahan_kejadian">Kelurahan / Desa</label>
               <select class="js-example-basic-single form-select" id="kelurahan_kejadian" name="kelurahan_kejadian" data-width="100%" required>
-                <option value="">--- Pilih Kecamatan Terlebih Dahulu ---</option>
+                <option value="">--- Pilih Kelurahan ---</option>
               </select>
             </div>
           </div>
@@ -160,9 +161,116 @@ if ($this->session->flashdata('success')) {
 </div>
 
 <script>
-
-// Pastikan untuk menangani partial container yang berubah secara dinamis
 document.addEventListener('DOMContentLoaded', function() {
+  // Flag to track if fetchOptions has been executed
+var fetchExecuted = false;
+
+// Variable to store the previous value of selectedKecamatan.title
+var pastValue = '';
+
+// Function to handle content change in 'kecamatan' element
+function contentChanged() {
+    var selectedKecamatan = document.getElementById('select2-kecamatan_kejadian-container');
+    console.log(selectedKecamatan.title);
+
+    // Check if selectedKecamatan has changed and fetchOptions has not been executed
+    if (selectedKecamatan.title !== '--- Mohon Pilih Kecamatan ---' && selectedKecamatan.title !== pastValue) {
+        console.log('Executing fetchOptions');
+        fetchExecuted = true;
+        pastValue = selectedKecamatan.title; // Update pastValue
+        fetchOptions('desa', selectedKecamatan.textContent.trim(), 'kelurahan_kejadian');
+    } else {
+        console.log('Already executed fetchOptions or title is unchanged.');
+    }
+}
+
+// Add event listener using DOMSubtreeModified (Not recommended, use 'change' event instead)
+var myElement = document.getElementById('kecamatan');
+if (window.addEventListener) {
+    // For normal browsers
+    myElement.addEventListener('DOMSubtreeModified', contentChanged, false);
+} else if (window.attachEvent) {
+    // For IE
+    myElement.attachEvent('DOMSubtreeModified', contentChanged);
+}
+
+
+    document.getElementById('lokasi_kejadian').addEventListener('change', function() {
+        var wilayah = this.value;
+        selected = document.getElementById('select2-kecamatan_kejadian-container');
+        console.log(selected)
+       
+        fetchOptions('kecamatan', wilayah, 'kecamatan_kejadian');
+    });
+
+   
+    // Event listener for change on kecamatan_kejadian select
+    
+    // document.getElementById('select2-kecamatan_kejadian-container').addEventListener('change', function() {
+    //     var wilayah = this.value;
+        
+    //     console.log('aaaa')
+    //     console.log(selected)
+        
+    // });
+ 
+
+    // Function to fetch options dynamically based on selected value
+    function fetchOptions(dataType, wilayah, targetSelectId) {
+        fetch('<?= base_url('admin/data_kejadian/get_daerah') ?>', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: new URLSearchParams({
+                data: dataType,
+                wilayah: wilayah
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            var targetSelect = document.getElementById(targetSelectId);
+            targetSelect.innerHTML = ''; // Clear existing options
+            var defaultOption = new Option(`--- Pilih ${capitalizeFirstLetter(dataType)} ---`, '');
+            targetSelect.appendChild(defaultOption); // Add default option
+            data.forEach(item => {
+                var option = new Option(item.label, item.value);
+                targetSelect.appendChild(option); // Add fetched options
+            });
+        })
+        .catch(() => {
+            alert('Terjadi kesalahan dalam mengambil data.');
+        });
+    }
+
+    // Function to capitalize the first letter of a string
+    function capitalizeFirstLetter(string) {
+        return string.charAt(0).toUpperCase() + string.slice(1);
+    }
+
+    // Set default value for kabkota_kejadian
+    document.getElementById('kabkota_kejadian').value = 'surabaya';
+
+    // Function to get selected value from Select2-like container
+    function getSelectedValueFromSelect2Container(select2ContainerId) {
+        var container = document.getElementById(select2ontainerId);
+        if (container) {
+            var selectedText = container.getAttribute('title') || container.textContent;
+            console.log('Selected value:', selectedText);
+            // Optionally, set this selected value to an input field or use it as needed
+            document.getElementById('selected_kecamatan_value').value = selectedText; // Example: Set to an input field
+        }
+    }
+
+    // Event listener for change on kecamatan_kejadian to get selected value
+    document.getElementById('kecamatan_kejadian').addEventListener('change', function() {
+        getSelectedValueFromSelect2Container('select2-kecamatan_kejadian-container');
+    });
+
+    // Trigger change event to initialize Select2-like behavior (if necessary)
+    var event = new Event('change');
+    document.getElementById('kabkota_kejadian').dispatchEvent(event);
+    
     const form = document.getElementById('addForm');
     form.addEventListener('submit', handleSubmitAndRedirect);
 
@@ -200,14 +308,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // Fungsi di dalam partial form (seperti yang ada di dalam partialContainer)
-
-
-    // Panggil setupEventListenersInPartial() pertama kali
-   
 });
-
-
-
 
 </script>
