@@ -93,7 +93,7 @@
             setTimeout(function() {
                 showPopup();
                 sessionStorage.setItem('lastReviewPopupTime', new Date().getTime()); // Set the current time as the last shown time
-            }, 1000); // Show popup after 1 second (1000 milliseconds)
+            }, 5 * 60 * 1000); // Show popup after 1 second (1000 milliseconds)
         }
     });
 
