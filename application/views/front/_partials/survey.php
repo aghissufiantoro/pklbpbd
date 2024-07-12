@@ -156,7 +156,7 @@
         if (!dontShowReviewPopup) {
             setTimeout(function() {
                 document.getElementById('reviewPopup').style.display = 'block';
-            }, 1000); // Delay popup display by 5 seconds
+            }, 5 * 60 * 1000); // Delay popup display by 5 seconds
         }
     });
 
