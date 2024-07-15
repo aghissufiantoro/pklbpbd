@@ -24,6 +24,7 @@
             </div>
 
 
+<<<<<<< HEAD
     <div class="form-group">
         <label for="kegiatan">Kegiatan</label>
         <select class="form-control" name="kegiatan" id="kegiatan" onchange="updateLokasiOptions()" required>
@@ -37,6 +38,12 @@
             <option value="Lain-Lain">Lain-Lain</option>
         </select>
     </div>
+=======
+            <div class="form-group">
+                <label for="lokasi_kegiatan">Lokasi Kegiatan</label>
+                <input type="text" class="form-control" name="lokasi_kegiatan" required>
+            </div>
+>>>>>>> 1f0d5330506277d183445e7d76137c8e49d57f17
 
     <div class="form-group">
         <label for="lokasi_kegiatan">Lokasi Kegiatan</label>
@@ -45,10 +52,22 @@
         </select>
     </div>
 
+<<<<<<< HEAD
     <div class="form-group">
         <label for="jumlah_personel">Jumlah Personel</label>
         <input type="number" class="form-control" name="jumlah_personel" required>
     </div>
+=======
+            <div class="form-group">
+                <label for="jumlah_jarko">Jumlah Jarko</label>
+                <input type="number" class="form-control" name="jumlah_jarko" required>
+            </div>
+
+            <div class="form-group">
+                <label for="keterangan">Keterangan</label>
+                <input type="text" class="form-control" name="keterangan" required>
+            </div>
+>>>>>>> 1f0d5330506277d183445e7d76137c8e49d57f17
 
     <div class="form-group">
         <label for="jumlah_jarko">Jumlah Jarko</label>
