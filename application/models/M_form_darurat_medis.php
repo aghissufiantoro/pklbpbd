@@ -20,7 +20,11 @@ class M_form_darurat_medis extends CI_Model
             ['field' => 'alamat', 'label' => 'Alamat', 'rules' => 'required'],
             ['field' => 'usia', 'label' => 'Usia', 'rules' => 'required|integer'],
             ['field' => 'kondisi', 'label' => 'Kondisi', 'rules' => 'required'],
-            ['field' => 'riwayat_penyakit', 'label' => 'Riwayat Penyakit', 'rules' => 'required']
+            ['field' => 'riwayat_penyakit', 'label' => 'Riwayat Penyakit', 'rules' => 'required'],
+            ['field' => 'kronologi_darurat_medis', 'label' => 'Kronologi Darurat Medis', 'rules' => 'required'],
+            ['field' => 'tindak_lanjut_darurat_medis', 'label' => 'Tindak Lanjut Darurat Medis', 'rules' => 'required'],
+            ['field' => 'petugas_di_lokasi_darurat_medis', 'label' => 'Petugas Di Lokasi Darurat Medis', 'rules' => 'required'],
+            ['field' => 'dokumentasi_darurat_medis', 'label' => 'Dokumentasi Darurat Medis', 'rules' => 'required']
         ];
     }
 

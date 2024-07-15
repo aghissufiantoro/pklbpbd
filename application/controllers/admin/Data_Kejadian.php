@@ -78,6 +78,59 @@ public function getLastIDkejadian($formatted_date) {
 }
 
 // Function to handle adding new kejadian data
+
+public function upload_image() {
+    $caseType = $this->input->post('case');
+
+    // Set the upload path based on the case type
+    switch ($caseType) {
+        case 'Kecelakaan Lalu Lintas':
+            $uploadPath = './upload/data_kejadian/kecelakaan_lalu_lintas/';
+            break;
+        case 'Darurat Medis':
+            $uploadPath = './upload/data_kejadian/darurat_medis/';
+            break;
+        case 'Kebakaran':
+            $uploadPath = './upload/data_kejadian/kebakaran/';
+            break;
+        case 'Pohon Tumbang':
+            $uploadPath = './upload/data_kejadian/pohon_tumbang/';
+            break;
+        case 'Penemuan Jenazah':
+            $uploadPath = './upload/data_kejadian/penemuan_jenazah/';
+            break;
+        case 'Orang Tenggelam':
+            $uploadPath = './upload/data_kejadian/orang_tenggelam/';
+            break;
+        case 'Lainnya':
+            $uploadPath = './upload/data_kejadian/lainnya/';
+            break;
+        default:
+            $uploadPath = './upload/data_kejadian/dokumentasi/';
+    }
+
+    if (!is_dir($uploadPath)) {
+        mkdir($uploadPath, 0777, true);
+    }
+
+    $config['upload_path'] = $uploadPath;
+    $config['allowed_types'] = 'gif|jpg|png|jpeg';
+    $config['max_size'] = 2048; // 2MB
+    $config['file_name'] = md5(uniqid(rand(), true)); // Generate unique filename
+
+    $this->load->library('upload', $config);
+
+    if (!$this->upload->do_upload('image')) {
+        $response = array('status' => 'error', 'message' => $this->upload->display_errors());
+        echo json_encode($response);
+    } else {
+        $data = $this->upload->data();
+        $image_url = substr($uploadPath,1) . $data['file_name'];
+        $response = array('status' => 'success', 'image_url' => $image_url);
+        echo json_encode($response);
+    }
+}
+
 public function add() {
     if ($this->session->userdata('role') == "1") {
         $data_kejadian = $this->m_data_kejadian;
@@ -294,7 +347,6 @@ public function save_darurat_medis()
     $inputJSON = file_get_contents('php://input');
     $input = json_decode($inputJSON, true);
 
-
     log_message('info', 'Received JSON data: ' . $inputJSON); 
 
     // Check if JSON is valid
@@ -302,7 +354,7 @@ public function save_darurat_medis()
         // Handle JSON decode error
         $response = [
             'status' => 'error',
-            'message' => $inputJSON
+            'message' => 'Invalid JSON data'
         ];
         $this->output
              ->set_content_type('application/json')
@@ -328,6 +380,10 @@ public function save_darurat_medis()
                 'usia' => $input['usia'],
                 'kondisi' => $input['kondisi'],
                 'riwayat_penyakit' => $input['riwayat_penyakit'],
+                'kronologi_darurat_medis' => $input['kronologi_darurat_medis'],
+                'tindak_lanjut_darurat_medis' => $input['tindak_lanjut_darurat_medis'],
+                'petugas_di_lokasi_darurat_medis' => $input['petugas_di_lokasi_darurat_medis'],
+                'dokumentasi_darurat_medis' => $input['dokumentasi_darurat_medis'],
             ];
 
             // Log the data to be saved
@@ -362,7 +418,7 @@ public function save_darurat_medis()
     // Send JSON response
     $this->output
          ->set_content_type('application/json')
-         ->set_output(json_encode($inputJSON));
+         ->set_output(json_encode($response));
 }
 
 
