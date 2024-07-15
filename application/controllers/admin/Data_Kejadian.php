@@ -202,13 +202,8 @@ public function add() {
     } else {
         show_404();
     }
-}
-
-
-
-
-
-    public function edit($id = null)
+}   
+  public function edit($id = null)
     {
         if ($this->session->userdata('role') == "1")
         {
@@ -421,13 +416,6 @@ public function save_darurat_medis()
          ->set_output(json_encode($response));
 }
 
-
-
-
-
-
-
-
     public function kebakaran()
     {
         if ($this->session->userdata('role') == "1")
@@ -450,6 +438,99 @@ public function save_darurat_medis()
             show_404();
         }
     }
+
+    public function save_kebakaran()
+{
+    // Check user role
+    if ($this->session->userdata('role') != "1") {
+        $this->output->set_status_header(403); // Set HTTP response code 403 Forbidden
+        echo json_encode(['status' => 'error', 'message' => 'Unauthorized access']);
+        return;
+    }
+
+    // Load model
+    $this->load->model('M_form_kebakaran');
+    $data_kejadian = $this->M_form_kebakaran;
+
+    // Get the raw POST data
+    $inputJSON = file_get_contents('php://input');
+    $input = json_decode($inputJSON, true);
+
+
+    log_message('info', 'Received JSON data: ' . $inputJSON); 
+
+    // Check if JSON is valid
+    if ($input === null && json_last_error() !== JSON_ERROR_NONE) {
+        // Handle JSON decode error
+        $response = [
+            'status' => 'error',
+            'message' => $inputJSON
+        ];
+        $this->output
+             ->set_content_type('application/json')
+             ->set_output(json_encode($response));
+        return;
+    }
+
+    // Log the incoming request data
+    log_message('info', 'Incoming request data: ' . json_encode($input));
+
+    // Set validation rules
+    if ($input) {
+        $this->form_validation->set_data($input); // Set data for validation
+        $this->form_validation->set_rules($data_kejadian->rules());
+
+        if ($this->form_validation->run() === TRUE) {
+            // Validation success, prepare data to save
+            $data = [
+                'id_kejadian' => $input['id_kejadian'],
+                'objek_terbakar' => $input['objek_terbakar'],
+                'luas_terbakar' => $input['luas_terbakar'],
+                'luas_bangunan' => $input['luas_bangunan'],
+                'penyebab' => $input['penyebab'],
+                'status_bangunan' => $input['status_bangunan'],
+                'nama' => $input['nama'],
+                'usia' => $input['usia'],
+                'jenis_kelamin' => $input['jenis_kelamin'],
+                'alamat' => $input['alamat'],
+                'lebar_jalan' => $input['lebar_jalan'],
+                'kondisi_bangunan' => $input['kondisi_bangunan'],
+            ];
+
+            // Log the data to be saved
+            log_message('info', 'Data to be saved: ' . json_encode($data));
+
+            // Save data using model
+            $data_kejadian->save($data);
+
+            // Prepare success response
+            $response = [
+                'status' => 'success',
+                'data' => $data
+            ];
+        } else {
+            // Validation failed, prepare error response
+            $response = [
+                'status' => 'error',
+                'message' => validation_errors() // Return validation errors as a string
+            ];
+
+            // Log the validation errors
+            log_message('error', 'Validation errors: ' . validation_errors());
+        }
+    } else {
+        // If input data is null
+        $response = [
+            'status' => 'error',
+            'message' => 'No valid input data received'
+        ];
+    }
+
+    // Send JSON response
+    $this->output
+         ->set_content_type('application/json')
+         ->set_output(json_encode($inputJSON));
+}
 
     public function lainnya()
     {
