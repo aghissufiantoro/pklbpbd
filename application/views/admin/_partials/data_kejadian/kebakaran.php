@@ -115,7 +115,43 @@
                                 <input id="Kondisi Bangunan" class="form-control" name="kondisi_bangunan" type="text" required>
                             </div>
                         </div>
-                    </div>  
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="mb-3">
+                                <label for="Kronologi Kebakaran" class="form-label">Kronologi Kebakaran</label>
+                                <input id="Kronologi Kebakaran" class="form-control" name="kronologi_kebakaran" type="text" required>
+                            </div>
+                        </div>
+                    </div> 
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="mb-3">
+                                <label for="Tindak Lanjut Kebakaran" class="form-label">Tindak Lanjut Kebakaran</label>
+                                <input id="Tindak Lanjut Kebakaran" class="form-control" name="tindak_lanjut_kebakaran" type="text" required>
+                            </div>
+                        </div>
+                    </div> 
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="mb-3">
+                                <label for="Petugas di Lokasi" class="form-label">Petugas di Lokasi</label>
+                                <input id="Petugas di Lokasi" class="form-control" name="petugas_di_lokasi_kebakaran" type="text" required>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="mb-3">
+                                <label for="Dokumentasi Kebakaran" class="form-label">Dokumentasi</label>
+                                <input type="file" class="form-control" required name="dokumentasi_kebarakan" accept="image/*" />
+                            </div>
+                        </div>
+                    </div> 
                        
                     <button id="saveButton" class="btn btn-success" type="submit">Save</button>
                     <button id="stopButton" class="btn btn-danger" type="button">Selesai</button>
@@ -144,6 +180,10 @@
                                     <th>Alamat</th>
                                     <th>Lebar Jalan</th>
                                     <th>Kondisi Bangunan</th>
+                                    <th>Kronologi</th>
+                                    <th>Tindak Lanjut</th>
+                                    <th>Petugas di Lokasi</th>
+                                    <th>Dokumentasi</th>
                                 </tr>
                             </thead>
                             <tbody id="dataKejadianTableBody">
@@ -186,7 +226,7 @@
             },
             credentials: 'same-origin' // Sertakan kredensial dalam permintaan
         })
-        .then(response => response.json()) // Parsing respons sebagai JSON
+        .then(response => console.log(response.text())) // Parsing respons sebagai JSON
         .then(data => {
         const data1 = JSON.parse(data);
         
@@ -205,6 +245,10 @@
                     <td>${data1.alamat}</td>
                     <td>${data1.lebar_jalan}</td>
                     <td>${data1.kondisi_bangunan}</td>
+                    <td>${data1.kronologi_kebakaran}</td>
+                    <td>${data1.tindak_lanjut_kebakaran}</td>
+                    <td>${data1.petugas_di_lokasi_kebakaran}</td>
+                    <td><img src="<?= base_url('upload/data_kejadian/') ?>${data1.dokumentasi_kebakaran}" alt="dokumentasi" width="100"></td>
                 `;
                 document.getElementById('dataKejadianTableBody').appendChild(newRow);
 

@@ -439,6 +439,10 @@ public function save_darurat_medis()
                 'alamat' => $input['alamat'],
                 'lebar_jalan' => $input['lebar_jalan'],
                 'kondisi_bangunan' => $input['kondisi_bangunan'],
+                'kronologi_kebakaran' => $input['kronologi_kebakaran'],
+                'tindak_lanjut_kebakaran' => $input['tindak_lanjut_kebakaran'],
+                'petugas_di_lokasi_kebakaran' => $input['petugas_di_lokasi_kebakaran'],
+                'dokumentasi_kebakaran' => $input['dokumentasi_kebakaran']
             ];
 
             // Log the data to be saved
