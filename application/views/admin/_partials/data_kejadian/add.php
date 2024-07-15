@@ -108,11 +108,15 @@ if ($this->session->flashdata('success')) {
               <label class="form-label" for="kecamatan_kejadian">Kecamatan</label>
               <select class="js-example-basic-single form-select" id="kecamatan_kejadian" name="kecamatan_kejadian" data-width="100%" required>
 <<<<<<< HEAD
+<<<<<<< HEAD
                 <option value="">--- Pilih Kota Terlebih Dahulu ---</option>
                 
 =======
                 <option value="">--- Mohon Pilih Kecamatan ---</option>
 >>>>>>> 1f0d5330506277d183445e7d76137c8e49d57f17
+=======
+                <option value="">--- Mohon Pilih Kecamatan ---</option>
+>>>>>>> 5abd3ececa7bc6163c1ebc4e122e31111e763e67
               </select>
             </div>
             <div class="mb-3" id="kecamatan">
@@ -275,15 +279,9 @@ if (window.addEventListener) {
     // Trigger change event to initialize Select2-like behavior (if necessary)
     var event = new Event('change');
     document.getElementById('kabkota_kejadian').dispatchEvent(event);
-<<<<<<< HEAD
     
     document.getElementById('addForm').addEventListener('submit', function(e) {
         e.preventDefault();
-=======
-
-    const form = document.getElementById('addForm');
-    form.addEventListener('submit', handleSubmitAndRedirect);
->>>>>>> 806135cebfd10fd8d96cc66300c91a20b81e173a
 
         const form = e.target;
         const formData = new FormData(form);

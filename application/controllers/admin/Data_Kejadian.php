@@ -149,6 +149,7 @@ public function add() {
             $this->session->set_flashdata('new_id_kejadian', $new_id_kejadian);
 
 <<<<<<< HEAD
+<<<<<<< HEAD
             // Menentukan form tujuan berdasarkan jenis kejadian
             $kejadian = $this->input->post('kejadian');
             switch ($kejadian) {
@@ -202,6 +203,8 @@ public function add() {
 
     public function edit($id = null)
 =======
+=======
+>>>>>>> 5abd3ececa7bc6163c1ebc4e122e31111e763e67
             // Mengatur flashdata untuk menampilkan pesan sukses
             $this->session->set_flashdata('success', '<i class="fa fa-check"></i> Alhamdulillah, Data berhasil disimpan');
 
@@ -258,7 +261,10 @@ public function add() {
     }
 }   
   public function edit($id = null)
+<<<<<<< HEAD
 >>>>>>> 1f0d5330506277d183445e7d76137c8e49d57f17
+=======
+>>>>>>> 5abd3ececa7bc6163c1ebc4e122e31111e763e67
     {
         if ($this->session->userdata('role') == "1")
         {
@@ -349,6 +355,7 @@ public function get_daerah()
             $response[] = ['value' => $d->desa, 'label' => $d->desa];
         }
     }
+<<<<<<< HEAD
 
 <<<<<<< HEAD
     public function darurat_medis()
@@ -390,6 +397,8 @@ public function get_daerah()
             show_404();
         }
 =======
+=======
+>>>>>>> 5abd3ececa7bc6163c1ebc4e122e31111e763e67
     echo json_encode($response);
 }
 
@@ -400,11 +409,11 @@ public function darurat_medis()
     if ($this->session->userdata('role') != "1") {
         show_404();
         return;
+<<<<<<< HEAD
 >>>>>>> 1f0d5330506277d183445e7d76137c8e49d57f17
+=======
+>>>>>>> 5abd3ececa7bc6163c1ebc4e122e31111e763e67
     }
-    
-
-
 
     $new_id_kejadian = $this->session->flashdata('new_id_kejadian');
     if (empty($new_id_kejadian)) {
@@ -500,6 +509,7 @@ public function save_darurat_medis()
 
             // Log the validation errors
             log_message('error', 'Validation errors: ' . validation_errors());
+
         }
     } else {
         // If input data is null
@@ -508,6 +518,9 @@ public function save_darurat_medis()
             'message' => 'No valid input data received'
         ];
     }
+    
+
+
 
     // Send JSON response
     $this->output
