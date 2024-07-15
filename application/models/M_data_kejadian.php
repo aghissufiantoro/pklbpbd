@@ -176,7 +176,7 @@ class M_data_kejadian extends CI_Model
         $this->kronologi                = $post['kronologi'];
         $this->tindak_lanjut            = $post['tindak_lanjut'];
         $this->petugas_lokasi           = $post['petugas_lokasi'];
-        $this->dokumentasi              = $this->_uploadImage();
+        $this->dokumentasi              = $post['image_url'];
 
         $this->db->insert($this->_table, $this);
     }
@@ -301,7 +301,7 @@ class M_data_kejadian extends CI_Model
         $this->kronologi                = $post['kronologi'];
         $this->tindak_lanjut            = $post['tindak_lanjut'];
         $this->petugas_lokasi            = $post['petugas_lokasi'];
-        $this->dokumentasi              = $this->_uploadImage();
+        $this->dokumentasi              = $post['dokumentasi'];
 
 
         $this->db->update($this->_table, $this, array('id_kejadian' => $post['id_kejadian']));

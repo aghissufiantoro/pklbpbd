@@ -10,7 +10,7 @@
                     <?php echo ($this->session->userdata('status') == 'login') ? 'login' : 'aa'; ?>
                     <p class="text-muted mb-3">Mohon diisi dengan sebenar-benarnya</p>
               <div class="mb-3">
-              <form id="addForm1" action="<?= base_url("admin/data_kejadian/save_darurat_medis") ?>" method="post"  enctype="multipart/form-data">
+              <form id="addForm1" method="post"  enctype="multipart/form-data">
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="mb-3">
@@ -68,6 +68,34 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="mb-3">
+                                    <label for="Kronologi Darurat Medis" class="form-label">Kronologi Darurat Medis</label>
+                                    <input id="Kronologi Darurat Medis" class="form-control" name="kronologi_darurat_medis" type="text">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="mb-3">
+                                    <label for="Tindak Lanjut Darurat Medis" class="form-label">Tindak Lanjut Darurat Medis</label>
+                                    <input id="Tindak Lanjut Darurat Medis" class="form-control" name="tindak_lanjut_darurat_medis" type="text">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="mb-3">
+                                    <label for="Petugas Di Lokasi Darurat Medis" class="form-label">Petugas Di Lokasi Darurat Medis</label>
+                                    <input id="Petugas Di Lokasi Darurat Medis" class="form-control" name="petugas_di_lokasi_darurat_medis" type="text">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                                <label for="dokumentasi_darurat_medis" class="form-label">Dokumentasi Darurat Medis</label>
+                                <input id="dokumentasi_darurat_medis" type="file" class="form-control" required name="dokumentasi_darurat_medis" accept="image/*" />
+                        </div>
                         <button id="saveButton" class="btn btn-success" type="button">Save</button>
                         <button id="stopButton" class="btn btn-danger" type="button">Selesai</button>
                     </form>
@@ -104,15 +132,13 @@
     </div>
 
     <script>
-        alert(0);
         setupEventListenersInPartial();
-        
-        function handleSubmitAndRedirectInsidePartial() {
-    const form = document.getElementById('addForm1'); 
+       function handleSubmitAndRedirectInsidePartial() {
+    const form = document.getElementById('addForm1');
     const formData = new FormData(form);
     const idKejadian = document.getElementById('id_kejadian').value;
+    const imageFile = document.getElementById('dokumentasi_darurat_medis').files[0];
 
-    // Buat objek untuk menyimpan data form
     const formObject = {
         id_kejadian: idKejadian
     };
@@ -121,49 +147,89 @@
         formObject[key] = value;
     });
 
-    fetch(form.action, {
-        method: 'POST',
-        body: JSON.stringify(formObject),
-        headers: {
-            'Content-Type': 'application/json', // Ubah header ke application/json
-            'X-Requested-With': 'XMLHttpRequest' // Pastikan server mengenali ini sebagai permintaan AJAX
-        },
-        credentials: 'same-origin' // Sertakan kredensial dalam permintaan
-    })
-    .then(response =>response.json()) // Parsing respons sebagai JSON
-    .then(data => {
-      const data1 = JSON.parse(data);
-       
-      console.log(data1.nama);
-        if (data1.id_kejadian !== null) {
-            const newRow = document.createElement('tr');
-            newRow.innerHTML = `
-                <td>${data1.nama}</td>
-                <td>${data1.jenis_kelamin}</td>
-                <td>${data1.alamat}</td>
-                <td>${data1.usia}</td>
-                <td>${data1.kondisi}</td>
-                <td>${data1.riwayat_penyakit}</td>
-            `;
-            document.getElementById('dataKejadianTableBody').appendChild(newRow);
+    if (imageFile) {
+        const imageFormData = new FormData();
+        imageFormData.append('image', imageFile);
+        const caseType = 'Darurat Medis'; // Assuming kejadian is the case type selector
+        imageFormData.append('case', caseType);
 
-            form.reset();
+        fetch('<?= base_url('admin/data_kejadian/upload_image') ?>', {
+            method: 'POST',
+            body: imageFormData
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log(data);
+            if (data.status === 'success') {
+                formObject.dokumentasi_darurat_medis = data.image_url;
 
-            document.getElementById('success-alert').textContent = 'Data berhasil disimpan';
-            document.getElementById('success-alert').style.display = 'block';
-            document.getElementById('error-alert').style.display = 'none';
-        } else {
-            document.getElementById('error-alert').textContent = 'Gagal mengirim data: ' + data.message;
-            document.getElementById('error-alert').style.display = 'block';
-            document.getElementById('success-alert').style.display = 'none';
-        }
-    })
-    .catch(error => {
-        console.error('Error:', error);
-        document.getElementById('error-alert').textContent = 'Terjadi kesalahan saat mengirim data: ' + error.message;
+                fetch("<?= base_url("admin/data_kejadian/save_darurat_medis") ?>", {
+                    method: 'POST',
+                    body: JSON.stringify(formObject),
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-Requested-With': 'XMLHttpRequest'
+                    },
+                    credentials: 'same-origin'
+                })
+                .then(response => response.json())
+                .then(data => handleResponse(data, form))
+                .catch(handleError);
+            } else {
+                alert('Gagal mengunggah gambar: ' + data.message);
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Terjadi kesalahan saat mengunggah gambar.');
+        });
+    } else {
+        fetch(form.action, {
+            method: 'POST',
+            body: JSON.stringify(formObject),
+            headers: {
+                'Content-Type': 'application/json',
+                'X-Requested-With': 'XMLHttpRequest'
+            },
+            credentials: 'same-origin'
+        })
+        .then(response => response.json())
+        .then(data => handleResponse(data, form))
+        .catch(handleError);
+    }
+}
+
+function handleResponse(data, form) {
+    if (data.status === 'success') {
+        const data1 = data.data;
+        const newRow = document.createElement('tr');
+        newRow.innerHTML = `
+            <td>${data1.nama}</td>
+            <td>${data1.jenis_kelamin}</td>
+            <td>${data1.alamat}</td>
+            <td>${data1.usia}</td>
+            <td>${data1.kondisi}</td>
+            <td>${data1.riwayat_penyakit}</td>
+        `;
+        document.getElementById('dataKejadianTableBody').appendChild(newRow);
+
+        form.reset();
+
+        document.getElementById('success-alert').textContent = 'Data berhasil disimpan';
+        document.getElementById('success-alert').style.display = 'block';
+        document.getElementById('error-alert').style.display = 'none';
+    } else {
+        document.getElementById('error-alert').textContent = 'Gagal mengirim data: ' + data.message;
         document.getElementById('error-alert').style.display = 'block';
         document.getElementById('success-alert').style.display = 'none';
-    });
+    }
+}
+
+function handleError(error) {
+    console.error('Error:', error);
+    document.getElementById('error-alert').textContent = 'Terjadi kesalahan saat mengirim data: ' + error.message;
+    document.getElementById('error-alert').style.display = 'block';
+    document.getElementById('success-alert').style.display = 'none';
 }
 
 

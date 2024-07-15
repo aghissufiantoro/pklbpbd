@@ -149,7 +149,7 @@ if ($this->session->flashdata('success')) {
 
           <div class="mb-3">
             <label for="foto_artikel" class="form-label">Foto Diri</label>
-            <input type="file" class="form-control" required name="dokumentasi" accept="image/*" />
+            <input id="dokumentasi" type="file" class="form-control" required name="dokumentasi" accept="image/*" />
           </div>
 
           <button type="submit" value="Submit" class="btn btn-primary" >Submit</button>
@@ -270,43 +270,95 @@ if (window.addEventListener) {
     // Trigger change event to initialize Select2-like behavior (if necessary)
     var event = new Event('change');
     document.getElementById('kabkota_kejadian').dispatchEvent(event);
+    
+    document.getElementById('addForm').addEventListener('submit', function(e) {
+        e.preventDefault();
 
-    const form = document.getElementById('addForm');
-    form.addEventListener('submit', handleSubmitAndRedirect);
-
-    function handleSubmitAndRedirect(event) {
-        event.preventDefault(); // Menghentikan pengiriman form secara default
-        
+        const form = e.target;
         const formData = new FormData(form);
 
-        fetch(form.action, {
-            method: 'POST',
-            body: formData,
-            headers: {
-                'X-Requested-With': 'XMLHttpRequest' // Pastikan server mengenali ini sebagai permintaan AJAX
-            }
-        })
-        .then(response => response.text())
-        .then(html => {
-            const partialContainer = document.getElementById('partialContainer');
-            partialContainer.innerHTML = html;
+        // Check if an image is selected
+        const imageFile = document.getElementById('dokumentasi').files[0];
+        if (imageFile) {
+            const imageFormData = new FormData();
+            imageFormData.append('image', imageFile);
+            
+            // Add case type to imageFormData
+            const caseType = '' // assuming kejadian is the case type selector
+            imageFormData.append('case', caseType);
 
-            // Menjalankan tag <script> yang ada di dalam partialContainer
-          
-            // Event listener untuk partial form yang baru dimuat
-            //setupEventListenersInPartial();
-           const scripts = partialContainer.getElementsByTagName('script');
-            for (let i = 0; i < scripts.length; i++) {
-                const script = document.createElement('script');
-                script.text = scripts[i].text;
-                document.head.appendChild(script).parentNode.removeChild(script);
-            }
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            alert('Terjadi kesalahan saat mengirim data.');
-        });
-    }
+            // Upload the image first
+            fetch('<?= base_url('admin/data_kejadian/upload_image') ?>', {
+                method: 'POST',
+                body: imageFormData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    // Add the image URL to the form data
+                    formData.append('image_url', data.image_url);
+
+                    // Now submit the form with the image URL
+                    fetch(form.action, {
+                        method: 'POST',
+                        body: formData,
+                        headers: {
+                            'X-Requested-With': 'XMLHttpRequest'
+                        }
+                    })
+                    .then(response => response.text())
+                    .then(html => {
+                        const partialContainer = document.getElementById('partialContainer');
+                        partialContainer.innerHTML = html;
+
+                        // Execute any scripts in the newly added HTML
+                        const scripts = partialContainer.getElementsByTagName('script');
+                        for (let i = 0; i < scripts.length; i++) {
+                            const script = document.createElement('script');
+                            script.text = scripts[i].text;
+                            document.head.appendChild(script).parentNode.removeChild(script);
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        alert('Terjadi kesalahan saat mengirim data.');
+                    });
+                } else {
+                    alert('Gagal mengunggah gambar: ' + data.message);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Terjadi kesalahan saat mengunggah gambar.');
+            });
+        } else {
+            // If no image is selected, just submit the form data
+            fetch(form.action, {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
+            })
+            .then(response => response.text())
+            .then(html => {
+                const partialContainer = document.getElementById('partialContainer');
+                partialContainer.innerHTML = html;
+
+                // Execute any scripts in the newly added HTML
+                const scripts = partialContainer.getElementsByTagName('script');
+                for (let i = 0; i < scripts.length; i++) {
+                    const script = document.createElement('script');
+                    script.text = scripts[i].text;
+                    document.head.appendChild(script).parentNode.removeChild(script);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Terjadi kesalahan saat mengirim data.');
+            });
+        }
+    });
 
 });
 
