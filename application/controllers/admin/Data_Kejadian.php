@@ -294,7 +294,6 @@ public function get_daerah()
             $response[] = ['value' => $d->desa, 'label' => $d->desa];
         }
     }
-
     echo json_encode($response);
 }
 
@@ -401,6 +400,7 @@ public function save_darurat_medis()
 
             // Log the validation errors
             log_message('error', 'Validation errors: ' . validation_errors());
+
         }
     } else {
         // If input data is null
@@ -409,6 +409,9 @@ public function save_darurat_medis()
             'message' => 'No valid input data received'
         ];
     }
+    
+
+
 
     // Send JSON response
     $this->output

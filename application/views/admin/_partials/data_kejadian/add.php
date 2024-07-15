@@ -270,15 +270,9 @@ if (window.addEventListener) {
     // Trigger change event to initialize Select2-like behavior (if necessary)
     var event = new Event('change');
     document.getElementById('kabkota_kejadian').dispatchEvent(event);
-<<<<<<< HEAD
     
     document.getElementById('addForm').addEventListener('submit', function(e) {
         e.preventDefault();
-=======
-
-    const form = document.getElementById('addForm');
-    form.addEventListener('submit', handleSubmitAndRedirect);
->>>>>>> 806135cebfd10fd8d96cc66300c91a20b81e173a
 
         const form = e.target;
         const formData = new FormData(form);
