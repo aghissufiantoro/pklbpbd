@@ -186,7 +186,7 @@
             },
             credentials: 'same-origin' // Sertakan kredensial dalam permintaan
         })
-        .then(response =>console.log(response.text())) // Parsing respons sebagai JSON
+        .then(response => response.json()) // Parsing respons sebagai JSON
         .then(data => {
         const data1 = JSON.parse(data);
         

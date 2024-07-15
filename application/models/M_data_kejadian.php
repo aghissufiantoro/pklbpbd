@@ -1,5 +1,7 @@
 <?php defined('BASEPATH') or exit('No direct script access allowed');
 
+#[\AllowDynamicProperties]
+
 class M_data_kejadian extends CI_Model
 {
     private $_table                  = "data_kejadian";
