@@ -39,27 +39,11 @@
                 $keca = $res_data_kejadian->kecamatan_kejadian;
                 $kelu = $res_data_kejadian->kelurahan_kejadian;
 
-                $n3 = strlen($keca);
-                $n4 = strlen($kelu);
+                $rsl_keca = $this->db->query("SELECT kecamatan FROM wilayah_2022 WHERE kecamatan = '$keca'")->row();
+                $rsl_kelu = $this->db->query("SELECT desa FROM wilayah_2022 WHERE desa = '$kelu'")->row();
 
-                $m3 = ($n3==2?5:($n3==5?8:13));
-                $m4 = ($n4==2?5:($n4==5?8:13));
-                $rsl_keca = $this->db->query("SELECT nama FROM wilayah_2022 WHERE kode = '$keca'")->row();
-                $rsl_kelu = $this->db->query("SELECT nama FROM wilayah_2022 WHERE kode = '$kelu'")->row();
-
-                if ($rsl_keca) {
-                  $keca_kcl = strtolower($rsl_keca->nama); // Mengonversi nama kecamatan menjadi huruf kecil
-                  $keca_new = ucwords($keca_kcl); // Mengkapitalisasi setiap kata
-                } else {
-                  $keca_new = "Data tidak ditemukan"; // Menangani kasus ketika tidak ada hasil yang dikembalikan
-                }
-
-                if ($rsl_kelu) {
-                  $kelu_kcl = strtolower($rsl_kelu->nama); // Mengonversi nama kelurahan menjadi huruf kecil
-                  $kelu_new = ucwords($kelu_kcl); // Mengkapitalisasi setiap kata
-                } else {
-                  $kelu_new = "Data tidak ditemukan"; // Menangani kasus ketika tidak ada hasil yang dikembalikan
-                }
+                $keca_new = ($rsl_keca && isset($rsl_keca->kecamatan)) ? ucwords(strtolower($rsl_keca->kecamatan)) : "Data tidak ditemukan";
+                $kelu_new = ($rsl_kelu && isset($rsl_kelu->desa)) ? ucwords(strtolower($rsl_kelu->desa)) : "Data tidak ditemukan";
               ?>
                 <tr>
                   <td><?= $no++ ?></td>
@@ -68,15 +52,15 @@
                   <td><?= $res_data_kejadian->waktu_berita ?></td>
                   <td><?= $res_data_kejadian->waktu_tiba ?></td>
                   <td><?= $res_data_kejadian->lokasi_kejadian ?></td>
-                  <td><?= $keca_new ?></td> <!-- Menggunakan variabel yang sudah diformat -->
-                  <td><?= $kelu_new ?></td> <!-- Menggunakan variabel yang sudah diformat -->
+                  <td><?= $keca_new ?></td>
+                  <td><?= $kelu_new ?></td>
                   <td><?= $res_data_kejadian->alamat_kejadian ?></td>
                   <td><?= $res_data_kejadian->kronologi ?></td>
                   <td><?= $res_data_kejadian->tindak_lanjut ?></td>
                   <td><?= $res_data_kejadian->petugas_lokasi ?></td>
                   <td>
                     <?php if (!empty($res_data_kejadian->dokumentasi)) : ?>
-                      <img src="<?= base_url('upload/data_kejadian/' . $res_data_kejadian->dokumentasi) ?>" alt="dokumentasi" width="100">
+                      <img src="<?= base_url($res_data_kejadian->dokumentasi) ?>" alt="dokumentasi" width="100">
                     <?php else : ?>
                       Tidak ada dokumentasi
                     <?php endif; ?>

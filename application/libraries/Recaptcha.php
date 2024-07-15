@@ -7,6 +7,9 @@
  * @author  Bo-Yi Wu <appleboy.tw@gmail.com>
  * @link    https://github.com/appleboy/CodeIgniter-reCAPTCHA
  */
+
+#[\AllowDynamicProperties]
+
 class Recaptcha
 {
     /**
