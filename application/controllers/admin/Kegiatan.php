@@ -131,8 +131,7 @@ class Kegiatan extends CI_Controller {
         }
     }
 
-    public function tambah_petugas($id_kegiatan = null)
-    {
+    public function tambah_petugas($id_kegiatan = null) {
         $this->load->helper('form');
         $this->load->library('form_validation');
     
@@ -141,36 +140,41 @@ class Kegiatan extends CI_Controller {
     
         if ($this->form_validation->run() === FALSE) {
             $data['personel'] = $this->DataKompi_model->get_all_personel();
-            $data['id_kegiatan'] = $id_kegiatan; // Pass id_kegiatan to the view
+            $data['id_kegiatan'] = $id_kegiatan;
             $this->load->view('admin/kegiatan/tambah_petugas', $data);
         } else {
             $id_kegiatan = $this->input->post('id_kegiatan');
             $id_petugas = $this->input->post('petugas');
     
-            // Get the date of the selected kegiatan
             $kegiatan = $this->Kegiatan_model->get_kegiatan_by_id($id_kegiatan);
             if (!$kegiatan) {
                 show_error('Kegiatan tidak ditemukan');
                 return;
             }
             $tanggal = $kegiatan->tanggal;
-            // Begin transaction
+            $lokasi_kegiatan = $kegiatan->lokasi_kegiatan;
+            $shift = $kegiatan->shift;
+            $no_wa = $this->input->post('no_wa');
+            $uraian_kegiatan = $this->input->post('uraian_kegiatan');
+    
+            // Validasi apakah file diunggah
+            
+                $dokumentasi = $this->PenugasanPetugas_model->_uploadImage();
+           
+    
             $this->db->trans_start();
     
             foreach ($id_petugas as $petugas) {
                 $id_penugasan = $this->PenugasanPetugas_model->generate_id_penugasan($tanggal);
-                $this->PenugasanPetugas_model->insert_penugasan($id_kegiatan, $petugas, $id_penugasan);
+                $this->PenugasanPetugas_model->insert_penugasan($id_kegiatan, $id_penugasan, $petugas, $lokasi_kegiatan, $tanggal, $shift, $no_wa, $uraian_kegiatan, $dokumentasi);
             }
     
-            // Complete transaction
             $this->db->trans_complete();
     
             if ($this->db->trans_status() === FALSE) {
-                // Transaction failed, handle the error
                 $this->session->set_flashdata('error', 'Failed to save the data. Please try again.');
                 log_message('error', 'Transaction failed.');
             } else {
-                // Transaction succeeded, handle success
                 $this->session->set_flashdata('success', 'Penugasan berhasil disimpan.');
                 log_message('debug', 'Transaction succeeded.');
             }
@@ -178,6 +182,9 @@ class Kegiatan extends CI_Controller {
             redirect('admin/kegiatan/view_kegiatan');
         }
     }
+    
+    
+    
 
     public function get_personel_by_kompi($jenis_kompi) {
         $personel = $this->DataKompi_model->get_personel_by_kompi($jenis_kompi);
@@ -224,6 +231,14 @@ class Kegiatan extends CI_Controller {
         $this->load->model('PenugasanPetugas_model');
         $data['penugasan_petugas'] = $this->PenugasanPetugas_model->get_all_penugasan();
         $this->load->view('admin/kegiatan/view_penugasan_petugas', $data);
+    }
+
+    public function delete($id = null)
+    {
+        if (!isset($id)) show_404();
+        if ($this->PenugasanPetugas_model->delete($id)) {
+            redirect(site_url('admin/kegiatan/view_penugasan_petugas'));
+        }
     }
 
 }

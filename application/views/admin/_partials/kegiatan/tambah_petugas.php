@@ -7,7 +7,7 @@
                 </div>
             </div>
             <div class="card-body">
-                <?php echo form_open('admin/kegiatan/tambah_petugas'); ?>
+                <?php echo form_open('admin/kegiatan/tambah_petugas', 'class="needs-validation" enctype="multipart/form-data"'); ?>
                 <div class="form-group">
                     <label for="id_kegiatan">ID Kegiatan</label>
                     <input type="text" class="form-control" name="id_kegiatan" id="id_kegiatan" value="<?php echo isset($id_kegiatan) ? $id_kegiatan : ''; ?>" readonly>
@@ -47,8 +47,8 @@
                     <input type="number" class="form-control" name="no_wa" id="no_wa" required>
                 </div>
                 <div class="form-group">
-                    <label for="dokumentasi">Dokumentasi</label>
-                    <input type="file" class="form-control" name="dokumentasi[]" id="dokumentasi" accept="image/*" multiple>
+                <label class="form-label">Dokumentasi</label>
+                <input type="file" class="form-control" id="dokumentasi" name="dokumentasi[]" accept="image/*" multiple />
                 </div>
                 <div id="petugas-container"></div>
                 <button type="submit" class="btn btn-success">Submit</button>
@@ -61,36 +61,37 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script>
     function loadPetugasOptions(jenisKompi, jumlahPersonel) {
-        if (jenisKompi && jumlahPersonel > 0) {
-            $.ajax({
-                url: "<?php echo base_url('admin/kegiatan/get_personel_by_kompi/'); ?>" + jenisKompi,
-                method: 'GET',
-                success: function(data) {
-                    try {
-                        var petugasData = JSON.parse(data);
-                        console.log("Received data:", petugasData);
-                        $('#petugas-container').empty();
-                        for (var i = 0; i < jumlahPersonel; i++) {
-                            var select = $('<select class="form-control" name="petugas[]" required></select>');
-                            select.append('<option value="">Pilih Petugas</option>');
-                            $.each(petugasData, function(index, petugas) {
-                                var option = $('<option></option>').attr('value', petugas.id_petugas).text(petugas.nama_petugas);
-                                select.append(option);
-                            });
-                            $('#petugas-container').append('<div class="form-group"><label>Petugas ' + (i + 1) + '</label>' + select.prop('outerHTML') + '</div>');
-                        }
-                    } catch (e) {
-                        console.error("Error parsing JSON:", e);
+    if (jenisKompi && jumlahPersonel > 0) {
+        $.ajax({
+            url: "<?php echo base_url('admin/kegiatan/get_personel_by_kompi/'); ?>" + jenisKompi,
+            method: 'GET',
+            success: function(data) {
+                try {
+                    var petugasData = JSON.parse(data);
+                    console.log("Received data:", petugasData);
+                    $('#petugas-container').empty();
+                    for (var i = 0; i < jumlahPersonel; i++) {
+                        var select = $('<select class="form-control" name="petugas[]" required></select>');
+                        select.append('<option value="">Pilih Petugas</option>');
+                        $.each(petugasData, function(index, petugas) {
+                            var option = $('<option></option>').attr('value', petugas.id_petugas).text(petugas.nama_petugas);
+                            select.append(option);
+                        });
+                        $('#petugas-container').append('<div class="form-group"><label>Petugas ' + (i + 1) + '</label>' + select.prop('outerHTML') + '</div>');
                     }
-                },
-                error: function(xhr, status, error) {
-                    console.error("Failed to load petugas data:", error);
+                } catch (e) {
+                    console.error("Error parsing JSON:", e);
                 }
-            });
-        } else {
-            $('#petugas-container').empty();
-        }
+            },
+            error: function(xhr, status, error) {
+                console.error("Failed to load petugas data:", error);
+            }
+        });
+    } else {
+        $('#petugas-container').empty();
     }
+}
+
 
     $(document).ready(function() {
         $('#jenis_kompi').change(function() {

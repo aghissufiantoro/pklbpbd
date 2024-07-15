@@ -57,7 +57,7 @@
                                                         Data yang akan dihapus adalah <?= $penugasan->id_penugasan ?>
                                                     </div>
                                                     <div class="modal-footer d-flex align-items-center">
-                                                        <a href="<?= base_url('admin/data_kejadian/delete/' . $penugasan->id_penugasan) ?>" class="btn btn-outline-danger">
+                                                        <a href="<?= base_url('admin/kegiatan/delete/' . $penugasan->id_penugasan) ?>" class="btn btn-outline-danger">
                                                             <i class="fad fa-trash-alt"></i>
                                                         </a>
                                                         <button class="btn btn-outline-success mr-auto" type="button" data-bs-dismiss="modal"><i class="fa fa-times"></i> Cancel</button>
@@ -67,6 +67,43 @@
                                         </div>
                                     </td>
                                 </tr>
+                                <div class="modal fade" id="view_images-<?= $penugasan->id_penugasan ?>" data-bs-backdrop="static" data-bs-keyboard="false" aria-hidden="true" aria-labelledby="exampleModalToggleLabel2" tabindex="-1">
+								<div class="modal-dialog modal-xl">
+									<div class="modal-content">
+										<div class="modal-header">
+											<h5 class="modal-title" id="exampleModalToggleLabel2"><?= $penugasan->uraian_kegiatan ?></h5>
+											<button type="button" class="btn-close" data-bs-target="#alur_pelayanan" data-bs-toggle="modal" aria-label="Close"></button>
+										</div>
+										<div class="modal-body">
+											<div class="row">
+												<?php
+												$images = json_decode($penugasan->dokumentasi);
+												if (is_array($images)) {
+													foreach ($images as $image) {
+														?>
+														<div class="col-md-4 mb-3">
+															<img src="<?= base_url('upload/tugas_harian/' . $image) ?>" class="img-fluid" alt="<?= $penugasan->uraian_kegiatan ?>">
+														</div>
+														<?php
+													}
+												} else {
+													?>
+													<div class="col-md-4 mb-3">
+														<img src="<?= base_url('upload/tugas_harian/' . $penugasan->dokumentasi) ?>" class="img-fluid" alt="<?= $penugasan->uraian_kegiatan ?>">
+													</div>
+													<?php
+												}
+												?>
+											</div>
+										</div>
+										<div class="modal-footer">
+											<button class="btn btn-primary" data-bs-target="#alur_pelayanan" data-bs-toggle="modal">
+												Kembali
+											</button>
+										</div>
+									</div>
+								</div>
+							</div>
                             <?php
                             }
                             ?>
