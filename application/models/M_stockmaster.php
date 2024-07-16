@@ -27,21 +27,19 @@ class m_stockmaster extends CI_Model
     {
         $post = $this->input->post();
     
-        $this->kode_barang     = $post['kode_barang'];
+        $this->kode_barang     = $this->generate_kode_barang();
         $this->nama_barang     = $post['nama_barang'];
         $this->kategori_barang = $post['kategori_barang'];
         $this->satuan_barang     = $post['satuan_barang'];
     
         $this->db->insert($this->_table, $this);
     }
-    
-      
 
     public function update()
     {
         $post = $this->input->post();
 
-        $this->kode_barang     = $post['kode_barang'];
+        // $this->kode_barang     = 
         $this->nama_barang     = $post['nama_barang'];
         $this->kategori_barang = $post['kategori_barang'];
         $this->satuan_barang     = $post['satuan_barang'];
@@ -55,5 +53,27 @@ class m_stockmaster extends CI_Model
         // Remove the recursive call $this->delete($id);
         return $this->db->delete($this->_table, array("kode_barang" => $id));
     }
+
+    public function generate_kode_barang()
+{
+    // Ambil kode barang terakhir dari database
+    $this->db->select('kode_barang');
+    $this->db->order_by('kode_barang', 'DESC');
+    $this->db->limit(1);
+    $last_kode_barang = $this->db->get($this->_table)->row();
+
+    if ($last_kode_barang) {
+        // Jika ada, ambil nomor urutnya dan tambahkan 1
+        $last_number = intval(substr($last_kode_barang->kode_barang, 2));
+        $new_number = $last_number + 1;
+        $new_kode_barang = 'BR' . sprintf('%04d', $new_number); // Format nomor urut dengan leading zero
+    } else {
+        // Jika belum ada data, mulai dari BR0001
+        $new_kode_barang = 'BR0001';
+    }
+
+    return $new_kode_barang;
+}
+
     
 }
