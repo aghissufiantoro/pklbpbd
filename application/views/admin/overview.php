@@ -16,6 +16,7 @@
 
         <div class="page-content">
             <h1 class="mt-4">Selamat Datang!!</h1>
+            
             <ol class="breadcrumb mb-4">
                 <li class="breadcrumb-item active">Admin SI 2 TANG BEDA</li>
             </ol>

@@ -37,8 +37,8 @@
 
 	    // ambil data kabupaten ketika data memilih provinsi
 	    $('body').on("change","#form_prov",function(){
-	      var id = $(this).val();
-	      var data = "id="+id+"&data=kabupaten";
+	      var wilayah = $(this).val();
+	      var data = "wilayah="+wilayah+"&data=kabupaten";
 	      $.ajax({
 	        type: 'POST',
 	        url: "<?= base_url('admin/data_kejadian/get_daerah') ?>",
@@ -54,8 +54,8 @@
 
 	    // ambil data kecamatan/kota ketika data memilih kabupaten
 	    $('body').on("change","#kabkota_kejadian",function(){
-	      var id = $(this).val();
-	      var data = "id="+id+"&data=kecamatan";
+	      var wilayah = $(this).val();
+	      var data = "wilayah="+wilayah+"&data=kecamatan";
 	      $.ajax({
 	        type: 'POST',
 	        url: "<?= base_url('admin/data_kejadian/get_daerah') ?>",
@@ -70,8 +70,8 @@
 
 	    // ambil data desa ketika data memilih kecamatan/kota
 	    $('body').on("change","#kecamatan_kejadian",function(){
-	      var id = $(this).val();
-	      var data = "id="+id+"&data=kelurahan";
+	      var wilayah = $(this).val();
+	      var data = "wilayah="+wilayah+"&data=kelurahan";
 	      $.ajax({
 	        type: 'POST',
 	        url: "<?= base_url('admin/data_kejadian/get_daerah') ?>",
@@ -82,6 +82,7 @@
 	        }
 	      });
 	    }); 
+
 	  });
 	</script>
 </body>
