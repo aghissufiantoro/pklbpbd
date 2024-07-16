@@ -436,7 +436,7 @@ public function kebakaran()
     $this->load->view("admin/data_kejadian/new_form_kebakaran", $data);
 }
 
-    public function save_kebakaran()
+public function save_kebakaran()
 {
     // Check user role
     if ($this->session->userdata('role') != "1") {
@@ -453,24 +453,21 @@ public function kebakaran()
     $inputJSON = file_get_contents('php://input');
     $input = json_decode($inputJSON, true);
 
-
-    log_message('info', 'Received JSON data: ' . $inputJSON); 
+    // Log the incoming request data
+    log_message('info', 'Received JSON data: ' . $inputJSON);
 
     // Check if JSON is valid
     if ($input === null && json_last_error() !== JSON_ERROR_NONE) {
         // Handle JSON decode error
         $response = [
             'status' => 'error',
-            'message' => $inputJSON
+            'message' => 'Invalid JSON format'
         ];
         $this->output
              ->set_content_type('application/json')
              ->set_output(json_encode($response));
         return;
     }
-
-    // Log the incoming request data
-    log_message('info', 'Incoming request data: ' . json_encode($input));
 
     // Set validation rules
     if ($input) {
@@ -505,14 +502,10 @@ public function kebakaran()
             $data_kejadian->save($data);
 
             // Prepare success response
-
-            $response = array('status' => 'success', 'data' => $data);
-            echo json_encode($response);
-
-            // $response = [
-            //     'status' => 'success',
-            //     'data' => $data
-            // ];
+            $response = [
+                'status' => 'success',
+                'data' => $data
+            ];
         } else {
             // Validation failed, prepare error response
             $response = [
@@ -534,8 +527,9 @@ public function kebakaran()
     // Send JSON response
     $this->output
          ->set_content_type('application/json')
-         ->set_output(json_encode($inputJSON));
+         ->set_output(json_encode($response));
 }
+
 
     public function lainnya()
     {
