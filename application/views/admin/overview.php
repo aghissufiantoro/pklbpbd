@@ -84,7 +84,7 @@
                     <div class="card bg-danger text-white mb-4 rounded-card">
                         <div class="card-body d-flex align-items-center">
                             <img id="lokasi-image" src="<?= base_url("image/lokasi.png") ?>" alt="Lokasi" width="80" height="80" style="margin-right: 10px;" />
-                            <div style="margin-left: auto;"> <h5>Lokasi Pos Pantau</h5>
+                            <div style="margin-left: auto;"> <h5>Lokasi Pos</h5>
                                 <div id="lokasi-count" style="margin-left: 120px;"><?=$lokasi_pos?></div>
                             </div>
                         </div>

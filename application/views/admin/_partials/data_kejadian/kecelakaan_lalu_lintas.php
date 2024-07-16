@@ -39,7 +39,7 @@
             </div>
           </div>
 
-          <div class="row">
+          ``<div class="row">
             <div class="col-md-12">
               <div class="mb-3">
                 <label for="alamat" class="form-label">Alamat</label>
@@ -54,7 +54,7 @@
                 <label for="kendaraan" class="form-label">Kendaraan</label>
                 <input type="text" class="form-control" name="kendaraan" id="kendaraan" required>
               </div>
-            </div>
+            </div>``
             <div class="col-md-6">
               <div class="mb-3">
                 <label for="luka" class="form-label">Luka</label>
@@ -72,6 +72,32 @@
             </div>
           </div>
 
+          <div class="row">
+            <div class="col-md-12">
+              <div class="mb-3">
+                <label for="kronologi_laka" class="form-label">Kronologi Laka</label>
+                <input type="text" class="form-control" name="kronologi_laka" id="kronologi_laka" required>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-12">
+              <div class="mb-3">
+                <label for="tindak_lanjut_laka" class="form-label">Tindak Lanjut Laka</label>
+                <input type="text" class="form-control" name="tindak_lanjut_laka" id="tindak_lanjut_laka" required>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-12">
+              <div class="mb-3">
+                <label for="petugas_di_lokasi_laka" class="form-label">Petugas di Lokasi Laka</label>
+                <input type="text" class="form-control" name="petugas_di_lokasi_laka" id="petugas_di_lokasi_laka" required>
+              </div>
+            </div>
+          </div>
 
           <a href="<?= base_url("admin/data_kejadian") ?>">
             <input class="btn btn-outline-primary" type="submit" value="Submit">
