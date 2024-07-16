@@ -199,141 +199,134 @@
 
     <script>
         setupEventListenersInPartial();
-        
-        function handleSubmitAndRedirectInsidePartial() {
-        const form = document.getElementById('addForm1'); 
-        const formData = new FormData(form);
-        const idKejadian = document.getElementById('id_kejadian').value;
-        const imageFile = document.getElementById('dokumentasi_kebakaran').files[0];
+        function setupEventListenersInPartial() {
+    const saveButtonPartial = document.getElementById('saveButton');
 
-        // Buat objek untuk menyimpan data form
-        const formObject = {
-            id_kejadian: idKejadian
-        };
-
-        alert(idKejadian);
-
-        formData.forEach((value, key) => {
-            formObject[key] = value;
+    if (saveButtonPartial) {
+        saveButtonPartial.addEventListener('click', function(event) {
+            event.preventDefault();
+            handleSubmitAndRedirectInsidePartial();
         });
-
-        if (imageFile) {
-            const imageFormData = new FormData();
-            imageFormData.append('image', imageFile);
-            const caseType = 'Kebakaran'; // Assuming kejadian is the case type selector
-            imageFormData.append('case', caseType);
-
-            fetch('<?= base_url('admin/data_kejadian/upload_image') ?>', {
-                method: 'POST',
-                body: imageFormData
-            })
-            .then(response => response.json())
-            .then(data => {
-                console.log(data);
-                if (data.status === 'success') {
-                    formObject.dokumentasi_kebakaran = data.image_url;
-
-                    fetch("<?= base_url("admin/data_kejadian/save_kebakaran") ?>", {
-                        method: 'POST',
-                        body: JSON.stringify(formObject),
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'X-Requested-With': 'XMLHttpRequest'
-                        },
-                        credentials: 'same-origin'
-                    })
-                    .then(response => console.log(response.json()))
-                    .then(data => handleResponse(data, form))
-                    .catch(handleError);
-                } else {
-                    alert('Gagal mengunggah gambar: ' + data.message);
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                
-                alert(error);
-            });
-        } else {
-            fetch(form.action, {
-                method: 'POST',
-                body: JSON.stringify(formObject),
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-Requested-With': 'XMLHttpRequest'
-                },
-                credentials: 'same-origin'
-            })
-            .then(response => response.json())
-            .then(data => handleResponse(data, form))
-            .catch(handleError);
-        }
     }
 
-    function handleResponse(data, form) {
-    const baseUrl = 'http://localhost:80/bpbd'
-    console.log(data)
-        if (data !== null) {
-            const data1 = data.data;
-            const newRow = document.createElement('tr');
-            newRow.innerHTML = `
-                    <td>${data1.objek_terbakar}</td>
-                    <td>${data1.luas_terbakar}</td>
-                    <td>${data1.luas_bangunan}</td>
-                    <td>${data1.penyebab}</td>
-                    <td>${data1.status_bangunan}</td>
-                    <td>${data1.nama}</td>
-                    <td>${data1.usia}</td>
-                    <td>${data1.jenis_kelamin}</td>
-                    <td>${data1.alamat}</td>
-                    <td>${data1.lebar_jalan}</td>
-                    <td>${data1.kondisi_bangunan}</td>
-                    <td>${data1.kronologi_kebakaran}</td>
-                    <td>${data1.tindak_lanjut_kebakaran}</td>
-                    <td>${data1.petugas_di_lokasi_kebakaran}</td>
-                    <td><img src="${baseUrl + data1.dokumentasi_kebakaran}" alt="dokumentasi" width="100"></td>
-                `;
-            document.getElementById('dataKejadianTableBody').appendChild(newRow);
-
-            form.reset();
-
-            document.getElementById('success-alert').textContent = 'Data berhasil disimpan';
-            document.getElementById('success-alert').style.display = 'block';
-            document.getElementById('error-alert').style.display = 'none';
-        } else {
-            document.getElementById('error-alert').textContent = 'Gagal mengirim data: ' + data.message;
-            document.getElementById('error-alert').style.display = 'block';
-            document.getElementById('success-alert').style.display = 'none';
-        }
+    const stopButtonPartial = document.getElementById('stopButton');
+    if (stopButtonPartial) {
+        stopButtonPartial.addEventListener('click', function() {
+            window.location.href = '<?php echo site_url('admin/data_kejadian'); ?>';
+        });
     }
+}
 
-    function handleError(error) {
-        console.error('Error:', error);
-        document.getElementById('error-alert').textContent = 'Terjadi kesalahan saat mengirim data: ' + error.message;
+function handleSubmitAndRedirectInsidePartial() {
+    const form = document.getElementById('addForm1'); 
+    const formData = new FormData(form);
+    const idKejadian = document.getElementById('id_kejadian').value;
+    const imageFile = document.getElementById('dokumentasi_kebakaran').files[0];
+
+    // Buat objek untuk menyimpan data form
+    const formObject = {
+        id_kejadian: idKejadian
+    };
+
+    alert(idKejadian);
+
+    formData.forEach((value, key) => {
+        formObject[key] = value;
+    });
+
+    if (imageFile) {
+        const imageFormData = new FormData();
+        imageFormData.append('image', imageFile);
+        const caseType = 'Kebakaran'; // Assuming kejadian is the case type selector
+        imageFormData.append('case', caseType);
+
+        fetch('<?= base_url('admin/data_kejadian/upload_image') ?>', {
+            method: 'POST',
+            body: imageFormData
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === 'success') {
+                formObject.dokumentasi_kebakaran = data.image_url;
+
+                fetch("<?= base_url("admin/data_kejadian/save_kebakaran") ?>", {
+                    method: 'POST',
+                    body: JSON.stringify(formObject),
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-Requested-With': 'XMLHttpRequest'
+                    },
+                    credentials: 'same-origin'
+                })
+                .then(response => response.json())
+                .then(data => handleResponse(data, form))
+                .catch(handleError);
+            } else {
+                alert('Gagal mengunggah gambar: ' + data.message);
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert(error);
+        });
+    } else {
+        fetch(form.action, {
+            method: 'POST',
+            body: JSON.stringify(formObject),
+            headers: {
+                'Content-Type': 'application/json',
+                'X-Requested-With': 'XMLHttpRequest'
+            },
+            credentials: 'same-origin'
+        })
+        .then(response => response.json())
+        .then(data => handleResponse(data, form))
+        .catch(handleError);
+    }
+}
+
+function handleResponse(data, form) {
+    const baseUrl = 'http://localhost:80/bpbd';
+    if (data.status === 'success') {
+        const data1 = data.data;
+        const newRow = document.createElement('tr');
+        newRow.innerHTML = `
+            <td>${data1.objek_terbakar}</td>
+            <td>${data1.luas_terbakar}</td>
+            <td>${data1.luas_bangunan}</td>
+            <td>${data1.penyebab}</td>
+            <td>${data1.status_bangunan}</td>
+            <td>${data1.nama}</td>
+            <td>${data1.usia}</td>
+            <td>${data1.jenis_kelamin}</td>
+            <td>${data1.alamat}</td>
+            <td>${data1.lebar_jalan}</td>
+            <td>${data1.kondisi_bangunan}</td>
+            <td>${data1.kronologi_kebakaran}</td>
+            <td>${data1.tindak_lanjut_kebakaran}</td>
+            <td>${data1.petugas_di_lokasi_kebakaran}</td>
+            <td><img src="${baseUrl + data1.dokumentasi_kebakaran}" alt="dokumentasi" width="100"></td>
+        `;
+        document.getElementById('dataKejadianTableBody').appendChild(newRow);
+
+        form.reset();
+
+        document.getElementById('success-alert').textContent = 'Data berhasil disimpan';
+        document.getElementById('success-alert').style.display = 'block';
+        document.getElementById('error-alert').style.display = 'none';
+    } else {
+        document.getElementById('error-alert').textContent = 'Gagal mengirim data: ' + data.message;
         document.getElementById('error-alert').style.display = 'block';
         document.getElementById('success-alert').style.display = 'none';
     }
+}
 
-        // Setup event listener di partial form
-        function setupEventListenersInPartial() {
-        
-        
-            const saveButtonPartial = document.getElementById('saveButton');
-        
-            if (saveButtonPartial) {
-            
-                saveButtonPartial.addEventListener('click', function(event) {
-                    event.preventDefault();
-                    handleSubmitAndRedirectInsidePartial();
-                });
-            }
+function handleError(error) {
+    console.error('Error:', error);
+    document.getElementById('error-alert').textContent = 'Terjadi kesalahan saat mengirim data: ' + error.message;
+    document.getElementById('error-alert').style.display = 'block';
+    document.getElementById('success-alert').style.display = 'none';
+}
 
-            const stopButtonPartial = document.getElementById('stopButton');
-            if (stopButtonPartial) {
-            
-                stopButtonPartial.addEventListener('click', function() {
-                    window.location.href = '<?php echo site_url('admin/data_kejadian'); ?>';
-                });
-            }
-        }
+
     </script>
