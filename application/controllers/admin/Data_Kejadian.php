@@ -524,6 +524,8 @@ public function save_kebakaran()
         ];
     }
 
+    
+
     // Send JSON response
     $this->output
          ->set_content_type('application/json')
@@ -556,25 +558,92 @@ public function save_kebakaran()
 
     public function kecelakaan_lalu_lintas()
     {
-        if ($this->session->userdata('role') == "1")
-        {
-            $data_kejadian = $this->m_data_kejadian;
-            $validation = $this->form_validation;
-            $validation->set_rules($data_kejadian->rules5());
-
-            if ($validation->run())
-            {
-                $data_kejadian->save_laka();
-                redirect(site_url('admin/data_kejadian'));
-                $this->session->set_flashdata('success', '<i class="fa fa-check"></i> Alhamdulillah, Data berhasil disimpan');
-            }
-
-            $this->load->view("admin/data_kejadian/new_form_kecelakaan_lalu_lintas");
-        }
-        else
-        {
+        if ($this->session->userdata('role') != "1") {
             show_404();
+            return;
         }
+
+        $new_id_kejadian = $this->session->flashdata('new_id_kejadian');
+        if (empty($new_id_kejadian)) {
+            show_404();
+            return;
+        }
+
+        $data['new_id_kejadian'] = $new_id_kejadian;
+        $this->load->view("admin/data_kejadian/new_form_kecelakaan_lalu_lintas", $data);
+    }
+
+    public function save_kecelakaan_lalu_lintas(){
+        if($this->session->userdata('role') != "1"){
+            $this->output->set_status_header(403);
+            echo json_encode(['status' => 'error', 'message' => 'Unauthorized access']);
+            return;
+        }
+        $this->load->model('M_form_laka');
+        $data_kejadian = $this->M_form_laka;
+
+        $inputJSON = file_get_contents('php://input');
+        $input = json_decode($inputJSON, true);
+
+        log_message('info', 'Received JSON data: ' . $inputJSON);
+
+        if ($input === null && json_last_error() !== JSON_ERROR_NONE) {
+            $response = [
+                'status' => 'error',
+                'message' => 'Invalid JSON format'
+            ];
+            $this->output
+                 ->set_content_type('application/json')
+                 ->set_output(json_encode($response));
+            return;
+        }
+
+        if ($input){
+            $this->form_validation->set_data($input);
+            $this->form_validation->set_rules($data_kejadian->rules());
+
+            if ($this->form_validation->run() === TRUE){
+                $data = [
+                    'id_kejadian' => $input['id_kejadian'],
+                    'nama' => $input['nama'],
+                    'jenis_kelamin' => $input['jenis_kelamin'],
+                    'usia' => $input['usia'],
+                    'alamat' => $input['alamat'],
+                    'kendaraan' => $input['kendaraan'],
+                    'luka' => $input['luka'],
+                    'kondisi' => $input['kondisi'],
+                    'kronologi_laka' => $input['kronologi_laka'],
+                    'tindak_lanjut_laka' => $input['tindak_lanjut_laka'],
+                    'petugas_di_lokasi_laka' => $input['petugas_di_lokasi_laka'],
+                    'dokumentasi_laka' => $input['dokumentasi_laka']
+                ];
+
+                log_message('info', 'Data to be saved: ' . json_encode($data));
+
+                $data_kejadian->save($data);
+
+                $response = [
+                    'status' => 'success',
+                    'data' => $data
+                ];
+            } else {
+                $response = [
+                    'status' => 'error',
+                    'message' => validation_errors()
+                ];
+
+                log_message('error', 'Validation errors: ' . validation_errors());
+            }
+        } else {
+            $response = [
+                'status' => 'error',
+                'message' => 'No valid input data received'
+            ];
+        }
+
+        $this->output
+             ->set_content_type('application/json')
+             ->set_output(json_encode($response));
     }
 
     public function orang_tenggelam()
