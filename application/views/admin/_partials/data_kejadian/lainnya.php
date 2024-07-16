@@ -48,6 +48,34 @@
                         </div>
                     </div>
 
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="mb-3">
+                                <label for="kronologi_lain" class="form-label">Kronologi Lain</label>
+                                <input id="kronologi_lain" class="form-control" name="kronologi_lain" type="text" required>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="mb-3">
+                                <label for="tindak_lanjut_lain" class="form-label">Tindak Lanjut Lain</label>
+                                <input id="tindak_lanjut_lain" class="form-control" name="tindak_lanjut_lain" type="text" required>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="mb-3">
+                                <label for="petugas_di_lokasi_lain" class="form-label">Petugas di Lokasi Lain</label>
+                                <input id="petugas_di_lokasi_lainn" class="form-control" name="petugas_di_lokasi_lain" type="text" required>
+                            </div>
+                        </div>
+                    </div>
+
+
                     <button class="btn btn-success" type="submit">Save</button>
                 </form>
             </div>
