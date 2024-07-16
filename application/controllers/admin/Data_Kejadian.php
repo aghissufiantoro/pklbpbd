@@ -419,28 +419,22 @@ public function save_darurat_medis()
          ->set_output(json_encode($response));
 }
 
-    public function kebakaran()
-    {
-        if ($this->session->userdata('role') == "1")
-        {
-            $data_kejadian = $this->m_data_kejadian;
-            $validation = $this->form_validation;
-            $validation->set_rules($data_kejadian->rules3());
-
-            if ($validation->run())
-            {
-                $data_kejadian->save_kebakaran();
-                redirect(site_url('admin/data_kejadian'));
-                $this->session->set_flashdata('success', '<i class="fa fa-check"></i> Alhamdulillah, Data berhasil disimpan');
-            }
-
-            $this->load->view("admin/data_kejadian/new_form_kebakaran");
-        }
-        else
-        {
-            show_404();
-        }
+public function kebakaran()
+{
+    if ($this->session->userdata('role') != "1") {
+        show_404();
+        return;
     }
+
+    $new_id_kejadian = $this->session->flashdata('new_id_kejadian');
+    if (empty($new_id_kejadian)) {
+        show_404();
+        return;
+    }
+
+    $data['new_id_kejadian'] = $new_id_kejadian;
+    $this->load->view("admin/data_kejadian/new_form_kebakaran", $data);
+}
 
     public function save_kebakaran()
 {
@@ -511,10 +505,14 @@ public function save_darurat_medis()
             $data_kejadian->save($data);
 
             // Prepare success response
-            $response = [
-                'status' => 'success',
-                'data' => $data
-            ];
+
+            $response = array('status' => 'success', 'data' => $data);
+            echo json_encode($response);
+
+            // $response = [
+            //     'status' => 'success',
+            //     'data' => $data
+            // ];
         } else {
             // Validation failed, prepare error response
             $response = [

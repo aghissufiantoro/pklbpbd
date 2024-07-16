@@ -24,15 +24,16 @@ class M_form_darurat_medis extends CI_Model
     }
 
 
-=======
-            // Add more rules as needed
-        ];
-    }
 
+public function save($data)
+    {
+        return $this->db->insert($this->_table, $data);
+    }
+    
     public function get_all_by_id($id_kejadian)
     {
         $this->db->where('id_kejadian', $id_kejadian);
         return $this->db->get($this->_table)->result();
     }
-
+}
 
