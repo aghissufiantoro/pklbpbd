@@ -15,8 +15,8 @@
                     <div class="row">
                         <div class="col-md-12">
                             <div class="mb-3">
-                                <label for="Jenis Kejadian Lain" class="form-label">Jenis Kejadian Lain</label>
-                                <input id="Jenis Kejadian Lain" class="form-control" name="jenis_kejadian_lain" type="text" required>
+                                <label for="jenis_kejadian_lain" class="form-label">Jenis Kejadian Lain</label>
+                                <input id="jenis_kejadian_lain" class="form-control" name="jenis_kejadian_lain" type="text" required>
                             </div>
                         </div>
                     </div>
@@ -24,8 +24,8 @@
                     <div class="row">
                         <div class="col-md-12">
                             <div class="mb-3">
-                                <label for="Nama" class="form-label">Nama</label>
-                                <input id="Nama" class="form-control" name="nama" type="text" required>
+                                <label for="nama" class="form-label">Nama</label>
+                                <input id="nama" class="form-control" name="nama" type="text" required>
                             </div>
                         </div>
                     </div>
@@ -33,8 +33,8 @@
                     <div class="row">
                         <div class="col-md-12">
                             <div class="mb-3">
-                                <label for="Alamat" class="form-label">Alamat</label>
-                                <input id="Alamat" class="form-control" name="alamat" type="text" required>
+                                <label for="alamat" class="form-label">Alamat</label>
+                                <input id="alamat" class="form-control" name="alamat" type="text" required>
                             </div>
                         </div>
                     </div>
@@ -42,11 +42,47 @@
                     <div class="row">
                         <div class="col-md-12">
                             <div class="mb-3">
-                                <label for="Detail Objek" class="form-label">Detail Obyek</label>
-                                <input id="Detail Objek" class="form-control" name="detail_obyek" type="text" required>
+                                <label for="detail_obyek" class="form-label">Detail Objek</label>
+                                <input id="detail_obyek" class="form-control" name="detail_obyek" type="text" required>
                             </div>
                         </div>
                     </div>
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="mb-3">
+                                <label for="kronologi_lain" class="form-label">Kronologi Lain</label>
+                                <input id="kronologi_lain" class="form-control" name="kronologi_lain" type="text" required>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="mb-3">
+                                <label for="tindak_lanjut_lain" class="form-label">Tindak Lanjut Lain</label>
+                                <input id="tindak_lanjut_lain" class="form-control" name="tindak_lanjut_lain" type="text" required>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="mb-3">
+                                <label for="petugas_di_lokasi_lain" class="form-label">Petugas di Lokasi Lain</label>
+                                <input id="petugas_di_lokasi_lain" class="form-control" name="petugas_di_lokasi_lain" type="text" required>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="mb-3">
+                                <label for="dokumentasi_lain" class="form-label">Dokumentasi</label>
+                                <input id="dokumentasi_lain" type="file" class="form-control" required name="dokumentasi_lain" accept="image/*" />
+                            </div>
+                        </div>
+                    </div> 
 
                     <button class="btn btn-success" type="submit">Save</button>
                 </form>
