@@ -671,25 +671,91 @@ public function save_kebakaran()
 
     public function penemuan_jenazah()
     {
-        if ($this->session->userdata('role') == "1")
-        {
-            $data_kejadian = $this->m_data_kejadian;
-            $validation = $this->form_validation;
-            $validation->set_rules($data_kejadian->rules7());
-
-            if ($validation->run())
-            {
-                $data_kejadian->save_penemuan_jenazah();
-                redirect(site_url('admin/data_kejadian'));
-                $this->session->set_flashdata('success', '<i class="fa fa-check"></i> Alhamdulillah, Data berhasil disimpan');
-            }
-
-            $this->load->view("admin/data_kejadian/new_form_penemuan_jenazah");
-        }
-        else
-        {
+        if ($this->session->userdata('role') != "1") {
             show_404();
+            return;
         }
+        $new_id_kejadian = $this->session->flashdata('new_id_kejadian');
+        if (empty($new_id_kejadian)) {
+            show_404();
+            return;
+        }
+
+        $data['new_id_kejadian'] = $new_id_kejadian;
+        $this->load->view("admin/data_kejadian/new_form_penemuan_jenazah", $data);
+    }
+
+    public function save_penemuan_jenazah(){
+        if($this->session->userdata('role') != "1"){
+            $this->output->set_status_header(403);
+            echo json_encode(['status' => 'error', 'message' => 'Unauthorized access']);
+            return;
+        }
+        $this->load->model('M_form_penemuan_jenazah');
+        $data_kejadian = $this->M_form_penemuan_jenazah;
+
+        $inputJSON = file_get_contents('php://input');
+        $input = json_decode($inputJSON, true);
+
+        log_message('info', 'Received JSON data: ' . $inputJSON);
+
+        if ($input === null && json_last_error() !== JSON_ERROR_NONE) {
+            $response = [
+                'status' => 'error',
+                'message' => 'Invalid JSON format'
+            ];
+            $this->output
+                 ->set_content_type('application/json')
+                 ->set_output(json_encode($response));
+            return;
+        }
+
+        if ($input){
+            $this->form_validation->set_data($input);
+            $this->form_validation->set_rules($data_kejadian->rules());
+
+            if ($this->form_validation->run() === TRUE){
+                $data = [
+                    'id_kejadian' => $input['id_kejadian'],
+                    'nama_saksi' => $input['nama_saksi'],
+                    'usia_saksi' => $input['usia_saksi'],
+                    'alamat_saksi' => $input['alamat_saksi'],
+                    'nama_korban' => $input['nama_korban'],
+                    'usia_korban' => $input['usia_korban'],
+                    'alamat_korban' => $input['alamat_korban'],
+                    'alamat_domisili_korban' => $input['alamat_domisili_korban'],
+                    'kronologi_penemuan_jenazah' => $input['kronologi_penemuan_jenazah'],
+                    'tindak_lanjut_penemuan_jenazah' => $input['tindak_lanjut_penemuan_jenazah'],
+                    'petugas_di_lokasi_penemuan_jenazah' => $input['petugas_di_lokasi_penemuan_jenazah'],
+                    'dokumentasi_penemuan_jenazah' => $input['dokumentasi_penemuan_jenazah']
+                ];
+
+                log_message('info', 'Data to be saved: ' . json_encode($data));
+
+                $data_kejadian->save($data);
+
+                $response = [
+                    'status' => 'success',
+                    'data' => $data
+                ];
+            } else {
+                $response = [
+                    'status' => 'error',
+                    'message' => validation_errors()
+                ];
+
+                log_message('error', 'Validation errors: ' . validation_errors());
+            }
+        } else {
+            $response = [
+                'status' => 'error',
+                'message' => 'No valid input data received'
+            ];
+        }
+
+        $this->output
+             ->set_content_type('application/json')
+             ->set_output(json_encode($response));
     }
 
     public function pohon_tumbang()

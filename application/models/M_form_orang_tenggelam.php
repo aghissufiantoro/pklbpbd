@@ -11,6 +11,8 @@ class M_form_orang_tenggelam extends CI_Model
         $this->load->database();
     }
 
+    
+
     public function save($data)
     {
         return $this->db->insert($this->_table, $data);

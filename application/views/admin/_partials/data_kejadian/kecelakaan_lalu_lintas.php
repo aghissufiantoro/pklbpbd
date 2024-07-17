@@ -261,7 +261,7 @@
 
       form.reset();
 
-      doucment.getElementById('success-alert').textContent = 'Data berhasil disimpan';
+      document.getElementById('success-alert').textContent = 'Data berhasil disimpan';
       document.getElementById('success-alert').style.display = 'block';
       document.getElementById('error-alert').style.display = 'none';
     } else {
