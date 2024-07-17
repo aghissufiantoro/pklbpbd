@@ -138,7 +138,7 @@ class PenugasanPetugas_model extends CI_Model {
 
     public function _uploadImage()
     {
-        $config['upload_path'] = './upload/tugas_harian/';
+        $config['upload_path'] = './upload/kegiatan/';
         $config['allowed_types'] = 'gif|jpg|png|jpeg|bmp';
         $config['encrypt_name'] = TRUE;
     

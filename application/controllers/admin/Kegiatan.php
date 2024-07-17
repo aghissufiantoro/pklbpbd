@@ -141,6 +141,15 @@ class Kegiatan extends CI_Controller {
         if ($this->form_validation->run() === FALSE) {
             $data['personel'] = $this->DataKompi_model->get_all_personel();
             $data['id_kegiatan'] = $id_kegiatan;
+
+            // Get lokasi kegiatan from the database
+            $kegiatan = $this->Kegiatan_model->get_kegiatan_by_id($id_kegiatan);
+            if ($kegiatan) {
+                $data['lokasi_kegiatan'] = $kegiatan->lokasi_kegiatan;
+            } else {
+                $data['lokasi_kegiatan'] = ''; // Handle the case where the kegiatan is not found
+            }
+
             $this->load->view('admin/kegiatan/tambah_petugas', $data);
         } else {
             $id_kegiatan = $this->input->post('id_kegiatan');
@@ -159,7 +168,7 @@ class Kegiatan extends CI_Controller {
     
             // Validasi apakah file diunggah
             
-                $dokumentasi = $this->PenugasanPetugas_model->_uploadImage();
+            $dokumentasi = $this->PenugasanPetugas_model->_uploadImage();
            
     
             $this->db->trans_start();
@@ -179,7 +188,7 @@ class Kegiatan extends CI_Controller {
                 log_message('debug', 'Transaction succeeded.');
             }
     
-            redirect('admin/kegiatan/view_kegiatan');
+            redirect('admin/kegiatan/view_penugasan_petugas');
         }
     }
     

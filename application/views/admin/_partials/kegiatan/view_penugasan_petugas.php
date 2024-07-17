@@ -44,7 +44,6 @@
 								    </td>
                                     <td>
                                         <a href="<?= site_url('admin/kegiatan/edit_penugasan/' . $penugasan->id_penugasan) ?>" class="btn btn-outline-primary btn-xs"><i class='fal fa-pencil'></i></a>
-                                        <a href="<?= site_url('admin/data_kejadian/detail/' . $penugasan->id_penugasan) ?>" class="btn btn-outline-primary btn-xs"><i class='fal fa-list-ul'></i></a>
                                         <a data-bs-toggle="modal" data-bs-target="#deleteConfirm<?= $penugasan->id_penugasan ?>" class="ms-3 btn btn-outline-danger btn-xs"><i class="fal fa-trash-alt"></i></a>
                                         <div class="modal fade" id="deleteConfirm<?= $penugasan->id_penugasan ?>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                             <div class="modal-dialog modal-lg">
@@ -71,7 +70,7 @@
 								<div class="modal-dialog modal-xl">
 									<div class="modal-content">
 										<div class="modal-header">
-											<h5 class="modal-title" id="exampleModalToggleLabel2"><?= $penugasan->uraian_kegiatan ?></h5>
+											<h5 class="modal-title" id="exampleModalToggleLabel2">Dokumentasi</h5>
 											<button type="button" class="btn-close" data-bs-target="#alur_pelayanan" data-bs-toggle="modal" aria-label="Close"></button>
 										</div>
 										<div class="modal-body">
@@ -82,14 +81,14 @@
 													foreach ($images as $image) {
 														?>
 														<div class="col-md-4 mb-3">
-															<img src="<?= base_url('upload/tugas_harian/' . $image) ?>" class="img-fluid" alt="<?= $penugasan->uraian_kegiatan ?>">
+															<img src="<?= base_url('upload/kegiatan/' . $image) ?>" class="img-fluid" alt="Dokumentasi">
 														</div>
 														<?php
 													}
 												} else {
 													?>
 													<div class="col-md-4 mb-3">
-														<img src="<?= base_url('upload/tugas_harian/' . $penugasan->dokumentasi) ?>" class="img-fluid" alt="<?= $penugasan->uraian_kegiatan ?>">
+														<img src="<?= base_url('upload/kegiatan/' . $penugasan->dokumentasi) ?>" class="img-fluid" alt="Dokumentasi">
 													</div>
 													<?php
 												}

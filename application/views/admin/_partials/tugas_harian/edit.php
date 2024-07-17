@@ -1,3 +1,16 @@
+<?php 
+  if ($this->session->flashdata('success'))
+  {
+?>
+  <div class="alert alert-success alert-dismissible fade show" role="alert" id="success-alert">
+    <strong>SUKSES!</strong> Data telah dirubah.
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="btn-close"></button>
+  </div>
+<?php
+    $this->session->set_flashdata('success', null); // Clear flash message
+  }
+?>
+
 <div class="container mt-2">
     <h4 class="mb-3">UBAH DATA TUGAS HARIAN</h4>
     <?php echo validation_errors(); ?>
@@ -89,4 +102,11 @@ document.getElementById('nama_staff').addEventListener('change', function() {
             allowClear: true
         });
     });
+
+    setTimeout(function() {
+        const successAlert = document.getElementById('success-alert');
+        if (successAlert) {
+            successAlert.style.display = 'none';
+        }
+    }, 5000);
 </script>

@@ -9,8 +9,8 @@
                 </div>
             </div>
             <div class="card-body">
-                <h6 class="card-title">Data Kegiatan di Kota Surabaya</h6>
-                <p class="text-muted mb-3">Data Kegiatan di Pemerintah Kota Surabaya</p>
+                <h6 class="card-title">Jadwal Ploting BPBD Kota Surabaya</h6>
+                <p class="text-muted mb-3">Jadwal Ploting di BPBD Kota Surabaya</p>
                 <div class="table-responsive">
                     <table id="dataTableExample" class="table">
                         <thead>

@@ -11,65 +11,74 @@
   }
 ?>
 
-<div class="row">
-    <div class="col-md-12 grid-margin stretch-card">
-        <div class="card">
-            <div class="card-body">
-                <h4 class="card-title">Ubah Penugasan</h4>
-                <p class="text-muted mb-3">Mohon di isi</p>
-                <form id="editForm" action="<?= site_url('admin/kegiatan/edit_penugasan/'.$kegiatan->id_penugasan) ?>" method="post" enctype="multipart/form-data">
-                    <div class="form-group">
-                        <label for="id_kegiatan">Id Penugasan</label>
+<div class="container mt-2">
+    <h4 class="mb-3">UBAH PENUGASAN</h4>
+        <form id="editForm" action="<?= site_url('admin/kegiatan/edit_penugasan/'.$kegiatan->id_penugasan) ?>" method="post" enctype="multipart/form-data">
+            <div class="row">
+                <div class="col-md-6"> 
+
+                    <div class="mb-3">
+                        <label for="id_kegiatan">ID Penugasan</label>
                         <input type="text" class="form-control" id="id_penugasan" name="id_penugasan" value="<?= $kegiatan->id_penugasan ?>" disabled>
                     </div>
-
                     
-                    <div class="form-group">
+                    <div class="mb-3">
                         <label for="lokasi_kegiatan">Lokasi Kegiatan</label>
                         <input type="text" class="form-control" name="lokasi_kegiatan" id="lokasi_kegiatan" value="<?= $kegiatan->lokasi_kegiatan ?>" required>
                     </div>
-                    <div class="form-group">
+
+                    <div class="mb-3">
                         <label for="tanggal">Tanggal</label>
                         <input type="date" class="form-control" name="tanggal" id="tanggal" value="<?= $kegiatan->tanggal ?>" required>
                     </div>
-                    <div class="form-group">
+
+                    <div class="mb-3">
                         <label for="shift">Shift</label>
                         <input type="text" class="form-control" name="shift" id="shift" value="<?= $kegiatan->shift ?>" required>
                     </div>
-                    <div class="form-group">
-                    <label for="jenis_kompi">Jenis Kompi</label>
-                    <select class="form-control" name="jenis_kompi" id="jenis_kompi" required>
-                        <option value="">Pilih Jenis Kompi</option>
-                        <option value="A">A</option>
-                        <option value="B">B</option>
-                        <option value="C">C</option>
-                    </select>
+
+                    <div class="mb-3">
+                        <label for="jenis_kompi">Jenis Kompi</label>
+                        <select class="form-control" name="jenis_kompi" id="jenis_kompi" required>
+                            <option value="">Pilih Jenis Kompi</option>
+                            <option value="A">A</option>
+                            <option value="B">B</option>
+                            <option value="C">C</option>
+                        </select>
+                    </div>
+
                 </div>
-                <div class="form-group">
-                    <label for="jumlah_personel">Jumlah Personel</label>
-                    <input type="number" class="form-control" name="jumlah_personel" id="jumlah_personel" required>
+
+                <div class="col-md-6">
+
+                    <div class="mb-3">
+                        <label for="jumlah_personel">Jumlah Personel</label>
+                        <input type="number" class="form-control" name="jumlah_personel" id="jumlah_personel" required>
+                    </div>
+                    <div class="mb-3" id="petugas-container"></div>
+
+                    <div class="mb-3">
+                        <label for="uraian_kegiatan">Uraian Kegiatan</label>
+                        <input type="text" class="form-control" name="uraian_kegiatan" id="uraian_kegiatan" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="no_wa">No WA</label>
+                        <input type="number" class="form-control" name="no_wa" id="no_wa" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Dokumentasi</label>
+                        <input type="file" class="form-control" id="dokumentasi" name="dokumentasi[]" accept="image/*" multiple />
+                    </div>
+
                 </div>
-                <div class="form-group">
-                    <label for="uraian_kegiatan">Uraian Kegiatan</label>
-                    <input type="text" class="form-control" name="uraian_kegiatan" id="uraian_kegiatan" required>
-                </div>
-                <div class="form-group">
-                    <label for="no_wa">No WA</label>
-                    <input type="number" class="form-control" name="no_wa" id="no_wa" required>
-                </div>
-                <div class="form-group">
-                <label class="form-label">Dokumentasi</label>
-                <input type="file" class="form-control" id="dokumentasi" name="dokumentasi[]" accept="image/*" multiple />
-                </div>
-                <div id="petugas-container"></div>
-                <a href="<?= base_url("admin/kegiatan/view_penugasan_petugas") ?>">
-                    <input class="btn btn-warning" type="button" value="Kembali">
-                </a>
-                <button type="submit" class="btn btn-success">Submit</button>
-                <?php echo form_close(); ?>
             </div>
-        </div>
-    </div>
+            <a href="<?= base_url("admin/kegiatan/view_penugasan_petugas") ?>">
+                <input class="btn btn-warning" type="button" value="Kembali">
+            </a>
+            <button type="submit" class="btn btn-success">Submit</button>
+        <?php echo form_close(); ?>
 </div>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>

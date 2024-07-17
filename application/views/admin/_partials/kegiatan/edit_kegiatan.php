@@ -10,31 +10,25 @@
     $this->session->set_flashdata('success', null); // Clear flash message
   }
 ?>
+<div class="container mt-2">
+  <h4 class="mb-3">UBAH JADWAL PLOTING</h4>
+    <form id="addForm" action="<?= site_url('admin/kegiatan/edit_plot_kegiatan/'.$kegiatan->id_kegiatan) ?>" method="post" enctype="multipart/form-data">
+    <input type="hidden" name="id_kegiatan" value="<?= $kegiatan->id_kegiatan ?>">
+          
+      <div class="row">
+        <div class="col-md-6">
 
-<!-- <nav class="page-breadcrumb">
-	<ol class="breadcrumb">
-		<li class="breadcrumb-item"><a href="#">Tables</a></li>
-		<li class="breadcrumb-item active" aria-current="page">Data Table</li>
-	</ol>
-</nav> -->
-
-<div class="row">
-	<div class="col-md-12 grid-margin stretch-card">
-    <div class="card">
-      <div class="card-body">
-        <h4 class="card-title">Ubah Data Kegiatan</h4>
-        <p class="text-muted mb-3">Mohon di isi</p>
-        <form id="addForm" action="<?= site_url('admin/kegiatan/edit_plot_kegiatan/'.$kegiatan->id_kegiatan) ?>" method="post" enctype="multipart/form-data">
-          <input type="hidden" name="id_kegiatan" value="<?= $kegiatan->id_kegiatan ?>">
-          <div class="form-group">
+          <div class="mb-3">
             <label for="tanggal">Tanggal</label>
             <input type="date" class="form-control" name="tanggal" value="<?= $kegiatan->tanggal ?>" required>
           </div>
-          <div class="form-group">
+
+          <div class="mb-3">
             <label for="shift">Shift</label>
             <input type="text" class="form-control" name="shift" value="<?= $kegiatan->shift ?>" required>
           </div>
-          <div class="form-group">
+
+          <div class="mb-3">
             <label for="kegiatan">Kegiatan</label>
             <select class="form-control" name="kegiatan" id="kegiatan" onchange="updateLokasiOptions()" required>
               <option value="">Pilih Kegiatan</option>
@@ -47,33 +41,41 @@
               <option value="Lain-Lain" <?= $kegiatan->kegiatan == 'Lain-Lain' ? 'selected' : '' ?>>Lain-Lain</option>
             </select>
           </div>
-          <div class="form-group">
+
+          <div class="mb-3">
             <label for="lokasi_kegiatan">Lokasi Kegiatan</label>
             <select class="form-control" name="lokasi_kegiatan" id="lokasi_kegiatan" required>
               <option value="">Pilih Lokasi</option>
             </select>
           </div>
-          <div class="form-group">
+            
+        </div>
+
+        <div class="col-md-6">
+
+          <div class="mb-3">
             <label for="jumlah_personel">Jumlah Personel</label>
             <input type="number" class="form-control" name="jumlah_personel" value="<?= $kegiatan->jumlah_personel ?>" required>
           </div>
-          <div class="form-group">
+
+          <div class="mb-3">
             <label for="jumlah_jarko">Jumlah Jarko</label>
             <input type="number" class="form-control" name="jumlah_jarko" value="<?= $kegiatan->jumlah_jarko ?>" required>
           </div>
-          <div class="form-group">
+
+          <div class="mb-3">
             <label for="keterangan">Keterangan</label>
             <input type="text" class="form-control" name="keterangan" value="<?= $kegiatan->keterangan ?>" required>
           </div>
-          <a href="<?= base_url("admin/kegiatan/view_kegiatan") ?>">
-            <input class="btn btn-warning" type="button" value="Kembali">
-          </a>
-          <input class="btn btn-primary" type="submit" value="Submit">
-        </form>
+
+        </div>
       </div>
-    </div>
-	</div>
-</div>            
+      <a href="<?= base_url("admin/kegiatan/view_kegiatan") ?>">
+        <input class="btn btn-warning" type="button" value="Kembali">
+      </a>
+        <input class="btn btn-primary" type="submit" value="Submit">
+      </form>
+</div>           
 
 <script>
     const lokasiOptions = {

@@ -15,30 +15,32 @@
         </div>
     <?php endif; ?>
 
+        <div class="row">
+            <div class="col-md-6">
 
-    <div class="form-group">
-        <label for="tanggal">Tanggal</label>
-        <input type="date" class="form-control" name="tanggal" required>
-    </div>
+                <div class="mb-3">
+                    <label for="tanggal">Tanggal</label>
+                    <input type="date" class="form-control" name="tanggal" required>
+                </div>
 
-    <div class="form-group">
-        <label for="shift">Shift</label>
-        <input type="text" class="form-control" name="shift" required>
-    </div>
+                <div class="mb-3">
+                    <label for="shift">Shift</label>
+                    <input type="text" class="form-control" name="shift" required>
+                </div>
 
-    <div class="form-group">
-        <label for="kegiatan">Kegiatan</label>
-        <select class="form-control" name="kegiatan" id="kegiatan" onchange="updateLokasiOptions()" required>
-            <option value="">Pilih Kegiatan</option>
-            <option value="Pos Pantau">Pos Pantau</option>
-            <option value="Gudang Peralatan">Gudang Peralatan</option>
-            <option value="Posko Terpadu">Posko Terpadu</option>
-            <option value="Resepsionis">Resepsionis</option>
-            <option value="Siaga Mako">Siaga Mako</option>
-            <option value="Posko PMI">Posko PMI</option>
-            <option value="Lain-Lain">Lain-Lain</option>
-        </select>
-    </div>
+                <div class="mb-3">
+                    <label for="kegiatan">Kegiatan</label>
+                    <select class="form-control" name="kegiatan" id="kegiatan" onchange="updateLokasiOptions()" required>
+                        <option value="">Pilih Kegiatan</option>
+                        <option value="Pos Pantau">Pos Pantau</option>
+                        <option value="Gudang Peralatan">Gudang Peralatan</option>
+                        <option value="Posko Terpadu">Posko Terpadu</option>
+                        <option value="Resepsionis">Resepsionis</option>
+                        <option value="Siaga Mako">Siaga Mako</option>
+                        <option value="Posko PMI">Posko PMI</option>
+                        <option value="Lain-Lain">Lain-Lain</option>
+                    </select>
+                </div>
 
                 <div class="mb-3">
                     <label for="lokasi_kegiatan" class="form-label">Lokasi Kegiatan</label>

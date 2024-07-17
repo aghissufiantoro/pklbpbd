@@ -1,14 +1,10 @@
-<div class="row">
-    <div class="col-md-12 grid-margin stretch-card">
-        <div class="card">
-            <div class="card-title">
-                <div style="margin: 20px;">
-                    <h2>Tambah Petugas</h2>
-                </div>
-            </div>
-            <div class="card-body">
-                <?php echo form_open('admin/kegiatan/tambah_petugas', 'class="needs-validation" enctype="multipart/form-data"'); ?>
-                <div class="form-group">
+<div class="container mt-2">
+    <h4 class="mb-3">TAMBAH PETUGAS</h4>
+    <?php echo form_open('admin/kegiatan/tambah_petugas', 'class="needs-validation" enctype="multipart/form-data"'); ?>
+        <div class="row">
+            <div class="col-md-6">            
+
+                <div class="mb-3">
                     <label for="id_kegiatan">ID Kegiatan</label>
                     <input type="text" class="form-control" name="id_kegiatan" id="id_kegiatan" value="<?php echo isset($id_kegiatan) ? $id_kegiatan : ''; ?>" readonly>
                 </div>
@@ -57,9 +53,10 @@
                     <label for="no_wa" class="form-label">No WA</label>
                     <input type="number" class="form-control" name="no_wa" id="no_wa" required>
                 </div>
+                
                 <div class="form-group">
-                <label class="form-label">Dokumentasi</label>
-                <input type="file" class="form-control" id="dokumentasi" name="dokumentasi[]" accept="image/*" multiple />
+                    <label class="form-label">Dokumentasi</label>
+                    <input type="file" class="form-control" id="dokumentasi" name="dokumentasi[]" accept="image/*" multiple />
                 </div>
 
             </div>

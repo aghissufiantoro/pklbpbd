@@ -66,7 +66,7 @@ class tugas_harian extends CI_Controller
     if ($validation->run()) {
         $tugasharian->update($id);
         $this->session->set_flashdata('success', '<i class="fa fa-check"></i> Alhamdulillah, Data berhasil disimpan');
-        redirect('admin/tugas_harian');
+        redirect('admin/tugas_harian/edit/'.$id);
     }
 
     $data['staff_options'] = $tugasharian->get_all_staff();
