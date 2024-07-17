@@ -22,9 +22,9 @@ class M_form_penemuan_jenazah extends CI_Model
             ['field' => 'alamat_korban', 'label' => 'Alamat Korban', 'rules' => 'required'],
             ['field' => 'alamat_domisili_korban', 'label' => 'Alamat Domisili Korban', 'rules' => 'required'],
             ['field' => 'kronologi_penemuan_jenazah', 'label' => 'Kronologi Penemuan Jenazah', 'rules' => 'required'],
-            ['field' => 'tindak_lanjut_penemuan_jenazah', 'label' => 'Tindak Lanjut Penemuan Jenzah', 'rules' => 'required'],
+            ['field' => 'tindak_lanjut_penemuan_jenazah', 'label' => 'Tindak Lanjut Penemuan Jenazah', 'rules' => 'required'],
             ['field' => 'petugas_di_lokasi_penemuan_jenazah', 'label' => 'Petugas di Lokasi Penemuan Jenazah', 'rules' => 'required'],
-            ['field' => 'dokumentasi_penemuan_jenazah', 'label' => 'Dokumentasi Penemuan Jenzah', 'rules' => 'required']
+            ['field' => 'dokumentasi_penemuan_jenazah', 'label' => 'Dokumentasi Penemuan Jenazah', 'rules' => 'required']
         ];
     }
 
