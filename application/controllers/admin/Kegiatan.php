@@ -84,13 +84,13 @@ class Kegiatan extends CI_Controller {
     {
         if ($this->session->userdata('role') == "1")
         {
-            if (!isset($id)) redirect('admin/kegiatan');
+            if (!isset($id)) redirect('admin/kegiatan/view_kegiatan');
            
             $kegiatan = $this->Kegiatan_model;
             $validation = $this->form_validation;
 
             if ($validation->run()) {
-                $kegiatan->update();
+                $kegiatan->update_kegiatan();
                 $this->session->set_flashdata('success', '<i class="fa fa-check"></i> Alhamdulillah, Data berhasil diupdate');
             }
 
@@ -121,8 +121,7 @@ class Kegiatan extends CI_Controller {
         }
     }
 
-    public function tambah_petugas($id_kegiatan = null)
-    {
+    public function tambah_petugas($id_kegiatan = null) {
         $this->load->helper('form');
         $this->load->library('form_validation');
     
@@ -131,11 +130,25 @@ class Kegiatan extends CI_Controller {
     
         if ($this->form_validation->run() === FALSE) {
             $data['personel'] = $this->DataKompi_model->get_all_personel();
-            $data['id_kegiatan'] = $id_kegiatan; // Pass id_kegiatan to the view
+            $data['id_kegiatan'] = $id_kegiatan;
+    
+            // Get lokasi kegiatan from the database
+            $kegiatan = $this->Kegiatan_model->get_kegiatan_by_id($id_kegiatan);
+            if ($kegiatan) {
+                $data['lokasi_kegiatan'] = $kegiatan->lokasi_kegiatan;
+            } else {
+                $data['lokasi_kegiatan'] = ''; // Handle the case where the kegiatan is not found
+            }
+    
             $this->load->view('admin/kegiatan/tambah_petugas', $data);
         } else {
-            $id_kegiatan = $this->input->post('id_kegiatan');
-            $id_petugas = $this->input->post('petugas');
+            $id_kegiatan        = $this->input->post('id_kegiatan');
+            $id_petugas         = $this->input->post('petugas');
+            $lokasi_kegiatan    = $this->input->post('lokasi_kegiatan');
+            $shift              = $this->input->post('shift');
+            $no_wa              = $this->input->post('no_wa');
+            $uraian_kegiatan    = $this->input->post('uraian_kegiatan');
+            $dokumentasi        = $this->_uploadImage(); // Call the function to upload images and get JSON string
     
             // Get the date of the selected kegiatan
             $kegiatan = $this->Kegiatan_model->get_kegiatan_by_id($id_kegiatan);
@@ -144,12 +157,28 @@ class Kegiatan extends CI_Controller {
                 return;
             }
             $tanggal = $kegiatan->tanggal;
+    
             // Begin transaction
             $this->db->trans_start();
     
             foreach ($id_petugas as $petugas) {
                 $id_penugasan = $this->PenugasanPetugas_model->generate_id_penugasan($tanggal);
-                $this->PenugasanPetugas_model->insert_penugasan($id_kegiatan, $petugas, $id_penugasan);
+                $penugasan_data = array(
+                    'id_kegiatan' => $id_kegiatan,
+                    'id_penugasan' => $id_penugasan,
+                    'id_petugas' => $petugas,
+                    'lokasi_kegiatan' => $lokasi_kegiatan,
+                    'tanggal' => $tanggal,
+                    'shift' => $shift,
+                    'no_wa' => $no_wa,
+                    'uraian_kegiatan' => $uraian_kegiatan,
+                    'dokumentasi' => $dokumentasi
+                );
+    
+                // Debug log for checking penugasan data before insertion
+                log_message('debug', 'Penugasan data: ' . json_encode($penugasan_data));
+    
+                $this->PenugasanPetugas_model->insert_penugasan($penugasan_data);
             }
     
             // Complete transaction
@@ -167,7 +196,7 @@ class Kegiatan extends CI_Controller {
     
             redirect('admin/kegiatan/view_kegiatan');
         }
-    }
+    }                  
 
     public function get_personel_by_kompi($jenis_kompi) {
         $personel = $this->DataKompi_model->get_personel_by_kompi($jenis_kompi);
@@ -207,7 +236,46 @@ class Kegiatan extends CI_Controller {
             redirect('admin/kegiatan/plot_kegiatan');
         }
     }
-       
+    
+    private function _uploadImage()
+    {
+        $config['upload_path'] = './upload/kegiatan/';
+        $config['allowed_types'] = 'gif|jpg|png|jpeg|bmp';
+        $config['encrypt_name'] = TRUE;
+
+        $this->load->library('upload', $config);
+
+        $file_names = array();
+
+        if (isset($_FILES['dokumentasi']) && count($_FILES['dokumentasi']['name']) > 0) {
+            $files = $_FILES;
+            $file_count = count($_FILES['dokumentasi']['name']);
+
+            for ($i = 0; $i < $file_count; $i++) {
+                $_FILES['dokumentasi']['name'] = $files['dokumentasi']['name'][$i];
+                $_FILES['dokumentasi']['type'] = $files['dokumentasi']['type'][$i];
+                $_FILES['dokumentasi']['tmp_name'] = $files['dokumentasi']['tmp_name'][$i];
+                $_FILES['dokumentasi']['error'] = $files['dokumentasi']['error'][$i];
+                $_FILES['dokumentasi']['size'] = $files['dokumentasi']['size'][$i];
+
+                if ($this->upload->do_upload('dokumentasi')) {
+                    $file_data = $this->upload->data();
+                    $file_names[] = $file_data['file_name'];
+                    log_message('debug', 'File uploaded: ' . $file_data['file_name']); // Logging file name
+                } else {
+                    log_message('error', 'File upload failed: ' . $this->upload->display_errors()); // Logging upload errors
+                }
+            }
+        }
+
+        if (count($file_names) > 0) {
+            return json_encode($file_names);
+        }
+
+        return json_encode(['default.png']);
+    }
+
+  
 
     public function view_penugasan_petugas()
     {
@@ -216,4 +284,19 @@ class Kegiatan extends CI_Controller {
         $this->load->view('admin/kegiatan/view_penugasan_petugas', $data);
     }
 
+    public function delete_penugasan_petugas($id = null)
+    {
+        if ($this->session->userdata('role') == "1")
+        {
+            if (!isset($id)) show_404();
+            
+            if ($this->PenugasanPetugas_model->delete_penugasan_petugas($id)) {
+                redirect(site_url('admin/kegiatan/view_penugasan_petugas'));
+            }
+        }
+        else
+        {
+            show_404();
+        }
+    }
 }

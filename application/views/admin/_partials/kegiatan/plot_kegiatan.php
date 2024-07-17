@@ -1,77 +1,66 @@
-<div class="container mt-5">
-    <h1>Tambah jadwal Ploting</h1>
+<div class="container mt-2">
+    <h4 class="mb-3">TAMBAH JADWAL PLOTING</h4>
     <?php echo validation_errors(); ?>
     <?php echo form_open('admin/kegiatan/plot_kegiatan', 'class="needs-validation"'); ?>
 
-    <div class="form-group">
-					<label for="tanggal">Tanggal</label>
-					<input type="date" class="form-control" name="tanggal" required>
-				</div>
+        <div class="row">
+            <div class="col-md-6">
 
-    <div class="form-group">
-    <div class="form-group">
-                <label for="shift">Shift</label>
-                <input type="text" class="form-control" name="shift" required>
-         </div>
-         </div>
+                <div class="mb-3">
+                    <label for="tanggal" class="form-label">Tanggal</label>
+                    <input type="date" class="form-control" name="tanggal" required>
+                </div>
 
+                <div class="mb-3">
+                    <label for="shift" class="form-label">Shift</label>
+                    <input type="text" class="form-control" name="shift" required>
+                </div>
 
-    <div class="form-group">
-        <label for="kegiatan">Kegiatan</label>
-        <select class="form-control" name="kegiatan" id="kegiatan" onchange="updateLokasiOptions()" required>
-            <option value="">Pilih Kegiatan</option>
-            <option value="Pos Pantau">Pos Pantau</option>
-            <option value="Gudang Peralatan">Gudang Peralatan</option>
-            <option value="Posko Terpadu">Posko Terpadu</option>
-            <option value="Resepsionis">Resepsionis</option>
-            <option value="Siaga Mako">Siaga Mako</option>
-            <option value="Posko PMI">Posko PMI</option>
-            <option value="Lain-Lain">Lain-Lain</option>
-        </select>
-    </div>
+                <div class="mb-3">
+                    <label for="kegiatan" class="form-label">Kegiatan</label>
+                    <select class="form-control" name="kegiatan" id="kegiatan" onchange="updateLokasiOptions()" required>
+                        <option value="">Pilih Kegiatan</option>
+                        <option value="Pos Pantau">Pos Pantau</option>
+                        <option value="Gudang Peralatan">Gudang Peralatan</option>
+                        <option value="Posko Terpadu">Posko Terpadu</option>
+                        <option value="Resepsionis">Resepsionis</option>
+                        <option value="Siaga Mako">Siaga Mako</option>
+                        <option value="Posko PMI">Posko PMI</option>
+                        <option value="Lain-Lain">Lain-Lain</option>
+                    </select>
+                </div>
 
-    <div class="form-group">
-        <label for="lokasi_kegiatan">Lokasi Kegiatan</label>
-        <select class="form-control" name="lokasi_kegiatan" id="lokasi_kegiatan" required>
-            <option value="">Pilih Lokasi</option>
-        </select>
-    </div>
-    <div class="form-group">
-        <label for="lokasi_kegiatan">Lokasi Kegiatan</label>
-        <select class="form-control" name="lokasi_kegiatan" id="lokasi_kegiatan" required>
-            <option value="">Pilih Lokasi</option>
-        </select>
-    </div>
+                <div class="mb-3">
+                    <label for="lokasi_kegiatan" class="form-label">Lokasi Kegiatan</label>
+                    <select class="form-control" name="lokasi_kegiatan" id="lokasi_kegiatan" required>
+                        <option value="">Pilih Lokasi</option>
+                    </select>
+                </div>
 
-    <div class="form-group">
-        <label for="jumlah_personel">Jumlah Personel</label>
-        <input type="number" class="form-control" name="jumlah_personel" required>
-    </div>
+            </div>
 
-    <div class="form-group">
-        <label for="jumlah_jarko">Jumlah Jarko</label>
-        <input type="number" class="form-control" name="jumlah_jarko" required>
-    </div>
-    <div class="form-group">
-        <label for="jumlah_personel">Jumlah Personel</label>
-        <input type="number" class="form-control" name="jumlah_personel" required>
-    </div>
+            <div class="col-md-6">
 
-    <div class="form-group">
-        <label for="jumlah_jarko">Jumlah Jarko</label>
-        <input type="number" class="form-control" name="jumlah_jarko" required>
-    </div>
+                <div class="mb-3">
+                    <label for="jumlah_personel" class="form-label">Jumlah Personel</label>
+                    <input type="number" class="form-control" name="jumlah_personel" required>
+                </div>
 
-    <div class="form-group">
-        <label for="keterangan">Keterangan</label>
-        <input type="text" class="form-control" name="keterangan" required>
-    </div>
-    <div class="form-group">
-        <label for="keterangan">Keterangan</label>
-        <input type="text" class="form-control" name="keterangan" required>
-    </div>
+                <div class="mb-3">
+                    <label for="jumlah_jarko" class="form-label">Jumlah Jarko</label>
+                    <input type="number" class="form-control" name="jumlah_jarko" required>
+                </div>
 
-    <button type="submit" class="btn btn-primary">Submit</button>
+                <div class="mb-3">
+                    <label for="keterangan" class="form-label">Keterangan</label>
+                    <input type="text" class="form-control" name="keterangan" required>
+                </div>
+            </div>
+        </div>
+        <a href="<?= base_url("admin/kegiatan/view_kegiatan") ?>">
+            <input class="btn btn-warning" type="button" value="Kembali">
+        </a>
+        <button type="submit" class="btn btn-primary">Submit</button>
     <?php echo form_close(); ?>
 </div>
 

@@ -96,6 +96,15 @@ class Kegiatan_model extends CI_Model {
 
 class PenugasanPetugas_model extends CI_Model {
 
+    private $_table ="tabel_penugasan_petugas";
+
+    public function get_penugasan_by_id($id_penugasan)
+    {
+        $this->db->where('id_penugasan', $id_penugasan);
+        $query = $this->db->get('tabel_penugasan_petugas');
+        return $query->row();
+    }
+
     public function generate_id_petugas($tanggal) {
         $date = date('dmY', strtotime($tanggal)); // Format DDMMYY dari tanggal input
         $prefix = 'TL' . $date;
@@ -129,20 +138,12 @@ class PenugasanPetugas_model extends CI_Model {
         return $id;
     }
 
-    public function insert_penugasan($id_kegiatan, $id_penugasan, $id_petugas, $lokasi_kegiatan, $tanggal, $shift, $no_wa, $uraian_kegiatan, $dokumentasi) {
+    public function insert_penugasan($data) {
         $this->load->model('Kegiatan_model');
-        if ($this->Kegiatan_model->is_kegiatan_exists($id_kegiatan)) {
-            $data = array(
-                'id_kegiatan' => $id_kegiatan,
-                'id_penugasan' => $id_penugasan,
-                'id_petugas' => $id_petugas,
-                'lokasi_kegiatan' => $lokasi_kegiatan,
-                'tanggal' => $tanggal,
-                'shift' => $shift,
-                'no_wa' => $no_wa,
-                'uraian_kegiatan' => $uraian_kegiatan,
-                'dokumentasi' => $dokumentasi
-            );
+        if ($this->Kegiatan_model->is_kegiatan_exists($data['id_kegiatan'])) {
+            // Debug log for checking data being inserted
+            log_message('debug', 'Data to be inserted: ' . json_encode($data));
+    
             if ($this->db->insert('tabel_penugasan_petugas', $data)) {
                 return true;
             } else {
@@ -153,7 +154,7 @@ class PenugasanPetugas_model extends CI_Model {
             return false;
         }
     }
-
+      
     public function get_penugasan_by_kegiatan($id_kegiatan) {
         $this->db->where('id_kegiatan', $id_kegiatan);
         $query = $this->db->get('tabel_penugasan_petugas');
@@ -171,40 +172,15 @@ class PenugasanPetugas_model extends CI_Model {
         return $query->result();
     }
 
-    private function _uploadImage()
-	{
-		$config['upload_path'] = './upload/dokumentasi/';
-		$config['allowed_types'] = 'gif|jpg|png|jpeg|bmp';
-		$config['encrypt_name'] = TRUE;
-
-		$this->load->library('upload', $config);
-		$files = $_FILES;
-		$file_count = count($_FILES['dokumentasi']['name']);
-		$file_names = array();
-
-		for ($i = 0; $i < $file_count; $i++) {
-			$_FILES['dokumentasi']['name'] = $files['dokumentasi']['name'][$i];
-			$_FILES['dokumentasi']['type'] = $files['dokumentasi']['type'][$i];
-			$_FILES['dokumentasi']['tmp_name'] = $files['dokumentasi']['tmp_name'][$i];
-			$_FILES['dokumentasi']['error'] = $files['dokumentasi']['error'][$i];
-			$_FILES['dokumentasi']['size'] = $files['dokumentasi']['size'][$i];
-
-			if ($this->upload->do_upload('dokumentasi')) {
-				$file_data = $this->upload->data();
-				$file_names[] = $file_data['file_name'];
-			}
-		}
-
-		if (count($file_names) > 0) {
-			return json_encode($file_names);
-		}
-
-		return json_encode(['default.png']);
-	}
+    public function delete_penugasan_petugas($id)
+    {
+        $this->_deleteImage($id);
+        return $this->db->delete($this->_table, array("id_penugasan" => $id));
+    }
 
     private function _deleteImage($id)
 	{
-		$dokumentasi = $this->getById($id);
+		$dokumentasi = $this->get_penugasan_by_id($id);
 		if ($dokumentasi->dokumentasi != "default.png") {
 			$filename = explode(".", $dokumentasi->dokumentasi)[0];
 			return array_map('unlink', glob(FCPATH . "upload/dokumentasi/$filename.*"));
