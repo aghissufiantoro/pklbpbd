@@ -1,68 +1,79 @@
-<div class="container mt-2">
-    <h4 class="mb-3">UBAH JADWAL PLOTING</h4>
-    <?php echo validation_errors(); ?>
-    <?php echo form_open('admin/kegiatan/edit_plot_kegiatan', 'class="needs-validation"'); ?>
+<?php 
+  if ($this->session->flashdata('success'))
+  {
+?>
+  <div class="alert alert-success alert-dismissible fade show" role="alert" id="success-alert">
+    <strong>SUKSES!</strong> Data telah dirubah.
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="btn-close"></button>
+  </div>
+<?php
+    $this->session->set_flashdata('success', null); // Clear flash message
+  }
+?>
 
-        <div class="row">
-            <div class="col-md-6">
+<!-- <nav class="page-breadcrumb">
+	<ol class="breadcrumb">
+		<li class="breadcrumb-item"><a href="#">Tables</a></li>
+		<li class="breadcrumb-item active" aria-current="page">Data Table</li>
+	</ol>
+</nav> -->
 
-                <div class="mb-3">
-                    <label for="tanggal" class="form-label">Tanggal</label>
-                    <input type="date" class="form-control" name="tanggal" required>
-                </div>
-
-                <div class="mb-3">
-                    <label for="shift" class="form-label">Shift</label>
-                    <input type="text" class="form-control" name="shift" required>
-                </div>
-
-                <div class="mb-3">
-                    <label for="kegiatan" class="form-label">Kegiatan</label>
-                    <select class="form-control" name="kegiatan" id="kegiatan" onchange="updateLokasiOptions()" required>
-                        <option value="">Pilih Kegiatan</option>
-                        <option value="Pos Pantau">Pos Pantau</option>
-                        <option value="Gudang Peralatan">Gudang Peralatan</option>
-                        <option value="Posko Terpadu">Posko Terpadu</option>
-                        <option value="Resepsionis">Resepsionis</option>
-                        <option value="Siaga Mako">Siaga Mako</option>
-                        <option value="Posko PMI">Posko PMI</option>
-                        <option value="Lain-Lain">Lain-Lain</option>
-                    </select>
-                </div>
-
-                <div class="mb-3">
-                    <label for="lokasi_kegiatan" class="form-label">Lokasi Kegiatan</label>
-                    <select class="form-control" name="lokasi_kegiatan" id="lokasi_kegiatan" required>
-                        <option value="">Pilih Lokasi</option>
-                    </select>
-                </div>
-
-            </div>
-
-            <div class="col-md-6">
-
-                <div class="mb-3">
-                    <label for="jumlah_personel" class="form-label">Jumlah Personel</label>
-                    <input type="number" class="form-control" name="jumlah_personel" required>
-                </div>
-
-                <div class="mb-3">
-                    <label for="jumlah_jarko" class="form-label">Jumlah Jarko</label>
-                    <input type="number" class="form-control" name="jumlah_jarko" required>
-                </div>
-
-                <div class="mb-3">
-                    <label for="keterangan" class="form-label">Keterangan</label>
-                    <input type="text" class="form-control" name="keterangan" required>
-                </div>
-            </div>
-        </div>
-        <a href="<?= base_url("admin/kegiatan/view_kegiatan") ?>">
+<div class="row">
+	<div class="col-md-12 grid-margin stretch-card">
+    <div class="card">
+      <div class="card-body">
+        <h4 class="card-title">Ubah Data Kegiatan</h4>
+        <p class="text-muted mb-3">Mohon di isi</p>
+        <form id="addForm" action="<?= site_url('admin/kegiatan/edit_plot_kegiatan/'.$kegiatan->id_kegiatan) ?>" method="post" enctype="multipart/form-data">
+          <input type="hidden" name="id_kegiatan" value="<?= $kegiatan->id_kegiatan ?>">
+          <div class="form-group">
+            <label for="tanggal">Tanggal</label>
+            <input type="date" class="form-control" name="tanggal" value="<?= $kegiatan->tanggal ?>" required>
+          </div>
+          <div class="form-group">
+            <label for="shift">Shift</label>
+            <input type="text" class="form-control" name="shift" value="<?= $kegiatan->shift ?>" required>
+          </div>
+          <div class="form-group">
+            <label for="kegiatan">Kegiatan</label>
+            <select class="form-control" name="kegiatan" id="kegiatan" onchange="updateLokasiOptions()" required>
+              <option value="">Pilih Kegiatan</option>
+              <option value="Pos Pantau" <?= $kegiatan->kegiatan == 'Pos Pantau' ? 'selected' : '' ?>>Pos Pantau</option>
+              <option value="Gudang Peralatan" <?= $kegiatan->kegiatan == 'Gudang Peralatan' ? 'selected' : '' ?>>Gudang Peralatan</option>
+              <option value="Posko Terpadu" <?= $kegiatan->kegiatan == 'Posko Terpadu' ? 'selected' : '' ?>>Posko Terpadu</option>
+              <option value="Resepsionis" <?= $kegiatan->kegiatan == 'Resepsionis' ? 'selected' : '' ?>>Resepsionis</option>
+              <option value="Siaga Mako" <?= $kegiatan->kegiatan == 'Siaga Mako' ? 'selected' : '' ?>>Siaga Mako</option>
+              <option value="Posko PMI" <?= $kegiatan->kegiatan == 'Posko PMI' ? 'selected' : '' ?>>Posko PMI</option>
+              <option value="Lain-Lain" <?= $kegiatan->kegiatan == 'Lain-Lain' ? 'selected' : '' ?>>Lain-Lain</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="lokasi_kegiatan">Lokasi Kegiatan</label>
+            <select class="form-control" name="lokasi_kegiatan" id="lokasi_kegiatan" required>
+              <option value="">Pilih Lokasi</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="jumlah_personel">Jumlah Personel</label>
+            <input type="number" class="form-control" name="jumlah_personel" value="<?= $kegiatan->jumlah_personel ?>" required>
+          </div>
+          <div class="form-group">
+            <label for="jumlah_jarko">Jumlah Jarko</label>
+            <input type="number" class="form-control" name="jumlah_jarko" value="<?= $kegiatan->jumlah_jarko ?>" required>
+          </div>
+          <div class="form-group">
+            <label for="keterangan">Keterangan</label>
+            <input type="text" class="form-control" name="keterangan" value="<?= $kegiatan->keterangan ?>" required>
+          </div>
+          <a href="<?= base_url("admin/kegiatan/view_kegiatan") ?>">
             <input class="btn btn-warning" type="button" value="Kembali">
-        </a>
-        <button type="submit" class="btn btn-primary">Submit</button>
-    <?php echo form_close(); ?>
-</div>
+          </a>
+          <input class="btn btn-primary" type="submit" value="Submit">
+        </form>
+      </div>
+    </div>
+	</div>
+</div>            
 
 <script>
     const lokasiOptions = {
@@ -119,4 +130,12 @@
             }
         }
     }
+
+    // Hide flash messages after 5 seconds
+    setTimeout(function() {
+        const successAlert = document.getElementById('success-alert');
+        if (successAlert) {
+            successAlert.style.display = 'none';
+        }
+    }, 5000);
 </script>

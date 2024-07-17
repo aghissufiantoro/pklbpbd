@@ -3,32 +3,42 @@
     <?php echo validation_errors(); ?>
     <?php echo form_open('admin/kegiatan/plot_kegiatan', 'class="needs-validation"'); ?>
 
-        <div class="row">
-            <div class="col-md-6">
+    <?php if($this->session->flashdata('success')): ?>
+    <div class="alert alert-success" id="success-alert">
+        <?php echo $this->session->flashdata('success'); ?>
+    </div>
+    <?php endif; ?>
 
-                <div class="mb-3">
-                    <label for="tanggal" class="form-label">Tanggal</label>
-                    <input type="date" class="form-control" name="tanggal" required>
-                </div>
+    <?php if($this->session->flashdata('error')): ?>
+        <div class="alert alert-danger" id="error-alert">
+            <?php echo $this->session->flashdata('error'); ?>
+        </div>
+    <?php endif; ?>
 
-                <div class="mb-3">
-                    <label for="shift" class="form-label">Shift</label>
-                    <input type="text" class="form-control" name="shift" required>
-                </div>
 
-                <div class="mb-3">
-                    <label for="kegiatan" class="form-label">Kegiatan</label>
-                    <select class="form-control" name="kegiatan" id="kegiatan" onchange="updateLokasiOptions()" required>
-                        <option value="">Pilih Kegiatan</option>
-                        <option value="Pos Pantau">Pos Pantau</option>
-                        <option value="Gudang Peralatan">Gudang Peralatan</option>
-                        <option value="Posko Terpadu">Posko Terpadu</option>
-                        <option value="Resepsionis">Resepsionis</option>
-                        <option value="Siaga Mako">Siaga Mako</option>
-                        <option value="Posko PMI">Posko PMI</option>
-                        <option value="Lain-Lain">Lain-Lain</option>
-                    </select>
-                </div>
+    <div class="form-group">
+        <label for="tanggal">Tanggal</label>
+        <input type="date" class="form-control" name="tanggal" required>
+    </div>
+
+    <div class="form-group">
+        <label for="shift">Shift</label>
+        <input type="text" class="form-control" name="shift" required>
+    </div>
+
+    <div class="form-group">
+        <label for="kegiatan">Kegiatan</label>
+        <select class="form-control" name="kegiatan" id="kegiatan" onchange="updateLokasiOptions()" required>
+            <option value="">Pilih Kegiatan</option>
+            <option value="Pos Pantau">Pos Pantau</option>
+            <option value="Gudang Peralatan">Gudang Peralatan</option>
+            <option value="Posko Terpadu">Posko Terpadu</option>
+            <option value="Resepsionis">Resepsionis</option>
+            <option value="Siaga Mako">Siaga Mako</option>
+            <option value="Posko PMI">Posko PMI</option>
+            <option value="Lain-Lain">Lain-Lain</option>
+        </select>
+    </div>
 
                 <div class="mb-3">
                     <label for="lokasi_kegiatan" class="form-label">Lokasi Kegiatan</label>
@@ -119,4 +129,16 @@
             }
         }
     }
+
+    // Hide flash messages after 5 seconds
+    setTimeout(function() {
+        const successAlert = document.getElementById('success-alert');
+        const errorAlert = document.getElementById('error-alert');
+        if (successAlert) {
+            successAlert.style.display = 'none';
+        }
+        if (errorAlert) {
+            errorAlert.style.display = 'none';
+        }
+    }, 5000);
 </script>
