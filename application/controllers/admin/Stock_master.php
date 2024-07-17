@@ -54,32 +54,20 @@ class stock_master extends CI_Controller
 {
     if ($this->session->userdata('role') == "1")
     {
-        // $stock = $this->m_stockmaster;
-        // $validation = $this->form_validation;
-        // $validation->set_rules($stock->rules());
         $stock = $this->m_stockmaster;
-        echo 'Stock master model initialized<br>';
-
         $validation = $this->form_validation;
-        echo 'Form validation initialized<br>';
-
         $validation->set_rules($stock->rules());
-        echo 'Validation rules set<br>';
 
         if ($validation->run())
         {
-            $kode_barang = $this->input->post('kode_barang');
-            // Debug statement
-            echo 'Adding to data_master_sembako: ' . $kode_barang . '<br>';
-            // Save to `data_master_sembako`
-            $stock->save();
+            // $kode_barang = $this->input->post('kode_barang');
+            // // Save to `data_master_sembako`
+            // $stock->save();
 
-            // Debug statement
-            echo 'debug', 'Checking for existing data_stock_logistik entry for: ' . $kode_barang;
+            $kode_barang = $stock->save();
+
             // Insert initial quantities into `data_stock_logistik` only once
             if ($this->db->where('kode_barang', $kode_barang)->get('data_stock_logistik')->num_rows() == 0) {
-                // Debug statement
-                log_message('debug', 'Inserting new entry into data_stock_logistik for: ' . $kode_barang);
                 $this->db->insert('data_stock_logistik', [
                     'kode_barang' => $kode_barang,
                     'qty_masuk' => 0,
@@ -90,10 +78,7 @@ class stock_master extends CI_Controller
             }
 
             $this->session->set_flashdata('success', '<i class="fa fa-check"></i> Alhamdulillah, Data berhasil disimpan');
-            redirect('admin/stock_master');
-        }
-        else{
-            echo"gagal";
+            // redirect('admin/stock_master');
         }
 
         $this->load->view("admin/stock_master/new_form_stock");
@@ -103,6 +88,49 @@ class stock_master extends CI_Controller
         show_404();
     }
 }
+
+// public function add()
+// {
+//     if ($this->session->userdata('role') == "1")
+//     {
+//         $stock = $this->m_stockmaster;
+//         $validation = $this->form_validation;
+//         $validation->set_rules($stock->rules());
+
+//         if ($validation->run())
+//         {
+//             $kode_barang = $this->input->post('kode_barang');
+//             // Debug statement
+//             log_message('debug', 'Adding to data_master_sembako: ' . $kode_barang);
+//             // Save to `data_master_sembako`
+//             $stock->save();
+
+//             // Debug statement
+//             log_message('debug', 'Checking for existing data_stock_logistik entry for: ' . $kode_barang);
+//             // Insert initial quantities into `data_stock_logistik` only once
+//             if ($this->db->where('kode_barang', $kode_barang)->get('data_stock_logistik')->num_rows() == 0) {
+//                 // Debug statement
+//                 log_message('debug', 'Inserting new entry into data_stock_logistik for: ' . $kode_barang);
+//                 $this->db->insert('data_stock_logistik', [
+//                     'kode_barang' => $kode_barang,
+//                     'qty_masuk' => 0,
+//                     'qty_keluar' => 0,
+//                     'qty_rusak' => 0,
+//                     'qty_tersedia' => 0
+//                 ]);
+//             }
+
+//             $this->session->set_flashdata('success', '<i class="fa fa-check"></i> Alhamdulillah, Data berhasil disimpan');
+//             redirect('admin/stock_master');
+//         }
+
+//         $this->load->view("admin/stock_master/new_form_stock");
+//     }
+//     else
+//     {
+//         show_404();
+//     }
+// }
 
     public function edit($id = null)
 {

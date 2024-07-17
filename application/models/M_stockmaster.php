@@ -23,54 +23,10 @@ class m_stockmaster extends CI_Model
         return $this->db->get_where($this->_table, ["kode_barang" => $id])->row();
     }
 
-//     public function save()
-// {
-//     $post = $this->input->post();
-
-//     // Log the input data for debugging purposes
-//     log_message('debug', 'Form Input - nama_barang: ' . $post['nama_barang']);
-//     log_message('debug', 'Form Input - kategori_barang: ' . $post['kategori_barang']);
-//     log_message('debug', 'Form Input - satuan_barang: ' . $post['satuan_barang']);
-
-//     // Generate kode_barang
-//     $kode_barang = $this->generate_kode_barang();
-
-//     // Prepare data array for insertion
-//     $data = array(
-//         'kode_barang' => $kode_barang,
-//         'nama_barang' => $post['nama_barang'],
-//         'kategori_barang' => $post['kategori_barang'],
-//         'satuan_barang' => $post['satuan_barang']
-//     );
-
-//     // Log the data to be inserted
-//     log_message('debug', 'Data Insert - kode_barang: ' . $kode_barang);
-//     log_message('debug', 'Data Insert - nama_barang: ' . $post['nama_barang']);
-//     log_message('debug', 'Data Insert - kategori_barang: ' . $post['kategori_barang']);
-//     log_message('debug', 'Data Insert - satuan_barang: ' . $post['satuan_barang']);
-
-//     // Insert data into the database
-//     $this->db->insert($this->_table, $data);
-
-//     // Log the query executed
-//     log_message('debug', 'Query Insert: ' . $this->db->last_query());
-
-//     // Check if the query was successful
-//     if ($this->db->affected_rows() > 0) {
-//         log_message('debug', 'Data berhasil disimpan');
-//     } else {
-//         log_message('error', 'Gagal menyimpan data');
-//     }
-// }
 
 public function save()
 {
     $post = $this->input->post();
-
-    // Echo the input data for debugging purposes
-    echo 'Form Input - nama_barang: ' . $post['nama_barang'] . '<br>';
-    echo 'Form Input - kategori_barang: ' . $post['kategori_barang'] . '<br>';
-    echo 'Form Input - satuan_barang: ' . $post['satuan_barang'] . '<br>';
 
     // Generate kode_barang
     $kode_barang = $this->generate_kode_barang();
@@ -83,30 +39,10 @@ public function save()
         'satuan_barang' => $post['satuan_barang']
     );
 
-    // Echo the data to be inserted
-    echo 'Data Insert - kode_barang: ' . $kode_barang . '<br>';
-    echo 'Data Insert - nama_barang: ' . $post['nama_barang'] . '<br>';
-    echo 'Data Insert - kategori_barang: ' . $post['kategori_barang'] . '<br>';
-    echo 'Data Insert - satuan_barang: ' . $post['satuan_barang'] . '<br>';
-
     // Insert data into the database
     $this->db->insert($this->_table, $data);
-
-    // Echo the query executed
-    echo 'Query Insert: ' . $this->db->last_query() . '<br>';
-
-    // Check if the query was successful
-    if ($this->db->affected_rows() > 0) {
-        echo 'Data berhasil disimpan<br>';
-    } else {
-        echo 'Gagal menyimpan data<br>';
-    }
-
-    // Terminate the script to ensure echoed data is displayed
-    exit;
+    return $kode_barang;
 }
-
-
 
     public function update()
     {

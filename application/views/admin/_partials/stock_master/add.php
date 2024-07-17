@@ -1,11 +1,42 @@
 <?php 
   if ($this->session->flashdata('success'))
   {
+    $successMessage = $this->session->flashdata('success');
+    // Set flash data to null
+    $this->session->set_flashdata('success', null);
 ?>
-  <div class="alert alert-success alert-dismissible fade show" role="alert">
-    <strong>SUKSES!</strong> Data Barang telah ditambahkan.
+<div class="alert alert-success alert-dismissible fade show" role="alert" id="success-alert">
+<?= $successMessage; ?>
     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="btn-close"></button>
   </div>
+  <script>
+    setTimeout(function() {
+      var alert = document.getElementById('success-alert');
+      if (alert) {
+        alert.classList.remove('show');
+        alert.classList.add('fade');
+        setTimeout(function() {
+          alert.parentNode.removeChild(alert);
+        }, 1500); // Time for fade-out animation
+      }
+    }, 5000); // 5 seconds
+  </script>
+  <!-- <div class="alert alert-success alert-dismissible fade show" role="alert">
+    <strong>SUKSES!</strong> Data Barang telah ditambahkan.
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="btn-close"></button>
+  </div> -->
+  <!-- <script>
+    setTimeout(function() {
+      var alert = document.getElementById('success-alert');
+      if (alert) {
+        alert.classList.remove('show');
+        alert.classList.add('fade');
+        setTimeout(function() {
+          alert.parentNode.removeChild(alert);
+        }, 1500); // Time for fade-out animation
+      }
+    }, 5000); // 5 seconds
+  </script> -->
 <?php
   }
 ?>
@@ -16,12 +47,6 @@
         <h4 class="card-title">Tambah Data Barang</h4>
         <p class="text-muted mb-3">Mohon di isi dengan sebenar-benarnya</p>
         <form id="addForm" action="" method="post" enctype="multipart/form-data">
-          <!-- <div class="col-md-12">
-            <div class="mb-3">
-              <label for="kode_barang" class="form-label">Kode Barang</label>
-              <input id="kode_barang" class="form-control" name="kode_barang" type="text">
-            </div>
-          </div> -->
           <div class="col-md-12">
             <div class="mb-3">
               <label for="nama_barang" class="form-label">Nama Barang</label>
@@ -30,10 +55,6 @@
           </div>
           <div class="col-md-12">
           <div class="col-md-12">
-            <!-- <div class="mb-3">
-              <label for="kategori_barang" class="form-label">Kategori Barang</label>
-              <input id="kategori_barang" class="form-control" name="kategori_barang" type="text">
-            </div> -->
             <div class="mb-3">
                 <label for="kategori_barang" class="form-label">Kategori Barang</label>
                 <select class="form-select" id="kategori_barang" name="kategori_barang" data-width="100%" required>
@@ -52,10 +73,6 @@
           </div>
           </div>
           <div class="col-md-12">
-            <!-- <div class="mb-3">
-              <label for="unit_barang" class="form-label">Unit Barang</label>
-              <input id="unit_barang" class="form-control" name="unit_barang" type="text">
-            </div> -->
             <div class="mb-3">
                 <label for="satuan_barang" class="form-label">Satuan Barang</label>
                 <select class="form-select" id="satuan_barang" name="satuan_barang" data-width="100%" required>
@@ -84,3 +101,15 @@
     </div>
 	</div>
 </div>
+<!-- <script>
+  // Hapus alert setelah 5 detik
+  setTimeout(function() {
+    var alert = document.getElementById('success-alert');
+    if (alert) {
+      alert.style.display = 'none';
+      
+      // Menghapus flashdata 'success' melalui AJAX
+      $this->session->set_flashdata('success', null); // Clear flash message
+    }
+  }, 5000);
+</script> -->
