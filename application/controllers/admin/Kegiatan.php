@@ -250,6 +250,7 @@ class Kegiatan extends CI_Controller {
         $this->load->library('form_validation');
 
         // Set validation rules
+        $this->form_validation->set_rules('id_kegiatan', 'Id Kegiatan', 'required');
         $this->form_validation->set_rules('tanggal', 'Tanggal', 'required');
         $this->form_validation->set_rules('shift', 'Shift', 'required');
         $this->form_validation->set_rules('lokasi_kegiatan', 'Lokasi Kegiatan', 'required');

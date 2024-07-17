@@ -19,8 +19,13 @@
                 <p class="text-muted mb-3">Mohon di isi</p>
                 <form id="editForm" action="<?= site_url('admin/kegiatan/edit_penugasan/'.$kegiatan->id_penugasan) ?>" method="post" enctype="multipart/form-data">
                     <div class="form-group">
-                        <label for="id_kegiatan">Id Penugasan</label>
+                        <label for="id_penugasan">Id Penugasan</label>
                         <input type="text" class="form-control" id="id_penugasan" name="id_penugasan" value="<?= $kegiatan->id_penugasan ?>" disabled>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="id_kegiatan">Id Kegiatan</label>
+                        <input type="text" class="form-control" id="id_kegiatan" name="id_kegiatan" value="<?= $kegiatan->id_kegiatan ?>" disabled>
                     </div>
 
                     
