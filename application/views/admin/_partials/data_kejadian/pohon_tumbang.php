@@ -44,8 +44,8 @@
                     <div class="row">
                         <div class="col-md-15">
                             <div class="mb-3">
-                                <label for="tindak_lanjut_pohon" class="form-label">Tindak Lanjut</label>
-                                <input id="tindak_lanjut_pohon" class="form-control" name="tindak_lanjut_pohon" type="text">
+                                <label for="tindak_lanjut_pohon" class="form-label">Tindak Lanjut Pohon Tumbang</label>
+                                <input id="tindak_lanjut_pohon" class="form-control" name="tindak_lanjut_pohon_tumbang" type="text">
                             </div>
                         </div>
                     </div>
@@ -53,8 +53,8 @@
                     <div class="row">
                         <div class="col-md-15">
                             <div class="mb-3">
-                                <label for="petugas_di_lokasi_pohon_tumbang" class="form-label">Petugas di Lokasi</label>
-                                <input id="petugas_di_lokasi_pohon_tumbang" class="form-control" name="tpetugas_di_lokasi_pohon_tumbang" type="text">
+                                <label for="petugas_di_lokasi_pohon_tumbang" class="form-label">Petugas di Lokasi Pohon Tumbang</label>
+                                <input id="petugas_di_lokasi_pohon_tumbang" class="form-control" name="petugas_di_lokasi_pohon_tumbang" type="text">
                             </div>
                         </div>
                     </div>
@@ -163,7 +163,7 @@
                             },
                             credentials: 'same-origin'
                         })
-                        .then(response => console.log(response.text()))
+                        .then(response => response.json())
                         .then(data => handleResponse(data, form))
                         .catch(handleError);
                     } else {
