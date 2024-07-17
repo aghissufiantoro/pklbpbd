@@ -36,8 +36,6 @@ class Kegiatan extends CI_Controller {
 
         $this->form_validation->set_rules('tanggal', 'Tanggal', 'required');
         $this->form_validation->set_rules('shift', 'Shift', 'required');
-        $this->form_validation->set_rules('giat', 'Giat', 'required');
-        $this->form_validation->set_rules('waktu_kegiatan', 'Waktu Kegiatan', 'required');
         $this->form_validation->set_rules('kegiatan', 'Kegiatan', 'required');
         $this->form_validation->set_rules('lokasi_kegiatan', 'Lokasi Kegiatan', 'required');
         $this->form_validation->set_rules('jumlah_personel', 'Jumlah Personel', 'required|numeric');
@@ -50,8 +48,6 @@ class Kegiatan extends CI_Controller {
             // Collect form data
             $tanggal = $this->input->post('tanggal');
             $shift = $this->input->post('shift');
-            $giat = $this->input->post('giat');
-            $waktu_kegiatan = $this->input->post('waktu_kegiatan');
             $kegiatan = $this->input->post('kegiatan');
             $lokasi_kegiatan = $this->input->post('lokasi_kegiatan');
             $jumlah_personel = $this->input->post('jumlah_personel');
@@ -62,8 +58,6 @@ class Kegiatan extends CI_Controller {
             $kegiatan_data = array(
                 'tanggal' => $tanggal,
                 'shift' => $shift,
-                'giat' => $giat,
-                'waktu_kegiatan' => $waktu_kegiatan,
                 'kegiatan' => $kegiatan,
                 'lokasi_kegiatan' => $lokasi_kegiatan,
                 'jumlah_personel' => $jumlah_personel,
@@ -108,7 +102,6 @@ class Kegiatan extends CI_Controller {
                 return;
             }
             $tanggal = $kegiatan->tanggal;
-    
             // Begin transaction
             $this->db->trans_start();
     

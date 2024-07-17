@@ -75,6 +75,7 @@
         <form method="GET" action="<?= base_url('view/index') ?>">
             <div class="row mb-4">
                 <div class="col-md-4">
+
                     <input type="date" name="start_date" class="form-control" value="<?= htmlspecialchars($this->input->get('start_date')?? '') ?>" />
                 </div>
                 <div class="col-md-4">

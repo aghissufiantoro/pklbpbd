@@ -15,11 +15,6 @@ class M_form_darurat_medis extends CI_Model
     {
         return [
             ['field' => 'id_kejadian', 'label' => 'ID Kejadian', 'rules' => 'required'],
-            ['field' => 'nama', 'label' => 'Nama', 'rules' => 'required'],
-            ['field' => 'jenis_kelamin', 'label' => 'Jenis Kelamin', 'rules' => 'required'],
-            ['field' => 'alamat', 'label' => 'Alamat', 'rules' => 'required'],
-            ['field' => 'usia', 'label' => 'Usia', 'rules' => 'required|integer'],
-            ['field' => 'kondisi', 'label' => 'Kondisi', 'rules' => 'required'],
             ['field' => 'riwayat_penyakit', 'label' => 'Riwayat Penyakit', 'rules' => 'required'],
             ['field' => 'kronologi_darurat_medis', 'label' => 'Kronologi Darurat Medis', 'rules' => 'required'],
             ['field' => 'tindak_lanjut_darurat_medis', 'label' => 'Tindak Lanjut Darurat Medis', 'rules' => 'required'],
@@ -29,11 +24,10 @@ class M_form_darurat_medis extends CI_Model
     }
 
 
-    public function save($data)
-    {
-        return $this->db->insert($this->_table, $data);
+=======
+            // Add more rules as needed
+        ];
     }
-
 
     public function get_all_by_id($id_kejadian)
     {
@@ -41,6 +35,4 @@ class M_form_darurat_medis extends CI_Model
         return $this->db->get($this->_table)->result();
     }
 
-    // Add more methods for CRUD operations related to form_darurat_medis if needed
-}
 

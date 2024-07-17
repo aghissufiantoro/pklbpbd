@@ -73,7 +73,7 @@ if ($db_data_kejadian ) {
                         <?php else: ?>
                             <p>Tidak ada data korban</p>
                         <?php endif; ?>
-                       
+                      
                         </div>
                     </div>
 
