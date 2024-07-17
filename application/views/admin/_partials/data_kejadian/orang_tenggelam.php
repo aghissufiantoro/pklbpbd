@@ -4,13 +4,16 @@
     </div>
 <?php endif; ?>
 
+<div id="success-alert" class="alert alert-success" style="display: none;"></div>
+<div id="error-alert" class="alert alert-danger" style="display: none;"></div>
+
 <div class="row">
     <div class="col-md-12 grid-margin stretch-card">
         <div class="card">
             <div class="card-body">
                 <h4 class="card-title">Tambah Data Kejadian</h4>
                 <p class="text-muted mb-3">Mohon diisi dengan sebenar-benarnya</p>
-                <form id="addForm" action="" method="post" enctype="multipart/form-data">
+                <form id="addForm1" action="" method="post" enctype="multipart/form-data">
                     <div class="row">
                         <div class="col-md-15">
                             <div class="mb-3">
@@ -33,7 +36,7 @@
                         <div class="col-md-15">
                             <div class="mb-3">
                                 <label for="usia_saksi" class="form-label">Usia Saksi</label>
-                                <input id="usia_saksi" class="form-control" name="usia_saksi" type="text">
+                                <input id="usia_saksi" class="form-control" name="usia_saksi" type="number">
                             </div>
                         </div>
                     </div>
@@ -60,7 +63,7 @@
                         <div class="col-md-15">
                             <div class="mb-3">
                                 <label for="usia_korban" class="form-label">Usia Korban</label>
-                                <input id="usia_korban" class="form-control" name="usia_korban" type="text">
+                                <input id="usia_korban" class="form-control" name="usia_korban" type="number">
                             </div>
                         </div>
                     </div>
@@ -132,9 +135,174 @@
                         </div>
                     </div> 
 
-                    <button class="btn btn-success" type="submit">Save</button>
+                    <button id="saveButton" class="btn btn-success" type="submit">Save</button>
+                    <button id="stopButton" class="btn btn-danger" type="button">Selesai</button>
+
                 </form>
             </div>
         </div>
     </div>
 </div>
+
+<div class="row">
+        <div class="col-md-12 grid-margin stretch-card">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title">Data Kejadian</h4>
+                    <div class="table-responsive">
+                        <table id="dataTableExample" class="table">
+                            <thead>
+                                <tr>
+                                    <th>Nama Saksi</th>
+                                    <th>Usia Saksi</th>
+                                    <th>Alamat Saksi</th>
+                                    <th>Hubungan dengan Korban</th>
+                                    <th>Nama Korban</th>
+                                    <th>Usia Korban</th>
+                                    <th>Jenis Kelamin</th>
+                                    <th>Alamat Korban</th>
+                                    <th>Kondisi/th>
+                                    <th>Kronologi Tenggelam</th>
+                                    <th>Tindak Lanjut Tenggelam</th>
+                                    <th>Petugas di Lokasi Tenggelam</th>
+                                    <th>Dokumentasi</th>
+                                </tr>
+                            </thead>
+                            <tbody id="dataKejadianTableBody">
+                                <!-- Data will be appended here -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <script>
+        setupEventListenersInPartial();
+
+        function setupEventListenersInPartial(){
+            const saveButtonPartial = document.getElementById('saveButton');
+            if (saveButtonPartial) {
+                saveButtonPartial.addEventListener('click', function(event){
+                    event.preventDefault();
+                    handleSubmitAndRedirectInsidePartial();
+                });
+            }
+
+            const stopButtonPartial = document.getElementById('stopButton');
+            if (stopButtonPartial){
+                stopButtonPartial.addEventListener('click', function(event){
+                    event.preventDefault();
+                    window.location.href = '<?= base_url('admin/data_kejadian') ?>';
+                });
+            }
+        }
+
+        function handleSubmitAndRedirectInsidePartial(){
+            const form = document.getElementById('addForm1');
+            const formData = new FormData(form);
+            const idKejadian = document.getElementById('id_kejadian').value;
+            const imageFile = document.getElementById('dokumentasi_orang_tenggelam').files[0];
+
+            const formObject = {
+                id_kejadian: idKejadian,
+            };
+            alert(idKejadian);
+            formData.forEach(function(value, key){
+                formObject[key] = value;
+            });
+
+            if (imageFile){
+                const imageFormData = new FormData();
+                imageFormData.append('image', imageFile);
+                const caseType = 'Orang Tenggelam'
+                imageFormData.append('case', caseType);
+
+                fetch('<?php echo site_url("admin/data_kejadian/upload_image"); ?>', {
+                    method: 'POST',
+                    body: imageFormData
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === 'success'){
+                        formObject.dokumentasi_orang_tenggelam = data.image_url;
+                        
+                        fetch("<?= base_url("admin/data_kejadian/save_orang_tenggelam") ?>", {
+                            method: 'POST',
+                            body: JSON.stringify(formObject),
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-Requested-With': 'XMLHttpRequest'
+                            },
+                            credentials: 'same-origin'
+                        })
+                        .then(response => response.json())
+                        .then(data => handleResponse(data, form))
+                        .catch(handleError);
+                    } else {
+                        alert('Failed to upload image' + data.message);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error : ', error);
+                    alert(error);
+                });
+            } else {
+                fetch(form.action, {
+                    method: 'POST',
+                    body: JSON.stringify(formObject),
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-Requested-With': 'XMLHttpRequest'
+                    },
+                    credentials: 'same-origin'
+                })
+                .then(response => response.json())
+                .then(data => handleResponse(data, form))
+                .catch(handleError);
+            }
+        }
+
+        function handleResponse(data, form){
+            const baseUrl = 'http://localhost:80/bpbd';
+            if(data.status === 'success') {
+                const data1 = data.data;
+                const newRow = document.createElement('tr');
+                newRow.innerHTML = `
+                <td>${data1.nama_saksi}</td>
+                <td>${data1.usia_saksi}</td>
+                <td>${data1.alamat_saksi}</td>
+                <td>${data1.hubungan_saksi}</td>
+                <td>${data1.nama_korban}</td>
+                <td>${data1.usia_korban}</td>
+                <td>${data1.jenis_kelamin}</td>
+                <td>${data1.alamat}</td>
+                <td>${data1.kondisi}</td>
+                <td>${data1.kronologi_orang_tenggelam}</td>
+                <td>${data1.tindak_lanjut_orang_tenggelam}</td>
+                <td>${data1.petugas_di_lokasi_orang_tenggelam}</td>
+                <td><img src="${baseUrl}/${data1.dokumentasi_orang_tenggelam}" alt="Dokumentasi" width="100"></td>
+                `;
+                document.getElementById('dataKejadianTableBody').appendChild(newRow);
+
+                form.reset();
+
+                document.getElementById('success-alert').textContent = 'Data berhasil disimpan';
+                document.getElementById('success-alert').style.display = 'block';
+                document.getElementById('error-alert').style.display = 'none';
+            } else {
+                document.getElementById('error-alert').textContent ='Gagal mengirim data: ' + data.message;
+                document.getElementById('error-alert').style.display = 'block';
+                document.getElementById('success-alert').style.display = 'none';
+            }
+        }
+
+        function handleError(error){
+            console.error('Error:', error);
+            document.getElementById('error-alert').textContent = 'Terjadi kesalahan saat mengirim data: ' + error.message;
+            document.getElementById('error-alert').style.display = 'block';
+            document.getElementById('success-alert').style.display = 'none';
+        }
+    </script>
