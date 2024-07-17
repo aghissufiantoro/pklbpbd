@@ -80,6 +80,8 @@ public function getLastIDkejadian($formatted_date) {
 // Function to handle adding new kejadian data
 
 public function upload_image() {
+
+    
     $caseType = $this->input->post('case');
 
     // Set the upload path based on the case type
@@ -128,6 +130,83 @@ public function upload_image() {
         $image_url = substr($uploadPath,1) . $data['file_name'];
         $response = array('status' => 'success', 'image_url' => $image_url);
         echo json_encode($response);
+    
+    }
+}
+
+public function update_image(){
+   
+    $caseType = $this->input->post('case');
+    $pastImageSrc = $this->input->post('pastImageSrc');
+
+    
+   
+
+
+
+    if ($pastImageSrc) {
+        $file_path = FCPATH.$pastImageSrc;
+
+        // Hapus file gambar dari direktori server
+        if (file_exists($file_path)) {
+            unlink($file_path);
+          
+        }
+       
+
+    }else{
+        $response = array('status'=>'error','message'=>'bad request pastImageSrc, tidak dikirim');
+        echo json_encode($response);
+        return;
+    }
+
+    // Set the upload path based on the case type
+    switch ($caseType) {
+        case 'Kecelakaan Lalu Lintas':
+            $uploadPath = './upload/data_kejadian/kecelakaan_lalu_lintas/';
+            break;
+        case 'Darurat Medis':
+            $uploadPath = './upload/data_kejadian/darurat_medis/';
+            break;
+        case 'Kebakaran':
+            $uploadPath = './upload/data_kejadian/kebakaran/';
+            break;
+        case 'Pohon Tumbang':
+            $uploadPath = './upload/data_kejadian/pohon_tumbang/';
+            break;
+        case 'Penemuan Jenazah':
+            $uploadPath = './upload/data_kejadian/penemuan_jenazah/';
+            break;
+        case 'Orang Tenggelam':
+            $uploadPath = './upload/data_kejadian/orang_tenggelam/';
+            break;
+        case 'Lainnya':
+            $uploadPath = './upload/data_kejadian/lainnya/';
+            break;
+        default:
+            $uploadPath = './upload/data_kejadian/dokumentasi/';
+    }
+
+    if (!is_dir($uploadPath)) {
+        mkdir($uploadPath, 0777, true);
+    }
+
+    $config['upload_path'] = $uploadPath;
+    $config['allowed_types'] = 'gif|jpg|png|jpeg';
+    $config['max_size'] = 2048; // 2MB
+    $config['file_name'] = md5(uniqid(rand(), true)); // Generate unique filename
+
+    $this->load->library('upload', $config);
+
+    if (!$this->upload->do_upload('image')) {
+        $response = array('status' => 'error', 'message' => $this->upload->display_errors());
+        echo json_encode($response);
+    } else {
+        $data = $this->upload->data();
+        $image_url = substr($uploadPath,1) . $data['file_name'];
+        $response = array('status' => 'success', 'image_url' => $image_url);
+        echo json_encode($response);
+    
     }
 }
 
@@ -208,16 +287,8 @@ public function add() {
         if ($this->session->userdata('role') == "1")
         {
             if (!isset($id)) redirect('admin/data_kejadian');
-           
             $data_kejadian = $this->m_data_kejadian;
-            $validation = $this->form_validation;
-            $validation->set_rules($data_kejadian->rules());
-
-            if ($validation->run()) {
-                $data_kejadian->update();
-                $this->session->set_flashdata('success', '<i class="fa fa-check"></i> Alhamdulillah, Data berhasil diupdate');
-                redirect(site_url('admin/data_kejadian'));
-            }
+           
 
             $data["data_kejadian"] = $data_kejadian->getById($id);
             if (!$data["data_kejadian"]) show_404();
@@ -230,13 +301,34 @@ public function add() {
         }
     }
 
-    public function delete($tanggal = null)
+    public function update_data(){
+
+        $post = $this->input->post();
+            $update                     = $post['update'];
+            $data_kejadian = $this->m_data_kejadian;
+            $validation = $this->form_validation;
+            $validation->set_rules($data_kejadian->rules());
+
+           
+            if ($validation->run() || $update) {
+                echo "anjing";
+                $data_kejadian->update();
+                $this->session->set_flashdata('success', '<i class="fa fa-check"></i> Alhamdulillah, Data berhasil diupdate');
+                $response = array('status'=>'success','message','data kejadian berhasil di edit');
+                return;
+            }
+
+            $response = array('status'=>'error','message','data kejadian gagal di edit');
+                return;
+    }
+
+    public function delete($id_kejadian = null)
     {
         if ($this->session->userdata('role') == "1")
         {
-            if (!isset($tanggal)) show_404();
+            if (!isset($id_kejadian)) show_404();
             
-            if ($this->m_data_kejadian->delete($tanggal)) {
+            if ($this->m_data_kejadian->delete($id_kejadian)) {
                 redirect(site_url('admin/data_kejadian'));
             }
         }
