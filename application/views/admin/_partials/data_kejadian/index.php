@@ -80,7 +80,7 @@
                             Data kejadian yang akan dihapus adalah <?= $res_data_kejadian->kejadian ?>
                           </div>
                           <div class="modal-footer d-flex align-items-center">
-                            <a href="<?= base_url('admin/data_kejadian/delete/' . $res_data_kejadian->tanggal) ?>" class="btn btn-outline-danger">
+                            <a href="<?= base_url('admin/data_kejadian/delete/' . $res_data_kejadian->id_kejadian) ?>" class="btn btn-outline-danger">
                               <i class="fad fa-trash-alt"></i>
                             </a>
                             <button class="btn btn-outline-success mr-auto" type="button" data-bs-dismiss="modal"><i class="fa fa-times"></i> Cancel</button>

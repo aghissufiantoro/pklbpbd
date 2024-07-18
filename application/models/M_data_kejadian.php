@@ -301,7 +301,7 @@ class M_data_kejadian extends CI_Model
         $this->kronologi                = $post['kronologi'];
         $this->tindak_lanjut            = $post['tindak_lanjut'];
         $this->petugas_lokasi            = $post['petugas_lokasi'];
-        $this->dokumentasi              = $post['dokumentasi'];
+        $this->dokumentasi              = $post['image_url'];
 
 
         $this->db->update($this->_table, $this, array('id_kejadian' => $post['id_kejadian']));
@@ -309,8 +309,91 @@ class M_data_kejadian extends CI_Model
 
     public function delete($id)
     {
-        return $this->db->delete($this->_table, array("id_kejadian" => $id));
+       // Ambil path file dokumentasi utama dari database
+       $this->db->select('dokumentasi, kejadian');
+       $this->db->from($this->_table);
+       $this->db->where('id_kejadian', $id);
+       $query = $this->db->get();
+       $row = $query->row();
+
+       if (isset($row)) {
+           $file_path = FCPATH . $row->dokumentasi;
+           $jenis_kejadian = $row->kejadian;
+
+           // Tentukan tabel anak dan kolom dokumentasi yang sesuai berdasarkan jenis kejadian
+           $childTable = '';
+           $childDocColumn = '';
+
+           switch ($jenis_kejadian) {
+               case 'Kecelakaan Lalu Lintas':
+                   $childTable = 'form_laka';
+                   $childDocColumn = 'dokumentasi_laka';
+                   break;
+               case 'Darurat Medis':
+                   $childTable = 'form_darurat_medis';
+                   $childDocColumn = 'dokumentasi_darurat_medis';
+                   break;
+               case 'Kebakaran':
+                   $childTable = 'form_kebakaran';
+                   $childDocColumn = 'dokumentasi_kebakaran';
+                   break;
+               case 'Pohon Tumbang':
+                   $childTable = 'form_pohon_tumbang';
+                   $childDocColumn = 'dokumentasi_pohon_tumbang';
+                   break;
+               case 'Penemuan Jenazah':
+                   $childTable = 'form_penemuan_jenazah';
+                   $childDocColumn = 'dokumentasi_penemuan_jenazah';
+                   break;
+               case 'Orang Tenggelam':
+                   $childTable = 'form_orang_tenggelam';
+                   $childDocColumn = 'dokumentasi_orang_tenggelam';
+                   break;
+               case 'Lainnya':
+                   $childTable = 'form_lain';
+                   $childDocColumn = 'dokumentasi_lain';
+                   break;
+               default:
+                   $childTable = '';
+                   $childDocColumn = '';
+                   break;
+           }
+
+           if (!empty($childTable) && !empty($childDocColumn)) {
+               // Ambil semua entri dari tabel anak berdasarkan id_kejadian
+               $this->db->select($childDocColumn);
+               $this->db->from($childTable);
+               $this->db->where('id_kejadian', $id);
+               $childQuery = $this->db->get();
+               $childRows = $childQuery->result();
+
+               foreach ($childRows as $childRow) {
+                   $childFilePath = FCPATH . $childRow->$childDocColumn;
+                   if (file_exists($childFilePath)) {
+                       unlink($childFilePath);
+                   }
+               }
+
+               // Hapus entri dari tabel anak berdasarkan id_kejadian
+               $this->db->where('id_kejadian', $id);
+               $this->db->delete($childTable);
+           }
+
+           // Hapus file gambar dari direktori server jika ada
+           if (file_exists($file_path)) {
+               unlink($file_path);
+           }
+
+           // Hapus entri dari tabel utama
+           $this->db->where('id_kejadian', $id);
+           $deleted = $this->db->delete($this->_table);
+           return true;
+        }
+
+   
+   return false;
     }
+  
     public function detail($id)
     {
         $post = $this->input->post();
