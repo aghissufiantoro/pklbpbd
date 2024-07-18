@@ -4,16 +4,6 @@
 	<?php $this->load->view("admin/_partials/head") ?>
 </head>
 <body>
-	<div class="main-wrapper">
-
-		<?php $this->load->view("admin/_partials/sidebar") ?>
-	
-		<div class="page-wrapper">
-				
-			<!-- partial:../../partials/_navbar.html -->
-			<?php $this->load->view("admin/_partials/header") ?>
-			<!-- partial -->
-
 			<div class="page-content">
 
 				<?php $this->load->view("admin/_partials/data_kejadian/lainnya") ?>
@@ -24,8 +14,6 @@
 			<?php $this->load->view("admin/_partials/footer") ?>
 			<!-- partial -->
 	
-		</div>
-	</div>
 
 	<?php $this->load->view("admin/_partials/js") ?>
 
