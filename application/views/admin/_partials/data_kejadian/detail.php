@@ -24,15 +24,10 @@ if ($kejadian == 'Kecelakaan Lalu Lintas') {
 }
 
 // Query to get the korban kejadian based on the dynamically determined table
-<<<<<<< HEAD
-<<<<<<< HEAD
+
 $db_korban_kejadian = $this->db->query("SELECT * FROM $table WHERE id_kejadian = ?", array($id_kejadian))->row();
-=======
-$db_korban_kejadian = $this->db->query("SELECT * FROM $table WHERE id_kejadian = ?", array($id_kejadian))->result();
->>>>>>> 1f0d5330506277d183445e7d76137c8e49d57f17
-=======
-$db_korban_kejadian = $this->db->query("SELECT * FROM $table WHERE id_kejadian = ?", array($id_kejadian))->result();
->>>>>>> 5abd3ececa7bc6163c1ebc4e122e31111e763e67
+
+
 if ($db_data_kejadian ) {
 ?>
 <div class="row">
@@ -58,8 +53,7 @@ if ($db_data_kejadian ) {
                     <div class="card-body">
                         <p class="text-muted mb-3">Keterangan Subjek yang Terlibat</p>
                         <div class="table-responsive">
-<<<<<<< HEAD
-<<<<<<< HEAD
+
                         <table id="dataTableExample" class="table">
                                     <thead>
                                         <tr>
@@ -76,9 +70,6 @@ if ($db_data_kejadian ) {
                                         </tr>
                                     </tbody>
                                 </table>
-=======
-=======
->>>>>>> 5abd3ececa7bc6163c1ebc4e122e31111e763e67
                         
                         <?php if(count($db_korban_kejadian) > 0): ?>
                             <table id="dataTableExample" class="table">
@@ -102,12 +93,7 @@ if ($db_data_kejadian ) {
                         <?php else: ?>
                             <p>Tidak ada data korban</p>
                         <?php endif; ?>
-<<<<<<< HEAD
-                       
->>>>>>> 1f0d5330506277d183445e7d76137c8e49d57f17
-=======
-                      
->>>>>>> 5abd3ececa7bc6163c1ebc4e122e31111e763e67
+
                         </div>
                     </div>
 

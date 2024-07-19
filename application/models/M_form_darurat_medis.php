@@ -14,25 +14,13 @@ class M_form_darurat_medis extends CI_Model
     public function rules()
     {
         return [
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
+
             ['field' => 'id_kejadian', 'label' => 'ID Kejadian', 'rules' => 'required'],
->>>>>>> 1f0d5330506277d183445e7d76137c8e49d57f17
             ['field' => 'nama', 'label' => 'Nama', 'rules' => 'required'],
             ['field' => 'jenis_kelamin', 'label' => 'Jenis Kelamin', 'rules' => 'required'],
             ['field' => 'alamat', 'label' => 'Alamat', 'rules' => 'required'],
             ['field' => 'usia', 'label' => 'Usia', 'rules' => 'required|integer'],
             ['field' => 'kondisi', 'label' => 'Kondisi', 'rules' => 'required'],
-<<<<<<< HEAD
-            // Add more rules as needed
-        ];
-    }
-
-=======
-=======
-            ['field' => 'id_kejadian', 'label' => 'ID Kejadian', 'rules' => 'required'],
->>>>>>> 5abd3ececa7bc6163c1ebc4e122e31111e763e67
             ['field' => 'riwayat_penyakit', 'label' => 'Riwayat Penyakit', 'rules' => 'required'],
             ['field' => 'kronologi_darurat_medis', 'label' => 'Kronologi Darurat Medis', 'rules' => 'required'],
             ['field' => 'tindak_lanjut_darurat_medis', 'label' => 'Tindak Lanjut Darurat Medis', 'rules' => 'required'],
@@ -42,33 +30,19 @@ class M_form_darurat_medis extends CI_Model
     }
 
 
-<<<<<<< HEAD
->>>>>>> 1f0d5330506277d183445e7d76137c8e49d57f17
+
     public function save($data)
     {
         return $this->db->insert($this->_table, $data);
     }
 
-<<<<<<< HEAD
-=======
-
-=======
-=======
-            // Add more rules as needed
-        ];
-    }
-
->>>>>>> 5abd3ececa7bc6163c1ebc4e122e31111e763e67
     public function get_all_by_id($id_kejadian)
     {
         $this->db->where('id_kejadian', $id_kejadian);
         return $this->db->get($this->_table)->result();
     }
 
-<<<<<<< HEAD
->>>>>>> 1f0d5330506277d183445e7d76137c8e49d57f17
-    // Add more methods for CRUD operations related to form_darurat_medis if needed
+
 }
-=======
->>>>>>> 5abd3ececa7bc6163c1ebc4e122e31111e763e67
+
 

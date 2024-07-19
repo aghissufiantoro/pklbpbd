@@ -17,17 +17,18 @@ if ($this->session->flashdata('success')) {
         <h4 class="card-title">Tambah Data Kejadian</h4>
         <p class="text-muted mb-3">Mohon diisi dengan sebenar-benarnya</p>
         <form id="addForm" action="<?= base_url("admin/data_kejadian/add") ?>" method="post" enctype="multipart/form-data">
-          <div class="row">
-            <div class="col-md-15">
-              <div class="mb-3">
-                <label for="tanggal" class="form-label">Tanggal Kejadian</label>
-                <div class="input-group date datepicker" id="datePickerExample">
-                  <input type="text" class="form-control" name="tanggal" required autocomplete="off">
-                  <span class="input-group-text input-group-addon"><i data-feather="calendar"></i></span>
-                </div>
-              </div>
-            </div>
-          </div>
+        <div class="row">
+  <div class="col-md-15">
+    <div class="mb-3">
+      <label for="tanggal" class="form-label">Tanggal Kejadian</label>
+      <div class="input-group date datepicker" id="datePickerExample">
+        <input type="text" class="form-control" name="tanggal" required autocomplete="off">
+        <span class="input-group-text input-group-addon"><i data-feather="calendar"></i></span>
+      </div>
+    </div>
+  </div>
+</div>
+
 
           <div class="row">
             <div class="col-md-15">
@@ -107,16 +108,9 @@ if ($this->session->flashdata('success')) {
             <div class="mb-3">
               <label class="form-label" for="kecamatan_kejadian">Kecamatan</label>
               <select class="js-example-basic-single form-select" id="kecamatan_kejadian" name="kecamatan_kejadian" data-width="100%" required>
-<<<<<<< HEAD
-<<<<<<< HEAD
-                <option value="">--- Pilih Kota Terlebih Dahulu ---</option>
-                
-=======
+
                 <option value="">--- Mohon Pilih Kecamatan ---</option>
->>>>>>> 1f0d5330506277d183445e7d76137c8e49d57f17
-=======
-                <option value="">--- Mohon Pilih Kecamatan ---</option>
->>>>>>> 5abd3ececa7bc6163c1ebc4e122e31111e763e67
+
               </select>
             </div>
             <div class="mb-3" id="kecamatan">
@@ -207,7 +201,7 @@ if (window.addEventListener) {
     document.getElementById('lokasi_kejadian').addEventListener('change', function() {
         var wilayah = this.value;
         selected = document.getElementById('select2-kecamatan_kejadian-container');
-        console.log(selected)
+        console.log(this.value)
        
         fetchOptions('kecamatan', wilayah, 'kecamatan_kejadian');
     });
@@ -226,31 +220,34 @@ if (window.addEventListener) {
 
     // Function to fetch options dynamically based on selected value
     function fetchOptions(dataType, wilayah, targetSelectId) {
-        fetch('<?= base_url('admin/data_kejadian/get_daerah') ?>', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded'
-            },
-            body: new URLSearchParams({
-                data: dataType,
-                wilayah: wilayah
-            })
+    fetch('<?= base_url('admin/data_kejadian/get_daerah') ?>', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        body: new URLSearchParams({
+            data: dataType,
+            wilayah: wilayah
         })
-        .then(response => response.json())
-        .then(data => {
-            var targetSelect = document.getElementById(targetSelectId);
-            targetSelect.innerHTML = ''; // Clear existing options
-            var defaultOption = new Option(`--- Pilih ${capitalizeFirstLetter(dataType)} ---`, '');
-            targetSelect.appendChild(defaultOption); // Add default option
-            data.forEach(item => {
-                var option = new Option(item.label, item.value);
-                targetSelect.appendChild(option); // Add fetched options
-            });
-        })
-        .catch(() => {
-            alert('Terjadi kesalahan dalam mengambil data.');
+    })
+    .then(response => response.json())  // Parse JSON response
+    .then(data => {
+        console.log(data);
+        var targetSelect = document.getElementById(targetSelectId);
+        targetSelect.innerHTML = ''; // Clear existing options
+        var defaultOption = new Option(`--- Pilih ${capitalizeFirstLetter(dataType)} ---`, '');
+        targetSelect.appendChild(defaultOption); // Add default option
+        data.forEach(item => {
+            var option = new Option(item.label, item.value);
+            targetSelect.appendChild(option); // Add fetched options
         });
-    }
+    })
+    .catch((error) => {
+        console.error('Error:', error);
+        alert('Terjadi kesalahan saat mengambil data.');
+    });
+}
+
 
     // Function to capitalize the first letter of a string
     function capitalizeFirstLetter(string) {
