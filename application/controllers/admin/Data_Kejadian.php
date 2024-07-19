@@ -77,6 +77,49 @@ public function getLastIDkejadian($formatted_date) {
     return $new_id_kejadian;
 }
 
+
+public function getLastIdKejadianByAjax() {
+    // Mengambil tanggal dari permintaan POST
+    $formatted_date = $this->input->post('tanggal');
+    
+    // Memformat tanggal menjadi DDMMYY
+    $date = DateTime::createFromFormat('Y-m-d', $formatted_date);
+    if ($date === false) {
+        echo json_encode(['error' => 'Invalid date format']);
+        return;
+    }
+    $res = $date->format('dmy'); // Format tanggal menjadi DDMMYY
+
+    // Query untuk mengambil ID kejadian terakhir berdasarkan tanggal yang telah diformat
+    $this->db->select('id_kejadian');
+    $this->db->from('data_kejadian');
+    $this->db->like('id_kejadian', 'DK' . $res, 'after');
+    $this->db->order_by('id_kejadian', 'DESC');
+    $this->db->limit(1);
+    $query = $this->db->get();
+    
+    if ($query->num_rows() > 0) {
+        // Mengambil ID kejadian terakhir dan menambah bagian numerik sebesar 1
+        $last_id_kejadian = $query->row()->id_kejadian;
+        $numeric_part = substr($last_id_kejadian, -3);
+        $new_numeric_part = (int)$numeric_part + 1;
+    } else {
+        // Memulai dengan 001 jika tidak ada transaksi untuk tanggal saat ini
+        $new_numeric_part = 1;
+    }
+
+    // Melengkapi bagian numerik dengan angka nol di depan dan membuat ID baru
+    $padded_new_numeric_part = str_pad($new_numeric_part, 3, '0', STR_PAD_LEFT);
+    $new_id_kejadian = 'DK' . $res . $padded_new_numeric_part;
+
+    // Mengembalikan ID kejadian baru sebagai JSON
+    echo json_encode(['new_id_kejadian' => $new_id_kejadian]);
+    return;
+}
+
+
+
+
 // Function to handle adding new kejadian data
 
 public function upload_image() {

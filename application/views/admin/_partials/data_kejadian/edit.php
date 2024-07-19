@@ -39,7 +39,8 @@ if ($this->session->flashdata('success')) {
             <div class="col-md-3">
               <div class="mb-3">
                 <label class="form-label" for="kejadian">Kejadian</label>
-                <select class="form-select" id="kejadian" name="kejadian" data-width="100%">
+                <input readonly type="text" class="form-control" id="kejadian" name="kejadian" data-width="100%" value="<?php echo $data_kejadian->kejadian ?>"/>
+                <!-- <select readonly class="form-select" id="kejadian" name="kejadian" data-width="100%">
                   <option value="">--- Pilih Kejadian ---</option>
                   <option <?php if ($data_kejadian->kejadian == "Kecelakaan Lalu Lintas") {
                             echo "selected";
@@ -62,7 +63,7 @@ if ($this->session->flashdata('success')) {
                   <option <?php if ($data_kejadian->kejadian == "Lainnya") {
                             echo "selected";
                           } ?> value="Lainnya">Lainnya</option>
-                </select>
+                </select> -->
               </div>
             </div>
           </div>
@@ -384,6 +385,7 @@ if (window.addEventListener) {
                     .then(data => {
                       console.log(data)
                        alert('berhasil');
+                       window.location.reload(); 
                     })
                     .catch(error => {
                         console.error('Error:', error);
@@ -410,8 +412,7 @@ if (window.addEventListener) {
             })
             .then(response => response.text())
             .then(data => {
-               console.log(data)
-               alert('berhasil2')
+               
             })
             .catch(error => {
                 console.error('Error:', error);
