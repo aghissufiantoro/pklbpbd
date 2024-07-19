@@ -108,7 +108,7 @@ if ($db_data_kejadian ) {
                                 <li class="dokumentasi-section">Dokumentasi:</li>
                                 <?php if ($db_data_kejadian->dokumentasi): ?>
                                     <li>
-                                        <img src="<?= base_url('upload/dokumentasi/' . $db_data_kejadian->dokumentasi) ?>" alt="Dokumentasi Kejadian">
+                                        <img src="<?= base_url($db_data_kejadian->dokumentasi) ?>" alt="Dokumentasi Kejadian">
                                     </li>
                                 <?php else: ?>
                                     <li>Tidak ada dokumentasi.</li>
