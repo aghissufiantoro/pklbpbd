@@ -18,8 +18,13 @@
                 <div class="col-md-6"> 
 
                     <div class="mb-3">
-                        <label for="id_kegiatan">ID Penugasan</label>
-                        <input type="text" class="form-control" id="id_penugasan" name="id_penugasan" value="<?= $kegiatan->id_penugasan ?>" disabled>
+                    <label for="id_penugasan">ID Penugasan</label>
+                <input type="text" class="form-control" id="id_penugasan" name="id_penugasan" value="<?= $kegiatan->id_penugasan ?>" readonly>
+                    </div>
+
+                    <div class="mb-3">
+                    <label for="id_kegiatan">ID Kegiatan</label>
+                <input type="text" class="form-control" id="id_kegiatan" name="id_kegiatan" value="<?= $kegiatan->id_kegiatan ?>" readonly>
                     </div>
                     
                     <div class="mb-3">

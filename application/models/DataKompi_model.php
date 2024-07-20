@@ -196,8 +196,9 @@ class PenugasanPetugas_model extends CI_Model {
 
     public function update_penugasan($id_penugasan, $data) {
         $this->db->where('id_penugasan', $id_penugasan);
-        $this->db->update($this->_table, $data);
+        return $this->db->update($this->_table, $data);
     }
+    
 
     public function delete($id)
     {
