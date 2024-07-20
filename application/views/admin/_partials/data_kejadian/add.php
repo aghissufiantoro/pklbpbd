@@ -1,4 +1,3 @@
-
 <div class="row">
   <div class="col-md-12 grid-margin stretch-card">
     <div class="card">
@@ -389,3 +388,18 @@ tanggalInput.addEventListener('keyup', function() {
 });
 
 </script>
+<style>
+  .alert-container {
+  position: fixed;
+  top: 15%;
+  left: 57%;
+  transform: translate(-50%, -50%);
+  width: auto;
+  z-index: 1050;
+}
+
+#success-alert {
+  margin-bottom: 0; /* Remove bottom margin to prevent extra space */
+}
+
+  </style>

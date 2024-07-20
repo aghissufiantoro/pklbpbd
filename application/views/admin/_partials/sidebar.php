@@ -166,7 +166,7 @@
             ?>
             <li class="nav-item nav-category">(Bu Sarkona) MANAJEMEN KEBENCANAAN</li>
             <?php if ($this->session->userdata('username') == "data_kejadian" || $this->session->userdata('role') == "1") { ?>
-                <li class="nav-item <?php echo ($this->uri->segment(2) == 'data_kejadian') ? 'active' : ''; ?>">
+                <li class="nav-item <?php echo ($this->uri->segment(2) == 'data_kejadian') ? 'active' : ''; ?> mt-3">
                     <a href="<?= base_url('admin/data_kejadian') ?>" class="nav-link">
                         <i class="link-icon" data-feather="activity"></i>
                         <span class="link-title">Data Kejadian</span>
