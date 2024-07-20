@@ -1,14 +1,3 @@
-<?php
-$wilayah_value = "";
-if ($this->session->flashdata('success')) {
-?>
-  <div class="alert alert-success alert-dismissible fade show" role="alert">
-    <strong>SUKSES!</strong> Data Kejadian telah ditambahkan.
-    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="btn-close"></button>
-  </div>
-<?php
-}
-?>
 
 <div class="row">
   <div class="col-md-12 grid-margin stretch-card">
@@ -17,24 +6,23 @@ if ($this->session->flashdata('success')) {
         <h4 class="card-title">Tambah Data Kejadian</h4>
         <p class="text-muted mb-3">Mohon diisi dengan sebenar-benarnya</p>
         <form id="addForm" action="<?= base_url("admin/data_kejadian/add") ?>" method="post" enctype="multipart/form-data">
-        <div class="row">
-  <div class="col-md-15">
-    <div class="mb-3">
-      <label for="tanggal" class="form-label">Tanggal Kejadian</label>
-      <div class="input-group date datepicker" id="datePickerExample">
-        <input type="text" class="form-control" name="tanggal" required autocomplete="off">
-        <span class="input-group-text input-group-addon"><i data-feather="calendar"></i></span>
-      </div>
-    </div>
-  </div>
-</div>
-
+          <div class="row">
+            <div class="col-md-15">
+              <div class="mb-3">
+                <label for="tanggal" class="form-label">Tanggal Kejadian</label>
+                <div class="input-group date datepicker" id="datePickerExample">
+                  <input id="tanggal" type="text" class="form-control" name="tanggal" required autocomplete="off">
+                  <span class="input-group-text input-group-addon"><i data-feather="calendar"></i></span>
+                </div>
+              </div>
+            </div>
+          </div>
 
           <div class="row">
             <div class="col-md-15">
               <div class="mb-3">
                 <label for="id_kejadian" class="form-label">ID KEJADIAN</label>
-                <input id="id_kejadian" class="form-control" name="id_kejadian" type="text"  value="<?=  $this->session->flashdata('new_id_kejadian'); ?>" readonly>
+                <input id="id_kejadian" class="form-control" name="id_kejadian" type="text"  value="" readonly>
               
               </div>
             </div>
@@ -168,6 +156,8 @@ document.addEventListener('DOMContentLoaded', function() {
   // Flag to track if fetchOptions has been executed
 var fetchExecuted = false;
 
+var id_kejadian1 ="<?=  $this->session->flashdata('new_id_kejadian'); ?>"
+
 // Variable to store the previous value of selectedKecamatan.title
 var pastValue = '';
 
@@ -196,6 +186,36 @@ if (window.addEventListener) {
     // For IE
     myElement.attachEvent('DOMSubtreeModified', contentChanged);
 }
+
+var id_kejadian_textForm = document.getElementById('id_kejadian');
+var tanggalInput = document.getElementById('tanggal');
+
+tanggalInput.addEventListener('keyup', function() {
+    var formData = new FormData();
+    formData.append('tanggal', tanggalInput.value);
+
+    fetch('<?= base_url('admin/data_kejadian/getLastIdKejadianByAjax') ?>', {
+        method: 'POST',
+        body: formData,
+        headers: {
+            'X-Requested-With': 'XMLHttpRequest'
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.error) {
+            console.error('Error:', data.error);
+            alert('Terjadi kesalahan: ' + data.error);
+        } else {
+            console.log('New ID Kejadian:', data.new_id_kejadian);
+            id_kejadian_textForm.value = data.new_id_kejadian;
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('Terjadi kesalahan saat mengambil data.');
+    });
+});
 
 
     document.getElementById('lokasi_kejadian').addEventListener('change', function() {

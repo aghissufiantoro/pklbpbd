@@ -119,6 +119,10 @@
                                     <th>Usia</th>
                                     <th>Kondisi</th>
                                     <th>Riwayat Penyakit</th>
+                                    <th>Kronologi Darurat Medis</th>
+                                    <th>Tindak Lanjut Darurat Medis</th>
+                                    <th>Petugas Di Lokasi Darurat Medis</th>
+                                    <th>Dokumentasi Darurat Medis</th>
                                 </tr>
                             </thead>
                             <tbody id="dataKejadianTableBody">
@@ -181,7 +185,8 @@
         })
         .catch(error => {
             console.error('Error:', error);
-            alert('Terjadi kesalahan saat mengunggah gambar.');
+            
+            alert(error);
         });
     } else {
         fetch(form.action, {
@@ -200,17 +205,24 @@
 }
 
 function handleResponse(data, form) {
+const baseUrl = 'http://localhost:80/bpbd'
     if (data.status === 'success') {
         const data1 = data.data;
         const newRow = document.createElement('tr');
         newRow.innerHTML = `
-            <td>${data1.nama}</td>
-            <td>${data1.jenis_kelamin}</td>
-            <td>${data1.alamat}</td>
-            <td>${data1.usia}</td>
-            <td>${data1.kondisi}</td>
-            <td>${data1.riwayat_penyakit}</td>
-        `;
+    <td>${data1.nama}</td>
+    <td>${data1.jenis_kelamin}</td>
+    <td>${data1.alamat}</td>
+    <td>${data1.usia}</td>
+    <td>${data1.kondisi}</td>
+    <td>${data1.riwayat_penyakit}</td>
+    <td>${data1.kronologi_darurat_medis}</td>
+    <td>${data1.tindak_lanjut_darurat_medis}</td>
+    <td>${data1.petugas_di_lokasi_darurat_medis}</td>
+    
+    <td><img src="${baseUrl + data1.dokumentasi_darurat_medis}" alt="dokumentasi" width="100"></td>
+                    
+`;
         document.getElementById('dataKejadianTableBody').appendChild(newRow);
 
         form.reset();

@@ -115,7 +115,43 @@
                                 <input id="Kondisi Bangunan" class="form-control" name="kondisi_bangunan" type="text" required>
                             </div>
                         </div>
-                    </div>  
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="mb-3">
+                                <label for="Kronologi Kebakaran" class="form-label">Kronologi Kebakaran</label>
+                                <input id="Kronologi Kebakaran" class="form-control" name="kronologi_kebakaran" type="text" required>
+                            </div>
+                        </div>
+                    </div> 
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="mb-3">
+                                <label for="Tindak Lanjut Kebakaran" class="form-label">Tindak Lanjut Kebakaran</label>
+                                <input id="Tindak Lanjut Kebakaran" class="form-control" name="tindak_lanjut_kebakaran" type="text" required>
+                            </div>
+                        </div>
+                    </div> 
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="mb-3">
+                                <label for="Petugas di Lokasi" class="form-label">Petugas di Lokasi</label>
+                                <input id="Petugas di Lokasi" class="form-control" name="petugas_di_lokasi_kebakaran" type="text" required>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="mb-3">
+                                <label for="Dokumentasi Kebakaran" class="form-label">Dokumentasi</label>
+                                <input id="dokumentasi_kebakaran" type="file" class="form-control" required name="dokumentasi_kebakaran" accept="image/*" />
+                            </div>
+                        </div>
+                    </div> 
                        
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -153,6 +189,10 @@
                                     <th>Alamat</th>
                                     <th>Lebar Jalan</th>
                                     <th>Kondisi Bangunan</th>
+                                    <th>Kronologi</th>
+                                    <th>Tindak Lanjut</th>
+                                    <th>Petugas di Lokasi</th>
+                                    <th>Dokumentasi</th>
                                 </tr>
                             </thead>
                             <tbody id="dataKejadianTableBody">
@@ -167,96 +207,135 @@
 
 
     <script>
-        alert(0);
         setupEventListenersInPartial();
-        
-        function handleSubmitAndRedirectInsidePartial() {
-        const form = document.getElementById('addForm1'); 
-        const formData = new FormData(form);
-        const idKejadian = document.getElementById('id_kejadian').value;
+        function setupEventListenersInPartial() {
+    const saveButtonPartial = document.getElementById('saveButton');
 
-        // Buat objek untuk menyimpan data form
-        const formObject = {
-            id_kejadian: idKejadian
-        };
-
-        alert(idKejadian);
-
-        formData.forEach((value, key) => {
-            formObject[key] = value;
+    if (saveButtonPartial) {
+        saveButtonPartial.addEventListener('click', function(event) {
+            event.preventDefault();
+            handleSubmitAndRedirectInsidePartial();
         });
+    }
 
-        fetch(form.action, {
+    const stopButtonPartial = document.getElementById('stopButton');
+    if (stopButtonPartial) {
+        stopButtonPartial.addEventListener('click', function() {
+            window.location.href = '<?php echo site_url('admin/data_kejadian'); ?>';
+        });
+    }
+}
+
+function handleSubmitAndRedirectInsidePartial() {
+    const form = document.getElementById('addForm1'); 
+    const formData = new FormData(form);
+    const idKejadian = document.getElementById('id_kejadian').value;
+    const imageFile = document.getElementById('dokumentasi_kebakaran').files[0];
+
+    // Buat objek untuk menyimpan data form
+    const formObject = {
+        id_kejadian: idKejadian
+    };
+
+    alert(idKejadian);
+
+    formData.forEach((value, key) => {
+        formObject[key] = value;
+    });
+
+    if (imageFile) {
+        const imageFormData = new FormData();
+        imageFormData.append('image', imageFile);
+        const caseType = 'Kebakaran'; // Assuming kejadian is the case type selector
+        imageFormData.append('case', caseType);
+
+        fetch('<?= base_url('admin/data_kejadian/upload_image') ?>', {
             method: 'POST',
-            body: JSON.stringify(formObject),
-            headers: {
-                'Content-Type': 'application/json', // Ubah header ke application/json
-                'X-Requested-With': 'XMLHttpRequest' // Pastikan server mengenali ini sebagai permintaan AJAX
-            },
-            credentials: 'same-origin' // Sertakan kredensial dalam permintaan
+            body: imageFormData
         })
-        .then(response =>console.log(response.text())) // Parsing respons sebagai JSON
+        .then(response => response.json())
         .then(data => {
-        const data1 = JSON.parse(data);
-        
-        console.log(data1.nama);
-            if (data1.id_kejadian !== null) {
-                const newRow = document.createElement('tr');
-                newRow.innerHTML = `
-                    <td>${data1.objek_terbakar}</td>
-                    <td>${data1.luas_terbakar}</td>
-                    <td>${data1.luas_bangunan}</td>
-                    <td>${data1.penyebab}</td>
-                    <td>${data1.status_bangunan}</td>
-                    <td>${data1.nama}</td>
-                    <td>${data1.usia}</td>
-                    <td>${data1.jenis_kelamin}</td>
-                    <td>${data1.alamat}</td>
-                    <td>${data1.lebar_jalan}</td>
-                    <td>${data1.kondisi_bangunan}</td>
-                `;
-                document.getElementById('dataKejadianTableBody').appendChild(newRow);
+            if (data.status === 'success') {
+                formObject.dokumentasi_kebakaran = data.image_url;
 
-                form.reset();
-
-                document.getElementById('success-alert').textContent = 'Data berhasil disimpan';
-                document.getElementById('success-alert').style.display = 'block';
-                document.getElementById('error-alert').style.display = 'none';
+                fetch("<?= base_url("admin/data_kejadian/save_kebakaran") ?>", {
+                    method: 'POST',
+                    body: JSON.stringify(formObject),
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-Requested-With': 'XMLHttpRequest'
+                    },
+                    credentials: 'same-origin'
+                })
+                .then(response => response.json())
+                .then(data => handleResponse(data, form))
+                .catch(handleError);
             } else {
-                document.getElementById('error-alert').textContent = 'Gagal mengirim data: ' + data.message;
-                document.getElementById('error-alert').style.display = 'block';
-                document.getElementById('success-alert').style.display = 'none';
+                alert('Gagal mengunggah gambar: ' + data.message);
             }
         })
         .catch(error => {
             console.error('Error:', error);
-            document.getElementById('error-alert').textContent = 'Terjadi kesalahan saat mengirim data: ' + error.message;
-            document.getElementById('error-alert').style.display = 'block';
-            document.getElementById('success-alert').style.display = 'none';
+            alert(error);
         });
+    } else {
+        fetch(form.action, {
+            method: 'POST',
+            body: JSON.stringify(formObject),
+            headers: {
+                'Content-Type': 'application/json',
+                'X-Requested-With': 'XMLHttpRequest'
+            },
+            credentials: 'same-origin'
+        })
+        .then(response => response.json())
+        .then(data => handleResponse(data, form))
+        .catch(handleError);
     }
+}
+
+function handleResponse(data, form) {
+    const baseUrl = 'http://localhost:80/bpbd';
+    if (data.status === 'success') {
+        const data1 = data.data;
+        const newRow = document.createElement('tr');
+        newRow.innerHTML = `
+            <td>${data1.objek_terbakar}</td>
+            <td>${data1.luas_terbakar}</td>
+            <td>${data1.luas_bangunan}</td>
+            <td>${data1.penyebab}</td>
+            <td>${data1.status_bangunan}</td>
+            <td>${data1.nama}</td>
+            <td>${data1.usia}</td>
+            <td>${data1.jenis_kelamin}</td>
+            <td>${data1.alamat}</td>
+            <td>${data1.lebar_jalan}</td>
+            <td>${data1.kondisi_bangunan}</td>
+            <td>${data1.kronologi_kebakaran}</td>
+            <td>${data1.tindak_lanjut_kebakaran}</td>
+            <td>${data1.petugas_di_lokasi_kebakaran}</td>
+            <td><img src="${baseUrl + data1.dokumentasi_kebakaran}" alt="dokumentasi" width="100"></td>
+        `;
+        document.getElementById('dataKejadianTableBody').appendChild(newRow);
+
+        form.reset();
+
+        document.getElementById('success-alert').textContent = 'Data berhasil disimpan';
+        document.getElementById('success-alert').style.display = 'block';
+        document.getElementById('error-alert').style.display = 'none';
+    } else {
+        document.getElementById('error-alert').textContent = 'Gagal mengirim data: ' + data.message;
+        document.getElementById('error-alert').style.display = 'block';
+        document.getElementById('success-alert').style.display = 'none';
+    }
+}
+
+function handleError(error) {
+    console.error('Error:', error);
+    document.getElementById('error-alert').textContent = 'Terjadi kesalahan saat mengirim data: ' + error.message;
+    document.getElementById('error-alert').style.display = 'block';
+    document.getElementById('success-alert').style.display = 'none';
+}
 
 
-        // Setup event listener di partial form
-        function setupEventListenersInPartial() {
-        
-        
-            const saveButtonPartial = document.getElementById('saveButton');
-        
-            if (saveButtonPartial) {
-            
-                saveButtonPartial.addEventListener('click', function(event) {
-                    event.preventDefault();
-                    handleSubmitAndRedirectInsidePartial();
-                });
-            }
-
-            const stopButtonPartial = document.getElementById('stopButton');
-            if (stopButtonPartial) {
-            
-                stopButtonPartial.addEventListener('click', function() {
-                    window.location.href = '<?php echo site_url('admin/data_kejadian'); ?>';
-                });
-            }
-        }
     </script>

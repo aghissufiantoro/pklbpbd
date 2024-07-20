@@ -77,6 +77,49 @@ public function getLastIDkejadian($formatted_date) {
     return $new_id_kejadian;
 }
 
+
+public function getLastIdKejadianByAjax() {
+    // Mengambil tanggal dari permintaan POST
+    $formatted_date = $this->input->post('tanggal');
+    
+    // Memformat tanggal menjadi DDMMYY
+    $date = DateTime::createFromFormat('Y-m-d', $formatted_date);
+    if ($date === false) {
+        echo json_encode(['error' => 'Invalid date format']);
+        return;
+    }
+    $res = $date->format('dmy'); // Format tanggal menjadi DDMMYY
+
+    // Query untuk mengambil ID kejadian terakhir berdasarkan tanggal yang telah diformat
+    $this->db->select('id_kejadian');
+    $this->db->from('data_kejadian');
+    $this->db->like('id_kejadian', 'DK' . $res, 'after');
+    $this->db->order_by('id_kejadian', 'DESC');
+    $this->db->limit(1);
+    $query = $this->db->get();
+    
+    if ($query->num_rows() > 0) {
+        // Mengambil ID kejadian terakhir dan menambah bagian numerik sebesar 1
+        $last_id_kejadian = $query->row()->id_kejadian;
+        $numeric_part = substr($last_id_kejadian, -3);
+        $new_numeric_part = (int)$numeric_part + 1;
+    } else {
+        // Memulai dengan 001 jika tidak ada transaksi untuk tanggal saat ini
+        $new_numeric_part = 1;
+    }
+
+    // Melengkapi bagian numerik dengan angka nol di depan dan membuat ID baru
+    $padded_new_numeric_part = str_pad($new_numeric_part, 3, '0', STR_PAD_LEFT);
+    $new_id_kejadian = 'DK' . $res . $padded_new_numeric_part;
+
+    // Mengembalikan ID kejadian baru sebagai JSON
+    echo json_encode(['new_id_kejadian' => $new_id_kejadian]);
+    return;
+}
+
+
+
+
 // Function to handle adding new kejadian data
 
 public function upload_image() {
@@ -509,30 +552,24 @@ public function save_darurat_medis()
          ->set_output(json_encode($response));
 }
 
-    public function kebakaran()
-    {
-        if ($this->session->userdata('role') == "1")
-        {
-            $data_kejadian = $this->m_data_kejadian;
-            $validation = $this->form_validation;
-            $validation->set_rules($data_kejadian->rules3());
-
-            if ($validation->run())
-            {
-                $data_kejadian->save_kebakaran();
-                redirect(site_url('admin/data_kejadian'));
-                $this->session->set_flashdata('success', '<i class="fa fa-check"></i> Alhamdulillah, Data berhasil disimpan');
-            }
-
-            $this->load->view("admin/data_kejadian/new_form_kebakaran");
-        }
-        else
-        {
-            show_404();
-        }
+public function kebakaran()
+{
+    if ($this->session->userdata('role') != "1") {
+        show_404();
+        return;
     }
 
-    public function save_kebakaran()
+    $new_id_kejadian = $this->session->flashdata('new_id_kejadian');
+    if (empty($new_id_kejadian)) {
+        show_404();
+        return;
+    }
+
+    $data['new_id_kejadian'] = $new_id_kejadian;
+    $this->load->view("admin/data_kejadian/new_form_kebakaran", $data);
+}
+
+public function save_kebakaran()
 {
     // Check user role
     if ($this->session->userdata('role') != "1") {
@@ -549,24 +586,21 @@ public function save_darurat_medis()
     $inputJSON = file_get_contents('php://input');
     $input = json_decode($inputJSON, true);
 
-
-    log_message('info', 'Received JSON data: ' . $inputJSON); 
+    // Log the incoming request data
+    log_message('info', 'Received JSON data: ' . $inputJSON);
 
     // Check if JSON is valid
     if ($input === null && json_last_error() !== JSON_ERROR_NONE) {
         // Handle JSON decode error
         $response = [
             'status' => 'error',
-            'message' => $inputJSON
+            'message' => 'Invalid JSON format'
         ];
         $this->output
              ->set_content_type('application/json')
              ->set_output(json_encode($response));
         return;
     }
-
-    // Log the incoming request data
-    log_message('info', 'Incoming request data: ' . json_encode($input));
 
     // Set validation rules
     if ($input) {
@@ -588,6 +622,10 @@ public function save_darurat_medis()
                 'alamat' => $input['alamat'],
                 'lebar_jalan' => $input['lebar_jalan'],
                 'kondisi_bangunan' => $input['kondisi_bangunan'],
+                'kronologi_kebakaran' => $input['kronologi_kebakaran'],
+                'tindak_lanjut_kebakaran' => $input['tindak_lanjut_kebakaran'],
+                'petugas_di_lokasi_kebakaran' => $input['petugas_di_lokasi_kebakaran'],
+                'dokumentasi_kebakaran' => $input['dokumentasi_kebakaran']
             ];
 
             // Log the data to be saved
@@ -619,126 +657,456 @@ public function save_darurat_medis()
         ];
     }
 
+    
+
     // Send JSON response
     $this->output
          ->set_content_type('application/json')
-         ->set_output(json_encode($inputJSON));
+         ->set_output(json_encode($response));
 }
+
 
     public function lainnya()
     {
-        if ($this->session->userdata('role') == "1")
-        {
-            $data_kejadian = $this->m_data_kejadian;
-            $validation = $this->form_validation;
-            $validation->set_rules($data_kejadian->rules4());
-
-            if ($validation->run())
-            {
-                $data_kejadian->save_lain();
-                redirect(site_url('admin/data_kejadian'));
-                $this->session->set_flashdata('success', '<i class="fa fa-check"></i> Alhamdulillah, Data berhasil disimpan');
-            }
-
-            $this->load->view("admin/data_kejadian/new_form_lainnya");
-        }
-        else
-        {
+        if ($this->session->userdata('role') != "1") {
             show_404();
+            return;
         }
+        $new_id_kejadian = $this->session->flashdata('new_id_kejadian');
+        if (empty($new_id_kejadian)) {
+            show_404();
+            return;
+        }
+
+        $data['new_id_kejadian'] = $new_id_kejadian;
+        $this->load->view("admin/data_kejadian/new_form_lainnya", $data);
+    }
+
+    public function save_lainnya(){
+        if($this->session->userdata('role') != "1"){
+            $this->output->set_status_header(403);
+            echo json_encode(['status' => 'error', 'message' => 'Unauthorized access']);
+            return;
+        }
+        $this->load->model('M_form_lain');
+        $data_kejadian = $this->M_form_lain;
+
+        $inputJSON = file_get_contents('php://input');
+        $input = json_decode($inputJSON, true);
+
+        log_message('info', 'Received JSON data: ' . $inputJSON);
+
+        if ($input === null && json_last_error() !== JSON_ERROR_NONE) {
+            $response = [
+                'status' => 'error',
+                'message' => 'Invalid JSON format'
+            ];
+            $this->output
+                 ->set_content_type('application/json')
+                 ->set_output(json_encode($response));
+            return;
+        }
+
+        if ($input){
+            $this->form_validation->set_data($input);
+            $this->form_validation->set_rules($data_kejadian->rules());
+
+            if ($this->form_validation->run() === TRUE){
+                $data = [
+                    'id_kejadian' => $input['id_kejadian'],
+                    'jenis_kejadian_lain' => $input['jenis_kejadian_lain'],
+                    'nama' => $input['nama'],
+                    'alamat' => $input['alamat'],
+                    'detail_obyek' => $input['detail_obyek'],
+                    'kronologi_lain' => $input['kronologi_lain'],
+                    'tindak_lanjut_lain' => $input['tindak_lanjut_lain'],
+                    'petugas_di_lokasi_lain' => $input['petugas_di_lokasi_lain'],
+                    'dokumentasi_lain' => $input['dokumentasi_lain']
+                ];
+
+                log_message('info', 'Data to be saved: ' . json_encode($data));
+
+                $data_kejadian->save($data);
+
+                $response = [
+                    'status' => 'success',
+                    'data' => $data
+                ];
+            } else {
+                $response = [
+                    'status' => 'error',
+                    'message' => validation_errors()
+                ];
+
+                log_message('error', 'Validation errors: ' . validation_errors());
+            }
+        } else {
+            $response = [
+                'status' => 'error',
+                'message' => 'No valid input data received'
+            ];
+        }
+
+        $this->output
+             ->set_content_type('application/json')
+             ->set_output(json_encode($response));
     }
 
     public function kecelakaan_lalu_lintas()
     {
-        if ($this->session->userdata('role') == "1")
-        {
-            $data_kejadian = $this->m_data_kejadian;
-            $validation = $this->form_validation;
-            $validation->set_rules($data_kejadian->rules5());
-
-            if ($validation->run())
-            {
-                $data_kejadian->save_laka();
-                redirect(site_url('admin/data_kejadian'));
-                $this->session->set_flashdata('success', '<i class="fa fa-check"></i> Alhamdulillah, Data berhasil disimpan');
-            }
-
-            $this->load->view("admin/data_kejadian/new_form_kecelakaan_lalu_lintas");
-        }
-        else
-        {
+        if ($this->session->userdata('role') != "1") {
             show_404();
+            return;
         }
+
+        $new_id_kejadian = $this->session->flashdata('new_id_kejadian');
+        if (empty($new_id_kejadian)) {
+            show_404();
+            return;
+        }
+
+        $data['new_id_kejadian'] = $new_id_kejadian;
+        $this->load->view("admin/data_kejadian/new_form_kecelakaan_lalu_lintas", $data);
+    }
+
+    public function save_kecelakaan_lalu_lintas(){
+        if($this->session->userdata('role') != "1"){
+            $this->output->set_status_header(403);
+            echo json_encode(['status' => 'error', 'message' => 'Unauthorized access']);
+            return;
+        }
+        $this->load->model('M_form_laka');
+        $data_kejadian = $this->M_form_laka;
+
+        $inputJSON = file_get_contents('php://input');
+        $input = json_decode($inputJSON, true);
+
+        log_message('info', 'Received JSON data: ' . $inputJSON);
+
+        if ($input === null && json_last_error() !== JSON_ERROR_NONE) {
+            $response = [
+                'status' => 'error',
+                'message' => 'Invalid JSON format'
+            ];
+            $this->output
+                 ->set_content_type('application/json')
+                 ->set_output(json_encode($response));
+            return;
+        }
+
+        if ($input){
+            $this->form_validation->set_data($input);
+            $this->form_validation->set_rules($data_kejadian->rules());
+
+            if ($this->form_validation->run() === TRUE){
+                $data = [
+                    'id_kejadian' => $input['id_kejadian'],
+                    'nama' => $input['nama'],
+                    'jenis_kelamin' => $input['jenis_kelamin'],
+                    'usia' => $input['usia'],
+                    'alamat' => $input['alamat'],
+                    'kendaraan' => $input['kendaraan'],
+                    'luka' => $input['luka'],
+                    'kondisi' => $input['kondisi'],
+                    'kronologi_laka' => $input['kronologi_laka'],
+                    'tindak_lanjut_laka' => $input['tindak_lanjut_laka'],
+                    'petugas_di_lokasi_laka' => $input['petugas_di_lokasi_laka'],
+                    'dokumentasi_laka' => $input['dokumentasi_laka']
+                ];
+
+                log_message('info', 'Data to be saved: ' . json_encode($data));
+
+                $data_kejadian->save($data);
+
+                $response = [
+                    'status' => 'success',
+                    'data' => $data
+                ];
+            } else {
+                $response = [
+                    'status' => 'error',
+                    'message' => validation_errors()
+                ];
+
+                log_message('error', 'Validation errors: ' . validation_errors());
+            }
+        } else {
+            $response = [
+                'status' => 'error',
+                'message' => 'No valid input data received'
+            ];
+        }
+
+        $this->output
+             ->set_content_type('application/json')
+             ->set_output(json_encode($response));
     }
 
     public function orang_tenggelam()
     {
-        if ($this->session->userdata('role') == "1")
-        {
-            $data_kejadian = $this->m_data_kejadian;
-            $validation = $this->form_validation;
-            $validation->set_rules($data_kejadian->rules6());
-
-            if ($validation->run())
-            {
-                $data_kejadian->save_orang_tenggelam();
-                redirect(site_url('admin/data_kejadian'));
-                $this->session->set_flashdata('success', '<i class="fa fa-check"></i> Alhamdulillah, Data berhasil disimpan');
-            }
-
-            $this->load->view("admin/data_kejadian/new_form_orang_tenggelam");
-        }
-        else
-        {
+        if ($this->session->userdata('role') != "1") {
             show_404();
+            return;
         }
+        $new_id_kejadian = $this->session->flashdata('new_id_kejadian');
+        if (empty($new_id_kejadian)) {
+            show_404();
+            return;
+        }
+
+        $data['new_id_kejadian'] = $new_id_kejadian;
+        $this->load->view("admin/data_kejadian/new_form_orang_tenggelam", $data);
+    }
+
+    public function save_orang_tenggelam(){
+        if($this->session->userdata('role') != "1"){
+            $this->output->set_status_header(403);
+            echo json_encode(['status' => 'error', 'message' => 'Unauthorized access']);
+            return;
+        }
+        $this->load->model('M_form_orang_tenggelam');
+        $data_kejadian = $this->M_form_orang_tenggelam;
+
+        $inputJSON = file_get_contents('php://input');
+        $input = json_decode($inputJSON, true);
+
+        log_message('info', 'Received JSON data: ' . $inputJSON);
+
+        if ($input === null && json_last_error() !== JSON_ERROR_NONE) {
+            $response = [
+                'status' => 'error',
+                'message' => 'Invalid JSON format'
+            ];
+            $this->output
+                 ->set_content_type('application/json')
+                 ->set_output(json_encode($response));
+            return;
+        }
+
+        if ($input){
+            $this->form_validation->set_data($input);
+            $this->form_validation->set_rules($data_kejadian->rules());
+
+            if ($this->form_validation->run() === TRUE){
+                $data = [
+                    'id_kejadian' => $input['id_kejadian'],
+                    'nama_saksi' => $input['nama_saksi'],
+                    'usia_saksi' => $input['usia_saksi'],
+                    'alamat_saksi' => $input['alamat_saksi'],
+                    'hubungan_saksi' => $input['hubungan_saksi'],
+                    'nama_korban' => $input['nama_korban'],
+                    'usia_korban' => $input['usia_korban'],
+                    'jenis_kelamin' => $input['jenis_kelamin'],
+                    'alamat' => $input['alamat'],
+                    'kondisi' => $input['kondisi'],
+                    'kronologi_orang_tenggelam' => $input['kronologi_orang_tenggelam'],
+                    'tindak_lanjut_orang_tenggelam' => $input['tindak_lanjut_orang_tenggelam'],
+                    'petugas_di_lokasi_orang_tenggelam' => $input['petugas_di_lokasi_orang_tenggelam'],
+                    'dokumentasi_orang_tenggelam' => $input['dokumentasi_orang_tenggelam']
+                ];
+
+                log_message('info', 'Data to be saved: ' . json_encode($data));
+
+                $data_kejadian->save($data);
+
+                $response = [
+                    'status' => 'success',
+                    'data' => $data
+                ];
+            } else {
+                $response = [
+                    'status' => 'error',
+                    'message' => validation_errors()
+                ];
+
+                log_message('error', 'Validation errors: ' . validation_errors());
+            }
+        } else {
+            $response = [
+                'status' => 'error',
+                'message' => 'No valid input data received'
+            ];
+        }
+
+        $this->output
+             ->set_content_type('application/json')
+             ->set_output(json_encode($response));
     }
 
     public function penemuan_jenazah()
     {
-        if ($this->session->userdata('role') == "1")
-        {
-            $data_kejadian = $this->m_data_kejadian;
-            $validation = $this->form_validation;
-            $validation->set_rules($data_kejadian->rules7());
-
-            if ($validation->run())
-            {
-                $data_kejadian->save_penemuan_jenazah();
-                redirect(site_url('admin/data_kejadian'));
-                $this->session->set_flashdata('success', '<i class="fa fa-check"></i> Alhamdulillah, Data berhasil disimpan');
-            }
-
-            $this->load->view("admin/data_kejadian/new_form_penemuan_jenazah");
-        }
-        else
-        {
+        if ($this->session->userdata('role') != "1") {
             show_404();
+            return;
         }
+        $new_id_kejadian = $this->session->flashdata('new_id_kejadian');
+        if (empty($new_id_kejadian)) {
+            show_404();
+            return;
+        }
+
+        $data['new_id_kejadian'] = $new_id_kejadian;
+        $this->load->view("admin/data_kejadian/new_form_penemuan_jenazah", $data);
+    }
+
+    public function save_penemuan_jenazah(){
+        if($this->session->userdata('role') != "1"){
+            $this->output->set_status_header(403);
+            echo json_encode(['status' => 'error', 'message' => 'Unauthorized access']);
+            return;
+        }
+        $this->load->model('M_form_penemuan_jenazah');
+        $data_kejadian = $this->M_form_penemuan_jenazah;
+
+        $inputJSON = file_get_contents('php://input');
+        $input = json_decode($inputJSON, true);
+
+        log_message('info', 'Received JSON data: ' . $inputJSON);
+
+        if ($input === null && json_last_error() !== JSON_ERROR_NONE) {
+            $response = [
+                'status' => 'error',
+                'message' => 'Invalid JSON format'
+            ];
+            $this->output
+                 ->set_content_type('application/json')
+                 ->set_output(json_encode($response));
+            return;
+        }
+
+        if ($input){
+            $this->form_validation->set_data($input);
+            $this->form_validation->set_rules($data_kejadian->rules());
+
+            if ($this->form_validation->run() === TRUE){
+                $data = [
+                    'id_kejadian' => $input['id_kejadian'],
+                    'nama_saksi' => $input['nama_saksi'],
+                    'usia_saksi' => $input['usia_saksi'],
+                    'alamat_saksi' => $input['alamat_saksi'],
+                    'nama_korban' => $input['nama_korban'],
+                    'usia_korban' => $input['usia_korban'],
+                    'alamat_korban' => $input['alamat_korban'],
+                    'alamat_domisili_korban' => $input['alamat_domisili_korban'],
+                    'kronologi_penemuan_jenazah' => $input['kronologi_penemuan_jenazah'],
+                    'tindak_lanjut_penemuan_jenazah' => $input['tindak_lanjut_penemuan_jenazah'],
+                    'petugas_di_lokasi_penemuan_jenazah' => $input['petugas_di_lokasi_penemuan_jenazah'],
+                    'dokumentasi_penemuan_jenazah' => $input['dokumentasi_penemuan_jenazah']
+                ];
+
+                log_message('info', 'Data to be saved: ' . json_encode($data));
+
+                $data_kejadian->save($data);
+
+                $response = [
+                    'status' => 'success',
+                    'data' => $data
+                ];
+            } else {
+                $response = [
+                    'status' => 'error',
+                    'message' => validation_errors()
+                ];
+
+                log_message('error', 'Validation errors: ' . validation_errors());
+            }
+        } else {
+            $response = [
+                'status' => 'error',
+                'message' => 'No valid input data received'
+            ];
+        }
+
+        $this->output
+             ->set_content_type('application/json')
+             ->set_output(json_encode($response));
     }
 
     public function pohon_tumbang()
     {
-        if ($this->session->userdata('role') == "1")
-        {
-            $data_kejadian = $this->m_data_kejadian;
-            $validation = $this->form_validation;
-            $validation->set_rules($data_kejadian->rules8());
-
-            if ($validation->run())
-            {
-                $data_kejadian->save_pohon_tumbang();
-                redirect(site_url('admin/data_kejadian'));
-                $this->session->set_flashdata('success', '<i class="fa fa-check"></i> Alhamdulillah, Data berhasil disimpan');
-            }
-
-            $this->load->view("admin/data_kejadian/new_form_pohon_tumbang");
-        }
-        else
-        {
+        if ($this->session->userdata('role') != "1") {
             show_404();
+            return;
         }
+        $new_id_kejadian = $this->session->flashdata('new_id_kejadian');
+        if (empty($new_id_kejadian)) {
+            show_404();
+            return;
+        }
+
+        $data['new_id_kejadian'] = $new_id_kejadian;
+        $this->load->view("admin/data_kejadian/new_form_pohon_tumbang", $data);
     }
+
+    public function save_pohon_tumbang(){
+        if($this->session->userdata('role') != "1"){
+            $this->output->set_status_header(403);
+            echo json_encode(['status' => 'error', 'message' => 'Unauthorized access']);
+            return;
+        }
+        $this->load->model('M_form_pohon_tumbang');
+        $data_kejadian = $this->M_form_pohon_tumbang;
+
+        $inputJSON = file_get_contents('php://input');
+        $input = json_decode($inputJSON, true);
+
+        log_message('info', 'Received JSON data: ' . $inputJSON);
+
+        if ($input === null && json_last_error() !== JSON_ERROR_NONE) {
+            $response = [
+                'status' => 'error',
+                'message' => 'Invalid JSON format'
+            ];
+            $this->output
+                 ->set_content_type('application/json')
+                 ->set_output(json_encode($response));
+            return;
+        }
+
+        if ($input){
+            $this->form_validation->set_data($input);
+            $this->form_validation->set_rules($data_kejadian->rules());
+
+            if ($this->form_validation->run() === TRUE){
+                $data = [
+                    'id_kejadian' => $input['id_kejadian'],
+                    'jenis_pohon' => $input['jenis_pohon'],
+                    'diameter' => $input['diameter'],
+                    'tinggi' => $input['tinggi'],
+                    'tindak_lanjut_pohon_tumbang' => $input['tindak_lanjut_pohon_tumbang'],
+                    'petugas_di_lokasi_pohon_tumbang' => $input['petugas_di_lokasi_pohon_tumbang'],
+                    'dokumentasi_pohon_tumbang' => $input['dokumentasi_pohon_tumbang']
+                ];
+
+                log_message('info', 'Data to be saved: ' . json_encode($data));
+
+                $data_kejadian->save($data);
+
+                $response = [
+                    'status' => 'success',
+                    'data' => $data
+                ];
+            } else {
+                $response = [
+                    'status' => 'error',
+                    'message' => validation_errors()
+                ];
+
+                log_message('error', 'Validation errors: ' . validation_errors());
+            }
+        } else {
+            $response = [
+                'status' => 'error',
+                'message' => 'No valid input data received'
+            ];
+        }
+
+        $this->output
+             ->set_content_type('application/json')
+             ->set_output(json_encode($response));
+    }
+
+
 
     public function get_kabkota() {
         $wilayah = $this->input->get('wilayah');

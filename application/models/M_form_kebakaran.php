@@ -26,6 +26,10 @@ class M_form_kebakaran extends CI_Model
             ['field' => 'alamat', 'label' => 'Alamat', 'rules' => 'required'],
             ['field' => 'lebar_jalan', 'label' => 'Lebar Jalan', 'rules' => 'required'],
             ['field' => 'kondisi_bangunan', 'label' => 'Kondisi Bangunan', 'rules' => 'required'],
+            ['field' => 'kronologi_kebakaran', 'label' => 'Kronologi', 'rules' => 'required'],
+            ['field' => 'tindak_lanjut_kebakaran', 'label' => 'Tindak Lanjut Kebakaran', 'rules' => 'required'],
+            ['field' => 'petugas_di_lokasi_kebakaran', 'label' => 'Petugas di Lokasi', 'rules' => 'required'],
+            ['field' => 'dokumentasi_kebakaran', 'label' => 'Dokumentasi', 'rules' => 'required']
         ];
     }
 

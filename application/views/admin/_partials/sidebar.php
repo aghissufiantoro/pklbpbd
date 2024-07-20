@@ -53,7 +53,7 @@
                 <li class="nav-item <?php echo ($this->uri->segment(2) == 'lokasi_pos') ? 'active' : ''; ?>">
                     <a href="<?= base_url('admin/lokasi_pos') ?>" class="nav-link">
                         <i class="link-icon" data-feather="map"></i>
-                        <span class="link-title">Lokasi POS Pantau</span>
+                        <span class="link-title">Lokasi POS</span>
                     </a>
                 </li>
                 <?php if ($this->session->userdata('role') == "1" || $this->session->userdata('role') == "13" || $this->session->userdata('role') == "14" || $this->session->userdata('role') == "15" || $this->session->userdata('role') == "16" || $this->session->userdata('role') == "17" || $this->session->userdata('role') == "18" || $this->session->userdata('role') == "21" || $this->session->userdata('role') == "22" || $this->session->userdata('role') == "23" || $this->session->userdata('role') == "24") {
@@ -164,7 +164,7 @@
                 <?php
             }
             ?>
-            <li class="nav-item nav-category">MANAJEMEN KEBENCANAAN</li>
+            <li class="nav-item nav-category">(Bu Sarkona) MANAJEMEN KEBENCANAAN</li>
             <?php if ($this->session->userdata('username') == "data_kejadian" || $this->session->userdata('role') == "1") { ?>
                 <li class="nav-item <?php echo ($this->uri->segment(2) == 'data_kejadian') ? 'active' : ''; ?>">
                     <a href="<?= base_url('admin/data_kejadian') ?>" class="nav-link">
