@@ -157,14 +157,33 @@
                     echo 'class="nav-item"';
                 } ?>>
                     <a href="<?= base_url('admin/dokumentasi') ?>" class="nav-link ">
-                        <i class="link-icon" data-feather="users"></i>
+                        <i class="link-icon" data-feather="book-open"></i>
                         <span class="link-title">Dokumentasi</span>
                     </a>
                 </li>
                 <?php
             }
             ?>
-            <li class="nav-item nav-category">(Bu Sarkona) MANAJEMEN KEBENCANAAN</li>
+
+        <li class="nav-item nav-category">SINA SINI</li>
+            <?php
+            if ($this->session->userdata('username') == "data_kejadian" || $this->session->userdata('role') == "1") { 
+                ?>
+                <li <?php if ($this->uri->segment(2) == "dokumentasi_sinasini") {
+                    echo 'class="nav-item active"';
+                } else {
+                    echo 'class="nav-item"';
+                } ?>>
+                    <a href="<?= base_url('admin/dokumentasi_sinasini') ?>" class="nav-link ">
+                        <i class="link-icon" data-feather="book-open"></i>
+                        <span class="link-title">Dokumentasi Sinasini</span>
+                    </a>
+                </li>
+                <?php
+            }
+            ?>
+
+            <li class="nav-item nav-category">MANAJEMEN KEBENCANAAN</li>
             <?php if ($this->session->userdata('username') == "data_kejadian" || $this->session->userdata('role') == "1") { ?>
                 <li class="nav-item <?php echo ($this->uri->segment(2) == 'data_kejadian') ? 'active' : ''; ?> mt-3">
                     <a href="<?= base_url('admin/data_kejadian') ?>" class="nav-link">

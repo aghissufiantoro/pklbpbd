@@ -17,10 +17,8 @@
   <!-- Navbar End -->
 
 
-  <?php $this->load->view('front/_partials/page/edukasi_kebencanaan') ?>
   <?php $this->load->view('front/_partials/page/dokumentasi_sinasini') ?>
   <?php $this->load->view('front/_partials/survey') ?>
-
   <?php $this->load->view('front/_partials/footer') ?>
 
   <!-- Back to Top -->
