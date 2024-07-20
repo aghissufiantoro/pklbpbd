@@ -3142,6 +3142,21 @@ textarea.is-invalid.typeahead.tt-hint, .select2-container--default .select2-sear
   border-color: #6571ff;
 }
 
+.btn-add, .wizard > .actions a,
+.wizard > .actions a:active,
+.wizard > .actions a:hover, div.tox .tox-button:not(.tox-button--naked):not(.tox-button--secondary), .swal2-popup .swal2-actions button.swal2-confirm, .fc .fc-button-primary:not(:disabled).fc-button-active,
+.fc .fc-button-primary:not(:disabled):active {
+  color: #fff;
+  background-color: #20bb23;
+  border-color: #20bb23;
+}
+.btn-add:hover, .wizard > .actions a:hover, div.tox .tox-button:hover:not(.tox-button--naked):not(.tox-button--secondary), .swal2-popup .swal2-actions button.swal2-confirm:hover, .fc .fc-button-primary.fc-button-active:hover:not(:disabled),
+.fc .fc-button-primary:hover:not(:disabled):active {
+  color: #fff;
+  background-color: #18981a;
+  border-color: #18981a;
+}
+
 .btn-secondary, div.tox .tox-button--secondary {
   color: #fff;
   background-color: #7987a1;

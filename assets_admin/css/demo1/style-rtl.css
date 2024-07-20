@@ -3114,6 +3114,16 @@ textarea.is-invalid.typeahead.tt-hint, .select2-container--default .select2-sear
   background-color: #5660d9;
   border-color: #515acc;
 }
+
+.btn-add, .wizard > .actions a,
+.wizard > .actions a:active,
+.wizard > .actions a:hover, div.tox .tox-button:not(.tox-button--naked):not(.tox-button--secondary), .swal2-popup .swal2-actions button.swal2-confirm, .fc .fc-button-primary:not(:disabled).fc-button-active,
+.fc .fc-button-primary:not(:disabled):active {
+  color: #fff;
+  background-color: #17c70a;
+  border-color: #17c70a;
+}
+
 .btn-check:focus + .btn-primary, .wizard > .actions .btn-check:focus + a, div.tox .btn-check:focus + .tox-button:not(.tox-button--naked):not(.tox-button--secondary), .swal2-popup .swal2-actions .btn-check:focus + button.swal2-confirm, .fc .btn-check:focus + .fc-button-primary:not(:disabled).fc-button-active,
 .fc .btn-check:focus + .fc-button-primary:not(:disabled):active, .btn-primary:focus, .wizard > .actions a:focus, div.tox .tox-button:focus:not(.tox-button--naked):not(.tox-button--secondary), .swal2-popup .swal2-actions button.swal2-confirm:focus, .fc .fc-button-primary.fc-button-active:focus:not(:disabled),
 .fc .fc-button-primary:focus:not(:disabled):active {

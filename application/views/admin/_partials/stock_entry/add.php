@@ -1,4 +1,5 @@
 
+
 <?php if ($this->session->flashdata('success')): ?>
     <div class="alert alert-success">
         <?= $this->session->flashdata('success') ?>
@@ -13,7 +14,8 @@
         <h4 class="card-title">Tambah Data logistik</h4>
         <p class="text-muted mb-3">Mohon di isi dengan sebenar-benarnya</p>
         <form id="addForm" action="<?= site_url('admin/stock_entry/add') ?>" method="post" enctype="multipart/form-data">
-          <div class="row">
+        <!-- baris 1 -->
+        <div class="row">
             <div class="col-md-2">
               <div class="mb-3">
                 <label for="tanggal_entry" class="form-label">Tanggal</label>
@@ -23,68 +25,34 @@
                 </div>
               </div>
             </div>
-            <div class="col-md-4">
-        <div class="mb-3">
-            <label for="nama_barang" class="form-label">Nama Barang</label>
-            <select class="form-select" id="nama_barang" name="nama_barang" required>
-                <option value="">--- Pilih Nama Barang ---</option>
-                <?php foreach ($barang_options as $barang): ?>
-                    <option value="<?= $barang->nama_barang ?>"><?= $barang->nama_barang ?></option>
+
+          <div class="col-md-2">
+            <div class="mb-3">
+              <label for="id_kejadian" class="form-label">ID Kejadian</label>
+                <select class="form-select" id="id_kejadian" name="id_kejadian" required>
+                <option value="">--- Pilih ID Kejadian ---</option>
+                <?php foreach ($kejadian_options as $kejadian): ?>
+                <option value="<?= $kejadian->id_kejadian ?>"><?= $kejadian->id_kejadian ?></option>
                 <?php endforeach; ?>
-            </select>
-        </div>
-    </div>
-    <input type="hidden" id="kode_barang" name="kode_barang" value="">
-            <div class="col-md-4">
-              <div class="mb-3">
-                <label class="form-label" for="status_barang">Status Barang</label>
-                <select class="form-select" id="status_barang" name="status_barang" data-width="100%" required>
-                  <option value="">--- Pilih Status Barang ---</option>
-                  <option value="Masuk">Masuk</option>
-                  <option value="Keluar">Keluar</option>
-                  <option value="Rusak">Rusak</option>
-                  <option value="Tersedia">Tersedia</option>
                 </select>
-              </div>
-            </div>
-            <div class="col-md-2">
-              <div class="mb-3">
-                <label for="qty_barang" class="form-label">Quantity Barang</label>
-                <div class="input-group">
-                  <button class="btn btn-outline-secondary" type="button" id="kurangBtn">-</button>
-                  <input id="qty_barang" class="form-control" name="qty_barang" type="text" value="0" required>
-                  <button class="btn btn-outline-secondary" type="button" id="tambahBtn">+</button>
                 </div>
-              </div>
-            </div>
           </div>
 
-          <div class="row">
-          <div class="col-md-2">
-          <div class="mb-3">
-                                <label for="id_kejadian" class="form-label">ID Kejadian</label>
-                                <select class="form-select" id="id_kejadian" name="id_kejadian" required>
-                                    <option value="">--- Pilih ID Kejadian ---</option>
-                                    <?php foreach ($kejadian_options as $kejadian): ?>
-                                        <option value="<?= $kejadian->id_kejadian ?>"><?= $kejadian->id_kejadian ?></option>
-                                    <?php endforeach; ?>
-                                </select>
-                            </div>
-            </div>
-            <div class="col-md-5">
+          <div class="col-md-4">
               <div class="mb-3">
                 <label for="lokasi_diterima" class="form-label">Lokasi Diterima</label>
                 <input id="lokasi_diterima" class="form-control" name="lokasi_diterima" type="text" required>
               </div>
-            </div>
-             <div class="col-md-5">
+          </div>
+          <div class="col-md-4">
               <div class="mb-3">
                 <label for="penerima_barang" class="form-label">Penerima Barang</label>
                 <input id="penerima_barang" class="form-control" name="penerima_barang" type="text" required>
               </div>
-            </div>
           </div>
+        </div>
 
+        <!-- baris kedua -->
           <div class="row">
             <div class="col-md-2">
               <div class="mb-3">
@@ -126,26 +94,100 @@
               </div>
             </div>
           </div>
-          
-          <div class="col-md-12">
+
+          <!-- Baris 3 -->
+          <div class="row pt-3">
+            <div class="col-md-4">
+              <div class="mb-3">
+              <label for="nama_barang" class="form-label">Nama Barang</label>
+              <select class="form-select" id="nama_barang" name="nama_barang" required>
+                  <option value="">--- Pilih Nama Barang ---</option>
+                  <?php foreach ($barang_options as $barang): ?>
+                      <option value="<?= $barang->nama_barang ?>"><?= $barang->nama_barang ?></option>
+                  <?php endforeach; ?>
+              </select>
+              </div>
+            </div>
+
+            <input type="hidden" id="kode_barang" name="kode_barang" value="">
+            <div class="col-md-4">
+              <div class="mb-3">
+                <label class="form-label" for="status_barang">Status Barang</label>
+                <select class="form-select" id="status_barang" name="status_barang" data-width="100%" required>
+                  <option value="">--- Pilih Status Barang ---</option>
+                  <option value="Masuk">Masuk</option>
+                  <option value="Keluar">Keluar</option>
+                  <option value="Rusak">Rusak</option>
+                  <option value="Tersedia">Tersedia</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="col-md-2">
+              <div class="mb-3">
+                <label for="qty_barang" class="form-label">Quantity Barang</label>
+                <div class="input-group">
+                  <button class="btn btn-outline-secondary" type="button" id="kurangBtn">-</button>
+                  <input id="qty_barang" class="form-control" name="qty_barang" type="text" value="0" required>
+                  <button class="btn btn-outline-secondary" type="button" id="tambahBtn">+</button>
+                </div>
+              </div>
+            </div>
+          </div>  
+
+        <div class="row">
+          <div class="col-md-8">
             <div class="mb-3">
               <label for="keterangan_barang" class="form-label">Keterangan Barang</label>
               <input id="keterangan_barang" class="form-control" name="keterangan_barang" type="text" required>
             </div>
           </div>
-
+          <div class="col-md-3 d-flex align-items-end">
+            <div class="mb-3">
+              <input id="btnTambahBarang" class="btn btn-success" type="button" value="Add">
+            </div>
+          </div>
+        </div>
+        <div class="row">
+        <div class="col-md-12 grid-margin stretch-card">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title">Data Kejadian</h4>
+                    <div class="table-responsive">
+                        <table id="dataTableExample" class="table">
+                            <thead>
+                                <tr>
+                                    <th>Nama Barang</th>
+                                    <th>Status Barang</th>
+                                    <th>Quantity Barang</th>
+                                    <th>Keterangan Barang</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tabelBarangSementara">
+                                <!-- Data will be appended here -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
           <a href="<?= base_url("admin/stock_entry") ?>">
             <input class="btn btn-warning" type="button" value="Kembali">
           </a>
           <input class="btn btn-primary" type="submit" value="Submit">
         </form>
+
+
       </div>
     </div>
   </div>
 </div>
 
 <script>
+ const arrayBarangSementara = []
 document.addEventListener("DOMContentLoaded", function() {
+    
     const tambahBtn = document.getElementById("tambahBtn");
     const kurangBtn = document.getElementById("kurangBtn");
     const jmlBrgInput = document.getElementById("qty_barang");
@@ -194,6 +236,8 @@ document.getElementById("rw").addEventListener("input", function(event) {
 });
 
 document.addEventListener("DOMContentLoaded", function() {
+
+ 
     setTimeout(function() {
         const alerts = document.querySelectorAll('.alert');
         alerts.forEach(alert => {
@@ -226,26 +270,42 @@ document.getElementById('addForm').addEventListener('submit', function(event) {
         alert('Jumlah barang tidak cukup, yang tersedia adalah : ' + availableQty);
     }
 });
-</script>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script>
-$(document).ready(function() {
-    $('#kecamatan').change(function() {
-        var kecamatan = $(this).val();
-        $.ajax({
-            url: '<?= site_url('admin/stock_entry/get_kelurahan_by_kecamatan') ?>',
-            type: 'POST',
-            data: {kecamatan: kecamatan},
-            dataType: 'json',
-            success: function(data) {
-                $('#kelurahan').empty();
-                $('#kelurahan').append('<option value="">--- Pilih Desa ---</option>');
-                $.each(data, function(key, value) {
-                    $('#kelurahan').append('<option value="'+ value.desa +'">'+ value.desa +'</option>');
-                });
-            }
-        });
-    });
-});
-</script>
 
+document.getElementById('btnTambahBarang').addEventListener('click', function(){
+const namaBarang = document.getElementById('nama_barang').value
+const statusBarang = document.getElementById('status_barang').value
+const qtyBarang = document.getElementById('qty_barang').value
+const keteranganBarang = document.getElementById('keterangan_barang').value
+
+const tabelBarangSementara = document.getElementById('tabelBarangSementara')
+
+
+
+if(!namaBarang||!statusBarang||!qtyBarang||!keteranganBarang){
+  alert("Tidak Boleh Kosong")
+}else{
+
+const objectBarangSementara = {
+  namaBarang,
+  statusBarang,
+  qtyBarang,
+  keteranganBarang
+}
+
+tabelBarangSementara.firstElementChild.textContent === "No data available in table" ? tabelBarangSementara.firstElementChild.remove() : ''
+const newRow = document.createElement('tr');
+        newRow.innerHTML = `
+            <td>${namaBarang}</td>
+            <td>${statusBarang}</td>
+            <td>${qtyBarang}</td>
+            <td>${keteranganBarang}</td>
+        `;
+        tabelBarangSementara.appendChild(newRow);
+
+        arrayBarangSementara.push(objectBarangSementara)
+        console.log(arrayBarangSementara);
+
+}
+
+})
+</script>

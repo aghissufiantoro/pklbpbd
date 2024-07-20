@@ -24,7 +24,10 @@ if ($kejadian == 'Kecelakaan Lalu Lintas') {
 }
 
 // Query to get the korban kejadian based on the dynamically determined table
+
 $db_korban_kejadian = $this->db->query("SELECT * FROM $table WHERE id_kejadian = ?", array($id_kejadian))->row();
+
+
 if ($db_data_kejadian ) {
 ?>
 <div class="row">
@@ -50,6 +53,7 @@ if ($db_data_kejadian ) {
                     <div class="card-body">
                         <p class="text-muted mb-3">Keterangan Subjek yang Terlibat</p>
                         <div class="table-responsive">
+
                         <table id="dataTableExample" class="table">
                                     <thead>
                                         <tr>
@@ -66,6 +70,30 @@ if ($db_data_kejadian ) {
                                         </tr>
                                     </tbody>
                                 </table>
+                        
+                        <?php if(count($db_korban_kejadian) > 0): ?>
+                            <table id="dataTableExample" class="table">
+                                <thead>
+                                    <tr>
+                                        <?php foreach ($db_korban_kejadian[0] as $column => $value): ?>
+                                            <th><?= $column ?></th>
+                                        <?php endforeach; ?>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php foreach ($db_korban_kejadian as $korban): ?>
+                                        <tr>
+                                            <?php foreach ($korban as $value): ?>
+                                                <td><?= htmlspecialchars($value) ?></td>
+                                            <?php endforeach; ?>
+                                        </tr>
+                                    <?php endforeach; ?>
+                                </tbody>
+                            </table>
+                        <?php else: ?>
+                            <p>Tidak ada data korban</p>
+                        <?php endif; ?>
+
                         </div>
                     </div>
 
@@ -80,7 +108,7 @@ if ($db_data_kejadian ) {
                                 <li class="dokumentasi-section">Dokumentasi:</li>
                                 <?php if ($db_data_kejadian->dokumentasi): ?>
                                     <li>
-                                        <img src="<?= base_url('upload/dokumentasi/' . $db_data_kejadian->dokumentasi) ?>" alt="Dokumentasi Kejadian">
+                                        <img src="<?= base_url($db_data_kejadian->dokumentasi) ?>" alt="Dokumentasi Kejadian">
                                     </li>
                                 <?php else: ?>
                                     <li>Tidak ada dokumentasi.</li>
