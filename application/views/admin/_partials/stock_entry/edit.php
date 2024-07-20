@@ -1,7 +1,4 @@
 <?php 
-echo "<pre>";
-print_r($data_entry_sembako);
-echo "</pre>";
 if ($this->session->flashdata('success')) {
 ?>
 <div class="alert alert-success alert-dismissible fade show" role="alert">
