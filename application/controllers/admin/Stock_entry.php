@@ -60,6 +60,7 @@ class Stock_entry extends CI_Controller
             // Fetch options for id_kejadian and nama_barang
             $data['kejadian_options'] = $this->m_stock_entry->getKejadianOptions();
             $data['barang_options'] = $this->m_stock_entry->getBarangOptions();
+            $data['kecamatan_options'] = $this->m_stock_entry->get_all_kecamatan();
 
             if ($validation->run()) {
                 $id_kejadian = $this->input->post('id_kejadian');
