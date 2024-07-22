@@ -255,6 +255,15 @@ tanggalIcon.addEventListener('click', function() {
     // });
  
 
+
+    document.getElementById('lokasi_kejadian').addEventListener('change', function() {
+        var wilayah = this.value;
+        selected = document.getElementById('select2-kecamatan_kejadian-container');
+        console.log(this.value)
+       
+        fetchOptions('kecamatan', wilayah, 'kecamatan_kejadian');
+    });
+
     // Function to fetch options dynamically based on selected value
     function fetchOptions(dataType, wilayah, targetSelectId) {
     fetch('<?= base_url('admin/data_kejadian/get_daerah') ?>', {
