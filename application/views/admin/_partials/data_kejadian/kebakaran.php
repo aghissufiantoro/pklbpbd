@@ -153,8 +153,17 @@
                         </div>
                     </div> 
                        
+<<<<<<< HEAD
+<<<<<<< HEAD
+                    <button class="btn btn-success" type="submit">Save</button>
+=======
                     <button id="saveButton" class="btn btn-success" type="submit">Save</button>
                     <button id="stopButton" class="btn btn-danger" type="button">Selesai</button>
+>>>>>>> 1f0d5330506277d183445e7d76137c8e49d57f17
+=======
+                    <button id="saveButton" class="btn btn-success" type="submit">Save</button>
+                    <button id="stopButton" class="btn btn-danger" type="button">Selesai</button>
+>>>>>>> 5abd3ececa7bc6163c1ebc4e122e31111e763e67
                 </form>
             </div>
         </div>

@@ -2,6 +2,7 @@
 :root {
     --primary: #4761FF;
     --secondary: #555555;
+    --add:#20bb23;
     --light: #F1F3FA;
     --dark: #1C2035;
 }
@@ -48,6 +49,11 @@
 .btn-secondary,
 .btn-outline-secondary:hover {
     color: var(--dark);
+}
+
+.btn-add,
+.btn-outline-add:hover {
+    color: var(--add);
 }
 
 .btn-square {
