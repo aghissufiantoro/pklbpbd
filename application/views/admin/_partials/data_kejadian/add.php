@@ -207,15 +207,7 @@ if (window.addEventListener) {
     });
 
    
-    // Event listener for change on kecamatan_kejadian select
-    
-    // document.getElementById('select2-kecamatan_kejadian-container').addEventListener('change', function() {
-    //     var wilayah = this.value;
-        
-    //     console.log('aaaa')
-    //     console.log(selected)
-        
-    // });
+
  
 
     // Function to fetch options dynamically based on selected value

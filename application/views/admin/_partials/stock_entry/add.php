@@ -16,9 +16,9 @@
         <form id="addForm" action="<?= site_url('admin/stock_entry/add') ?>" method="post" enctype="multipart/form-data">
         <!-- baris 1 -->
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-3">
               <div class="mb-3">
-                <label for="tanggal_entry" class="form-label">Tanggal</label>
+                <label for="tanggal_entry" class="form-label">Tanggal Kejadian</label>
                 <div class="input-group date datepicker" id="datePickerExample">
                   <input type="text" class="form-control" name="tanggal_entry" required autocomplete="off">
                   <span class="input-group-text input-group-addon"><i data-feather="calendar"></i></span>
@@ -26,58 +26,69 @@
               </div>
             </div>
 
-          <div class="col-md-2">
+            <div class="col-md-3">
             <div class="mb-3">
-              <label for="id_kejadian" class="form-label">ID Kejadian</label>
-                <select class="form-select" id="id_kejadian" name="id_kejadian" required>
-                <option value="">--- Pilih ID Kejadian ---</option>
-                <?php foreach ($kejadian_options as $kejadian): ?>
-                <option value="<?= $kejadian->id_kejadian ?>"><?= $kejadian->id_kejadian ?></option>
-                <?php endforeach; ?>
+              <label for="kejadian" class="form-label">Kategori Kejadian</label>
+                <select class="form-select" id="kejadian" name="kejadian" required>
+                <option value="">--- Pilih Kategori ---</option>
+                <?php
+                  $query = $this->db->query('SELECT kejadian FROM data_kejadian group by kejadian')->result();
+                  foreach ($query as $hasil) {
+                  ?>
+                    <option value="<?= $hasil->kejadian ?>"><?=$hasil->kejadian ?></option>
+                  <?php
+                  }
+                  ?>
                 </select>
                 </div>
           </div>
 
           <div class="col-md-4">
-              <div class="mb-3">
-                <label for="lokasi_diterima" class="form-label">Lokasi Diterima</label>
-                <input id="lokasi_diterima" class="form-control" name="lokasi_diterima" type="text" required>
-              </div>
+            <div class="mb-3">
+              <label for="id_kejadian" class="form-label">ID Kejadian</label>
+                <select class="form-select" id="id_kejadian" name="id_kejadian" required>
+                <option value="">--- Pilih ID Kejadian ---</option>
+                <?php
+                  $ql = $this->db->query('SELECT id_kejadian, kejadian, alamat_kejadian FROM data_kejadian GROUP BY id_kejadian')->result();
+                  foreach ($ql as $qz) {
+                  ?>
+                    <option value="<?= $qz->id_kejadian ?>"><?= $qz->id_kejadian."-".$qz->kejadian."-".$qz->alamat_kejadian ?></option>
+                  <?php
+                  }
+                  ?>
+                </select>
+                </div>
           </div>
-          <div class="col-md-4">
-              <div class="mb-3">
-                <label for="penerima_barang" class="form-label">Penerima Barang</label>
-                <input id="penerima_barang" class="form-control" name="penerima_barang" type="text" required>
-              </div>
-          </div>
+          
         </div>
 
         <!-- baris kedua -->
           <div class="row">
-            <div class="col-md-2">
-              <div class="mb-3">
-                <label for="rt" class="form-label">RT</label>
-                <input id="rt" class="form-control" name="rt" type="text" required>
-              </div>
+            <div class="col-md-3">
+                <div class="mb-3">
+                  <label for="lokasi_diterima" class="form-label">Lokasi Diterima</label>
+                  <input id="lokasi_diterima" class="form-control" name="lokasi_diterima" type="text" required>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="mb-3">
+                  <label for="penerima_barang" class="form-label">Penerima Barang</label>
+                  <input id="penerima_barang" class="form-control" name="penerima_barang" type="text" required>
+                </div>
             </div>
             <div class="col-md-2">
-              <div class="mb-3">
-                <label for="rw" class="form-label">RW</label>
-                <input id="rw" class="form-control" name="rw" type="text" required>
-              </div>
-            </div>
-            <div class="col-md-4">
-              <div class="mb-3">
-                <label for="kelurahan" class="form-label">Kelurahan</label>
-                <input id="kelurahan" class="form-control" name="kelurahan" type="text" required>
-              </div>
-            </div>
-            <div class="col-md-4">
               <div class="mb-3">
                 <label for="kecamatan" class="form-label">Kecamatan</label>
                 <input id="kecamatan" class="form-control" name="kecamatan" type="text" required>
               </div>
             </div>
+            <div class="col-md-2">
+              <div class="mb-3">
+                <label for="kelurahan" class="form-label">Kelurahan</label>
+                <input id="kelurahan" class="form-control" name="kelurahan" type="text" required>
+              </div>
+            </div>
+            
           </div>
 
           <!-- Baris 3 -->
@@ -129,7 +140,7 @@
           </div>
           <div class="col-md-3 d-flex align-items-end">
             <div class="mb-3">
-              <input id="btnTambahBarang" class="btn btn-success" type="button" value="        Add        ">
+              <input id="btnTambahBarang" class="btn btn-success" type="button" value="              Add              ">
             </div>
           </div>
         </div>
@@ -210,15 +221,7 @@ document.addEventListener("DOMContentLoaded", function() {
 });
 
 // Membuat event listener untuk input RT dan RW
-document.getElementById("rt").addEventListener("input", function(event) {
-    // Hapus karakter non-angka dari nilai input
-    this.value = this.value.replace(/\D/g, '');
-});
 
-document.getElementById("rw").addEventListener("input", function(event) {
-    // Hapus karakter non-angka dari nilai input
-    this.value = this.value.replace(/\D/g, '');
-});
 
 document.addEventListener("DOMContentLoaded", function() {
 
@@ -305,5 +308,6 @@ var fields = [
     });
 
 });
+
 
 </script>
