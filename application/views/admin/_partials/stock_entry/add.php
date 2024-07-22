@@ -129,7 +129,7 @@
           </div>
           <div class="col-md-3 d-flex align-items-end">
             <div class="mb-3">
-              <input id="btnTambahBarang" class="btn btn-success" type="button" value="Add">
+              <input id="btnTambahBarang" class="btn btn-success" type="button" value="        Add        ">
             </div>
           </div>
         </div>
@@ -137,7 +137,7 @@
         <div class="col-md-12 grid-margin stretch-card">
             <div class="card">
                 <div class="card-body">
-                    <h4 class="card-title">Data Kejadian</h4>
+                    <h4 class="card-title">Data Barang</h4>
                     <div class="table-responsive">
                         <table id="dataTableExample" class="table">
                             <thead>
@@ -292,5 +292,18 @@ const newRow = document.createElement('tr');
 
 }
 
-})
+var fields = [
+        'nama_barang',
+        'status_barang',
+        'qty_barang',
+        'keterangan_barang'
+    ];
+
+    // Kosongkan nilai field-field tersebut
+    fields.forEach(function(fieldId) {
+        document.getElementById(fieldId).value = '';
+    });
+
+});
+
 </script>
