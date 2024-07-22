@@ -76,16 +76,6 @@
               </button>
             </div>
           </div>
-          <div class="col-md-12">
-            <div class="mb-3">
-              <div class="form-check">
-                <label class="form-check-label" for="termsCheck">
-                  Saya menyetujui bahwa file yang dirubah adalah benar
-                </label>
-                <input type="checkbox" class="form-check-input" name="terms_agree" id="termsCheck">
-              </div>
-            </div>
-          </div>
           <a href="<?= base_url("admin/perpus") ?>">
             <input class="btn btn-warning" type="button" value="Kembali">
           </a>
@@ -94,41 +84,4 @@
       </div>
     </div>
 	</div>
-</div>
-<div class="modal fade" id="view_pdf-<?= $perpus->id_perpus ?>" data-bs-backdrop="static" data-bs-keyboard="false" aria-hidden="true" aria-labelledby="exampleModalToggleLabel2" tabindex="-1">
-  <div class="modal-dialog modal-xl">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalToggleLabel2"><?= $perpus->judul_perpus ?></h5>
-        <button type="button" class="btn-close" data-bs-target="#alur_pelayanan" data-bs-toggle="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-
-        <div class="graph-outline">
-          <object style="width: 100%; height: 500px;" data="<?= base_url('upload/perpus/'.$perpus->dok_perpus) ?>" type="application/pdf">
-            <embed src="<?= base_url('upload/perpus/'.$perpus->dok_perpus) ?>" type="application/pdf">
-          </object>
-        </div>
-      </div>
-      <div class="modal-footer">
-        <button class="btn btn-primary" data-bs-target="#alur_pelayanan" data-bs-toggle="modal">Kembali</button>
-      </div>
-    </div>
-  </div>
-</div>
-<div class="modal fade" id="view_cover-<?= $perpus->id_perpus ?>" data-bs-backdrop="static" data-bs-keyboard="false" aria-hidden="true" aria-labelledby="exampleModalToggleLabel2" tabindex="-1">
-  <div class="modal-dialog modal-xl">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalToggleLabel2">Cover <?= $perpus->judul_perpus ?></h5>
-        <button type="button" class="btn-close" data-bs-target="#alur_pelayanan" data-bs-toggle="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        <img class="img-fluid" src="<?= base_url('upload/perpus/'.$perpus->thumbnail_perpus) ?>">
-      </div>
-      <div class="modal-footer">
-        <button class="btn btn-primary" data-bs-target="#alur_pelayanan" data-bs-toggle="modal">Kembali</button>
-      </div>
-    </div>
-  </div>
 </div>

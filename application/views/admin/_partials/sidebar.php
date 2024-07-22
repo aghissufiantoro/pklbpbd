@@ -75,20 +75,6 @@
                 <?php
                 if ($this->session->userdata('username') == "kompi" || $this->session->userdata('role') == "1") {
                 ?>
-                    <li <?php if ($this->uri->segment(2) == "kompi") {
-                            echo 'class="nav-item active"';
-                        } else {
-                            echo 'class="nav-item"';
-                        } ?>>
-                        <a href="<?= base_url('admin/kompi/index') ?>" class="nav-link ">
-                            <i class="link-icon" data-feather="users"></i>
-                            <span class="link-title">Kompi</span>
-                        </a>
-                    </li>
-                <?php
-                }
-                if ($this->session->userdata('username') == "kegiatan" || $this->session->userdata('role') == "1") {
-                ?>
                     <li <?php if ($this->uri->segment(2) == "kegiatan" && $this->uri->segment(3) == "view_kegiatan") {
                             echo 'class="nav-item active"';
                         } else {
@@ -96,7 +82,7 @@
                         } ?>>
                         <a href="<?= base_url('admin/kegiatan/view_kegiatan') ?>" class="nav-link">
                             <i class="link-icon" data-feather="check-square"></i>
-                            <span class="link-title">Kegiatan</span>
+                            <span class="link-title">Jadwal Ploting</span>
                         </a>
                     </li>
                 <?php
@@ -110,11 +96,26 @@
                         } ?>>
                         <a href="<?= base_url('admin/kegiatan/view_penugasan_petugas') ?>" class="nav-link">
                             <i class="link-icon" data-feather="clipboard"></i>
-                            <span class="link-title">Plot Kegiatan</span>
+                            <span class="link-title">Giat Personil</span>
                         </a>
                     </li>
                 <?php
                 }
+                if ($this->session->userdata('username') == "tugas_harian" || $this->session->userdata('role') == "1") {
+                ?>
+                    <li <?php if ($this->uri->segment(2) == "tugas_harian") {
+                            echo 'class="nav-item active"';
+                        } else {
+                            echo 'class="nav-item"';
+                        } ?>>
+                        <a href="<?= base_url('admin/tugas_harian') ?>" class="nav-link ">
+                            <i class="link-icon" data-feather="clipboard"></i>
+                            <span class="link-title">Tugas Harian</span>
+                        </a>
+                    </li>
+                <?php
+                }
+                
                 // if ($this->session->userdata('username') == "kegiatan" || $this->session->userdata('role') == "1") {
                 // ?>
                      <li <?php if ($this->uri->segment(2) == "kegiatan") {
@@ -156,16 +157,35 @@
                     echo 'class="nav-item"';
                 } ?>>
                     <a href="<?= base_url('admin/dokumentasi') ?>" class="nav-link ">
-                        <i class="link-icon" data-feather="users"></i>
+                        <i class="link-icon" data-feather="book-open"></i>
                         <span class="link-title">Dokumentasi</span>
                     </a>
                 </li>
                 <?php
             }
             ?>
-            <li class="nav-item nav-category">(Bu Sarkona) MANAJEMEN KEBENCANAAN</li>
+
+        <li class="nav-item nav-category">SINA SINI</li>
+            <?php
+            if ($this->session->userdata('username') == "data_kejadian" || $this->session->userdata('role') == "1") { 
+                ?>
+                <li <?php if ($this->uri->segment(2) == "dokumentasi_sinasini") {
+                    echo 'class="nav-item active"';
+                } else {
+                    echo 'class="nav-item"';
+                } ?>>
+                    <a href="<?= base_url('admin/dokumentasi_sinasini') ?>" class="nav-link ">
+                        <i class="link-icon" data-feather="book-open"></i>
+                        <span class="link-title">Dokumentasi Sinasini</span>
+                    </a>
+                </li>
+                <?php
+            }
+            ?>
+
+            <li class="nav-item nav-category">MANAJEMEN KEBENCANAAN</li>
             <?php if ($this->session->userdata('username') == "data_kejadian" || $this->session->userdata('role') == "1") { ?>
-                <li class="nav-item <?php echo ($this->uri->segment(2) == 'data_kejadian') ? 'active' : ''; ?>">
+                <li class="nav-item <?php echo ($this->uri->segment(2) == 'data_kejadian') ? 'active' : ''; ?> mt-3">
                     <a href="<?= base_url('admin/data_kejadian') ?>" class="nav-link">
                         <i class="link-icon" data-feather="activity"></i>
                         <span class="link-title">Data Kejadian</span>
