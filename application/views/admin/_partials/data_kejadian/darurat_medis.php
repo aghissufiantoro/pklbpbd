@@ -165,7 +165,7 @@
     const idKejadian = document.getElementById('id_kejadian').value;
     const imageFile = document.getElementById('dokumentasi_darurat_medis').files[0];
     const petugasMultiselect = document.getElementById('petugas_di_lokasi_darurat_medis');
-
+    const selectedOptions = petugasMultiselect.selectedOptions;
     const selectedValues = Array.from(selectedOptions).map(option => option.value);
     const selectedValuesString = selectedValues.join(', ');
     const formObject = {
