@@ -12,7 +12,7 @@
                 <label for="tanggal" class="form-label">Tanggal Kejadian</label>
                 <div class="input-group date datepicker" id="datePickerExample">
                   <input id="tanggal" type="text" class="form-control" name="tanggal" required autocomplete="off">
-                  <span class="input-group-text input-group-addon"><i data-feather="calendar"></i></span>
+                  <span id="tanggal-icon" class="input-group-text input-group-addon"><i data-feather="calendar"></i></span>
                 </div>
               </div>
             </div>
@@ -185,10 +185,12 @@ if (window.addEventListener) {
     myElement.attachEvent('DOMSubtreeModified', contentChanged);
 }
 
+var tanggalIcon = document.getElementById('tanggal-icon');
 var id_kejadian_textForm = document.getElementById('id_kejadian');
 var tanggalInput = document.getElementById('tanggal');
 
-tanggalInput.addEventListener('keyup', function() {
+function fetchData() {
+    console.log('Fetch data triggered with value:', tanggalInput.value);
     var formData = new FormData();
     formData.append('tanggal', tanggalInput.value);
 
@@ -213,16 +215,32 @@ tanggalInput.addEventListener('keyup', function() {
         console.error('Error:', error);
         alert('Terjadi kesalahan saat mengambil data.');
     });
-});
+}
 
-
-    document.getElementById('lokasi_kejadian').addEventListener('change', function() {
-        var wilayah = this.value;
-        selected = document.getElementById('select2-kecamatan_kejadian-container');
-        console.log(selected)
-       
-        fetchOptions('kecamatan', wilayah, 'kecamatan_kejadian');
+tanggalIcon.addEventListener('click', function() {
+  console.log('0')
+    const observer = new MutationObserver(function(mutations) {
+        mutations.forEach(function(mutation) {
+            if (mutation.addedNodes.length) {
+                const datePickerContainer = document.querySelector(".datepicker.datepicker-dropdown.dropdown-menu.datepicker-orient-left.datepicker-orient-bottom");
+                if (datePickerContainer) {
+                    datePickerContainer.addEventListener('click', function() {
+                        console.log('Date picker clicked');
+                        fetchData();
+                        // Disconnect the observer once we have added the event listener
+                        observer.disconnect();
+                    });
+                }
+            }
+        });
     });
+
+    // Start observing the document for changes
+    observer.observe(document.body, {
+        childList: true,
+        subtree: true
+    });
+});
 
    
     // Event listener for change on kecamatan_kejadian select
