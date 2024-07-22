@@ -88,7 +88,21 @@
                             <div class="col-md-12">
                                 <div class="mb-3">
                                     <label for="Petugas Di Lokasi Darurat Medis" class="form-label">Petugas Di Lokasi Darurat Medis</label>
-                                    <input id="Petugas Di Lokasi Darurat Medis" class="form-control" name="petugas_di_lokasi_darurat_medis" type="text">
+                                    <select class="js-example-basic-multiple form-select" id="petugas_di_lokasi_darurat_medis" name="petugas_di_lokasi_darurat_medis[]" data-width="100%" required multiple>
+                                        <option value="">--- Pilih Lokasi Kejadian ---</option>
+                                        <option value="BPBD">BPBD</option>
+                                        <option value="SATPOL PP">SATPOL PP</option>
+                                        <option value="DINAS PERHUBUNGAN">DINAS PERHUBUNGAN</option>
+                                        <option value="DPKP">DPKP</option>
+                                        <option value="TGC SELATAN">TGC SELATAN</option>
+                                        <option value="TGC TIMUR">TGC TIMUR</option>
+                                        <option value="TGC DUKUH PAKIS">TGC DUKUH PAKIS</option>
+                                        <option value="TGC KEDUNG COWEK">TGC KEDUNG COWEK</option>
+                                        <option value="TGC UTARA">TGC UTARA</option>
+                                        <option value="TGC BARAT">TGC BARAT</option>
+                                        <option value="TGC PUSAT">TGC PUSAT</option>
+                                        <option value="PMI">PMI</option>
+                                    </select>
                                 </div>
                             </div>
                         </div>
@@ -136,15 +150,27 @@
     </div>
 
     <script>
+        $(document).ready(function() {
+            $('.js-example-basic-multiple').select2({
+                tags: true,
+                placeholder: "--- Pilih Petugas ---",
+                allowClear: true
+            });
+        });
+
         setupEventListenersInPartial();
        function handleSubmitAndRedirectInsidePartial() {
     const form = document.getElementById('addForm1');
     const formData = new FormData(form);
     const idKejadian = document.getElementById('id_kejadian').value;
     const imageFile = document.getElementById('dokumentasi_darurat_medis').files[0];
+    const petugasMultiselect = document.getElementById('petugas_di_lokasi_darurat_medis');
 
+    const selectedValues = Array.from(selectedOptions).map(option => option.value);
+    const selectedValuesString = selectedValues.join(', ');
     const formObject = {
-        id_kejadian: idKejadian
+        id_kejadian: idKejadian,
+        petugas_di_lokasi_darurat_medis: selectedValuesString
     };
 
     formData.forEach((value, key) => {
