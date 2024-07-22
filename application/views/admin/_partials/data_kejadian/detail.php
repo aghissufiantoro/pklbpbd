@@ -24,7 +24,10 @@ if ($kejadian == 'Kecelakaan Lalu Lintas') {
 }
 
 // Query to get the korban kejadian based on the dynamically determined table
-$db_korban_kejadian = $this->db->query("SELECT * FROM $table WHERE id_kejadian = ?", array($id_kejadian))->result();
+
+$db_korban_kejadian = $this->db->query("SELECT * FROM $table WHERE id_kejadian = ?", array($id_kejadian))->row();
+
+
 if ($db_data_kejadian ) {
 ?>
 <div class="row">
@@ -50,6 +53,23 @@ if ($db_data_kejadian ) {
                     <div class="card-body">
                         <p class="text-muted mb-3">Keterangan Subjek yang Terlibat</p>
                         <div class="table-responsive">
+
+                        <table id="dataTableExample" class="table">
+                                    <thead>
+                                        <tr>
+                                            <?php foreach ($db_korban_kejadian as $column => $value): ?>
+                                                <th><?= $column ?></th>
+                                            <?php endforeach; ?>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <?php foreach ($db_korban_kejadian as $column => $value): ?>
+                                                <td><?= $value ?></td>
+                                            <?php endforeach; ?>
+                                        </tr>
+                                    </tbody>
+                                </table>
                         
                         <?php if(count($db_korban_kejadian) > 0): ?>
                             <table id="dataTableExample" class="table">
@@ -73,7 +93,7 @@ if ($db_data_kejadian ) {
                         <?php else: ?>
                             <p>Tidak ada data korban</p>
                         <?php endif; ?>
-                      
+
                         </div>
                     </div>
 

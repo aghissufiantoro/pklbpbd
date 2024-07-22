@@ -1,4 +1,3 @@
-
 <div class="row">
   <div class="col-md-12 grid-margin stretch-card">
     <div class="card">
@@ -96,7 +95,9 @@
             <div class="mb-3">
               <label class="form-label" for="kecamatan_kejadian">Kecamatan</label>
               <select class="js-example-basic-single form-select" id="kecamatan_kejadian" name="kecamatan_kejadian" data-width="100%" required>
+
                 <option value="">--- Mohon Pilih Kecamatan ---</option>
+
               </select>
             </div>
             <div class="mb-3" id="kecamatan">
@@ -256,31 +257,34 @@ tanggalIcon.addEventListener('click', function() {
 
     // Function to fetch options dynamically based on selected value
     function fetchOptions(dataType, wilayah, targetSelectId) {
-        fetch('<?= base_url('admin/data_kejadian/get_daerah') ?>', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded'
-            },
-            body: new URLSearchParams({
-                data: dataType,
-                wilayah: wilayah
-            })
+    fetch('<?= base_url('admin/data_kejadian/get_daerah') ?>', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        body: new URLSearchParams({
+            data: dataType,
+            wilayah: wilayah
         })
-        .then(response => response.json())
-        .then(data => {
-            var targetSelect = document.getElementById(targetSelectId);
-            targetSelect.innerHTML = ''; // Clear existing options
-            var defaultOption = new Option(`--- Pilih ${capitalizeFirstLetter(dataType)} ---`, '');
-            targetSelect.appendChild(defaultOption); // Add default option
-            data.forEach(item => {
-                var option = new Option(item.label, item.value);
-                targetSelect.appendChild(option); // Add fetched options
-            });
-        })
-        .catch(() => {
-            alert('Terjadi kesalahan dalam mengambil data.');
+    })
+    .then(response => response.json())  // Parse JSON response
+    .then(data => {
+        console.log(data);
+        var targetSelect = document.getElementById(targetSelectId);
+        targetSelect.innerHTML = ''; // Clear existing options
+        var defaultOption = new Option(`--- Pilih ${capitalizeFirstLetter(dataType)} ---`, '');
+        targetSelect.appendChild(defaultOption); // Add default option
+        data.forEach(item => {
+            var option = new Option(item.label, item.value);
+            targetSelect.appendChild(option); // Add fetched options
         });
-    }
+    })
+    .catch((error) => {
+        console.error('Error:', error);
+        alert('Terjadi kesalahan saat mengambil data.');
+    });
+}
+
 
     // Function to capitalize the first letter of a string
     function capitalizeFirstLetter(string) {
@@ -402,3 +406,18 @@ tanggalIcon.addEventListener('click', function() {
 });
 
 </script>
+<style>
+  .alert-container {
+  position: fixed;
+  top: 15%;
+  left: 57%;
+  transform: translate(-50%, -50%);
+  width: auto;
+  z-index: 1050;
+}
+
+#success-alert {
+  margin-bottom: 0; /* Remove bottom margin to prevent extra space */
+}
+
+  </style>

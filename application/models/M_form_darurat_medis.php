@@ -14,7 +14,13 @@ class M_form_darurat_medis extends CI_Model
     public function rules()
     {
         return [
+
             ['field' => 'id_kejadian', 'label' => 'ID Kejadian', 'rules' => 'required'],
+            ['field' => 'nama', 'label' => 'Nama', 'rules' => 'required'],
+            ['field' => 'jenis_kelamin', 'label' => 'Jenis Kelamin', 'rules' => 'required'],
+            ['field' => 'alamat', 'label' => 'Alamat', 'rules' => 'required'],
+            ['field' => 'usia', 'label' => 'Usia', 'rules' => 'required|integer'],
+            ['field' => 'kondisi', 'label' => 'Kondisi', 'rules' => 'required'],
             ['field' => 'riwayat_penyakit', 'label' => 'Riwayat Penyakit', 'rules' => 'required'],
             ['field' => 'kronologi_darurat_medis', 'label' => 'Kronologi Darurat Medis', 'rules' => 'required'],
             ['field' => 'tindak_lanjut_darurat_medis', 'label' => 'Tindak Lanjut Darurat Medis', 'rules' => 'required'],

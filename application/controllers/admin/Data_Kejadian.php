@@ -270,62 +270,58 @@ public function add() {
             // Simpan ID kejadian baru ke session
             $this->session->set_flashdata('new_id_kejadian', $new_id_kejadian);
 
+            // Menentukan form tujuan berdasarkan jenis kejadian
+            $kejadian = $this->input->post('kejadian');
+            switch ($kejadian) {
+                case 'Kecelakaan Lalu Lintas':
+                    $redirect_url = 'admin/data_kejadian/kecelakaan_lalu_lintas';
+                    break;
+                case 'Darurat Medis':
+                    $redirect_url = 'admin/data_kejadian/darurat_medis';
+                    break;
+                case 'Kebakaran':
+                    $redirect_url = 'admin/data_kejadian/kebakaran';
+                    break;
+                case 'Pohon Tumbang':
+                    $redirect_url = 'admin/data_kejadian/pohon_tumbang';
+                    break;
+                case 'Penemuan Jenazah':
+                    $redirect_url = 'admin/data_kejadian/penemuan_jenazah';
+                    break;
+                case 'Orang Tenggelam':
+                    $redirect_url = 'admin/data_kejadian/orang_tenggelam';
+                    break;
+                case 'Lainnya':
+                    $redirect_url = 'admin/data_kejadian/lainnya';
+                    break;
+                default:
+                    $redirect_url = 'admin/data_kejadian';
+            }
+
             // Mengatur flashdata untuk menampilkan pesan sukses
             $this->session->set_flashdata('success', '<i class="fa fa-check"></i> Alhamdulillah, Data berhasil disimpan');
 
-            // Menentukan form tujuan berdasarkan jenis kejadian
-            $kejadian = $this->input->post('kejadian');
-            $partialView = '';
-            switch ($kejadian) {
-                case 'Kecelakaan Lalu Lintas':
-                    $partialView = 'admin/data_kejadian/new_form_kecelakaan_lalu_lintas';
-                    break;
-                case 'Darurat Medis':
-                    $partialView = 'admin/data_kejadian/new_form_darurat_medis';
-                    break;
-                case 'Kebakaran':
-                    $partialView = 'admin/data_kejadian/new_form_kebakaran';
-                    break;
-                case 'Pohon Tumbang':
-                    $partialView = 'admin/data_kejadian/new_form_pohon_tumbang';
-                    break;
-                case 'Penemuan Jenazah':
-                    $partialView = 'admin/data_kejadian/new_form_penemuan_jenazah';
-                    break;
-                case 'Orang Tenggelam':
-                    $partialView = 'admin/data_kejadian/new_form_orang_tenggelam';
-                    break;
-                case 'Lainnya':
-                    $partialView = 'admin/data_kejadian/new_form_lainnya';
-                    break;
-                default:
-                    $partialView = '';
-            }
-
-            if ($this->input->is_ajax_request()) {
-                if (!empty($partialView)) {
-                    $partialContent = $this->load->view($partialView, NULL, TRUE);
-                    echo $partialContent;
-                } else {
-                    echo '';
-                }
-            } else {
-                // Jika bukan AJAX, tetap redirect ke halaman utama
-                redirect(site_url('admin/data_kejadian'));
-            }
-        } else {
-            if ($this->input->is_ajax_request()) {
-                echo validation_errors();
-            } else {
-                // Jika validasi gagal, muat ulang formulir
-                $this->load->view("admin/data_kejadian/new_form_datakejadian");
-            }
+            // Redirect ke form tujuan dengan ID kejadian
+            redirect(site_url($redirect_url));
         }
-    } else {
+        else
+        {
+            // Jika validasi gagal, muat ulang formulir
+            $this->load->view("admin/data_kejadian/new_form_datakejadian");
+        }
+    }
+    else
+    {
         show_404();
     }
-}   
+}
+
+
+
+
   public function edit($id = null)
+
+
     {
         if ($this->session->userdata('role') == "1")
         {
@@ -415,7 +411,6 @@ public function get_daerah()
 {
     $data = $this->input->post('data');
     $value_wilayah = $this->input->post('wilayah');
-
     $response = [];
 
     if ($data == "kecamatan") {
@@ -424,13 +419,15 @@ public function get_daerah()
             $response[] = ['value' => $d->kecamatan, 'label' => $d->kecamatan];
         }
     } else if ($data == "desa") {
-        $daerah = $this->db->query("SELECT desa FROM wilayah_2022 WHERE kecamatan=? ORDER BY desa", [$value_wilayah])->result();
+        $daerah = $this->db->query("SELECT desa FROM wilayah_2022 WHERE kecamatan=? GROUP BY desa ORDER BY desa", [$value_wilayah])->result();
         foreach ($daerah as $d) {
             $response[] = ['value' => $d->desa, 'label' => $d->desa];
         }
     }
-    echo json_encode($response);
+
+    echo json_encode($response); // Encode response as JSON
 }
+
 
 
 // menyimpan data korbann
@@ -439,6 +436,7 @@ public function darurat_medis()
     if ($this->session->userdata('role') != "1") {
         show_404();
         return;
+
     }
 
     $new_id_kejadian = $this->session->flashdata('new_id_kejadian');

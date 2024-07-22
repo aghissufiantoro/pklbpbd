@@ -99,7 +99,21 @@
                         <div class="col-md-15">
                             <div class="mb-3">
                                 <label for="petugas_di_lokasi_penemuan_jenazah" class="form-label">Petugas di Lokasi Penemuan Jenazah</label>
-                                <input id="petugas_di_lokasi_penemuan_jenazah" class="form-control" name="petugas_di_lokasi_penemuan_jenazah" type="text">
+                                <select class="js-example-basic-multiple form-select" id="petugas_di_lokasi_penemuan_jenazah" name="petugas_di_lokasi_penemuan_jenazah[]" data-width="100%" required multiple>
+                                    <option value="">--- Pilih Lokasi Kejadian ---</option>
+                                    <option value="BPBD">BPBD</option>
+                                    <option value="SATPOL PP">SATPOL PP</option>
+                                    <option value="DINAS PERHUBUNGAN">DINAS PERHUBUNGAN</option>
+                                    <option value="DPKP">DPKP</option>
+                                    <option value="TGC SELATAN">TGC SELATAN</option>
+                                    <option value="TGC TIMUR">TGC TIMUR</option>
+                                    <option value="TGC DUKUH PAKIS">TGC DUKUH PAKIS</option>
+                                    <option value="TGC KEDUNG COWEK">TGC KEDUNG COWEK</option>
+                                    <option value="TGC UTARA">TGC UTARA</option>
+                                    <option value="TGC BARAT">TGC BARAT</option>
+                                    <option value="TGC PUSAT">TGC PUSAT</option>
+                                    <option value="PMI">PMI</option>
+                                </select>
                             </div>
                         </div>
                     </div>
@@ -155,6 +169,14 @@
     </div>
 
     <script>
+        $(document).ready(function() {
+            $('.js-example-basic-multiple').select2({
+                tags: true,
+                placeholder: "--- Pilih Petugas ---",
+                allowClear: true
+            });
+        });
+        
         setupEventListenersInPartial();
 
         function setupEventListenersInPartial(){
@@ -163,6 +185,7 @@
                 saveButtonPartial.addEventListener('click', function(event){
                     event.preventDefault();
                     handleSubmitAndRedirectInsidePartial();
+                    $('#petugas_di_lokasi_penemuan_jenazah').val(null).trigger('change');
                 });
             }
 
@@ -180,9 +203,19 @@
             const formData = new FormData(form);
             const idKejadian = document.getElementById('id_kejadian').value;
             const imageFile = document.getElementById('dokumentasi_penemuan_jenazah').files[0];
+            // Mengambil data dari multiselect petugas
+            // Mengambil elemen multiselect
+            const petugasMultiselect = document.getElementById('petugas_di_lokasi_penemuan_jenazah');
 
+            // Mengambil semua opsi yang dipilih
+            const selectedOptions = petugasMultiselect.selectedOptions;
+
+            // Mengubah HTMLCollection dari selectedOptions menjadi Array dan mengambil nilai (value) dari setiap opsi
+            const selectedValues = Array.from(selectedOptions).map(option => option.value);
+            const selectedValuesString = selectedValues.join(', ');
             const formObject = {
                 id_kejadian: idKejadian,
+                petugas_di_lokasi_penemuan_jenazah: selectedValuesString
             };
             alert(idKejadian);
             formData.forEach(function(value, key){
