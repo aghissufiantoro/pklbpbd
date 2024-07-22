@@ -7,11 +7,11 @@
         <form id="addForm" action="<?= base_url("admin/data_kejadian/add") ?>" method="post" enctype="multipart/form-data">
           <div class="row">
             <div class="col-md-15">
-              <div class="mb-3">
+              <div id="tanggal-icon" class="mb-3">
                 <label for="tanggal" class="form-label">Tanggal Kejadian</label>
                 <div class="input-group date datepicker" id="datePickerExample">
                   <input id="tanggal" type="text" class="form-control" name="tanggal" required autocomplete="off">
-                  <span id="tanggal-icon" class="input-group-text input-group-addon"><i data-feather="calendar"></i></span>
+                  <span  class="input-group-text input-group-addon"><i data-feather="calendar"></i></span>
                 </div>
               </div>
             </div>
@@ -186,7 +186,7 @@ if (window.addEventListener) {
     myElement.attachEvent('DOMSubtreeModified', contentChanged);
 }
 
-var tanggalIcon = document.getElementById('datePickerExample');
+var tanggalIcon = document.getElementById('tanggal-icon');
 var id_kejadian_textForm = document.getElementById('id_kejadian');
 var tanggalInput = document.getElementById('tanggal');
 
@@ -218,29 +218,25 @@ function fetchData() {
     });
 }
 
-tanggalIcon.addEventListener('click', function() {
-  console.log('0')
-    const observer = new MutationObserver(function(mutations) {
-        mutations.forEach(function(mutation) {
-            if (mutation.addedNodes.length) {
-                const datePickerContainer = document.querySelector(".datepicker.datepicker-dropdown.dropdown-menu.datepicker-orient-left.datepicker-orient-bottom");
-                if (datePickerContainer) {
-                    datePickerContainer.addEventListener('click', function() {
-                        console.log('Date picker clicked');
-                        fetchData();
-                        // Disconnect the observer once we have added the event listener
-                        observer.disconnect();
-                    });
-                }
-            }
-        });
-    });
+tanggalInput.addEventListener('click', function() {
+  console.log('0');
+  
+  // Function to continuously query the selector until the element is found
+  function checkForElement() {
+    const datePickerContainer = document.querySelector(".datepicker.datepicker-dropdown.dropdown-menu.datepicker-orient-left.datepicker-orient-bottom");
+    if (datePickerContainer) {
+      console.log("wuhan");
+      datePickerContainer.addEventListener('click', function() {
+        console.log('Date picker clicked');
+        fetchData();
+        // Clear the interval once the event listener has been added
+        clearInterval(checkInterval);
+      });
+    }
+  }
 
-    // Start observing the document for changes
-    observer.observe(document.body, {
-        childList: true,
-        subtree: true
-    });
+  // Set an interval to check for the element every 100 milliseconds
+  const checkInterval = setInterval(checkForElement, 100);
 });
 
    
