@@ -186,7 +186,7 @@ if (window.addEventListener) {
     myElement.attachEvent('DOMSubtreeModified', contentChanged);
 }
 
-var tanggalIcon = document.getElementById('tanggal-icon');
+var tanggalIcon = document.getElementById('datePickerExample');
 var id_kejadian_textForm = document.getElementById('id_kejadian');
 var tanggalInput = document.getElementById('tanggal');
 
