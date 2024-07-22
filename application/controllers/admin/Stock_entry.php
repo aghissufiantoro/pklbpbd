@@ -43,17 +43,26 @@ class Stock_entry extends CI_Controller
         }
     }
 
+    public function get_kelurahan_by_kecamatan()
+    {
+        $kecamatan = $this->input->post('kecamatan');
+        $kelurahan_options = $this->m_stock_entry->get_desa_by_kecamatan($kecamatan);
+        echo json_encode($kelurahan_options);
+    }
+
     public function add()
-{
-    if ($this->session->userdata('role') == "1") {
-        $data_entry_sembako = $this->m_stock_entry;
-        $validation = $this->form_validation;
-        $validation->set_rules($data_entry_sembako->rules());
+    {
+        if ($this->session->userdata('role') == "1") {
+            $data_entry_sembako = $this->m_stock_entry;
+            $validation = $this->form_validation;
+            $validation->set_rules($data_entry_sembako->rules());
 
-        // Fetch options for id_kejadian and nama_barang
-        $data['kejadian_options'] = $this->m_stock_entry->getKejadianOptions();
-        $data['barang_options'] = $this->m_stock_entry->getBarangOptions();
-
+            // Fetch options for id_kejadian, nama_barang, dan kecamatan
+            $data['kejadian_options'] = $this->m_stock_entry->getKejadianOptions();
+            $data['barang_options'] = $this->m_stock_entry->getBarangOptions();
+            $data['kecamatan_options'] = $this->m_stock_entry->get_all_kecamatan();
+            
+            
         if ($validation->run()) {
             $id_kejadian = $this->input->post('id_kejadian');
             $tanggal_entry = $this->input->post('tanggal_entry');

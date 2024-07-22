@@ -223,6 +223,21 @@ public function getAvailableStock($kode_barang) {
     return 0;
 }
 
+public function get_all_kecamatan() {
+    $this->db->distinct();
+    $this->db->select('kecamatan');
+    $query = $this->db->get('wilayah_2022');
+    return $query->result();
+}
+
+public function get_desa_by_kecamatan($kecamatan)
+{
+    $this->db->select('desa');
+    $this->db->where('kecamatan', $kecamatan);
+    $query = $this->db->get('wilayah_2022');
+    return $query->result();
+}
+
 
 
 
