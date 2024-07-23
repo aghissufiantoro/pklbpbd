@@ -178,3 +178,4 @@ class Lokasi_pos extends CI_Controller
         }
     }
 }
+//tesss
