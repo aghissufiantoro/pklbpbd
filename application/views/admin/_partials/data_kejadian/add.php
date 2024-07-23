@@ -1,4 +1,4 @@
-<div class="row">
+<div id="main-div" class="row">
   <div class="col-md-12 grid-margin stretch-card">
     <div class="card">
       <div class="card-body">
@@ -10,7 +10,7 @@
               <div id="tanggal-icon" class="mb-3">
                 <label for="tanggal" class="form-label">Tanggal Kejadian</label>
                 <div class="input-group date datepicker" id="datePickerExample">
-                  <input id="tanggal" type="text" class="form-control" name="tanggal" required autocomplete="off">
+                  <input required id="tanggal" type="text" class="form-control" name="tanggal" required autocomplete="off">
                   <span  class="input-group-text input-group-addon"><i data-feather="calendar"></i></span>
                 </div>
               </div>
@@ -21,7 +21,7 @@
             <div class="col-md-15">
               <div class="mb-3">
                 <label for="id_kejadian" class="form-label">ID KEJADIAN</label>
-                <input id="id_kejadian" class="form-control" name="id_kejadian" type="text"  value="" readonly>
+                <input required id="id_kejadian" class="form-control" name="id_kejadian" type="text"  value="" readonly>
               
               </div>
             </div>
@@ -49,13 +49,13 @@
             <div class="col-md-3">
               <div class="mb-3">
                 <label for="waktu_berita" class="form-label">Waktu Berita</label>
-                <input type="time" class="form-control" name="waktu_berita" id="waktu_berita" required autocomplete="off">
+                <input required type="time" class="form-control" name="waktu_berita" id="waktu_berita" required autocomplete="off">
               </div>
             </div>
             <div class="col-md-3">
               <div class="mb-3">
                 <label for="waktu_tiba" class="form-label">Waktu Tiba</label>
-                <input type="time" class="form-control" name="waktu_tiba" id="waktu_tiba" required autocomplete="off">
+                <input required type="time" class="form-control" name="waktu_tiba" id="waktu_tiba" required autocomplete="off">
               </div>
             </div>
           </div>
@@ -83,7 +83,7 @@
             <div class="col-md-5">
               <div class="mb-3">
                 <label for="alamat_kejadian" class="form-label">Alamat Kejadian</label>
-                <input id="alamat_kejadian" class="form-control" name="alamat_kejadian" type="text">
+                <input required id="alamat_kejadian" class="form-control" name="alamat_kejadian" type="text">
               </div>
             </div>
             <div class="mb-3">
@@ -112,7 +112,7 @@
             <div class="col-md-15">
               <div class="mb-3">
                 <label for="kronologi" class="form-label">Kronologi</label>
-                <input id="kronologi" class="form-control" name="kronologi" type="text">
+                <input required id="kronologi" class="form-control" name="kronologi" type="text">
               </div>
             </div>
           </div>
@@ -121,7 +121,7 @@
             <div class="col-md-15">
               <div class="mb-3">
                 <label for="tindak_lanjut" class="form-label">Tindak Lanjut</label>
-                <input id="tindak_lanjut" class="form-control" name="tindak_lanjut" type="text">
+                <input required id="tindak_lanjut" class="form-control" name="tindak_lanjut" type="text">
               </div>
             </div>
           </div>
@@ -141,8 +141,10 @@
             <label for="foto_artikel" class="form-label">Foto Diri</label>
             <input id="dokumentasi" type="file" class="form-control" required name="dokumentasi" accept="image/*" />
           </div>
-
-          <button type="submit" value="Submit" class="btn btn-primary" >Submit</button>
+            
+          <div id="conditional-btn">
+         
+          </div>
         </form>
         <div id="partialContainer"></div>
       </div>
@@ -153,12 +155,90 @@
 <script>
 document.addEventListener('DOMContentLoaded', function() {
   // Flag to track if fetchOptions has been executed
+
 var fetchExecuted = false;
 
 var id_kejadian1 ="<?=  $this->session->flashdata('new_id_kejadian'); ?>"
 
 // Variable to store the previous value of selectedKecamatan.title
 var pastValue = '';
+
+
+renderConditionalButton(false)
+
+function addNewDataKejadian(){
+                clearForm()
+                submitted = false
+
+                const containerForConditionalButton = document.getElementById('conditional-btn')
+                const submitButton = `<button type="submit" value="Submit" class="btn btn-primary" >Submit</button>`
+
+                containerForConditionalButton.innerHTML=submitButton
+
+}
+
+function renderConditionalButton(submitted){
+  
+console.log('conditional rendering function')
+  const containerForConditionalButton = document.getElementById('conditional-btn')
+  const submitButton = `<button type="submit" value="Submit" class="btn btn-primary" >Submit</button>`
+  const btnAddNewDataKejadian = `<button id="btnAddNewDataKejadian" class="btn btn-primary"  >Tambah Data Kejadian Baru</button>`
+                
+containerForConditionalButton.innerHTML = submitted ? btnAddNewDataKejadian : submitButton
+  if(submitted){
+    console.log('submitted add event')
+    document.getElementById("btnAddNewDataKejadian").addEventListener('click',addNewDataKejadian)
+  }
+                
+
+}
+
+function clearForm (){
+//   document.getElementById('tanggal').value = ''
+//   document.getElementById('id_kejadian').value = ''
+//   document.getElementById('waktu_berita').value = ''
+//   document.getElementById('waktu_berita').value = ''
+//   document.getElementById('waktu_tiba').value = ''
+//   document.getElementById('kronologi').value = ''
+//   document.getElementById('tindak_lanjut').value = ''
+//   document.getElementById('dokumentasi').value = ''
+  
+//   document.getElementById('alamat_kejadian').value = ''
+  
+
+  var optionDropDownKejadian = document.getElementById("kejadian").options;
+for (var i = 0; i < optionDropDownKejadian.length; i++) {
+  if (optionDropDownKejadian[i].text == "--- Pilih Kejadian ---") {
+    optionDropDownKejadian[i].selected = true;
+    break;
+  }
+}
+  var optionDropDownWilayah = document.getElementById("lokasi_kejadian").options;
+for (var i = 0; i < optionDropDownWilayah.length; i++) {
+  if (optionDropDownWilayah[i].text == "--- Pilih Lokasi Kejadian ---") {
+    optionDropDownWilayah[i].selected = true;
+    break;
+  }
+
+}
+
+fetchOptions('kecamatan', '', 'kecamatan_kejadian');
+fetchOptions('desa', '', 'kelurahan_kejadian');
+document.getElementById('addForm').reset()
+
+const targetElement = document.getElementById('main-div');
+            const offset = -60; // Atur jarak offset di sini (misalnya -50px untuk naik ke atas 50px)
+            
+            const elementPosition = targetElement.getBoundingClientRect().top + window.pageYOffset;
+            const offsetPosition = elementPosition + offset;
+
+            window.scrollTo({
+                top: offsetPosition,
+                behavior: 'smooth'
+            });
+}
+
+
 
 // Function to handle content change in 'kecamatan' element
 function contentChanged() {
@@ -192,6 +272,9 @@ var tanggalInput = document.getElementById('tanggal');
 
 function fetchData() {
     console.log('Fetch data triggered with value:', tanggalInput.value);
+    if(tanggalInput.value ===''){
+      return
+    }
     var formData = new FormData();
     formData.append('tanggal', tanggalInput.value);
 
@@ -358,7 +441,8 @@ tanggalInput.addEventListener('click', function() {
                     .then(html => {
                         const partialContainer = document.getElementById('partialContainer');
                         partialContainer.innerHTML = html;
-
+                        
+                        renderConditionalButton(true)
                         // Execute any scripts in the newly added HTML
                         const scripts = partialContainer.getElementsByTagName('script');
                         for (let i = 0; i < scripts.length; i++) {
@@ -392,7 +476,7 @@ tanggalInput.addEventListener('click', function() {
             .then(html => {
                 const partialContainer = document.getElementById('partialContainer');
                 partialContainer.innerHTML = html;
-
+                renderConditionalButton(true)
                 // Execute any scripts in the newly added HTML
                 const scripts = partialContainer.getElementsByTagName('script');
                 for (let i = 0; i < scripts.length; i++) {
@@ -400,6 +484,8 @@ tanggalInput.addEventListener('click', function() {
                     script.text = scripts[i].text;
                     document.head.appendChild(script).parentNode.removeChild(script);
                 }
+                
+             
             })
             .catch(error => {
                 console.error('Error:', error);
