@@ -36,11 +36,11 @@
                 <select class="js-example-basic-single form-select" id="form_kab" name="kota_lokasi_pos" data-width="100%" required>
                   <option value="">--- Pilih Kota ---</option>
                   <?php
-                    $ql = $this->db->query('SELECT kode,nama FROM wilayah_2022 WHERE kode="35.78" ORDER BY nama')->result();
+                    $ql = $this->db->query('SELECT wilayah FROM wilayah_2022')->result();
                     foreach ($ql as $qz)
                     {
                       ?>
-                      <option value="<?= $qz->kode ?>"><?= $qz->nama ?></option>
+                      <option value="<?= htmlspecialchars($qz->wilayah) ?>"><?= htmlspecialchars($qz->wilayah) ?></option>
                       <?php
                     }
                   ?>
