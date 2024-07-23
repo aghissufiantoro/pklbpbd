@@ -36,7 +36,7 @@
                 <select class="js-example-basic-single form-select" id="form_kab" name="kota_lokasi_pos" data-width="100%" required>
                   <option value="">--- Pilih Kota ---</option>
                   <?php
-                    $ql = $this->db->query('SELECT wilayah FROM wilayah_2022')->result();
+                    $ql = $this->db->query('SELECT DISTINCT wilayah FROM wilayah_2022')->result();
                     foreach ($ql as $qz)
                     {
                       ?>
@@ -50,12 +50,30 @@
                 <label class="form-label" for="form_kec">Kecamatan</label>
                 <select class="js-example-basic-single form-select" id="form_kec" name="kec_lokasi_pos" data-width="100%" required>
                   <option value="">--- Pilih Kecamatan ---</option>
+                  <?php
+                    $ql = $this->db->query('SELECT DISTINCT kecamatan FROM wilayah_2022')->result();
+                    foreach ($ql as $qz)
+                    {
+                      ?>
+                      <option value="<?= htmlspecialchars($qz->kecamatan) ?>"><?= htmlspecialchars($qz->kecamatan) ?></option>
+                      <?php
+                    }
+                  ?>
                 </select>
               </div>
               <div class="mb-3">
                 <label class="form-label" for="form_des">Kelurahan / Desa</label>
                 <select class="js-example-basic-single form-select" id="form_des" name="kel_lokasi_pos" data-width="100%" required>
                   <option value="">--- Pilih Kelurahan / Desa ---</option>
+                  <?php
+                    $ql = $this->db->query('SELECT DISTINCT desa FROM wilayah_2022')->result();
+                    foreach ($ql as $qz)
+                    {
+                      ?>
+                      <option value="<?= htmlspecialchars($qz->desa) ?>"><?= htmlspecialchars($qz->desa) ?></option>
+                      <?php
+                    }
+                  ?>
                 </select>
               </div>
               <div class="mb-3">
