@@ -227,6 +227,32 @@
                 placeholder: "--- Pilih Petugas ---",
                 allowClear: true
             });
+            var alamatKejadianElem = $("#alamat_kejadian");
+            var alamatField = $("#Alamat");
+             
+            if (alamatKejadianElem.length && alamatField.length) {
+                var alamatKejadian = alamatKejadianElem.val();
+                console.log("Alamat Kejadian:", alamatKejadian);
+                console.log("Alamat Field:", alamatField);
+
+                if (alamatField.val() === '') {
+                    alamatField.val(alamatKejadian);
+                }
+
+                alamatField.focus(function() {
+                    if (alamatField.val() === alamatKejadian) {
+                        alamatField.val('');
+                    }
+                });
+
+                alamatField.blur(function() {
+                    if (alamatField.val() === '') {
+                        alamatField.val(alamatKejadian);
+                    }
+                });
+            } else {
+                console.log("Elemen alamat_kejadian atau Alamat tidak ditemukan.");
+            }
         });
 
         setupEventListenersInPartial();
@@ -237,6 +263,26 @@
         saveButtonPartial.addEventListener('click', function(event) {
             event.preventDefault();
             handleSubmitAndRedirectInsidePartial();
+            var multiselect = document.getElementById('petugas_di_lokasi_kebakaran');
+            var selectedOptions = []; // Array untuk menyimpan opsi yang dipilih
+
+            // Iterasi setiap option di multiselect
+            for (var i = 0; i < multiselect.options.length; i++) {
+                var option = multiselect.options[i];
+
+                // Periksa apakah option tersebut dipilih
+                if (option.selected) {
+                    // Menyimpan opsi yang dipilih ke dalam array
+                    selectedOptions.push({
+                        value: option.value,
+                        text: option.text
+                    });
+
+                    // Menghapus opsi yang dipilih dari multiselect
+                    multiselect.remove(i);
+                    i--; // Mengurangi indeks karena elemen telah dihapus
+                }
+            }
         });
     }
 

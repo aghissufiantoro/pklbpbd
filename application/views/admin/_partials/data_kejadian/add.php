@@ -206,7 +206,7 @@ function fetchData() {
     .then(data => {
         if (data.error) {
             console.error('Error:', data.error);
-            alert('Terjadi kesalahan: ' + data.error);
+            // alert('Terjadi kesalahan: ' + data.error);
         } else {
             console.log('New ID Kejadian:', data.new_id_kejadian);
             id_kejadian_textForm.value = data.new_id_kejadian;

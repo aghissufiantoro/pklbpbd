@@ -135,7 +135,26 @@
                 saveButtonPartial.addEventListener('click', function(event){
                     event.preventDefault();
                     handleSubmitAndRedirectInsidePartial();
-                    $('#petugas_di_lokasi_pohon_tumbang').val(null).trigger('change');
+                    var multiselect = document.getElementById('petugas_di_lokasi_pohon_tumbang');
+                    var selectedOptions = []; // Array untuk menyimpan opsi yang dipilih
+
+                    // Iterasi setiap option di multiselect
+                    for (var i = 0; i < multiselect.options.length; i++) {
+                        var option = multiselect.options[i];
+
+                        // Periksa apakah option tersebut dipilih
+                        if (option.selected) {
+                            // Menyimpan opsi yang dipilih ke dalam array
+                            selectedOptions.push({
+                                value: option.value,
+                                text: option.text
+                            });
+
+                            // Menghapus opsi yang dipilih dari multiselect
+                            multiselect.remove(i);
+                            i--; // Mengurangi indeks karena elemen telah dihapus
+                        }
+                    }
                 });
             }
 
