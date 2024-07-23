@@ -144,7 +144,7 @@
           </div>
           <div class="col-md-3 d-flex align-items-end">
             <div class="mb-3">
-              <input id="btnTambahBarang" class="btn btn-success" type="button" value="Add">
+              <input id="btnTambahBarang" class="btn btn-success" type="button" value="        Add        ">
             </div>
           </div>
         </div>
@@ -152,7 +152,7 @@
         <div class="col-md-12 grid-margin stretch-card">
             <div class="card">
                 <div class="card-body">
-                    <h4 class="card-title">Data Kejadian</h4>
+                    <h4 class="card-title">Data Barang</h4>
                     <div class="table-responsive">
                         <table id="dataTableExample" class="table">
                             <thead>
@@ -306,7 +306,6 @@ const newRow = document.createElement('tr');
         console.log(arrayBarangSementara);
 
 }
-
 })
 </script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
