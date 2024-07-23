@@ -80,7 +80,7 @@
           </div>
 
           <div class="row">
-            <div class="col-md-5">
+            <div class="col-md-12">
               <div class="mb-3">
                 <label for="alamat_kejadian" class="form-label">Alamat Kejadian</label>
                 <input required id="alamat_kejadian" class="form-control" name="alamat_kejadian" type="text">
@@ -289,7 +289,7 @@ function fetchData() {
     .then(data => {
         if (data.error) {
             console.error('Error:', data.error);
-            alert('Terjadi kesalahan: ' + data.error);
+            // alert('Terjadi kesalahan: ' + data.error);
         } else {
             console.log('New ID Kejadian:', data.new_id_kejadian);
             id_kejadian_textForm.value = data.new_id_kejadian;

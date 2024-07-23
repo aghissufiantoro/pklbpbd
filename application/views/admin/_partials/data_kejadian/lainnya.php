@@ -146,7 +146,38 @@
                 placeholder: "--- Pilih Petugas ---",
                 allowClear: true
             });
+            prefilledAlamat();
         });
+
+        function prefilledAlamat(){
+            var alamatKejadianElem = $("#alamat_kejadian");
+            var alamatField = $("#Alamat");
+             
+            if (alamatKejadianElem.length && alamatField.length) {
+                var alamatKejadian = alamatKejadianElem.val();
+                console.log("Alamat Kejadian:", alamatKejadian);
+                console.log("Alamat Field:", alamatField);
+
+                if (alamatField.val() === '') {
+                    alamatField.val(alamatKejadian);
+                }
+
+                alamatField.focus(function() {
+                    if (alamatField.val() === alamatKejadian) {
+                        alamatField.val('');
+                    }
+                });
+
+                alamatField.blur(function() {
+                    if (alamatField.val() === '') {
+                        alamatField.val(alamatKejadian);
+                    }
+                });
+            } else {
+                console.log("Elemen alamat_kejadian atau Alamat tidak ditemukan.");
+            }
+        }
+
         setupEventListenersInPartial();
 
         function setupEventListenersInPartial(){
@@ -259,7 +290,7 @@
                 `;
                 document.getElementById('dataKejadianTableBody').appendChild(newRow);
 
-                form.reset();
+                resetForm(form);
 
                 document.getElementById('success-alert').textContent = 'Data berhasil disimpan';
                 document.getElementById('success-alert').style.display = 'block';
@@ -277,4 +308,15 @@
             document.getElementById('error-alert').style.display = 'block';
             document.getElementById('success-alert').style.display = 'none';
         }
+
+        function resetForm(form){
+        form.reset();
+        const multiselect = document.getElementById('petugas_di_lokasi_lainnya');
+        // Mengatur ulang multiselect dengan menghapus semua opsi yang terpilih
+        for (let option of multiselect.options) {
+            option.selected = false;
+        }
+        multiselect.dispatchEvent(new Event('change'));
+        prefilledAlamat();
+    }
     </script>
