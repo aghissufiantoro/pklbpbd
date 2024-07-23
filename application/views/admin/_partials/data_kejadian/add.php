@@ -126,7 +126,7 @@
             </div>
           </div>
 
-          <div class="row">
+          <!-- <div class="row">
             <div class="col-md-15">
               <div class="mb-3">
                 <label for="petugas_lokasi" class="form-label">Petugas</label>
@@ -135,7 +135,7 @@
                 <input id="petugas_lokasi" class="form-control" name="petugas_lokasi" type="text">
               </div>
             </div>
-          </div>
+          </div> -->
 
           <div class="mb-3">
             <label for="foto_artikel" class="form-label">Foto Diri</label>
