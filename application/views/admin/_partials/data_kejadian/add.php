@@ -80,7 +80,7 @@
           </div>
 
           <div class="row">
-            <div class="col-md-5">
+            <div class="col-md-12">
               <div class="mb-3">
                 <label for="alamat_kejadian" class="form-label">Alamat Kejadian</label>
                 <input id="alamat_kejadian" class="form-control" name="alamat_kejadian" type="text">

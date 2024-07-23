@@ -146,6 +146,10 @@
                 placeholder: "--- Pilih Petugas ---",
                 allowClear: true
             });
+            prefilledAlamat();
+        });
+
+        function prefilledAlamat(){
             var alamatKejadianElem = $("#alamat_kejadian");
             var alamatField = $("#Alamat");
              
@@ -172,7 +176,8 @@
             } else {
                 console.log("Elemen alamat_kejadian atau Alamat tidak ditemukan.");
             }
-        });
+        }
+
         setupEventListenersInPartial();
 
         function setupEventListenersInPartial(){
@@ -181,26 +186,6 @@
                 saveButtonPartial.addEventListener('click', function(event){
                     event.preventDefault();
                     handleSubmitAndRedirectInsidePartial();
-                    var multiselect = document.getElementById('petugas_di_lokasi_lainnya');
-                    var selectedOptions = []; // Array untuk menyimpan opsi yang dipilih
-
-                    // Iterasi setiap option di multiselect
-                    for (var i = 0; i < multiselect.options.length; i++) {
-                        var option = multiselect.options[i];
-
-                        // Periksa apakah option tersebut dipilih
-                        if (option.selected) {
-                            // Menyimpan opsi yang dipilih ke dalam array
-                            selectedOptions.push({
-                                value: option.value,
-                                text: option.text
-                            });
-
-                            // Menghapus opsi yang dipilih dari multiselect
-                            multiselect.remove(i);
-                            i--; // Mengurangi indeks karena elemen telah dihapus
-                        }
-                    }
                 });
             }
 
@@ -305,7 +290,7 @@
                 `;
                 document.getElementById('dataKejadianTableBody').appendChild(newRow);
 
-                form.reset();
+                resetForm(form);
 
                 document.getElementById('success-alert').textContent = 'Data berhasil disimpan';
                 document.getElementById('success-alert').style.display = 'block';
@@ -323,4 +308,15 @@
             document.getElementById('error-alert').style.display = 'block';
             document.getElementById('success-alert').style.display = 'none';
         }
+
+        function resetForm(form){
+        form.reset();
+        const multiselect = document.getElementById('petugas_di_lokasi_lainnya');
+        // Mengatur ulang multiselect dengan menghapus semua opsi yang terpilih
+        for (let option of multiselect.options) {
+            option.selected = false;
+        }
+        multiselect.dispatchEvent(new Event('change'));
+        prefilledAlamat();
+    }
     </script>
