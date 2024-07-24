@@ -3,7 +3,7 @@
         <a href="#" class="sidebar-brand" style="font-size: 18px;">
             <span>BPBD </span>Kota Surabaya
         </a>
-        <div class="sidebar-toggler not-active">
+        <div class="sidebar-toggler">
             <span></span>
             <span></span>
             <span></span>
@@ -150,33 +150,24 @@
 
             if ($this->session->userdata('username') == "dokumentasi" || $this->session->userdata('role') == "1") {
                 ?>
-                <li <?php if ($this->uri->segment(2) == "dokumentasi") {
-                    echo 'class="nav-item active"';
-                } else {
-                    echo 'class="nav-item"';
-                } ?>>
-                    <a href="<?= base_url('admin/dokumentasi') ?>" class="nav-link ">
-                        <i class="link-icon" data-feather="book-open"></i>
-                        <span class="link-title">Dokumentasi</span>
-                    </a>
+                <li class="nav-item <?php echo ($this->uri->segment(2) == 'dokumentasi') ? 'active' : ''; ?>">
+                        <a href="<?= base_url('admin/dokumentasi') ?>" class="nav-link">
+                            <i class="link-icon" data-feather="book-open"></i>
+                            <span class="link-title">Dokumentasi</span>
+                        </a>
                 </li>
+
                 <?php
             }
             ?>
 
-        <li class="nav-item nav-category">SINA SINI</li>
-            <?php
-            if ($this->session->userdata('username') == "data_kejadian" || $this->session->userdata('role') == "1") { 
-                ?>
-                <li <?php if ($this->uri->segment(2) == "dokumentasi_sinasini") {
-                    echo 'class="nav-item active"';
-                } else {
-                    echo 'class="nav-item"';
-                } ?>>
-                    <a href="<?= base_url('admin/dokumentasi_sinasini') ?>" class="nav-link ">
-                        <i class="link-icon" data-feather="book-open"></i>
-                        <span class="link-title">Dokumentasi Sinasini</span>
-                    </a>
+            <li class="nav-item nav-category">SINA SINI</li>
+            <?php if ($this->session->userdata('username') == "dokumentasi_sinasini" || $this->session->userdata('role') == "1") { ?>
+            <li class="nav-item <?php echo ($this->uri->segment(2) == 'dokumentasi_sinasini') ? 'active' : ''; ?>">
+                        <a href="<?= base_url('admin/dokumentasi_sinasini') ?>" class="nav-link">
+                            <i class="link-icon" data-feather="book-open"></i>
+                            <span class="link-title">Dokumentasi</span>
+                        </a>
                 </li>
                 <?php
             }
