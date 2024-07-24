@@ -50,6 +50,9 @@ class M_tugas_harian extends CI_Model
         $this->lokasi           = $post['lokasi'];
         $this->uraian_kegiatan  = $post['uraian_kegiatan'];
         $this->penanggung_jawab = $post['penanggung_jawab'];
+        if ($this->penanggung_jawab === 'Lain-lain') {
+            $this->penanggung_jawab = $post['penanggung_jawab_lain'];
+        }
         $this->hasil_kegiatan   = $post['hasil_kegiatan'];
         $this->dokumentasi      = $this->_uploadImage();
 
@@ -65,6 +68,9 @@ class M_tugas_harian extends CI_Model
         $this->lokasi           = $post["lokasi"];
         $this->uraian_kegiatan  = $post["uraian_kegiatan"];
         $this->penanggung_jawab = $post["penanggung_jawab"];
+        if ($this->penanggung_jawab === 'Lain-lain') {
+            $this->penanggung_jawab = $post['penanggung_jawab_lain'];
+        }
         $this->hasil_kegiatan   = $post["hasil_kegiatan"];
         $this->dokumentasi      = $this->_uploadImage();
 

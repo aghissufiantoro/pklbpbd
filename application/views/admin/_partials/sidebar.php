@@ -151,23 +151,23 @@
 
             if ($this->session->userdata('username') == "dokumentasi" || $this->session->userdata('role') == "1") {
                 ?>
-                <li <?php if ($this->uri->segment(2) == "dokumentasi") {
-                    echo 'class="nav-item active"';
-                } else {
-                    echo 'class="nav-item"';
-                } ?>>
-                    <a href="<?= base_url('admin/dokumentasi') ?>" class="nav-link ">
-                        <i class="link-icon" data-feather="book-open"></i>
-                        <span class="link-title">Dokumentasi</span>
-                    </a>
-                </li>
+                    <li <?php if ($this->uri->segment(2) == "dokumentasi" && $this->uri->segment(3) == "") {
+                        echo 'class="nav-item active"';
+                    } else {
+                        echo 'class="nav-item"';
+                    } ?>>
+                        <a href="<?= base_url('admin/dokumentasi') ?>" class="nav-link ">
+                            <i class="link-icon" data-feather="book-open"></i>
+                            <span class="link-title">Dokumentasi</span>
+                        </a>
+                    </li>
                 <?php
-            }
-            ?>
+                }
+                ?>
 
         <li class="nav-item nav-category">SINA SINI</li>
             <?php
-            if ($this->session->userdata('username') == "data_kejadian" || $this->session->userdata('role') == "1") { 
+            if ($this->session->userdata('username') == "dokumentasi_sinasini" || $this->session->userdata('role') == "1") { 
                 ?>
                 <li <?php if ($this->uri->segment(2) == "dokumentasi_sinasini") {
                     echo 'class="nav-item active"';

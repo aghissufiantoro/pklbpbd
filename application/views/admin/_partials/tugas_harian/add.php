@@ -44,14 +44,20 @@
                 <div class="mb-3">
                     <label class="form-label">Penanggung Jawab</label>
                     <select class="form-select" required name="penanggung_jawab" autocomplete="off"
-                    id="hurufbesar3" onkeyup="hurufBesar3();">
+                    id="penanggung_jawab">
                         <option value="">--- Pilih Salah Satu ---</option>
                         <option value="Kepala Badan">Kepala Badan</option>
                         <option value="Sekretaris Badan">Sekretaris Badan</option>
                         <option value="Kasubbag Keuangan">Kasubbag Keuangan</option>
                         <option value="Kabid PK">Kabid PK</option>
                         <option value="Kabid Darlog RR">Kabid Darlog RR</option>
+                        <option value="Lain-lain">Lain-lain</option>
                     </select>
+                </div>
+
+                <div class="mb-3" id="lain_lain_input" style="display: none;">
+                    <label class="form-label">Penanggung Jawab (Lain-lain)</label>
+                    <input type="text" class="form-control" name="penanggung_jawab_lain" id="penanggung_jawab_lain" autocomplete="off" placeholder="Isi penanggung jawab lain">
                 </div>
 
                 <div class="mb-3">
@@ -90,5 +96,15 @@ document.getElementById('nama_staff').addEventListener('change', function() {
             placeholder: "--- Pilih Nama Staff ---",
             allowClear: true
         });
+    });
+</script>
+<script>
+    document.getElementById('penanggung_jawab').addEventListener('change', function() {
+        var lainLainInput = document.getElementById('lain_lain_input');
+        if (this.value === 'Lain-lain') {
+            lainLainInput.style.display = 'block';
+        } else {
+            lainLainInput.style.display = 'none';
+        }
     });
 </script>

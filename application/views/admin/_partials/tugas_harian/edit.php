@@ -63,7 +63,13 @@
                         <option <?php if ($tugas_harian->penanggung_jawab == "Kasubbag Keuangan"){echo "selected";} ?> value="Kasubbag Keuangan">Kasubbag Keuangan</option>
                         <option <?php if ($tugas_harian->penanggung_jawab == "Kabid PK"){echo "selected";} ?> value="Kabid PK">Kabid PK</option>
                         <option <?php if ($tugas_harian->penanggung_jawab == "Kabid Darlog RR"){echo "selected";} ?> value="Kabid Darlog RR">Kabid Darlog RR</option>
+                        <option <?php if ($tugas_harian->penanggung_jawab == "Lain-lain"){echo "selected";} ?> value="Lain-lain">Lain-lain</option>
                     </select>
+                </div>
+
+                <div class="mb-3" id="lain_lain_input" style="display: none;">
+                    <label class="form-label">Penanggung Jawab (Lain-lain)</label>
+                    <input type="text" class="form-control" name="penanggung_jawab_lain" id="penanggung_jawab_lain" autocomplete="off" placeholder="Isi penanggung jawab lain">
                 </div>
 
                 <div class="mb-3">
@@ -109,4 +115,14 @@ document.getElementById('nama_staff').addEventListener('change', function() {
             successAlert.style.display = 'none';
         }
     }, 5000);
+</script>
+<script>
+    document.getElementById('penanggung_jawab').addEventListener('change', function() {
+        var lainLainInput = document.getElementById('lain_lain_input');
+        if (this.value === 'Lain-lain') {
+            lainLainInput.style.display = 'block';
+        } else {
+            lainLainInput.style.display = 'none';
+        }
+    });
 </script>
