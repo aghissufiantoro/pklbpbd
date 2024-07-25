@@ -61,13 +61,26 @@ if ($db_data_kejadian) {
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <?php foreach ($db_korban_kejadian as $korban): ?>
-                                            <tr>
-                                                <?php foreach ((array)$korban as $value): ?>
-                                                    <td><?= htmlspecialchars($value) ?></td>
-                                                <?php endforeach; ?>
-                                            </tr>
-                                        <?php endforeach; ?>
+                                    <?php foreach ($db_korban_kejadian as $korban): ?>
+    <?php
+    $total = count((array)$korban); // Total count of items in the inner array
+    $current = 0; // Initialize current iteration
+    ?>
+    <tr>
+        <?php foreach ((array)$korban as $value): ?>
+            <?php $current++; // Increment current iteration ?>
+            
+            <?php if ($current == $total): // Check if it's the last iteration ?>
+                <td class="d-flex justify-content-center align-items-center image-container">
+                    <img width="10000px" height="500" class="img-fluid rounded shadow" src="<?= htmlspecialchars(base_url($value)) ?>" alt="Image">
+                </td>
+            <?php else:?>
+                <td><?= htmlspecialchars($value) ?></td>
+            <?php endif; ?>
+        <?php endforeach; ?>
+    </tr>
+<?php endforeach; ?>
+
                                     </tbody>
                                 </table>
                             <?php else: ?>
@@ -85,9 +98,9 @@ if ($db_data_kejadian) {
                                 <li>Alamat Lengkap Kejadian: <?= $db_data_kejadian->alamat_kejadian ?></li>
                                 <li class="dokumentasi-section">Dokumentasi:</li>
                                 <?php if ($db_data_kejadian->dokumentasi): ?>
-                                    <li>
+                                    
                                         <img src="<?= base_url($db_data_kejadian->dokumentasi) ?>" alt="Dokumentasi Kejadian">
-                                    </li>
+                                 
                                 <?php else: ?>
                                     <li>Tidak ada dokumentasi.</li>
                                 <?php endif; ?>

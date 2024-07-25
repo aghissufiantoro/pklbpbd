@@ -86,12 +86,12 @@
                 <input required id="alamat_kejadian" class="form-control" name="alamat_kejadian" type="text">
               </div>
             </div>
-            <div class="mb-3">
+            <!-- <div class="mb-3">
               <label class="form-label" for="kabkota_kejadian">Kota</label>
               <select class="js-example-basic-single form-select" id="kabkota_kejadian" name="kabkota_kejadian" data-width="100%" required>
                 <option value="surabaya">SURABAYA</option>
               </select>
-            </div>
+            </div> -->
             <div class="mb-3">
               <label class="form-label" for="kecamatan_kejadian">Kecamatan</label>
               <select class="js-example-basic-single form-select" id="kecamatan_kejadian" name="kecamatan_kejadian" data-width="100%" required>
@@ -153,6 +153,7 @@
 </div>
 
 <script src="<?php echo base_url() ?>/assets_admin/js/dataKejadianJs/dataKejadian.js"></script>
+
 <style>
   .alert-container {
   position: fixed;
