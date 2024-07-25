@@ -47,11 +47,11 @@
 
                   $m3 = ($n3==2?5:($n3==5?8:13));
                   $m4 = ($n4==2?5:($n4==5?8:13));
-                  $rsl_keca = $this->db->query("SELECT nama FROM wilayah_2022 WHERE kode = '$keca'")->row();
-                  $rsl_kelu = $this->db->query("SELECT nama FROM wilayah_2022 WHERE kode = '$kelu'")->row();
+                  $rsl_keca = $this->db->query("SELECT kec_lokasi_pos FROM lokasi_pos WHERE kec_lokasi_pos = '$keca'")->row();
+                  $rsl_kelu = $this->db->query("SELECT kel_lokasi_pos FROM lokasi_pos WHERE kel_lokasi_pos = '$kelu'")->row();
 
-                  $keca_kcl = strtolower($rsl_keca->nama);
-                  $kelu_kcl = strtolower($rsl_kelu->nama);
+                  $keca_kcl = strtolower($rsl_keca->kec_lokasi_pos);
+                  $kelu_kcl = strtolower($rsl_kelu->kel_lokasi_pos);
 
                   $keca_new = ucwords($keca_kcl);
                   $kelu_new = ucwords($kelu_kcl);
