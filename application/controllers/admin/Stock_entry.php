@@ -43,6 +43,13 @@ class Stock_entry extends CI_Controller
         }
     }
 
+    public function get_kelurahan_by_kecamatan()
+    {
+        $kecamatan = $this->input->post('kecamatan');
+        $kelurahan_options = $this->m_stock_entry->get_desa_by_kecamatan($kecamatan);
+        echo json_encode($kelurahan_options);
+    }
+
     public function add()
     {
         if ($this->session->userdata('role') == "1") {
@@ -53,13 +60,18 @@ class Stock_entry extends CI_Controller
             // Fetch options for id_kejadian and nama_barang
             $data['kejadian_options'] = $this->m_stock_entry->getKejadianOptions();
             $data['barang_options'] = $this->m_stock_entry->getBarangOptions();
+            $data['kecamatan_options'] = $this->m_stock_entry->get_all_kecamatan();
 
             if ($validation->run()) {
                 $id_kejadian = $this->input->post('id_kejadian');
-                $tanggal_entry = $this->input->post('tanggal_entry');
                 $nama_barang = $this->input->post('nama_barang');
                 $status_barang = $this->input->post('status_barang');
                 $qty_barang = $this->input->post('qty_barang');
+                $lokasi_diterima = $this->input->post('lokasi_diterima');
+                $penerima_barang = $this->input->post('penerima_barang');
+                $kecamatan = $this->input->post('kecamatan');
+                $kelurahan = $this->input->post('kelurahan');
+                $keterangan_barang = $this->input->post('keterangan_barang');
 
                 // Get the kode_barang based on nama_barang
                 $kode_barang = $this->m_stock_entry->getKodeBarangByName($nama_barang);
@@ -74,10 +86,24 @@ class Stock_entry extends CI_Controller
                         }
                     }
 
-                    $new_transaction_id = $this->generateTransactionID($tanggal_entry);
+                    $new_transaction_id = $this->generateTransactionID();
 
                     // Save data with new transaction ID and id_kejadian
-                    $data_entry_sembako->save($new_transaction_id, $id_kejadian, $kode_barang);
+                    $data_to_save = [
+                        'id_transaksi' => $new_transaction_id,
+                        'id_kejadian' => $id_kejadian,
+                        'tanggal_entry' => date('Y-m-d'),  // Set current date
+                        'kode_barang' => $kode_barang,
+                        'status_barang' => $status_barang,
+                        'qty_barang' => $qty_barang,
+                        'lokasi_diterima' => $lokasi_diterima,
+                        'penerima_barang' => $penerima_barang,
+                        'kecamatan' => $kecamatan,
+                        'kelurahan' => $kelurahan,
+                        'keterangan_barang' => $keterangan_barang,
+                    ];
+
+                    $data_entry_sembako->save($data_to_save);
 
                     // Update data_stock_logistik based on status_barang
                     if ($status_barang == 'Masuk') {
@@ -98,6 +124,26 @@ class Stock_entry extends CI_Controller
         } else {
             show_404();
         }
+    }
+
+    public function get_filtered_id(){
+        $data = $this->input->post('data');
+    $value_search = $this->input->post('search');
+    $response = [];
+
+    if ($data == "tanggal") {
+        $kejadian = $this->db->query("SELECT kejadian FROM data_kejadian WHERE tanggal=? GROUP BY tanggal ORDER BY tanggal", [$value_search])->result();
+        foreach ($kejadian as $d) {
+            $response[] = ['value' => $d->kejadian, 'label' => $d->kejadian];
+        }
+    }else if ($data == "kejadian") {
+        $id_kejadian = $this->db->query("SELECT id_kejadian, kejadian, alamat_kejadian FROM data_kejadian where kejadian=? GROUP BY id_kejadian order by id_kejadian", [$value_search])->result();
+        foreach ($id_kejadian as $d) {
+            $response[] = ['value' => $d->id_kejadian, 'label' => $d->id_kejadian."-".$d->kejadian."-".$d->alamat_kejadian];
+        }
+    }
+
+    echo json_encode($response); // Encode resp // Encode resp
     }
 
     public function edit($id = null)
@@ -180,12 +226,26 @@ class Stock_entry extends CI_Controller
 
     private function generateTransactionID($date) {
         // Format the date to 'dmY'
-        $formatted_date = date('dmY', strtotime($date));
+        $formatted_date = date('dmY');
     
         // Generate new transaction ID based on the input date
         $new_transaction_id = $this->m_stock_entry->getLastTransactionID($formatted_date);
     
         return $new_transaction_id;
+    }
+
+    public function filter_id_kejadian() {
+        $tanggal_entry = $this->input->post('tanggal_entry');
+        $kejadian = $this->input->post('kejadian');
+    
+        $query = $this->db->select('id_kejadian, kejadian, alamat_kejadian')
+                          ->from('data_kejadian')
+                          ->where('tanggal_entry', $tanggal_entry)
+                          ->where('kejadian', $kejadian)
+                          ->get();
+    
+        $result = $query->result();
+        echo json_encode($result);
     }
 
     

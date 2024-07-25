@@ -31,8 +31,6 @@
                 <th width="20px">Quantity Barang</th>
                 <th width="20px">Penerima Barang</th>
                 <th width="40px">Lokasi Diterima</th>
-                <th width="90px">RT</th>
-                <th width="30px">RW</th>
                 <th width="20px">Kelurahan</th>
                 <th width="20px">Kecamatan</th>
                 <th width="40px">Keterangan Barang</th>
@@ -56,8 +54,6 @@
                     <td><?= $res_data_entry_sembako->qty_barang ?></td>
                     <td><?= $res_data_entry_sembako->penerima_barang ?></td>
                     <td><?= $res_data_entry_sembako->lokasi_diterima ?></td>
-                    <td><?= $res_data_entry_sembako->rt ?></td>
-                    <td><?= $res_data_entry_sembako->rw ?></td>
                     <td><?= $res_data_entry_sembako->kelurahan ?></td>
                     <td><?= $res_data_entry_sembako->kecamatan ?></td>
                     <td><?= $res_data_entry_sembako->keterangan_barang ?></td>
