@@ -16,6 +16,7 @@
             <thead>
               <tr>
                 <th width="20px">No</th>
+                <th width="20px">Id Kejadian</th>
                 <th width="20px">Tanggal Kejadian</th>
                 <th width="30px">Kejadian</th>
                 <th width="20px">Waktu_Berita</th>
@@ -26,7 +27,6 @@
                 <th width="20px">Alamat</th>
                 <th width="30px">Kronologi</th>
                 <th width="30px">Tindak Lanjut</th>
-                <th width="20px">Petugas_Lapangan</th>
                 <th width="20px">Dokumentasi</th>
                 <th width="20px">Aksi</th>
               </tr>
@@ -34,7 +34,7 @@
             <tbody>
               <?php
               $no = 1; 
-              $db_data_kejadian = $this->db->query("SELECT * FROM data_kejadian")->result();
+              $db_data_kejadian = $this->db->query("SELECT * FROM data_kejadian order by tanggal DESC")->result();
               foreach ($db_data_kejadian as $res_data_kejadian) {
                 $keca = $res_data_kejadian->kecamatan_kejadian;
                 $kelu = $res_data_kejadian->kelurahan_kejadian;
@@ -47,6 +47,7 @@
               ?>
                 <tr>
                   <td><?= $no++ ?></td>
+                  <td><?= $res_data_kejadian->id_kejadian ?></td>
                   <td><?= $res_data_kejadian->tanggal ?></td>
                   <td><?= $res_data_kejadian->kejadian ?></td>
                   <td><?= $res_data_kejadian->waktu_berita ?></td>
@@ -57,7 +58,6 @@
                   <td><?= $res_data_kejadian->alamat_kejadian ?></td>
                   <td><?= $res_data_kejadian->kronologi ?></td>
                   <td><?= $res_data_kejadian->tindak_lanjut ?></td>
-                  <td><?= $res_data_kejadian->petugas_lokasi ?></td>
                   <td>
                     <?php if (!empty($res_data_kejadian->dokumentasi)) : ?>
                       <img src="<?= base_url($res_data_kejadian->dokumentasi) ?>" alt="dokumentasi" width="100">
