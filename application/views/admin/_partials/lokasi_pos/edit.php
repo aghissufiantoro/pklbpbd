@@ -48,31 +48,47 @@ if ($this->session->flashdata('success')) {
               </div>
               <div class="mb-3">
                 <label class="form-label" for="form_kec">Kecamatan</label>
-                <select class="js-example-basic-single form-select" id="form_kec" name="kec_lokasi_pos" data-width="100%" required>
-                  <?php
-                  $ql = $this->db->query('SELECT DISTINCT kecamatan, id FROM wilayah_2022')->result();
-                  foreach ($ql as $qz) {
-                    $selected = ($qz->id == $lokasi_pos->wilayah_id) ? 'selected' : '';
-                  ?>
-                    <option value="<?= htmlspecialchars($qz->id) ?>" <?= $selected ?>><?= htmlspecialchars($qz->kecamatan) ?></option>
-                  <?php
+                <?php
+                if (isset($lokasi_pos->wilayah_id)) {
+                  $query = $this->db->query('SELECT kecamatan FROM wilayah_2022 WHERE id=?', [$lokasi_pos->wilayah_id]);
+
+                  if ($query !== false) {
+                    $result = $query->row();
+                    if ($result) {
+                      $kecamatan = htmlspecialchars($result->kecamatan);
+                      echo '<input id="nama_lokasi_pos" class="form-control" name="kec_lokasi_pos" value="' . $kecamatan . '" type="text" readonly>';
+                    } else {
+                      echo '<input id="nama_lokasi_pos" class="form-control" name="kec_lokasi_pos"  value="Kecamatan tidak ditemukan" type="text" readonly>';
+                    }
+                  } else {
+                    echo '<input id="nama_lokasi_pos" class="form-control" name="kec_lokasi_pos"  value="Query gagal" type="text" readonly>';
                   }
-                  ?>
-                </select>
+                } else {
+                  echo '<input id="nama_lokasi_pos" class="form-control" name="kec_lokasi_pos" value="Wilayah ID tidak ditemukan" type="text" readonly>';
+                }
+                ?>
               </div>
               <div class="mb-3">
                 <label class="form-label" for="form_kab">Kota</label>
-                <select class="js-example-basic-single form-select" id="form_kab" name="kota_lokasi_pos" data-width="100%" required>
-                  <?php
-                  $ql = $this->db->query('SELECT DISTINCT wilayah, id FROM wilayah_2022')->result();
-                  foreach ($ql as $qz) {
-                    $selected = ($qz->id == $lokasi_pos->wilayah_id) ? 'selected' : '';
-                  ?>
-                    <option value="<?= htmlspecialchars($qz->id) ?>" <?= $selected ?>><?= htmlspecialchars($qz->wilayah) ?></option>
-                  <?php
+                <?php
+                if (isset($lokasi_pos->wilayah_id)) {
+                  $query = $this->db->query('SELECT wilayah FROM wilayah_2022 WHERE id=?', [$lokasi_pos->wilayah_id]);
+
+                  if ($query !== false) {
+                    $result = $query->row();
+                    if ($result) {
+                      $kabupaten = htmlspecialchars($result->wilayah);
+                      echo '<input id="nama_lokasi_pos" class="form-control" name="kab_lokasi_pos" value="' . $kabupaten . '" type="text" readonly>';
+                    } else {
+                      echo '<input id="nama_lokasi_pos" class="form-control" name="kab_lokasi_pos"  value="Kabupaten tidak ditemukan" type="text" readonly>';
+                    }
+                  } else {
+                    echo '<input id="nama_lokasi_pos" class="form-control" name="kab_lokasi_pos"  value="Query gagal" type="text" readonly>';
                   }
-                  ?>
-                </select>
+                } else {
+                  echo '<input id="nama_lokasi_pos" class="form-control" name="kab_lokasi_pos" value="Wilayah ID tidak ditemukan" type="text" readonly>';
+                }
+                ?>
               </div>
               <div class="mb-3">
                 <label class="form-label">Titik Koordinat</label>
@@ -241,4 +257,3 @@ if ($this->session->flashdata('success')) {
     $("[name=polygon]").val("");
   })
 </script>
-
