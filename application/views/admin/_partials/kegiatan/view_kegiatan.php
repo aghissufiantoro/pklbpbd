@@ -31,7 +31,7 @@
                         <tbody>
                             <?php
                             $no = 1;
-                            $db_data_kejadian = $this->db->query("SELECT * FROM tabel_kegiatan")->result();
+                            $kegiatan = $this->db->query("SELECT * FROM tabel_kegiatan ORDER BY tanggal DESC;")->result();
                             foreach ($kegiatan as $kg) 
                             {
                             ?>
@@ -50,7 +50,7 @@
                                     </td>
                                     <td>
                                         <a href="<?= site_url('admin/kegiatan/edit_plot_kegiatan/'.$kg->id_kegiatan) ?>" class="btn btn-outline-primary btn-xs"><i class='fal fa-pencil'></i></a>
-
+                            
                                         <a data-bs-toggle="modal" data-bs-target="#deleteConfirm<?= $kg->id_kegiatan ?>" class="ms-3 btn btn-outline-danger btn-xs"><i class="fal fa-trash-alt"></i></a>
                                         <div class="modal fade" id="deleteConfirm<?= $kg->id_kegiatan ?>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                             <div class="modal-dialog modal-lg">
