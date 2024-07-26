@@ -61,12 +61,12 @@ class stock_master extends CI_Controller
         if ($validation->run())
         {
             // $kode_barang = $this->input->post('kode_barang');
-            // // Save to `data_master_sembako`
+            // // Save to data_master_sembako
             // $stock->save();
 
             $kode_barang = $stock->save();
 
-            // Insert initial quantities into `data_stock_logistik` only once
+            // Insert initial quantities into data_stock_logistik only once
             if ($this->db->where('kode_barang', $kode_barang)->get('data_stock_logistik')->num_rows() == 0) {
                 $this->db->insert('data_stock_logistik', [
                     'kode_barang' => $kode_barang,
@@ -102,12 +102,12 @@ class stock_master extends CI_Controller
 //             $kode_barang = $this->input->post('kode_barang');
 //             // Debug statement
 //             log_message('debug', 'Adding to data_master_sembako: ' . $kode_barang);
-//             // Save to `data_master_sembako`
+//             // Save to data_master_sembako
 //             $stock->save();
 
 //             // Debug statement
 //             log_message('debug', 'Checking for existing data_stock_logistik entry for: ' . $kode_barang);
-//             // Insert initial quantities into `data_stock_logistik` only once
+//             // Insert initial quantities into data_stock_logistik only once
 //             if ($this->db->where('kode_barang', $kode_barang)->get('data_stock_logistik')->num_rows() == 0) {
 //                 // Debug statement
 //                 log_message('debug', 'Inserting new entry into data_stock_logistik for: ' . $kode_barang);

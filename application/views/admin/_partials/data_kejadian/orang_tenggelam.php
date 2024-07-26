@@ -121,7 +121,21 @@
                         <div class="col-md-15">
                             <div class="mb-3">
                                 <label for="petugas_di_lokasi_orang_tenggelam" class="form-label">Petugas di Lokasi</label>
-                                <input id="petugas_di_lokasi_orang_tenggelam" class="form-control" name="petugas_di_lokasi_orang_tenggelam" type="text">
+                                <select class="js-example-basic-multiple form-select" id="petugas_di_lokasi_orang_tenggelam" name="petugas_di_lokasi_orang_tenggelam[]" data-width="100%" required multiple>
+                                    <option value="">--- Pilih Lokasi Kejadian ---</option>
+                                    <option value="BPBD">BPBD</option>
+                                    <option value="SATPOL PP">SATPOL PP</option>
+                                    <option value="DINAS PERHUBUNGAN">DINAS PERHUBUNGAN</option>
+                                    <option value="DPKP">DPKP</option>
+                                    <option value="TGC SELATAN">TGC SELATAN</option>
+                                    <option value="TGC TIMUR">TGC TIMUR</option>
+                                    <option value="TGC DUKUH PAKIS">TGC DUKUH PAKIS</option>
+                                    <option value="TGC KEDUNG COWEK">TGC KEDUNG COWEK</option>
+                                    <option value="TGC UTARA">TGC UTARA</option>
+                                    <option value="TGC BARAT">TGC BARAT</option>
+                                    <option value="TGC PUSAT">TGC PUSAT</option>
+                                    <option value="PMI">PMI</option>
+                                </select>
                             </div>
                         </div>
                     </div>
@@ -180,6 +194,13 @@
 
 
     <script>
+        $(document).ready(function() {
+            $('.js-example-basic-multiple').select2({
+                tags: true,
+                placeholder: "--- Pilih Petugas ---",
+                allowClear: true
+            });
+        });
         setupEventListenersInPartial();
 
         function setupEventListenersInPartial(){
@@ -206,8 +227,17 @@
             const idKejadian = document.getElementById('id_kejadian').value;
             const imageFile = document.getElementById('dokumentasi_orang_tenggelam').files[0];
 
+            const petugasMultiselect = document.getElementById('petugas_di_lokasi_orang_tenggelam');
+
+            // Mengambil semua opsi yang dipilih
+            const selectedOptions = petugasMultiselect.selectedOptions;
+
+            // Mengubah HTMLCollection dari selectedOptions menjadi Array dan mengambil nilai (value) dari setiap opsi
+            const selectedValues = Array.from(selectedOptions).map(option => option.value);
+            const selectedValuesString = selectedValues.join(', ');
             const formObject = {
                 id_kejadian: idKejadian,
+                petugas_di_lokasi_orang_tenggelam: selectedValuesString
             };
             alert(idKejadian);
             formData.forEach(function(value, key){
@@ -287,7 +317,7 @@
                 `;
                 document.getElementById('dataKejadianTableBody').appendChild(newRow);
 
-                form.reset();
+                resetForm(form);
 
                 document.getElementById('success-alert').textContent = 'Data berhasil disimpan';
                 document.getElementById('success-alert').style.display = 'block';
@@ -305,4 +335,14 @@
             document.getElementById('error-alert').style.display = 'block';
             document.getElementById('success-alert').style.display = 'none';
         }
+
+        function resetForm(form){
+        form.reset();
+        const multiselect = document.getElementById('petugas_di_lokasi_orang_tenggelam');
+        // Mengatur ulang multiselect dengan menghapus semua opsi yang terpilih
+        for (let option of multiselect.options) {
+            option.selected = false;
+        }
+        multiselect.dispatchEvent(new Event('change'));
+    }
     </script>
