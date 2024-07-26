@@ -165,6 +165,8 @@
                 }
                 ?>
 
+                
+
         <li class="nav-item nav-category">SINA SINI</li>
             <?php
             if ($this->session->userdata('username') == "dokumentasi_sinasini" || $this->session->userdata('role') == "1") { 
@@ -183,7 +185,7 @@
             }
             ?>
 
-            <li class="nav-item nav-category">MANAJEMEN KEBENCANAAN</li>
+            <li class="nav-item nav-category">(Bu Sarkona) MANAJEMEN KEBENCANAAN</li>
             <?php if ($this->session->userdata('username') == "data_kejadian" || $this->session->userdata('role') == "1") { ?>
                 <li class="nav-item <?php echo ($this->uri->segment(2) == 'data_kejadian') ? 'active' : ''; ?> mt-3">
                     <a href="<?= base_url('admin/data_kejadian') ?>" class="nav-link">
@@ -191,6 +193,7 @@
                         <span class="link-title">Data Kejadian</span>
                     </a>
                 </li>
+
             <?php } ?>
             <!-- End of New menu -->
             <li class="nav-item nav-category">PAK TIKSAN</li>
