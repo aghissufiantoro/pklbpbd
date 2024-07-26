@@ -272,7 +272,7 @@ formData.forEach(function(value, key){
   }
 
   function handleResponse(data, form) {
-    const baseUrl = 'http://localhost:80/bpbd';
+    const baseUrl = 'http://localhost:8033/bpbd';
     if (data.status === 'success') {
       const data1 = data.data;
       const newRow = document.createElement('tr');

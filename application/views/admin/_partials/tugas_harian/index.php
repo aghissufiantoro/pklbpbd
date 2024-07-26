@@ -31,7 +31,7 @@
                         <tbody>
                             <?php
                             $no = 1;
-                            $tugas_harian = $this->db->query("SELECT * FROM tugas_harian")->result();
+                            $tugas_harian = $this->db->query("SELECT * FROM tugas_harian ORDER BY tanggal DESC" )->result();
                             foreach ($tugas_harian as $tugas) {
                             ?>
                                 <tr>
