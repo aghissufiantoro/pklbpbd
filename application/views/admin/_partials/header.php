@@ -3,15 +3,41 @@
 	<a href="#" class="sidebar-toggler">
 		<i data-feather="menu"></i>
 	</a>
-	<div class="navbar-content">
-		<form class="search-form">
+		<!-- <form class="search-form">
 			<div class="input-group">
         <div class="input-group-text">
           <i data-feather="search"></i>
         </div>
 				<input type="text" class="form-control" id="navbarForm" placeholder="Search here...">
 			</div>
-		</form>
+		</form> -->
+  <div class="navbar-content d-flex justify-content-between w-100">
+    <div class="d-flex align-items-center">
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb mb-0">
+          <?php
+          // Get the current path
+          $path = $_SERVER['REQUEST_URI'];
+          $path_parts = explode('/', trim($path, '/'));
+
+          // Generate breadcrumb items
+          $breadcrumb = '';
+          $url = '';
+          foreach ($path_parts as $index => $part) {
+            $url .= '/' . $part;
+            if ($index == count($path_parts) - 1) {
+              // Last item, mark as active
+              $breadcrumb .= '<li class="breadcrumb-item active" aria-current="page">' . ucfirst($part) . '</li>';
+            } else {
+              // Other items, add link
+              $breadcrumb .= '<li class="breadcrumb-item"><a href="' . $url . '">' . ucfirst($part) . '</a></li>';
+            }
+          }
+          echo $breadcrumb;
+          ?>
+        </ol>
+      </nav>
+    </div>
 		<ul class="navbar-nav">
 			<li class="nav-item dropdown">
 				<a class="nav-link dropdown-toggle" href="#" id="languageDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
