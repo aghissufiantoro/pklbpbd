@@ -3,7 +3,7 @@
         <a href="#" class="sidebar-brand" style="font-size: 18px;">
             <span>BPBD </span>Kota Surabaya
         </a>
-        <div class="sidebar-toggler">
+        <div class="sidebar-toggler active">
             <span></span>
             <span></span>
             <span></span>

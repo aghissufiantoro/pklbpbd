@@ -14,31 +14,45 @@
   <div class="navbar-content d-flex justify-content-between w-100">
     <div class="d-flex align-items-center">
       <nav aria-label="breadcrumb">
-        <ol class="breadcrumb mb-0">
-          <?php
-          // Get the current path
-          $path = $_SERVER['REQUEST_URI'];
-          $path_parts = explode('/', trim($path, '/'));
+      <ol class="breadcrumb mb-0">
+        <?php 
+        // Get the current path
+        $path = $_SERVER['REQUEST_URI'];
 
-          // Generate breadcrumb items
-          $breadcrumb = '';
-          $url = '';
-          foreach ($path_parts as $index => $part) {
-            $url .= '/' . $part;
-            if ($index == count($path_parts) - 1) {
-              // Last item, mark as active
-              $breadcrumb .= '<li class="breadcrumb-item active" aria-current="page">' . ucfirst($part) . '</li>';
-            } else {
-              // Other items, add link
-              $breadcrumb .= '<li class="breadcrumb-item"><a href="' . $url . '">' . ucfirst($part) . '</a></li>';
-            }
+        // Define the base URL to be removed
+        $base_url = '/bpbd';
+
+        // Remove the base URL from the path
+        $path = str_replace($base_url, '', $path);
+
+        // Split the path into parts
+        $path_parts = explode('/', trim($path, '/'));
+
+        // Generate breadcrumb items
+        $breadcrumb = '';
+        $url = '/bpbd'; // Start with an empty URL
+        foreach ($path_parts as $index => $part) {
+          $url .= '/' . $part;
+          if ($index == count($path_parts) - 1) {
+            // Last item, mark as active
+            $breadcrumb .= '<li class="breadcrumb-item active" aria-current="page">' . ucfirst($part) . '</li>';
+          } else {
+            // Other items, add link
+            $breadcrumb .= '<li class="breadcrumb-item"><a href="' . $url . '">' . ucfirst($part) . '</a></li>';
           }
-          echo $breadcrumb;
-          ?>
-        </ol>
+        }
+        echo $breadcrumb;
+        ?>
+      </ol>
       </nav>
     </div>
 		<ul class="navbar-nav">
+      <!-- <li class="nav-item">
+          <form class="d-flex" role="search">
+            <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+            <button class="btn btn-outline-success" type="submit">Search</button>
+          </form>
+      </li> -->
 			<li class="nav-item dropdown">
 				<a class="nav-link dropdown-toggle" href="#" id="languageDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 					<i class="flag-icon flag-icon-id mt-1" title="us"></i> <span class="ms-1 me-1 d-none d-md-inline-block">Indonesia</span>
@@ -51,6 +65,7 @@
           <a href="javascript:;" class="dropdown-item py-2"><i class="flag-icon flag-icon-es" title="es" id="es"></i> <span class="ms-1"> Spanish </span></a>
 				</div> -->
       </li>
+      
 			<!-- <li class="nav-item dropdown">
 				<a class="nav-link dropdown-toggle" href="#" id="appsDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 					<i data-feather="grid"></i>
@@ -219,6 +234,7 @@
 					</div>
 				</div>
 			</li> -->
+      
 			<li class="nav-item dropdown">
 				<a class="nav-link dropdown-toggle" href="#" id="profileDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 					<img class="wd-30 ht-30 rounded-circle" src="<?= base_url('image/logo_bpbd.png') ?>" alt="Logo BPBD">
