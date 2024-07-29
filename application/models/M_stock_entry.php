@@ -8,8 +8,8 @@ class M_stock_entry extends CI_Model
 {
     return [
         [
-            'field' => 'nama_barang',
-            'label' => 'Nama Barang',
+            'field' => 'kode_barang',
+            'label' => 'kode Barang',
             'rules' => 'required'
         ],
         [
@@ -28,7 +28,8 @@ class M_stock_entry extends CI_Model
 
     public function getAll()
     {
-        return $this->db->get($this->_table)->result();
+        $this->db->order_by('tanggal_entry', 'ASC');
+    return $this->db->get($this->_table)->result();
     }
     
     public function getById($id)

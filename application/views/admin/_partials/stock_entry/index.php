@@ -26,7 +26,7 @@
                 <th width="40px">ID Transaksi</th>
                 <th width="40px">ID Kejadian</th>
                 <th width="50px">Tanggal</th>
-                <th width="90px">Kode Barang</th>
+                <th width="90px">Nama Barang</th>
                 <th width="30px">Status barang</th>
                 <th width="20px">Quantity Barang</th>
                 <th width="20px">Penerima Barang</th>
@@ -40,7 +40,10 @@
             <tbody>
               <?php
                 $no = 1;
-                $db_data_entry_sembako = $this->db->query("SELECT * FROM data_entry_sembako ORDER BY id_transaksi DESC")->result();
+                $db_data_entry_sembako = $this->db->query("SELECT des.*, dms.nama_barang 
+                      FROM data_entry_sembako des
+                      JOIN data_master_sembako dms ON des.kode_barang = dms.kode_barang
+                      ORDER BY des.tanggal_entry ASC")->result();
                 foreach (array_reverse($db_data_entry_sembako) as $res_data_entry_sembako)
                 {
                   ?>
@@ -49,7 +52,7 @@
                     <td><?= $res_data_entry_sembako -> id_transaksi?></td>
                     <td><?= $res_data_entry_sembako -> id_kejadian ?></td>
                     <td><?= date('d-m-Y', strtotime($res_data_entry_sembako->tanggal_entry)) ?></td>
-                    <td><?= $res_data_entry_sembako->kode_barang ?></td>
+                    <td><?= $res_data_entry_sembako->nama_barang ?></td>
                     <td><?= $res_data_entry_sembako->status_barang ?></td>
                     <td><?= $res_data_entry_sembako->qty_barang ?></td>
                     <td><?= $res_data_entry_sembako->penerima_barang ?></td>

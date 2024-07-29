@@ -85,7 +85,7 @@ class Stock_entry extends CI_Controller
     
         foreach ($input as $entry) {
             // Ensure required fields are set to avoid passing null to validation
-            $entry['nama_barang'] = $entry['id_barang'] ?? '';
+            $entry['kode_barang'] = $entry['id_barang'] ?? '';
             $entry['status_barang'] = $entry['statusBarang'] ?? '';
             $entry['qty_barang'] = $entry['qtyBarang'] ?? '';
     
@@ -121,7 +121,7 @@ class Stock_entry extends CI_Controller
                         }
                     }
                     
-                    $formatted_date = $entry['tanggalEntry'] ;
+                    $formatted_date = date('Y-m-d') ;
                     $new_transaction_id = $this->generateTransactionID($formatted_date);
     
                     // Save data with new transaction ID and id_kejadian
@@ -207,6 +207,9 @@ class Stock_entry extends CI_Controller
             $data_entry_sembako = $this->m_stock_entry;
             $validation = $this->form_validation;
             $validation->set_rules($data_entry_sembako->rules());
+
+           
+     
 
             if ($validation->run()) {
                 $kode_barang = $this->input->post('kode_barang');
