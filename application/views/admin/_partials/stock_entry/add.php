@@ -76,6 +76,7 @@
                   <input id="penerima_barang" class="form-control" name="penerima_barang" type="text" required>
                 </div>
             </div>
+
             <div class="col-md-2 d-flex align-items-end">
               <div class="mb-3">
               <label for="kecamatan">Kecamatan</label>

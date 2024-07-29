@@ -58,6 +58,7 @@ if ($db_data_kejadian) {
                                             <?php foreach (array_keys((array)$db_korban_kejadian[0]) as $column): ?>
                                                 <th><?= htmlspecialchars($column) ?></th>
                                             <?php endforeach; ?>
+                                            <th>Aksi</th>
                                         </tr>
                                     </thead>
                                     <tbody>
