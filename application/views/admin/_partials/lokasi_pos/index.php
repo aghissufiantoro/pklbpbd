@@ -36,18 +36,19 @@
             <tbody>
               <?php
                 $no = 1;
-                $db_lokasi_pos = $this->db->query("SELECT * FROM lokasi_pos ORDER BY date_created DESC")->result();
+
+                $db_lokasi_pos = $this->db->query("SELECT * FROM lokasi_pos order by date_created desc")->result();
                 foreach ($db_lokasi_pos as $res_lokasi_pos)
                 {
-                  $wilayah_id = $res_lokasi_pos->wilayah_id;
-                  // $keca = $res_lokasi_pos->kec_lokasi_pos;
-                  // $kelu = $res_lokasi_pos->kel_lokasi_pos;
+                  $keca = $res_lokasi_pos->kec_lokasi_pos;
+                  $kelu = $res_lokasi_pos->kel_lokasi_pos;
+
 
                   // $n3 = strlen($keca);
                   // $n4 = strlen($kelu);
 
-                  // $m3 = ($n3==2?5:($n3==5?8:13));
-                  // $m4 = ($n4==2?5:($n4==5?8:13));
+                  $m3 = ($n3==2?5:($n3==5?8:13));
+                  $m4 = ($n4==2?5:($n4==5?8:13));
                   $rsl_keca = $this->db->query("SELECT kecamatan FROM wilayah_2022")->row();
                   $rsl_kelu = $this->db->query("SELECT desa FROM wilayah_2022")->row();
 
