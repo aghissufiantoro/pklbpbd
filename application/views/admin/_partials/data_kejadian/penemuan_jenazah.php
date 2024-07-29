@@ -100,19 +100,19 @@
                             <div class="mb-3">
                                 <label for="petugas_di_lokasi_penemuan_jenazah" class="form-label">Petugas di Lokasi Penemuan Jenazah</label>
                                 <select class="js-example-basic-multiple form-select" id="petugas_di_lokasi_penemuan_jenazah" name="petugas_di_lokasi_penemuan_jenazah[]" data-width="100%" required multiple>
-                                <option value="">--- Pilih Lokasi Kejadian ---</option>
-                                <option value="BPBD">BPBD</option>
-                                <option value="SATPOL PP">SATPOL PP</option>
-                                <option value="DINAS PERHUBUNGAN">DINAS PERHUBUNGAN</option>
-                                <option value="DPKP">DPKP</option>
-                                <option value="TGC SELATAN">TGC SELATAN</option>
-                                <option value="TGC TIMUR">TGC TIMUR</option>
-                                <option value="TGC DUKUH PAKIS">TGC DUKUH PAKIS</option>
-                                <option value="TGC KEDUNG COWEK">TGC KEDUNG COWEK</option>
-                                <option value="TGC UTARA">TGC UTARA</option>
-                                <option value="TGC BARAT">TGC BARAT</option>
-                                <option value="TGC PUSAT">TGC PUSAT</option>
-                                <option value="PMI">PMI</option>
+                                    <option value="">--- Pilih Lokasi Kejadian ---</option>
+                                    <option value="BPBD">BPBD</option>
+                                    <option value="SATPOL PP">SATPOL PP</option>
+                                    <option value="DINAS PERHUBUNGAN">DINAS PERHUBUNGAN</option>
+                                    <option value="DPKP">DPKP</option>
+                                    <option value="TGC SELATAN">TGC SELATAN</option>
+                                    <option value="TGC TIMUR">TGC TIMUR</option>
+                                    <option value="TGC DUKUH PAKIS">TGC DUKUH PAKIS</option>
+                                    <option value="TGC KEDUNG COWEK">TGC KEDUNG COWEK</option>
+                                    <option value="TGC UTARA">TGC UTARA</option>
+                                    <option value="TGC BARAT">TGC BARAT</option>
+                                    <option value="TGC PUSAT">TGC PUSAT</option>
+                                    <option value="PMI">PMI</option>
                                 </select>
                             </div>
                         </div>
@@ -185,7 +185,6 @@
                 saveButtonPartial.addEventListener('click', function(event){
                     event.preventDefault();
                     handleSubmitAndRedirectInsidePartial();
-                    $('#petugas_di_lokasi_penemuan_jenazah').val(null).trigger('change');
                 });
             }
 
@@ -293,7 +292,7 @@
                 `;
                 document.getElementById('dataKejadianTableBody').appendChild(newRow);
 
-                form.reset();
+                resetForm(form);
 
                 document.getElementById('success-alert').textContent = 'Data berhasil disimpan';
                 document.getElementById('success-alert').style.display = 'block';
@@ -311,4 +310,14 @@
             document.getElementById('error-alert').style.display = 'block';
             document.getElementById('success-alert').style.display = 'none';
         }
+
+        function resetForm(form){
+        form.reset();
+        const multiselect = document.getElementById('petugas_di_lokasi_penemuan_jenazah');
+        // Mengatur ulang multiselect dengan menghapus semua opsi yang terpilih
+        for (let option of multiselect.options) {
+            option.selected = false;
+        }
+        multiselect.dispatchEvent(new Event('change'));
+    }
     </script>

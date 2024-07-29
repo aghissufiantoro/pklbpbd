@@ -73,7 +73,21 @@
                         <div class="col-md-12">
                             <div class="mb-3">
                                 <label for="petugas_di_lokasi_lain" class="form-label">Petugas di Lokasi Lain</label>
-                                <input id="petugas_di_lokasi_lain" class="form-control" name="petugas_di_lokasi_lain" type="text" required>
+                                <select class="js-example-basic-multiple form-select" id="petugas_di_lokasi_lain" name="petugas_di_lokasi_lain[]" data-width="100%" required multiple>
+                                    <option value="">--- Pilih Lokasi Kejadian ---</option>
+                                    <option value="BPBD">BPBD</option>
+                                    <option value="SATPOL PP">SATPOL PP</option>
+                                    <option value="DINAS PERHUBUNGAN">DINAS PERHUBUNGAN</option>
+                                    <option value="DPKP">DPKP</option>
+                                    <option value="TGC SELATAN">TGC SELATAN</option>
+                                    <option value="TGC TIMUR">TGC TIMUR</option>
+                                    <option value="TGC DUKUH PAKIS">TGC DUKUH PAKIS</option>
+                                    <option value="TGC KEDUNG COWEK">TGC KEDUNG COWEK</option>
+                                    <option value="TGC UTARA">TGC UTARA</option>
+                                    <option value="TGC BARAT">TGC BARAT</option>
+                                    <option value="TGC PUSAT">TGC PUSAT</option>
+                                    <option value="PMI">PMI</option>
+                                </select>
                             </div>
                         </div>
                     </div>
@@ -126,6 +140,44 @@
     </div>
 
     <script>
+        $(document).ready(function() {
+            $('.js-example-basic-multiple').select2({
+                tags: true,
+                placeholder: "--- Pilih Petugas ---",
+                allowClear: true
+            });
+            prefilledAlamat();
+        });
+
+        function prefilledAlamat(){
+            var alamatKejadianElem = $("#alamat_kejadian");
+            var alamatField = $("#Alamat");
+             
+            if (alamatKejadianElem.length && alamatField.length) {
+                var alamatKejadian = alamatKejadianElem.val();
+                console.log("Alamat Kejadian:", alamatKejadian);
+                console.log("Alamat Field:", alamatField);
+
+                if (alamatField.val() === '') {
+                    alamatField.val(alamatKejadian);
+                }
+
+                alamatField.focus(function() {
+                    if (alamatField.val() === alamatKejadian) {
+                        alamatField.val('');
+                    }
+                });
+
+                alamatField.blur(function() {
+                    if (alamatField.val() === '') {
+                        alamatField.val(alamatKejadian);
+                    }
+                });
+            } else {
+                console.log("Elemen alamat_kejadian atau Alamat tidak ditemukan.");
+            }
+        }
+
         setupEventListenersInPartial();
 
         function setupEventListenersInPartial(){
@@ -152,9 +204,19 @@
             const idKejadian = document.getElementById('id_kejadian').value;
             const imageFile = document.getElementById('dokumentasi_lain').files[0];
 
+            const petugasMultiselect = document.getElementById('petugas_di_lokasi_lain');
+
+            // Mengambil semua opsi yang dipilih
+            const selectedOptions = petugasMultiselect.selectedOptions;
+
+            // Mengubah HTMLCollection dari selectedOptions menjadi Array dan mengambil nilai (value) dari setiap opsi
+            const selectedValues = Array.from(selectedOptions).map(option => option.value);
+            const selectedValuesString = selectedValues.join(', ');
             const formObject = {
                 id_kejadian: idKejadian,
+                petugas_di_lokasi_lain: selectedValuesString
             };
+            
             alert(idKejadian);
             formData.forEach(function(value, key){
                 formObject[key] = value;
@@ -228,7 +290,7 @@
                 `;
                 document.getElementById('dataKejadianTableBody').appendChild(newRow);
 
-                form.reset();
+                resetForm(form);
 
                 document.getElementById('success-alert').textContent = 'Data berhasil disimpan';
                 document.getElementById('success-alert').style.display = 'block';
@@ -246,4 +308,15 @@
             document.getElementById('error-alert').style.display = 'block';
             document.getElementById('success-alert').style.display = 'none';
         }
+
+        function resetForm(form){
+        form.reset();
+        const multiselect = document.getElementById('petugas_di_lokasi_lainnya');
+        // Mengatur ulang multiselect dengan menghapus semua opsi yang terpilih
+        for (let option of multiselect.options) {
+            option.selected = false;
+        }
+        multiselect.dispatchEvent(new Event('change'));
+        prefilledAlamat();
+    }
     </script>

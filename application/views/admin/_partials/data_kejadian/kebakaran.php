@@ -139,7 +139,21 @@
                         <div class="col-md-12">
                             <div class="mb-3">
                                 <label for="Petugas di Lokasi" class="form-label">Petugas di Lokasi</label>
-                                <input id="Petugas di Lokasi" class="form-control" name="petugas_di_lokasi_kebakaran" type="text" required>
+                                <select class="js-example-basic-multiple form-select" id="petugas_di_lokasi_kebakaran" name="petugas_di_lokasi_kebakaran[]" data-width="100%" required multiple>
+                                    <option value="">--- Pilih Lokasi Kejadian ---</option>
+                                    <option value="BPBD">BPBD</option>
+                                    <option value="SATPOL PP">SATPOL PP</option>
+                                    <option value="DINAS PERHUBUNGAN">DINAS PERHUBUNGAN</option>
+                                    <option value="DPKP">DPKP</option>
+                                    <option value="TGC SELATAN">TGC SELATAN</option>
+                                    <option value="TGC TIMUR">TGC TIMUR</option>
+                                    <option value="TGC DUKUH PAKIS">TGC DUKUH PAKIS</option>
+                                    <option value="TGC KEDUNG COWEK">TGC KEDUNG COWEK</option>
+                                    <option value="TGC UTARA">TGC UTARA</option>
+                                    <option value="TGC BARAT">TGC BARAT</option>
+                                    <option value="TGC PUSAT">TGC PUSAT</option>
+                                    <option value="PMI">PMI</option>
+                                </select>
                             </div>
                         </div>
                     </div>
@@ -153,17 +167,9 @@
                         </div>
                     </div> 
                        
-<<<<<<< HEAD
-<<<<<<< HEAD
-                    <button class="btn btn-success" type="submit">Save</button>
-=======
                     <button id="saveButton" class="btn btn-success" type="submit">Save</button>
                     <button id="stopButton" class="btn btn-danger" type="button">Selesai</button>
->>>>>>> 1f0d5330506277d183445e7d76137c8e49d57f17
-=======
-                    <button id="saveButton" class="btn btn-success" type="submit">Save</button>
-                    <button id="stopButton" class="btn btn-danger" type="button">Selesai</button>
->>>>>>> 5abd3ececa7bc6163c1ebc4e122e31111e763e67
+
                 </form>
             </div>
         </div>
@@ -207,6 +213,45 @@
 
 
     <script>
+        $(document).ready(function() {
+            $('.js-example-basic-multiple').select2({
+                tags: true,
+                placeholder: "--- Pilih Petugas ---",
+                allowClear: true
+            });
+            
+            prefilledAlamat();
+        });
+
+        function prefilledAlamat(){
+            var alamatKejadianElem = $("#alamat_kejadian");
+            var alamatField = $("#Alamat");
+             
+            if (alamatKejadianElem.length && alamatField.length) {
+                var alamatKejadian = alamatKejadianElem.val();
+                console.log("Alamat Kejadian:", alamatKejadian);
+                console.log("Alamat Field:", alamatField);
+
+                if (alamatField.val() === '') {
+                    alamatField.val(alamatKejadian);
+                }
+
+                alamatField.focus(function() {
+                    if (alamatField.val() === alamatKejadian) {
+                        alamatField.val('');
+                    }
+                });
+
+                alamatField.blur(function() {
+                    if (alamatField.val() === '') {
+                        alamatField.val(alamatKejadian);
+                    }
+                });
+            } else {
+                console.log("Elemen alamat_kejadian atau Alamat tidak ditemukan.");
+            }
+        }
+
         setupEventListenersInPartial();
         function setupEventListenersInPartial() {
     const saveButtonPartial = document.getElementById('saveButton');
@@ -231,10 +276,17 @@ function handleSubmitAndRedirectInsidePartial() {
     const formData = new FormData(form);
     const idKejadian = document.getElementById('id_kejadian').value;
     const imageFile = document.getElementById('dokumentasi_kebakaran').files[0];
+    const petugasMultiselect = document.getElementById('petugas_di_lokasi_kebakaran');
 
-    // Buat objek untuk menyimpan data form
+            // Mengambil semua opsi yang dipilih
+    const selectedOptions = petugasMultiselect.selectedOptions;
+
+    // Mengubah HTMLCollection dari selectedOptions menjadi Array dan mengambil nilai (value) dari setiap opsi
+    const selectedValues = Array.from(selectedOptions).map(option => option.value);
+    const selectedValuesString = selectedValues.join(', ');
     const formObject = {
-        id_kejadian: idKejadian
+        id_kejadian: idKejadian,
+        petugas_di_lokasi_kebakaran: selectedValuesString
     };
 
     alert(idKejadian);
@@ -318,7 +370,7 @@ function handleResponse(data, form) {
         `;
         document.getElementById('dataKejadianTableBody').appendChild(newRow);
 
-        form.reset();
+        resetForm(form);
 
         document.getElementById('success-alert').textContent = 'Data berhasil disimpan';
         document.getElementById('success-alert').style.display = 'block';
@@ -337,5 +389,15 @@ function handleError(error) {
     document.getElementById('success-alert').style.display = 'none';
 }
 
+function resetForm(form){
+        form.reset();
+        const multiselect = document.getElementById('petugas_di_lokasi_kebakaran');
+        // Mengatur ulang multiselect dengan menghapus semua opsi yang terpilih
+        for (let option of multiselect.options) {
+            option.selected = false;
+        }
+        multiselect.dispatchEvent(new Event('change'));
+        prefilledAlamat();
+    }
 
     </script>
