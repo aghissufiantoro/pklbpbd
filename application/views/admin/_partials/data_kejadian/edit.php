@@ -39,7 +39,8 @@ if ($this->session->flashdata('success')) {
             <div class="col-md-3">
               <div class="mb-3">
                 <label class="form-label" for="kejadian">Kejadian</label>
-                <select class="form-select" id="kejadian" name="kejadian" data-width="100%">
+                <input readonly type="text" class="form-control" id="kejadian" name="kejadian" data-width="100%" value="<?php echo $data_kejadian->kejadian ?>"/>
+                <!-- <select readonly class="form-select" id="kejadian" name="kejadian" data-width="100%">
                   <option value="">--- Pilih Kejadian ---</option>
                   <option <?php if ($data_kejadian->kejadian == "Kecelakaan Lalu Lintas") {
                             echo "selected";
@@ -62,7 +63,7 @@ if ($this->session->flashdata('success')) {
                   <option <?php if ($data_kejadian->kejadian == "Lainnya") {
                             echo "selected";
                           } ?> value="Lainnya">Lainnya</option>
-                </select>
+                </select> -->
               </div>
             </div>
           </div>
@@ -174,7 +175,7 @@ if ($this->session->flashdata('success')) {
             </div>
           </div>
 
-          <div class="row">
+          <!-- <div class="row">
             <div class="col-md-15">
               <div class="mb-3">
                 <label for="petugas_lapangan" class="form-label">Petugas</label>
@@ -183,7 +184,7 @@ if ($this->session->flashdata('success')) {
                 <input id="petugas_lokasi" class="form-control" name="petugas_lokasi" type="text" value="<?= $data_kejadian->petugas_lokasi ?>">
               </div>
             </div>
-          </div>
+          </div> -->
 
           <img id="image-preview" src="<?php echo base_url($data_kejadian->dokumentasi)  ?>" class="img-fluid" alt="Descriptive alt text" />
 
@@ -192,11 +193,10 @@ if ($this->session->flashdata('success')) {
             <input id="dokumentasi" type="file" class="form-control"   name="dokumentasi" accept="image/*"/>
           </div>
 
-          <input type="submit" value="Submit" class="btn btn-primary" >
-          <a href="<?= base_url("admin/data_kejadian") ?>">
-            <button type="button" class="btn btn-outline-warning">Kembali</button>
-          </a>
-        
+          <div class="d-grid gap-2">
+            <button type="submit" class="btn btn-primary btn-block">Submit</button>
+            <a href="<?= base_url("admin/data_kejadian") ?>" class="btn btn-outline-warning btn-block">Kembali</a>
+          </div>
         </form>
       </div>
     </div>
@@ -384,6 +384,7 @@ if (window.addEventListener) {
                     .then(data => {
                       console.log(data)
                        alert('berhasil');
+                       window.location.reload(); 
                     })
                     .catch(error => {
                         console.error('Error:', error);
@@ -410,8 +411,7 @@ if (window.addEventListener) {
             })
             .then(response => response.text())
             .then(data => {
-               console.log(data)
-               alert('berhasil2')
+               
             })
             .catch(error => {
                 console.error('Error:', error);

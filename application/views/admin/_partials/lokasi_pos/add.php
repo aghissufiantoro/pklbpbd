@@ -31,30 +31,33 @@
                 <input id="nama_lokasi_pos" class="form-control" name="nama_lokasi_pos" type="text" autocomplete="off">
               </div>
               <div class="mb-3">
-                <label class="form-label" for="form_kab">Kota</label>
-                <select class="js-example-basic-single form-select" id="form_kab" name="kota_lokasi_pos" data-width="100%" required>
-                  <option value="">--- Pilih Kota ---</option>
+                <label class="form-label" for="form_kec">Kecamatan</label>
+                <select class="js-example-basic-single form-select" id="form_kec" name="kec_lokasi_pos" data-width="100%" required>
+                  <option value="">--- Pilih Kecamatan ---</option>
                   <?php
-                    $ql = $this->db->query('SELECT kode,nama FROM wilayah_2022 WHERE kode="35.78" ORDER BY nama')->result();
+                    $ql = $this->db->query('SELECT DISTINCT kecamatan FROM wilayah_2022')->result();
                     foreach ($ql as $qz)
                     {
                       ?>
-                      <option value="<?= $qz->kode ?>"><?= $qz->nama ?></option>
+                      <option value="<?= htmlspecialchars($qz->kecamatan) ?>"><?= htmlspecialchars($qz->kecamatan) ?></option>
                       <?php
                     }
                   ?>
                 </select>
               </div>
               <div class="mb-3">
-                <label class="form-label" for="form_kec">Kecamatan</label>
-                <select class="js-example-basic-single form-select" id="form_kec" name="kec_lokasi_pos" data-width="100%" required>
-                  <option value="">--- Pilih Kota Terlebih Dahulu ---</option>
-                </select>
-              </div>
-              <div class="mb-3">
                 <label class="form-label" for="form_des">Kelurahan / Desa</label>
                 <select class="js-example-basic-single form-select" id="form_des" name="kel_lokasi_pos" data-width="100%" required>
-                  <option value="">--- Pilih Kecamatan Terlebih Dahulu ---</option>
+                  <option value="">--- Pilih Kelurahan/Desa ---</option>
+                  <?php
+                    $ql = $this->db->query('SELECT DISTINCT desa FROM wilayah_2022')->result();
+                    foreach ($ql as $qz)
+                    {
+                      ?>
+                      <option value="<?= htmlspecialchars($qz->desa) ?>"><?= htmlspecialchars($qz->desa) ?></option>
+                      <?php
+                    }
+                  ?>
                 </select>
               </div>
               <div class="mb-3">

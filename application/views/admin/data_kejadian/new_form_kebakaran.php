@@ -1,19 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<?php $this->load->view("admin/_partials/head") ?>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
+<?php $this->load->view("admin/_partials/head") ?>
 </head>
 <body>
-	<div class="main-wrapper">
-
-		<?php $this->load->view("admin/_partials/sidebar") ?>
-	
-		<div class="page-wrapper">
-				
-			<!-- partial:../../partials/_navbar.html -->
-			<?php $this->load->view("admin/_partials/header") ?>
-			<!-- partial -->
-
 			<div class="page-content">
 
 				<?php $this->load->view("admin/_partials/data_kejadian/kebakaran") ?>
@@ -24,10 +15,8 @@
 			<?php $this->load->view("admin/_partials/footer") ?>
 			<!-- partial -->
 	
-		</div>
-	</div>
-
 	<?php $this->load->view("admin/_partials/js") ?>
-
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
 </body>
 </html>

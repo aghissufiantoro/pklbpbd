@@ -1,5 +1,7 @@
 <?php defined('BASEPATH') or exit('No direct script access allowed');
 
+#[\AllowDynamicProperties]
+
 class M_data_kejadian extends CI_Model
 {
     private $_table                  = "data_kejadian";
@@ -173,7 +175,6 @@ class M_data_kejadian extends CI_Model
         $this->alamat_kejadian          = $post['alamat_kejadian'];
         $this->kronologi                = $post['kronologi'];
         $this->tindak_lanjut            = $post['tindak_lanjut'];
-        $this->petugas_lokasi           = $post['petugas_lokasi'];
         $this->dokumentasi              = $post['image_url'];
 
         $this->db->insert($this->_table, $this);
@@ -298,7 +299,6 @@ class M_data_kejadian extends CI_Model
         $this->alamat_kejadian             = $post['alamat_kejadian'];
         $this->kronologi                = $post['kronologi'];
         $this->tindak_lanjut            = $post['tindak_lanjut'];
-        $this->petugas_lokasi            = $post['petugas_lokasi'];
         $this->dokumentasi              = $post['image_url'];
 
 

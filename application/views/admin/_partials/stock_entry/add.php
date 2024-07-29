@@ -76,6 +76,7 @@
                   <input id="penerima_barang" class="form-control" name="penerima_barang" type="text" required>
                 </div>
             </div>
+
             <div class="col-md-2 d-flex align-items-end">
               <div class="mb-3">
               <label for="kecamatan">Kecamatan</label>
@@ -93,6 +94,7 @@
             <div class="col-md-2 ">
               <div class="mb-3 ">
                 <label for="kelurahan">Desa</label>
+
                     <select class="form-control <?= form_error('kelurahan') ? 'is-invalid' : '' ?>" id="kelurahan" name="kelurahan" required>
                         <option value="">--- Pilih Desa ---</option>
                         <?php foreach ($kelurahan_options as $kelurahan): ?>
@@ -441,8 +443,6 @@ function contentChanged() {
 //     }
 // }
 
-
-</script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
 $(document).ready(function() {
@@ -463,4 +463,6 @@ $(document).ready(function() {
         });
     });
 });
+
 </script>
+

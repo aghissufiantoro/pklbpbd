@@ -20,7 +20,7 @@
                                 <th width="50px">Kode Barang</th>
                                 <th width="90px">Nama Barang</th>
                                 <th width="30px">Kategori Barang</th>
-                                <th width="20px">Unit Barang</th>
+                                <th width="20px">Satuan Barang</th>
                                 <th width="20px">Qty Masuk</th>
                                 <th width="20px">Qty Keluar</th>
                                 <th width="20px">Qty Rusak</th>
@@ -38,7 +38,7 @@
                                     <td><?= $res_stock->kode_barang ?></td>
                                     <td><?= $res_stock->nama_barang ?></td>
                                     <td><?= $res_stock->kategori_barang ?></td>
-                                    <td><?= $res_stock->unit_barang ?></td>
+                                    <td><?= $res_stock->satuan_barang ?></td>
                                     <td><?= $res_stock->qty_masuk ?></td>
                                     <td><?= $res_stock->qty_keluar ?></td>
                                     <td><?= $res_stock->qty_rusak ?></td>
