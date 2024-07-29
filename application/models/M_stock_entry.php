@@ -8,11 +8,6 @@ class M_stock_entry extends CI_Model
 {
     return [
         [
-            'field' => 'tanggal_entry',
-            'label' => 'Tanggal Entry',
-            'rules' => 'required'
-        ],
-        [
             'field' => 'nama_barang',
             'label' => 'Nama Barang',
             'rules' => 'required'
@@ -26,41 +21,6 @@ class M_stock_entry extends CI_Model
             'field' => 'qty_barang',
             'label' => 'Quantity Barang',
             'rules' => 'required|numeric'
-        ],
-        [
-            'field' => 'penerima_barang',
-            'label' => 'Penerima Barang',
-            'rules' => 'required'
-        ],
-        [
-            'field' => 'lokasi_diterima',
-            'label' => 'Lokasi Diterima',
-            'rules' => 'required'
-        ],
-        [
-            'field' => 'rt',
-            'label' => 'RT',
-            'rules' => 'required|numeric'
-        ],
-        [
-            'field' => 'rw',
-            'label' => 'RW',
-            'rules' => 'required|numeric'
-        ],
-        [
-            'field' => 'kelurahan',
-            'label' => 'Kelurahan',
-            'rules' => 'required'
-        ],
-        [
-            'field' => 'kecamatan',
-            'label' => 'Kecamatan',
-            'rules' => 'required'
-        ],
-        [
-            'field' => 'keterangan_barang',
-            'label' => 'Keterangan Barang',
-            'rules' => 'required'
         ]
     ];
 }
@@ -76,40 +36,23 @@ class M_stock_entry extends CI_Model
         return $this->db->get_where($this->_table, ["id_transaksi" => $id])->row();
     }
 
-    public function save($transaction_id, $id_kejadian)
-    {
-        $post = $this->input->post();
-    
-        $this->id_transaksi        = $transaction_id;
-        $this->tanggal_entry       = $post['tanggal_entry'];
-        $this->kode_barang         = $post['kode_barang'];
-        $this->status_barang       = $post['status_barang'];
-        $this->qty_barang          = $post['qty_barang'];
-        $this->penerima_barang     = $post['penerima_barang'];
-        $this->lokasi_diterima     = $post['lokasi_diterima'];
-        $this->rt                  = $post['rt'];
-        $this->rw                  = $post['rw'];
-        $this->kelurahan           = $post['kelurahan'];
-        $this->kecamatan           = $post['kecamatan'];
-        $this->keterangan_barang   = $post['keterangan_barang'];
-        $this->id_kejadian         = $id_kejadian; // Set id_kejadian
-        
-        $this->db->insert($this->_table, $this);
+    public function save($data)
+    {   
+        $this->db->insert($this->_table, $data);
     }  
+
 
     public function update()
     {
         $post = $this->input->post();
         $this->id_transaksi = $post["id_transaksi"];
         $this->id_kejadian = $post["id_kejadian"];
-        $this->tanggal_entry = $post["tanggal_entry"];
+        $this->tanggal_entry = date('Y-m-d');  // Set current date
         $this->kode_barang = $post["kode_barang"];
         $this->status_barang = $post["status_barang"];
         $this->qty_barang = $post["qty_barang"];
         $this->lokasi_diterima = $post["lokasi_diterima"];
         $this->penerima_barang = $post["penerima_barang"];
-        $this->rt = $post["rt"];
-        $this->rw = $post["rw"];
         $this->kelurahan = $post["kelurahan"];
         $this->kecamatan = $post["kecamatan"];
         $this->keterangan_barang = $post["keterangan_barang"];
@@ -242,3 +185,5 @@ public function get_desa_by_kecamatan($kecamatan)
 
 
 }
+
+?>

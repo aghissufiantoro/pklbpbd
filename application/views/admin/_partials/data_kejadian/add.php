@@ -164,8 +164,188 @@
   z-index: 1050;
 }
 
-#success-alert {
-  margin-bottom: 0; /* Remove bottom margin to prevent extra space */
+    document.getElementById('lokasi_kejadian').addEventListener('change', function() {
+        var wilayah = this.value;
+        selected = document.getElementById('select2-kecamatan_kejadian-container');
+        console.log(this.value)
+       
+        fetchOptions('kecamatan', wilayah, 'kecamatan_kejadian');
+    });
+
+   
+
+ 
+
+    // Function to fetch options dynamically based on selected value
+    function fetchOptions(dataType, wilayah, targetSelectId) {
+    fetch('<?= base_url('admin/data_kejadian/get_daerah') ?>', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        body: new URLSearchParams({
+            data: dataType,
+            wilayah: wilayah
+        })
+    })
+    .then(response => response.json())  // Parse JSON response
+    .then(data => {
+        console.log(data);
+        var targetSelect = document.getElementById(targetSelectId);
+        targetSelect.innerHTML = ''; // Clear existing options
+        var defaultOption = new Option(`--- Pilih ${capitalizeFirstLetter(dataType)} ---`, '');
+        targetSelect.appendChild(defaultOption); // Add default option
+        data.forEach(item => {
+            var option = new Option(item.label, item.value);
+            targetSelect.appendChild(option); // Add fetched options
+        });
+    })
+    .catch((error) => {
+        console.error('Error:', error);
+        alert('Terjadi kesalahan saat mengambil data.');
+    });
 }
 
-  </style>
+
+    // Function to capitalize the first letter of a string
+    function capitalizeFirstLetter(string) {
+        return string.charAt(0).toUpperCase() + string.slice(1);
+    }
+
+    // Set default value for kabkota_kejadian
+    document.getElementById('kabkota_kejadian').value = 'surabaya';
+
+    // Function to get selected value from Select2-like container
+    function getSelectedValueFromSelect2Container(select2ContainerId) {
+        var container = document.getElementById(select2ontainerId);
+        if (container) {
+            var selectedText = container.getAttribute('title') || container.textContent;
+            console.log('Selected value:', selectedText);
+            // Optionally, set this selected value to an input field or use it as needed
+            document.getElementById('selected_kecamatan_value').value = selectedText; // Example: Set to an input field
+        }
+    }
+
+    // Event listener for change on kecamatan_kejadian to get selected value
+    document.getElementById('kecamatan_kejadian').addEventListener('change', function() {
+        getSelectedValueFromSelect2Container('select2-kecamatan_kejadian-container');
+    });
+
+    // Trigger change event to initialize Select2-like behavior (if necessary)
+    var event = new Event('change');
+    document.getElementById('kabkota_kejadian').dispatchEvent(event);
+    
+    document.getElementById('addForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+
+        const form = e.target;
+        const formData = new FormData(form);
+
+        // Check if an image is selected
+        const imageFile = document.getElementById('dokumentasi').files[0];
+        if (imageFile) {
+            const imageFormData = new FormData();
+            imageFormData.append('image', imageFile);
+            
+            // Add case type to imageFormData
+            const caseType = '' // assuming kejadian is the case type selector
+            imageFormData.append('case', caseType);
+
+            // Upload the image first
+            fetch('<?= base_url('admin/data_kejadian/upload_image') ?>', {
+                method: 'POST',
+                body: imageFormData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    // Add the image URL to the form data
+                    formData.append('image_url', data.image_url);
+
+                    // Now submit the form with the image URL
+                    fetch(form.action, {
+                        method: 'POST',
+                        body: formData,
+                        headers: {
+                            'X-Requested-With': 'XMLHttpRequest'
+                        }
+                    })
+                    .then(response => response.text())
+                    .then(html => {
+                        const partialContainer = document.getElementById('partialContainer');
+                        partialContainer.innerHTML = html;
+
+                        // Execute any scripts in the newly added HTML
+                        const scripts = partialContainer.getElementsByTagName('script');
+                        for (let i = 0; i < scripts.length; i++) {
+                            const script = document.createElement('script');
+                            script.text = scripts[i].text;
+                            document.head.appendChild(script).parentNode.removeChild(script);
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        alert('Terjadi kesalahan saat mengirim data.');
+                    });
+                } else {
+                    alert('Gagal mengunggah gambar: ' + data.message);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Terjadi kesalahan saat mengunggah gambar.');
+            });
+        } else {
+            // If no image is selected, just submit the form data
+            fetch(form.action, {
+                method: 'POST',
+                body: formData,
+                headers: {                                                                                       
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
+            })
+            .then(response => response.text())
+            .then(html => {
+                const partialContainer = document.getElementById('partialContainer');
+                partialContainer.innerHTML = html;
+
+                // Execute any scripts in the newly added HTML
+                const scripts = partialContainer.getElementsByTagName('script');
+                for (let i = 0; i < scripts.length; i++) {
+                    const script = document.createElement('script');
+                    script.text = scripts[i].text;
+                    document.head.appendChild(script).parentNode.removeChild(script);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Terjadi kesalahan saat mengirim data.');
+            });
+        }
+    });
+
+});
+
+</script>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+$(document).ready(function() {
+    $('#kecamatan').change(function() {
+        var kecamatan = $(this).val();
+        $.ajax({
+            url: '<?= site_url('admin/stock_entry/get_kelurahan_by_kecamatan') ?>',
+            type: 'POST',
+            data: {kecamatan: kecamatan},
+            dataType: 'json',
+            success: function(data) {
+                $('#kelurahan').empty();
+                $('#kelurahan').append('<option value="">--- Pilih Desa ---</option>');
+                $.each(data, function(key, value) {
+                    $('#kelurahan').append('<option value="'+ value.desa +'">'+ value.desa +'</option>');
+                });
+            }
+        });
+    });
+});
+</script>
