@@ -78,21 +78,7 @@ if ($this->session->flashdata('success')) {
                 <input id="penerima_barang" class="form-control" name="penerima_barang" type="text" value="<?= $data_entry_sembako->penerima_barang ?>" required>
               </div>
             </div>
-          </div>
-
-          <div class="row">
-            <div class="col-md-3">
-              <div class="mb-3">
-                <label for="rt" class="form-label">RT</label>
-                <input id="rt" class="form-control" name="rt" type="text" value="<?= $data_entry_sembako->rt ?>" required>
-              </div>
-            </div>
-            <div class="col-md-3">
-              <div class="mb-3">
-                <label for="rw" class="form-label">RW</label>
-                <input id="rw" class="form-control" name="rw" type="text" value="<?= $data_entry_sembako->rw ?>" required>
-              </div>
-            </div>
+</div>
             <div class="col-md-3">
               <div class="mb-3">
                 <label for="kelurahan" class="form-label">Kelurahan</label>

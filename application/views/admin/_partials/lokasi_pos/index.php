@@ -54,11 +54,8 @@
                   $rsl_kelu = $this->db->query("SELECT desa FROM wilayah_2022")->row();
 
 
-                  $keca_kcl
-                  
-                  
-                  = strtolower($rsl_keca->kec_lokasi_pos);
-                  $kelu_kcl = strtolower($rsl_kelu->kel_lokasi_pos);
+                  $keca_kcl = strtolower($rsl_keca->kecamatan);
+                  $kelu_kcl = strtolower($rsl_kelu->desa);
 
                   $keca_new = ucwords($keca_kcl);
                   $kelu_new = ucwords($kelu_kcl);
