@@ -22,21 +22,45 @@ if ($this->session->flashdata('success')) {
           <div class="row">
             <div class="col-md-4">
               <div class="mb-3">
-                <label for="id_kejadian" class="form-label">ID Kejadian</label>
-                <input id="id_kejadian" class="form-control" name="id_kejadian" type="text" value="<?= $data_entry_sembako->id_kejadian ?>">
-              </div>
+                <label for="id_kejadian" >ID Kejadian</label>
+            <select  class="form-select" id="id_kejadian" name="id_kejadian" required>
+            <?php
+                  $ql = $this->db->query('SELECT id_kejadian, kejadian, alamat_kejadian FROM data_kejadian GROUP BY id_kejadian')->result();
+                  foreach ($ql as $qz) {
+                    if($qz-> id_kejadian == $data_entry_sembako->id_kejadian):
+                  ?>
+
+                    <option value="<?= $qz->id_kejadian ?>" selected><?= $qz->id_kejadian."-".$qz->kejadian."-".$qz->alamat_kejadian ?></option>
+                 
+                    <?php endif?>
+                    <option value="<?= $qz->id_kejadian ?>" ><?= $qz->id_kejadian."-".$qz->kejadian."-".$qz->alamat_kejadian ?></option>
+                
+                  <?php
+                  }
+                  ?>
+            </select>    
+            
+            </div>
             </div>
             <div class="col-md-4">
               <div class="mb-3">
                 <label for="tanggal_entry" class="form-label">Tanggal Entry</label>
-                <input id="tanggal_entry" class="form-control" name="tanggal_entry" type="date" value="<?= $data_entry_sembako->tanggal_entry ?>">
+                <input id="tanggal_entry" class="form-control" name="tanggal_entry" type="date" value="<?= date('Y-m-d') ?>">
               </div>
             </div>
             <div class="col-md-4">
               <div class="mb-3">
-                <label for="kode_barang" class="form-label">Kode Barang</label>
-                <input id="kode_barang" class="form-control" name="kode_barang" type="text" value="<?= $data_entry_sembako->kode_barang ?>">
-              </div>
+                <label for="kode_barang" class="form-label">Nama Barang</label>
+                <select class="form-select" id="kode_barang" name="kode_barang" required>
+                <?php
+                $arrayBarang = $this->db->query('SELECT kode_barang, nama_barang FROM data_master_sembako GROUP BY kode_barang')->result();
+                 foreach ($arrayBarang as $barang): 
+                  if($data_entry_sembako->kode_barang == $barang->kode_barang):?>
+                      <option value="<?= $barang->kode_barang ?>" selected><?= $barang->nama_barang ?></option>
+                  <?php endif ?>
+                  <option value="<?= $barang->kode_barang ?>"><?= $barang->nama_barang ?></option>
+                  <?php endforeach; ?></div>
+                  </select>
             </div>
           </div>
 
@@ -45,17 +69,21 @@ if ($this->session->flashdata('success')) {
               <div class="mb-3">
                 <label class="form-label" for="status_barang">Status Barang</label>
                 <select class="form-select" id="status_barang" name="status_barang" data-width="100%" required>
-                  <option value="">--- Pilih Status Barang ---</option>
-                  <option value="Masuk">Masuk</option>
-                  <option value="Keluar">Keluar</option>
-                  <option value="Rusak">Rusak</option>
-                  <option value="Tersedia">Tersedia</option>
-                </select>
+    <?php 
+    $arrayStatus = array('masuk', 'keluar', 'rusak');
+    foreach($arrayStatus as $status):
+        $selected = ($data_entry_sembako->status_barang == $status) ? 'selected' : '';
+    ?>
+        <option value="<?= $status ?>" <?= $selected ?>><?= $status ?></option>
+    <?php endforeach; ?>
+</select>
+
               </div>
             </div>
             <div class="col-md-6">
               <div class="mb-3">
                 <label for="qty_barang" class="form-label">Quantity Barang</label>
+                <i id="available-stock"></i>
                 <div class="input-group">
                   <button class="btn btn-outline-secondary" type="button" id="kurangBtn">-</button>
                   <input id="qty_barang" class="form-control" name="qty_barang" type="text" value="<?= $data_entry_sembako->qty_barang ?>" required>
@@ -79,31 +107,36 @@ if ($this->session->flashdata('success')) {
               </div>
             </div>
           </div>
-
-          <div class="row">
-            <div class="col-md-3">
-              <div class="mb-3">
-                <label for="rt" class="form-label">RT</label>
-                <input id="rt" class="form-control" name="rt" type="text" value="<?= $data_entry_sembako->rt ?>" required>
-              </div>
-            </div>
-            <div class="col-md-3">
-              <div class="mb-3">
-                <label for="rw" class="form-label">RW</label>
-                <input id="rw" class="form-control" name="rw" type="text" value="<?= $data_entry_sembako->rw ?>" required>
-              </div>
-            </div>
-            <div class="col-md-3">
-              <div class="mb-3">
-                <label for="kelurahan" class="form-label">Kelurahan</label>
-                <input id="kelurahan" class="form-control" name="kelurahan" type="text" value="<?= $data_entry_sembako->kelurahan ?>" required>
-              </div>
-            </div>
-            <div class="col-md-3">
+            <div class="col-md-6">
               <div class="mb-3">
                 <label for="kecamatan" class="form-label">Kecamatan</label>
-                <input id="kecamatan" class="form-control" name="kecamatan" type="text" value="<?= $data_entry_sembako->kecamatan ?>" required>
+            <select id="kecamatan" class="form-control" name="kecamatan"  required>
+                <?php
+                $arrayKecamatan = $this->db->query('SELECT kecamatan FROM wilayah_2022 GROUP BY kecamatan order by kecamatan asc')->result();
+                 foreach ($arrayKecamatan as $kecamatan): 
+                  if($data_entry_sembako->kecamatan == $kecamatan->kecamatan):?>
+                      <option value="<?= $kecamatan->kecamatan ?>" selected><?= $kecamatan->kecamatan ?></option>
+                  <?php endif ?>
+                  <option value="<?= $kecamatan->kecamatan ?>"><?= $kecamatan->kecamatan ?></option>
+                  <?php endforeach; ?></div>
+                  </select>
               </div>
+              <div class="col-md-3">
+              <div class="mb-3">
+              <label for="kelurahan" class="form-label">Kelurahan</label>
+            <select id="kelurahan" class="form-control" name="kelurahan"  required>
+                <?php
+                $arrayKelurahan = $this->db->query('SELECT desa FROM wilayah_2022 GROUP BY desa order by desa asc')->result();
+                 foreach ($arrayKelurahan as $kelurahan): 
+                  if($data_entry_sembako->kelurahan == $kelurahan->desa):?>
+                      <option value="<?= $kelurahan->desa ?>" selected><?= $kelurahan->desa ?></option>
+                  <?php endif ?>
+                  <option value="<?= $kelurahan->desa ?>"><?= $kelurahan->desa ?></option>
+                  <?php endforeach; ?></div>
+                  </select>
+                
+                </div>
+            </div>
             </div>
           </div>
           
@@ -124,54 +157,14 @@ if ($this->session->flashdata('success')) {
   </div>
 </div>
 
-<script>
-document.addEventListener("DOMContentLoaded", function() {
-  const tambahBtn = document.getElementById("tambahBtn");
-  const kurangBtn = document.getElementById("kurangBtn");
-  const jmlBrgInput = document.getElementById("qty_barang");
 
-  tambahBtn.addEventListener("click", function() {
-    incrementValue();
-  });
 
-  kurangBtn.addEventListener("click", function() {
-    decrementValue();
-  });
+<script src="<?php echo base_url() ?>/assets_admin/js/constant.js"></script>
+<script src="<?php echo base_url() ?>/assets_admin/js/stockEntryJs/tambahKurangBtn.js"></script>
+<script src="<?php echo base_url() ?>/assets_admin/js/stockEntryJs/fetchAvailableStock.js"></script>
 
-  function incrementValue() {
-    let currentValue = parseInt(jmlBrgInput.value);
-    if (!isNaN(currentValue)) {
-      jmlBrgInput.value = currentValue + 1;
-    } else {
-      jmlBrgInput.value = 1;
-    }
-  }
+<!-- fungsi jquery -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="<?php echo base_url() ?>/assets_admin/js/stockEntryJs/fetchDataKecamatanDesa.js"></script>
 
-  function decrementValue() {
-    let currentValue = parseInt(jmlBrgInput.value);
-    if (!isNaN(currentValue) && currentValue > 0) {
-      jmlBrgInput.value = currentValue - 1;
-    } else {
-      jmlBrgInput.value = 0;
-    }
-  }
 
-  // Memastikan input hanya menerima angka
-  jmlBrgInput.addEventListener("input", function() {
-    this.value = this.value.replace(/[^0-9]/g, '');
-  });
-});
-</script>
-
-<script>
-// Membuat event listener untuk input RT dan RW
-document.getElementById("rt").addEventListener("input", function(event) {
-  // Hapus karakter non-angka dari nilai input
-  this.value = this.value.replace(/\D/g, '');
-});
-
-document.getElementById("rw").addEventListener("input", function(event) {
-  // Hapus karakter non-angka dari nilai input
-  this.value = this.value.replace(/\D/g, '');
-});
-</script>

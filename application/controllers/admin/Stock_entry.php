@@ -54,45 +54,81 @@ class Stock_entry extends CI_Controller
     {
         if ($this->session->userdata('role') == "1") {
             $data_entry_sembako = $this->m_stock_entry;
-            $validation = $this->form_validation;
-            $validation->set_rules($data_entry_sembako->rules());
+
 
             // Fetch options for id_kejadian and nama_barang
             $data['kejadian_options'] = $this->m_stock_entry->getKejadianOptions();
             $data['barang_options'] = $this->m_stock_entry->getBarangOptions();
             $data['kecamatan_options'] = $this->m_stock_entry->get_all_kecamatan();
+            
 
+            $this->load->view("admin/stock_entry/new_form_stock", $data);
+        } else {
+            show_404();
+        }
+    }
+
+   
+
+    public function save_stock_entry(){
+        $this->load->model('m_stock_entry');
+        $this->load->library('form_validation');
+        
+        // Decode the JSON payload
+        $input = json_decode(trim(file_get_contents('php://input')), true);
+    
+        if (!is_array($input)) {
+            $response = ['status' => 'error', 'message' => 'Invalid input format. Expected an array.'];
+            echo json_encode($response);
+            return;
+        }
+    
+        foreach ($input as $entry) {
+            // Ensure required fields are set to avoid passing null to validation
+            $entry['kode_barang'] = $entry['id_barang'] ?? '';
+            $entry['status_barang'] = $entry['statusBarang'] ?? '';
+            $entry['qty_barang'] = $entry['qtyBarang'] ?? '';
+    
+            // Set validation rules for each entry
+            $this->form_validation->set_data($entry);
+            $validation = $this->form_validation;
+            $validation->set_rules($this->m_stock_entry->rules());
+    
+            // Run validation
             if ($validation->run()) {
-                $id_kejadian = $this->input->post('id_kejadian');
-                $nama_barang = $this->input->post('nama_barang');
-                $status_barang = $this->input->post('status_barang');
-                $qty_barang = $this->input->post('qty_barang');
-                $lokasi_diterima = $this->input->post('lokasi_diterima');
-                $penerima_barang = $this->input->post('penerima_barang');
-                $kecamatan = $this->input->post('kecamatan');
-                $kelurahan = $this->input->post('kelurahan');
-                $keterangan_barang = $this->input->post('keterangan_barang');
-
+                // Extract the input data
+                $id_kejadian = $entry['idKejadian'] ?? null;
+                $id_barang = $entry['id_barang'] ?? null;
+                $status_barang = $entry['statusBarang'] ?? null;
+                $qty_barang = $entry['qtyBarang'] ?? null;
+                $lokasi_diterima = $entry['lokasi_diterima'] ?? null;
+                $penerima_barang = $entry['penerima_barang'] ?? null;
+                $kecamatan = $entry['kecamatan'] ?? null;
+                $kelurahan = $entry['kelurahan'] ?? null;
+                $keterangan_barang = $entry['keteranganBarang'] ?? null;
+    
                 // Get the kode_barang based on nama_barang
-                $kode_barang = $this->m_stock_entry->getKodeBarangByName($nama_barang);
-
+                $kode_barang = $this->m_stock_entry->getKodeBarang($id_barang);
+    
                 if ($kode_barang) {
                     // Check stock availability for 'Keluar' status
                     if ($status_barang == 'Keluar') {
                         $available_stock = $this->m_stock_entry->getAvailableStock($kode_barang);
                         if ($available_stock < $qty_barang) {
-                            $this->session->set_flashdata('error', 'Jumlah barang yang tersedia tidak cukup.');
-                            redirect(site_url('admin/stock_entry/add'));
+                            $response = ['status' => 'error', 'message' => 'Jumlah barang yang tersedia tidak cukup.'];
+                            echo json_encode($response);
+                            return;
                         }
                     }
-
-                    $new_transaction_id = $this->generateTransactionID();
-
+                    
+                    $formatted_date = date('Y-m-d') ;
+                    $new_transaction_id = $this->generateTransactionID($formatted_date);
+    
                     // Save data with new transaction ID and id_kejadian
                     $data_to_save = [
                         'id_transaksi' => $new_transaction_id,
                         'id_kejadian' => $id_kejadian,
-                        'tanggal_entry' => date('Y-m-d'),  // Set current date
+                        'tanggal_entry' => $entry['tanggalEntry'] ?? date('Y-m-d'),  // Use provided date or current date
                         'kode_barang' => $kode_barang,
                         'status_barang' => $status_barang,
                         'qty_barang' => $qty_barang,
@@ -102,33 +138,50 @@ class Stock_entry extends CI_Controller
                         'kelurahan' => $kelurahan,
                         'keterangan_barang' => $keterangan_barang,
                     ];
-
-                    $data_entry_sembako->save($data_to_save);
-
+    
+                    $this->m_stock_entry->save($data_to_save);
+    
                     // Update data_stock_logistik based on status_barang
-                    if ($status_barang == 'Masuk') {
+                    if ($status_barang == 'masuk') {
                         $this->m_stock_entry->increase_stock($kode_barang, $qty_barang);
-                    } elseif ($status_barang == 'Keluar') {
+                    } elseif ($status_barang == 'keluar') {
                         $this->m_stock_entry->decrease_stock($kode_barang, $qty_barang);
-                    } elseif ($status_barang == 'Rusak') {
+                    } elseif ($status_barang == 'rusak') {
                         $this->m_stock_entry->mark_as_damaged($kode_barang, $qty_barang);
                     }
-                    $this->session->set_flashdata('success', '<i class="fa fa-check"></i> Alhamdulillah, Data berhasil disimpan');
-                    redirect(site_url('admin/stock_entry/add'));
+    
+                    $response = ['status' => 'success', 'message' => 'Data berhasil disimpan.'];
                 } else {
-                    $this->session->set_flashdata('error', 'Kode Barang tidak ditemukan.');
+                    $response = ['status' => 'error', 'message' => 'Kode Barang tidak ditemukan.'];
                 }
+            } else {
+                $response = ['status' => 'error', 'message' => validation_errors()];
             }
-
-            $this->load->view("admin/stock_entry/new_form_stock", $data);
-        } else {
-            show_404();
+    
+            echo json_encode($response);
         }
     }
+    
+    
+
+    public function checkStock() {
+        $kode_barang = $this->input->post('kode_barang'); // Corrected syntax
+        $response = [];
+    
+        if ($kode_barang) {
+            // Check stock availability for 'Keluar' status
+            $available_stock = $this->m_stock_entry->getAvailableStock($kode_barang);
+            $response = ['available_stock' => $available_stock];
+        }
+    
+        echo json_encode($response);
+    }
+    
 
     public function get_filtered_id(){
         $data = $this->input->post('data');
     $value_search = $this->input->post('search');
+    $value_search2 = $this->input->post('search2');
     $response = [];
 
     if ($data == "tanggal") {
@@ -137,7 +190,7 @@ class Stock_entry extends CI_Controller
             $response[] = ['value' => $d->kejadian, 'label' => $d->kejadian];
         }
     }else if ($data == "kejadian") {
-        $id_kejadian = $this->db->query("SELECT id_kejadian, kejadian, alamat_kejadian FROM data_kejadian where kejadian=? GROUP BY id_kejadian order by id_kejadian", [$value_search])->result();
+        $id_kejadian = $this->db->query("SELECT id_kejadian, kejadian, alamat_kejadian FROM data_kejadian where kejadian=? and tanggal=? GROUP BY id_kejadian order by id_kejadian", [$value_search,$value_search2])->result();
         foreach ($id_kejadian as $d) {
             $response[] = ['value' => $d->id_kejadian, 'label' => $d->id_kejadian."-".$d->kejadian."-".$d->alamat_kejadian];
         }
@@ -154,6 +207,9 @@ class Stock_entry extends CI_Controller
             $data_entry_sembako = $this->m_stock_entry;
             $validation = $this->form_validation;
             $validation->set_rules($data_entry_sembako->rules());
+
+           
+     
 
             if ($validation->run()) {
                 $kode_barang = $this->input->post('kode_barang');
