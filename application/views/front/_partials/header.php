@@ -27,11 +27,15 @@
              <!-- <a href="<?= base_url('view/rpjmd') ?>" <?php if ($this->uri->segment(2) == "rpjmd") {echo 'class="dropdown-item active"';} else {echo 'class="dropdown-item"';} ?>>RPJMD</a> 
               <a href="<?= base_url('view/renstra') ?>" <?php if ($this->uri->segment(2) == "renstra") {echo 'class="dropdown-item active"';} else {echo 'class="dropdown-item"';} ?>>Renstra</a> -->
                 <a href="<?= base_url('view/perpus_artikel') ?>" <?php if ($this->uri->segment(2) == "perpus_artikel") {echo 'class="dropdown-item active"';} else {echo 'class="dropdown-item"';} ?>>Artikel</a>
-                <a href="<?= base_url('view/dokumentasi') ?>" <?php if ($this->uri->segment(2) == "dokumentasi") {echo 'class="dropdown-item active"';} else {echo 'class="dropdown-item"';} ?>>Dokumentasi</a>
+                <a href="<?= base_url('view/dokumentasi') ?>" <?php if ($this->uri->segment(2) == "dokumentasi") {echo 'class="dropdown-item active"';} else {echo 'class="dropdown-item"';} ?>>Dokumentasi Sosialisasi Mitigasi Bencana</a>
+                <a href="<?= base_url('view/edukasi_kebencanaan') ?>" <?php if ($this->uri->segment(2) == "edukasi_kebencanaan") {echo 'class="dropdown-item active"';} else {echo 'class="dropdown-item"';} ?>>Edukasi Bencana Usia Dini</a>
                 <a href="<?= base_url('view/dok_pb') ?>" <?php if ($this->uri->segment(2) == "dok_pb") {echo 'class="dropdown-item active"';} else {echo 'class="dropdown-item"';} ?>>Dok. Penanggulangan Bencana</a>
                 <a href="<?= base_url('view/laporan') ?>" <?php if ($this->uri->segment(2) == "laporan") {echo 'class="dropdown-item active"';} else {echo 'class="dropdown-item"';} ?>>Laporan</a>
                 <a href="<?= base_url('view/hukum_kebencanaan') ?>" <?php if ($this->uri->segment(2) == "hukum_kebencanaan") {echo 'class="dropdown-item active"';} else {echo 'class="dropdown-item"';} ?>>Peraturan Perundangan</a>
+<<<<<<< HEAD
                 <a href="<?= base_url('view/edukasi_kebencanaan') ?>" <?php if ($this->uri->segment(2) == "edukasi_kebencanaan") {echo 'class="dropdown-item active"';} else {echo 'class="dropdown-item"';} ?>>Edukasi Kebencanaan</a>
+=======
+>>>>>>> aghis-contact_update
             </div>
           </div>
           <!-- <div class="nav-item dropdown">
