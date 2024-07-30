@@ -21,11 +21,11 @@
             <div class="col-md-6">
 
                 <div class="mb-3">
-                    <label for="nama_staff" class="form-label">Nama Staff</label>
+                    <label for="nama_staff" class="form-label">Nama</label>
                     <select class="form-select select2" id="nama_staff" name="nama_staff" required>
-                        <option value="">--- Pilih Nama Staff ---</option>
+                        <option value="">--- Pilih Nama ---</option>
                         <?php foreach ($staff_options as $staff): ?>
-                            <option value="<?= $staff->nama_kontak_opd ?>"><?= $staff->nama_kontak_opd ?></option>
+                            <option value="<?= $staff->nama_staff ?>"><?= $staff->nama_staff ?></option>
                         <?php endforeach; ?>
                     </select>
                 </div>
@@ -93,8 +93,8 @@ document.getElementById('nama_staff').addEventListener('change', function() {
     var selectedNamaStaff = this.value;
     
     // Assuming you have a map of nama_staff to id_kontak_opd
-    var staffMap = <?php echo json_encode(array_column($staff_options, 'id_kontak_opd', 'nama_staff')); ?>;
-    document.getElementById('id_kontak_opd').value = staffMap[selectedNamaStaff] || '';
+    var staffMap = <?php echo json_encode(array_column($staff_options, 'id_staff', 'nama_staff')); ?>;
+    document.getElementById('id_staff').value = staffMap[selectedNamaStaff] || '';
 });
 </script>
 <!-- jQuery (required by Select2) -->
@@ -104,7 +104,7 @@ document.getElementById('nama_staff').addEventListener('change', function() {
 <script>
     $(document).ready(function() {
         $('.select2').select2({
-            placeholder: "--- Pilih Nama Staff ---",
+            placeholder: "--- Pilih Nama ---",
             allowClear: true
         });
     });

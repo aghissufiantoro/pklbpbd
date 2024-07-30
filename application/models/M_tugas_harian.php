@@ -165,7 +165,7 @@ class M_tugas_harian extends CI_Model
 
     public function get_all_staff() {
         // Fungsi untuk mendapatkan semua staff
-        $query = $this->db->get('kontak_opd');
+        $query = $this->db->get('daftar_nama');
         return $query->result();
     }
 }

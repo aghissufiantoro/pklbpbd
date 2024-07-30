@@ -11,7 +11,7 @@
                                 <th width="20px">No</th>
                                 <th width="20px">ID Penugasan</th>
                                 <th width="30px">ID Kegiatan</th>
-                                <th width="30px">ID Petugas</th>
+                                <th width="30px">Nama Petugas</th>
                                 <th width="20px">Lokasi Kegiatan</th>
                                 <th width="20px">Tanggal</th>
                                 <th width="20px">Shift</th>

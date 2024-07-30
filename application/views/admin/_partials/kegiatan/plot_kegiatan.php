@@ -9,43 +9,56 @@
     </div>
     <?php endif; ?>
 
-    <?php if($this->session->flashdata('error')): ?>
-        <div class="alert alert-danger" id="error-alert">
-            <?php echo $this->session->flashdata('error'); ?>
-        </div>
-    <?php endif; ?>
-
         <div class="row">
             <div class="col-md-6">
 
                 <div class="mb-3">
-                    <label for="tanggal">Tanggal</label>
+                    <label for="tanggal" class="form-label">Tanggal</label>
                     <input type="date" class="form-control" name="tanggal" required>
                 </div>
 
                 <div class="mb-3">
-                    <label for="shift">Shift</label>
-                    <input type="text" class="form-control" name="shift" required>
+                    <label for="shift" class="form-label">Shift</label>
+                    <select class="form-select" required name="shift" autocomplete="off" id="shift">
+                        <option value="">--- Pilih Salah Satu ---</option>
+                        <option value="Pagi">Pagi</option>
+                        <option value="Malam">Malam</option>
+                    </select>
                 </div>
 
                 <div class="mb-3">
-                    <label for="kegiatan">Kegiatan</label>
+                    <label for="kegiatan" class="form-label">Kegiatan</label>
                     <select class="form-control" name="kegiatan" id="kegiatan" onchange="updateLokasiOptions()" required>
-                        <option value="">Pilih Kegiatan</option>
+                        <option value="">--- Pilih Kegiatan ---</option>
                         <option value="Pos Pantau">Pos Pantau</option>
                         <option value="Gudang Peralatan">Gudang Peralatan</option>
                         <option value="Posko Terpadu">Posko Terpadu</option>
                         <option value="Resepsionis">Resepsionis</option>
                         <option value="Siaga Mako">Siaga Mako</option>
                         <option value="Posko PMI">Posko PMI</option>
-                        <option value="Lain-Lain">Lain-Lain</option>
+                        <option value="Lain-lain">Lain-lain</option>
                     </select>
+                </div>
+
+                <div class="mb-3" id="lain_lain_input" style="display: none;">
+                    <label class="form-label">Kegiatan (Lain-lain)</label>
+                    <input type="text" class="form-control" name="kegiatan_lain" id="kegiatan_lain" autocomplete="off" placeholder="Isi kegiatan lain">
                 </div>
 
                 <div class="mb-3">
                     <label for="lokasi_kegiatan" class="form-label">Lokasi Kegiatan</label>
                     <select class="form-control" name="lokasi_kegiatan" id="lokasi_kegiatan" required>
-                        <option value="">Pilih Lokasi</option>
+                        <option value="">--- Pilih Lokasi ---</option>
+                    </select>
+                </div>
+
+                <div class="mb-3">
+                    <label for="jenis_kompi" class="form-label">Jenis Kompi</label>
+                    <select class="form-control" name="jenis_kompi" id="jenis_kompi" required>
+                        <option value="">--- Pilih Jenis Kompi ---</option>
+                        <option value="DANKI A - YUDA WIDAS P">DANKI A - YUDA WIDAS P</option>
+                        <option value="DANKI B - EKO SUPRIYANTO">DANKI B - EKO SUPRIYANTO</option>
+                        <option value="DANKI C - MOCHAMAD CHAIRUL TAKWOLO">DANKI C - MOCHAMAD CHAIRUL TAKWOLO</option>
                     </select>
                 </div>
 
@@ -55,8 +68,9 @@
 
                 <div class="mb-3">
                     <label for="jumlah_personel" class="form-label">Jumlah Personel</label>
-                    <input type="number" class="form-control" name="jumlah_personel" required>
+                    <input type="number" class="form-control" name="jumlah_personel" id="jumlah_personel" required>
                 </div>
+                <div class="mb-3" id="petugas-container"></div>
 
                 <div class="mb-3">
                     <label for="jumlah_jarko" class="form-label">Jumlah Jarko</label>
@@ -64,8 +78,18 @@
                 </div>
 
                 <div class="mb-3">
-                    <label for="keterangan" class="form-label">Keterangan</label>
-                    <input type="text" class="form-control" name="keterangan" required>
+                    <label for="uraian_kegiatan" class="form-label">Uraian Kegiatan</label>
+                    <textarea class="form-control" name="uraian_kegiatan" autocomplete="off"></textarea>
+                </div>
+
+                <div class="mb-3">
+                    <label for="no_wa" class="form-label">No WA</label>
+                    <input type="number" class="form-control" name="no_wa" id="no_wa" required>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Dokumentasi</label>
+                    <input type="file" class="form-control" id="dokumentasi" name="dokumentasi[]" accept="image/*" multiple />
                 </div>
             </div>
         </div>
@@ -89,7 +113,7 @@
         "Resepsionis": ["Mako BPBD"],
         "Siaga Mako": ["Mako BPBD"],
         "Posko PMI": ["Jl Sumatera"],
-        "Lain-Lain": ["isi manual"]
+        "Lain-lain": ["isi manual"]
     };
 
     function updateLokasiOptions() {
@@ -108,7 +132,7 @@
                 lokasiSelect.appendChild(option);
             });
 
-            if (selectedKegiatan === 'Lain-Lain') {
+            if (selectedKegiatan === 'Lain-lain') {
                 const input = document.createElement('input');
                 input.type = 'text';
                 input.className = 'form-control';
@@ -143,4 +167,67 @@
             errorAlert.style.display = 'none';
         }
     }, 5000);
+</script>
+<script>
+    document.getElementById('kegiatan').addEventListener('change', function() {
+        var lainLainInput = document.getElementById('lain_lain_input');
+        if (this.value === 'Lain-lain') {
+            lainLainInput.style.display = 'block';
+        } else {
+            lainLainInput.style.display = 'none';
+        }
+    });
+</script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+    function loadPetugasOptions(jenisKompi, jumlahPersonel) {
+    if (jenisKompi && jumlahPersonel > 0) {
+        $.ajax({
+            url: "<?php echo base_url('admin/kegiatan/get_personel_by_kompi/'); ?>" + jenisKompi,
+            method: 'GET',
+            success: function(data) {
+                try {
+                    var petugasData = JSON.parse(data);
+                    console.log("Received data:", petugasData);
+                    $('#petugas-container').empty();
+                    for (var i = 0; i < jumlahPersonel; i++) {
+                        var select = $('<select class="form-control" name="petugas[]" required></select>');
+                        select.append('<option value="">--- Pilih Petugas ---</option>');
+                        $.each(petugasData, function(index, petugas) {
+                            var option = $('<option></option>').attr('value', petugas.id_petugas).text(petugas.nama_petugas);
+                            select.append(option);
+                        });
+                        $('#petugas-container').append('<div class="form-group"><label>Petugas ' + (i + 1) + '</label>' + select.prop('outerHTML') + '</div>');
+                    }
+                } catch (e) {
+                    console.error("Error parsing JSON:", e);
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error("Failed to load petugas data:", error);
+            }
+        });
+    } else {
+        $('#petugas-container').empty();
+    }
+}
+
+
+    $(document).ready(function() {
+        $('#jenis_kompi').change(function() {
+            var jenisKompi = $(this).val();
+            var jumlahPersonel = $('#jumlah_personel').val();
+            loadPetugasOptions(jenisKompi, jumlahPersonel);
+        });
+
+        $('#jumlah_personel').change(function() {
+            var jumlahPersonel = $(this).val();
+            var jenisKompi = $('#jenis_kompi').val();
+            loadPetugasOptions(jenisKompi, jumlahPersonel);
+        });
+
+        var initialKompi = $('#jenis_kompi').val();
+        var initialJumlah = $('#jumlah_personel').val();
+        loadPetugasOptions(initialKompi, initialJumlah);
+    });
 </script>

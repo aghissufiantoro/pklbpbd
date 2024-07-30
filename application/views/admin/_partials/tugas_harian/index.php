@@ -17,7 +17,7 @@
                             <tr>
                                 <th width="20px">No</th>
                                 <th width="20px">ID Tugas Harian</th>
-                                <th width="20px">Nama Staff</th>
+                                <th width="20px">Nama</th>
                                 <th width="30px">Tanggal</th>
                                 <th width="20px">Waktu</th>
                                 <th width="20px">Lokasi</th>

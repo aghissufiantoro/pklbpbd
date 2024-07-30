@@ -47,13 +47,16 @@ class Kegiatan extends CI_Controller {
             $this->load->view('admin/kegiatan/plot_kegiatan', $data);
         } else {
             // Collect form data
-            $tanggal = $this->input->post('tanggal');
-            $shift = $this->input->post('shift');
-            $kegiatan = $this->input->post('kegiatan');
-            $lokasi_kegiatan = $this->input->post('lokasi_kegiatan');
-            $jumlah_personel = $this->input->post('jumlah_personel');
-            $jumlah_jarko = $this->input->post('jumlah_jarko');
-            $keterangan = $this->input->post('keterangan');
+            $tanggal            = $this->input->post('tanggal');
+            $shift              = $this->input->post('shift');
+            $kegiatan           = $this->input->post('kegiatan');
+            if ($kegiatan       === 'Lain-lain') {
+                $kegiatan       = $this->input->post['kegiatan_lain'];
+            }
+            $lokasi_kegiatan    = $this->input->post('lokasi_kegiatan');
+            $jumlah_personel    = $this->input->post('jumlah_personel');
+            $jumlah_jarko       = $this->input->post('jumlah_jarko');
+            $keterangan         = $this->input->post('keterangan');
 
             // Insert into tabel_kegiatan
             $kegiatan_data = array(
