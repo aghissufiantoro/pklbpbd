@@ -38,33 +38,37 @@ class M_lokasi_pos extends CI_Model
     {
         $post = $this->input->post();
 
-        $this->nama_lokasi_pos      = $post['nama_lokasi_pos'];
-        $this->lat_lokasi_pos       = $post['lat_lokasi_pos'];
-        $this->lon_lokasi_pos       = $post['lon_lokasi_pos'];
-        $this->kec_lokasi_pos       = $post['kec_lokasi_pos'];
-        $this->kel_lokasi_pos       = $post['kel_lokasi_pos'];
-        $this->alamat_lokasi_pos    = $post['alamat_lokasi_pos'];
-        $this->ket_lokasi_pos       = $post['ket_lokasi_pos'];
-        $this->date_created         = date('Y-m-d H:i:s');
+        $this->nama_lokasi_pos = $post['nama_lokasi_pos'];
+        $this->lat_lokasi_pos = $post['lat_lokasi_pos'];
+        $this->lon_lokasi_pos = $post['lon_lokasi_pos'];
+        $this->kec_lokasi_pos = $post['kecamatan'];
+        $this->kel_lokasi_pos = $post['desa'];
+        $this->kecamatan = $post['kecamatan'];
+        $this->desa = $post['desa'];
+        $this->alamat_lokasi_pos = $post['alamat_lokasi_pos'];
+        $this->ket_lokasi_pos = $post['ket_lokasi_pos'];
+        $this->date_created = date('Y-m-d H:i:s');
 
         $this->db->insert($this->_table, $this);
-    }    
+    }
 
-    public function update()
+
+    public function update($id)
     {
         $post = $this->input->post();
 
         $this->nama_lokasi_pos      = $post['nama_lokasi_pos'];
         $this->lat_lokasi_pos       = $post['lat_lokasi_pos'];
         $this->lon_lokasi_pos       = $post['lon_lokasi_pos'];
-        $this->kec_lokasi_pos       = $post['kec_lokasi_pos'];
-        $this->kel_lokasi_pos       = $post['kel_lokasi_pos'];
+        $this->kec_lokasi_pos       = $post['kecamatan'];
+        $this->kel_lokasi_pos       = $post['desa'];
         $this->alamat_lokasi_pos    = $post['alamat_lokasi_pos'];
         $this->ket_lokasi_pos       = $post['ket_lokasi_pos'];
         $this->date_updated         = date('Y-m-d H:i:s');
 
-        $this->db->update($this->_table, $this, array('id_lokasi_pos' => $post['id_lokasi_pos']));
+        $this->db->update($this->_table, $this, array('id_lokasi_pos' => $id));
     }
+
 
     public function delete($id)
     {
@@ -112,4 +116,14 @@ class M_lokasi_pos extends CI_Model
             return array_map('unlink', glob(FCPATH."upload/pos_pantau/$filename.*"));
         }
     }
+
+    public function getDesaByKecamatan($kecamatan)
+    {
+        $this->db->select('desa');
+        $this->db->from('wilayah_2022');
+        $this->db->where('kecamatan', $kecamatan);
+        $query = $this->db->get();
+        return $query->result_array();
+    }
+
 }
