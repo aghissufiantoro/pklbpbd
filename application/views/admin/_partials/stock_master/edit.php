@@ -33,8 +33,8 @@
             </div>
             <div class="col-md-12">
               <div class="mb-3">
-                <label for="unit_barang" class="form-label">Unit Barang</label>
-                <input id="unit_barang" class="form-control" name="unit_barang" type="text" value="<?= $db_stock->unit_barang ?>">
+                <label for="satuan_barang" class="form-label">Satuan Barang</label>
+                <input id="satuan_barang" class="form-control" name="satuan_barang" type="text" value="<?= $db_stock->satuan_barang ?>">
               </div>
             </div>
             <div class="col-md-12">

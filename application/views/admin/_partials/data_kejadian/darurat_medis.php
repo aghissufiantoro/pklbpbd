@@ -156,7 +156,39 @@
                 placeholder: "--- Pilih Petugas ---",
                 allowClear: true
             });
+
+            prefilledAlamat();
+
         });
+
+        function prefilledAlamat(){
+            var alamatKejadianElem = $("#alamat_kejadian");
+            var alamatField = $("#Alamat");
+             
+            if (alamatKejadianElem.length && alamatField.length) {
+                var alamatKejadian = alamatKejadianElem.val();
+                console.log("Alamat Kejadian:", alamatKejadian);
+                console.log("Alamat Field:", alamatField);
+
+                if (alamatField.val() === '') {
+                    alamatField.val(alamatKejadian);
+                }
+
+                alamatField.focus(function() {
+                    if (alamatField.val() === alamatKejadian) {
+                        alamatField.val('');
+                    }
+                });
+
+                alamatField.blur(function() {
+                    if (alamatField.val() === '') {
+                        alamatField.val(alamatKejadian);
+                    }
+                });
+            } else {
+                console.log("Elemen alamat_kejadian atau Alamat tidak ditemukan.");
+            }
+        }
 
         setupEventListenersInPartial();
        function handleSubmitAndRedirectInsidePartial() {
@@ -236,22 +268,22 @@ const baseUrl = 'http://localhost:80/bpbd'
         const data1 = data.data;
         const newRow = document.createElement('tr');
         newRow.innerHTML = `
-    <td>${data1.nama}</td>
-    <td>${data1.jenis_kelamin}</td>
-    <td>${data1.alamat}</td>
-    <td>${data1.usia}</td>
-    <td>${data1.kondisi}</td>
-    <td>${data1.riwayat_penyakit}</td>
-    <td>${data1.kronologi_darurat_medis}</td>
-    <td>${data1.tindak_lanjut_darurat_medis}</td>
-    <td>${data1.petugas_di_lokasi_darurat_medis}</td>
+        <td>${data1.nama}</td>
+        <td>${data1.jenis_kelamin}</td>
+        <td>${data1.alamat}</td>
+        <td>${data1.usia}</td>
+        <td>${data1.kondisi}</td>
+        <td>${data1.riwayat_penyakit}</td>
+        <td>${data1.kronologi_darurat_medis}</td>
+        <td>${data1.tindak_lanjut_darurat_medis}</td>
+        <td>${data1.petugas_di_lokasi_darurat_medis}</td>
     
     <td><img src="${baseUrl + data1.dokumentasi_darurat_medis}" alt="dokumentasi" width="100"></td>
                     
 `;
         document.getElementById('dataKejadianTableBody').appendChild(newRow);
 
-        form.reset();
+        resetForm(form);
 
         document.getElementById('success-alert').textContent = 'Data berhasil disimpan';
         document.getElementById('success-alert').style.display = 'block';
@@ -292,6 +324,17 @@ function handleError(error) {
                 window.location.href = '<?php echo site_url('admin/data_kejadian'); ?>';
             });
         }
+    }
+
+    function resetForm(form){
+        form.reset();
+        const multiselect = document.getElementById('petugas_di_lokasi_darurat_medis');
+        // Mengatur ulang multiselect dengan menghapus semua opsi yang terpilih
+        for (let option of multiselect.options) {
+            option.selected = false;
+        }
+        multiselect.dispatchEvent(new Event('change'));
+        prefilledAlamat();
     }
     </script>
 </body>
