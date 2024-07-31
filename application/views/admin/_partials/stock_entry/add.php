@@ -377,7 +377,7 @@ function contentChanged() {
         })
         .then(response => response.json())
         .then(data => {
-           
+            console.log(data);
             var targetSelect = document.getElementById(targetSelectId);
             targetSelect.innerHTML = '';
             var defaultOption = new Option(`--- Pilih ---`, '');

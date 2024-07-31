@@ -88,7 +88,21 @@
                             <div class="col-md-12">
                                 <div class="mb-3">
                                     <label for="Petugas Di Lokasi Darurat Medis" class="form-label">Petugas Di Lokasi Darurat Medis</label>
-                                    <input id="Petugas Di Lokasi Darurat Medis" class="form-control" name="petugas_di_lokasi_darurat_medis" type="text">
+                                    <select class="js-example-basic-multiple form-select" id="petugas_di_lokasi_darurat_medis" name="petugas_di_lokasi_darurat_medis[]" data-width="100%" required multiple>
+                                        <option value="">--- Pilih Lokasi Kejadian ---</option>
+                                        <option value="BPBD">BPBD</option>
+                                        <option value="SATPOL PP">SATPOL PP</option>
+                                        <option value="DINAS PERHUBUNGAN">DINAS PERHUBUNGAN</option>
+                                        <option value="DPKP">DPKP</option>
+                                        <option value="TGC SELATAN">TGC SELATAN</option>
+                                        <option value="TGC TIMUR">TGC TIMUR</option>
+                                        <option value="TGC DUKUH PAKIS">TGC DUKUH PAKIS</option>
+                                        <option value="TGC KEDUNG COWEK">TGC KEDUNG COWEK</option>
+                                        <option value="TGC UTARA">TGC UTARA</option>
+                                        <option value="TGC BARAT">TGC BARAT</option>
+                                        <option value="TGC PUSAT">TGC PUSAT</option>
+                                        <option value="PMI">PMI</option>
+                                    </select>
                                 </div>
                             </div>
                         </div>
@@ -119,6 +133,10 @@
                                     <th>Usia</th>
                                     <th>Kondisi</th>
                                     <th>Riwayat Penyakit</th>
+                                    <th>Kronologi Darurat Medis</th>
+                                    <th>Tindak Lanjut Darurat Medis</th>
+                                    <th>Petugas Di Lokasi Darurat Medis</th>
+                                    <th>Dokumentasi Darurat Medis</th>
                                 </tr>
                             </thead>
                             <tbody id="dataKejadianTableBody">
@@ -132,15 +150,27 @@
     </div>
 
     <script>
+        $(document).ready(function() {
+            $('.js-example-basic-multiple').select2({
+                tags: true,
+                placeholder: "--- Pilih Petugas ---",
+                allowClear: true
+            });
+        });
+
         setupEventListenersInPartial();
        function handleSubmitAndRedirectInsidePartial() {
     const form = document.getElementById('addForm1');
     const formData = new FormData(form);
     const idKejadian = document.getElementById('id_kejadian').value;
     const imageFile = document.getElementById('dokumentasi_darurat_medis').files[0];
-
+    const petugasMultiselect = document.getElementById('petugas_di_lokasi_darurat_medis');
+    const selectedOptions = petugasMultiselect.selectedOptions;
+    const selectedValues = Array.from(selectedOptions).map(option => option.value);
+    const selectedValuesString = selectedValues.join(', ');
     const formObject = {
-        id_kejadian: idKejadian
+        id_kejadian: idKejadian,
+        petugas_di_lokasi_darurat_medis: selectedValuesString
     };
 
     formData.forEach((value, key) => {
@@ -181,7 +211,8 @@
         })
         .catch(error => {
             console.error('Error:', error);
-            alert('Terjadi kesalahan saat mengunggah gambar.');
+            
+            alert(error);
         });
     } else {
         fetch(form.action, {
@@ -200,17 +231,24 @@
 }
 
 function handleResponse(data, form) {
+const baseUrl = 'http://localhost:80/bpbd'
     if (data.status === 'success') {
         const data1 = data.data;
         const newRow = document.createElement('tr');
         newRow.innerHTML = `
-            <td>${data1.nama}</td>
-            <td>${data1.jenis_kelamin}</td>
-            <td>${data1.alamat}</td>
-            <td>${data1.usia}</td>
-            <td>${data1.kondisi}</td>
-            <td>${data1.riwayat_penyakit}</td>
-        `;
+    <td>${data1.nama}</td>
+    <td>${data1.jenis_kelamin}</td>
+    <td>${data1.alamat}</td>
+    <td>${data1.usia}</td>
+    <td>${data1.kondisi}</td>
+    <td>${data1.riwayat_penyakit}</td>
+    <td>${data1.kronologi_darurat_medis}</td>
+    <td>${data1.tindak_lanjut_darurat_medis}</td>
+    <td>${data1.petugas_di_lokasi_darurat_medis}</td>
+    
+    <td><img src="${baseUrl + data1.dokumentasi_darurat_medis}" alt="dokumentasi" width="100"></td>
+                    
+`;
         document.getElementById('dataKejadianTableBody').appendChild(newRow);
 
         form.reset();

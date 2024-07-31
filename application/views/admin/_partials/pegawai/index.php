@@ -28,7 +28,7 @@
                 <th width="30px">Profil</th>
                 <th width="20px">Tempat tanggal lahir</th>
                 <th width="20px">Pangkat, Golongan dan Eselon</th>
-                <th width="20px"> </th>
+                <th width="20px">Aksi</th>
               </tr>
             </thead>
             <tbody>

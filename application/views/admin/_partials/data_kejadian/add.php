@@ -362,24 +362,4 @@ if (window.addEventListener) {
 
 </script>
 
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script>
-$(document).ready(function() {
-    $('#kecamatan').change(function() {
-        var kecamatan = $(this).val();
-        $.ajax({
-            url: '<?= site_url('admin/stock_entry/get_kelurahan_by_kecamatan') ?>',
-            type: 'POST',
-            data: {kecamatan: kecamatan},
-            dataType: 'json',
-            success: function(data) {
-                $('#kelurahan').empty();
-                $('#kelurahan').append('<option value="">--- Pilih Desa ---</option>');
-                $.each(data, function(key, value) {
-                    $('#kelurahan').append('<option value="'+ value.desa +'">'+ value.desa +'</option>');
-                });
-            }
-        });
-    });
-});
-</script>
+

@@ -6,9 +6,4 @@
 # Datasource local storage ignored files
 /dataSources/
 /dataSources.local.xml
-<<<<<<< HEAD
-/application/config/config.php
-
-=======
 /system
->>>>>>> f218fcbea406e81719a78991a23c71b738805fe4
