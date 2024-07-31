@@ -66,6 +66,7 @@ class M_stock_entry extends CI_Model
     {
         return $this->db->delete($this->_table, array("id_transaksi" => $id));
     }
+    
     public function getLastTransactionID($formatted_date) {
         // Query to fetch the last transaction ID for the given date
         $this->db->select('id_transaksi');
