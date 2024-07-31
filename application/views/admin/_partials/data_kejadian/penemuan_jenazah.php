@@ -185,7 +185,6 @@
                 saveButtonPartial.addEventListener('click', function(event){
                     event.preventDefault();
                     handleSubmitAndRedirectInsidePartial();
-                    $('#petugas_di_lokasi_penemuan_jenazah').val(null).trigger('change');
                 });
             }
 
@@ -293,7 +292,7 @@
                 `;
                 document.getElementById('dataKejadianTableBody').appendChild(newRow);
 
-                form.reset();
+                resetForm(form);
 
                 document.getElementById('success-alert').textContent = 'Data berhasil disimpan';
                 document.getElementById('success-alert').style.display = 'block';
@@ -311,4 +310,14 @@
             document.getElementById('error-alert').style.display = 'block';
             document.getElementById('success-alert').style.display = 'none';
         }
+
+        function resetForm(form){
+        form.reset();
+        const multiselect = document.getElementById('petugas_di_lokasi_penemuan_jenazah');
+        // Mengatur ulang multiselect dengan menghapus semua opsi yang terpilih
+        for (let option of multiselect.options) {
+            option.selected = false;
+        }
+        multiselect.dispatchEvent(new Event('change'));
+    }
     </script>
