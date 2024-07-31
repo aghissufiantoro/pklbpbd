@@ -139,12 +139,14 @@
             <div class="col-md-2">
               <div class="mb-3">
                 <label for="qty_barang" class="form-label">Quantity Barang</label>
-                <i id='available-stock'></i>
                 <div class="input-group">
                   <button class="btn btn-outline-secondary" type="button" id="kurangBtn">-</button>
                   <input id="qty_barang" class="form-control" name="qty_barang" type="text" value="1" required>
                   <button class="btn btn-outline-secondary" type="button" id="tambahBtn">+</button>
                 </div>
+              </div>
+              <div class="mb-3">
+              <i id='available-stock'></i>
               </div>
             </div>
           </div>  
