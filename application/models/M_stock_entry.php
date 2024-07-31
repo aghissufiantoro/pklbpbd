@@ -8,8 +8,8 @@ class M_stock_entry extends CI_Model
 {
     return [
         [
-            'field' => 'nama_barang',
-            'label' => 'Nama Barang',
+            'field' => 'kode_barang',
+            'label' => 'kode Barang',
             'rules' => 'required'
         ],
         [
@@ -28,7 +28,8 @@ class M_stock_entry extends CI_Model
 
     public function getAll()
     {
-        return $this->db->get($this->_table)->result();
+        $this->db->order_by('tanggal_entry', 'ASC');
+    return $this->db->get($this->_table)->result();
     }
     
     public function getById($id)
@@ -65,6 +66,7 @@ class M_stock_entry extends CI_Model
     {
         return $this->db->delete($this->_table, array("id_transaksi" => $id));
     }
+    
     public function getLastTransactionID($formatted_date) {
         // Query to fetch the last transaction ID for the given date
         $this->db->select('id_transaksi');
@@ -148,6 +150,14 @@ public function getBarangOptions() {
 public function getKodeBarangByName($nama_barang)
 {
     $query = $this->db->get_where('data_master_sembako', ['nama_barang' => $nama_barang]);
+    if ($query->num_rows() > 0) {
+        return $query->row()->kode_barang;
+    }
+    return null;
+}
+public function getKodeBarang($kode_barang)
+{
+    $query = $this->db->get_where('data_master_sembako', ['kode_barang' => $kode_barang]);
     if ($query->num_rows() > 0) {
         return $query->row()->kode_barang;
     }
