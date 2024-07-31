@@ -69,119 +69,101 @@
 <div class="container-xxl pt-5">
     <div class="container" style="max-width: 1200px;">
         <div class="text-center text-md-start pb-5 pb-md-0 wow fadeInUp" data-wow-delay="0.1s" style="max-width: 500px;">
-            <p class="fs-5 fw-medium text-primary">REKAP</p>
-            <h1 class="display-5 mb-5">GRAFIK KEJADIAN TAHUN 2024</h1>
+          <h1 class="display-5">AGENDA KEGIATAN</h1>
+          <p class="fs-5 fw-medium text-primary mb-5">BPBD KOTA SURABAYA</p>    
         </div>
-        <form method="GET" action="<?= base_url('view/index') ?>">
-            <div class="row mb-4">
-                <div class="col-md-4">
-                    <input type="date" name="start_date" class="form-control" value="<?= htmlspecialchars($this->input->get('start_date') ?? '') ?>" />
-                </div>
-                <div class="col-md-4">
-                    <input type="date" name="end_date" class="form-control" value="<?= htmlspecialchars($this->input->get('end_date') ?? '') ?>" />
-                </div>
-                <div class="col-md-4">
-                    <button type="submit" class="btn btn-primary">Filter</button>
-                </div>
-            </div>
-        </form>
-        <div class="row">
-            <div class="col-md-6">
-                <div class="project-item mb-5">
-                    <h3 class="text-center mt-3">JENIS KEJADIAN</h3>
-                    <div class="position-relative d-flex align-items-center">
-                        <canvas id="Chart-kejadian" style="max-width: 100%; height: auto;"></canvas>
+        <div class="table-responsive">
+          <table id="dataTableExample" class="table">
+            <thead>
+                <tr>
+                    <th width="20px">No</th>
+                    <th width="30px">Tanggal</th>
+                    <th width="20px">Waktu</th>
+                    <th width="20px">Lokasi</th>
+                    <th width="20px">Uraian Kegiatan</th>
+                    <th width="30px">Bidang</th>
+                    <th width="20px">Hasil Kegiatan</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php
+                $no = 1;
+                $tugas_harian = $this->db->query("SELECT * FROM tugas_harian ORDER BY tanggal DESC")->result();
+                foreach ($tugas_harian as $tugas) {
+                    $images = json_decode($tugas->hasil_kegiatan);
+                ?>
+                    <tr>
+                        <td><?= $no++ ?></td>
+                        <td><?= $tugas->tanggal; ?></td>
+                        <td><?= $tugas->waktu; ?></td>
+                        <td><?= $tugas->lokasi; ?></td>
+                        <td><?= $tugas->uraian_kegiatan; ?></td>
+                        <td><?= $tugas->bidang; ?></td>
+                        <td>
+                            <?php
+                            if (!empty($images)) {
+                                if (is_array($images)) {
+                                    foreach ($images as $image) {
+                            ?>
+                                        <a href="#" data-bs-target="#view_images-<?= $tugas->id_tugas_harian ?>" data-bs-toggle="modal">
+                                            <img src="<?= base_url('upload/tugas_harian/' . $image) ?>" class="img-thumbnail" width="150">
+                                        </a>
+                            <?php
+                                    }
+                                } else {
+                            ?>
+                                    <a href="#" data-bs-target="#view_images-<?= $tugas->id_tugas_harian ?>" data-bs-toggle="modal">
+                                        <img src="<?= base_url('upload/tugas_harian/' . $tugas->hasil_kegiatan) ?>" class="img-thumbnail" width="150" alt="Hasil Kegiatan">
+                                    </a>
+                            <?php
+                                }
+                            }
+                            ?>
+                        </td>
+                    </tr>
+                    <?php if (!empty($images)) { ?>
+                    <div class="modal fade" id="view_images-<?= $tugas->id_tugas_harian ?>" data-bs-backdrop="static" data-bs-keyboard="false" aria-hidden="true" aria-labelledby="exampleModalToggleLabel2" tabindex="-1">
+                        <div class="modal-dialog modal-xl">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalToggleLabel2">Hasil Kegiatan</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="row">
+                                        <?php
+                                        if (is_array($images)) {
+                                            foreach ($images as $image) {
+                                        ?>
+                                                <div class="col-md-4 mb-3">
+                                                    <img src="<?= base_url('upload/tugas_harian/' . $image) ?>" class="img-fluid" alt="Hasil Kegiatan">
+                                                </div>
+                                        <?php
+                                            }
+                                        } else {
+                                        ?>
+                                            <div class="col-md-4 mb-3">
+                                                <img src="<?= base_url('upload/tugas_harian/' . $tugas->hasil_kegiatan) ?>" class="img-fluid" alt="Hasil Kegiatan">
+                                            </div>
+                                        <?php
+                                        }
+                                        ?>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button class="btn btn-primary" data-bs-dismiss="modal">
+                                        Kembali
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="project-item mb-5">
-                    <h3 class="text-center mt-3">SEBARAN LOKASI KEJADIAN</h3>
-                    <div class="position-relative d-flex align-items-center">
-                        <canvas id="Chart-lokasi" style="max-width: 100%; height: auto;"></canvas>
-                    </div>
-                </div>
-            </div>
-        </div>
+                    <?php } ?>
+                <?php
+                }
+                ?>
+            </tbody>
+          </table>
+        </div>        
     </div>
 </div>
-
-<script>
-    // Encode PHP arrays to JSON
-    var chartDataKejadian = <?= json_encode($chartDataKejadianfront, JSON_HEX_TAG) ?>;
-    var chartDataLokasi = <?= json_encode($chartDataLokasifront, JSON_HEX_TAG) ?>;
-
-    // Log the chart data for debugging
-    console.log('Chart Data Kejadian:', chartDataKejadian);
-    console.log('Chart Data Lokasi:', chartDataLokasi);
-
-    // Check if the data is not empty before proceeding
-    if (chartDataKejadian.length > 0) {
-        var labelsKejadian = chartDataKejadian.map(function(item) {
-            return item.kejadian;
-        });
-        var dataKejadian = chartDataKejadian.map(function(item) {
-            return item.jumlah_kejadian;
-        });
-    } else {
-        var labelsKejadian = [];
-        var dataKejadian = [];
-    }
-
-    if (chartDataLokasi.length > 0) {
-        var labelsLokasi = chartDataLokasi.map(function(item) {
-            return item.lokasi_kejadian;
-        });
-        var dataLokasi = chartDataLokasi.map(function(item) {
-            return item.jumlah_kejadian;
-        });
-    } else {
-        var labelsLokasi = [];
-        var dataLokasi = [];
-    }
-
-    const jenisKejadianColors = ['#FF6384', '#36A2EB', '#FFCE56', '#8E44AD', '#3498DB', '#F39C12', '#2ECC71', '#E74C3C', '#9B59B6', '#1ABC9C', '#F1C40F', '#D35400'];
-    const lokasiKejadianColors = ['#1ABC9C', '#9B59B6', '#E74C3C', '#2ECC71', '#F1C40F'];
-
-    const ctxKejadian = document.getElementById('Chart-kejadian').getContext('2d');
-    new Chart(ctxKejadian, {
-        type: 'pie',
-        data: {
-            labels: labelsKejadian,
-            datasets: [{
-                label: 'Jumlah Kejadian',
-                data: dataKejadian,
-                backgroundColor: jenisKejadianColors,
-                borderWidth: 1
-            }]
-        },
-        options: {
-            scales: {
-                y: {
-                    beginAtZero: true
-                }
-            }
-        }
-    });
-
-    const ctxLokasi = document.getElementById('Chart-lokasi').getContext('2d');
-    new Chart(ctxLokasi, {
-        type: 'pie',
-        data: {
-            labels: labelsLokasi,
-            datasets: [{
-                label: 'Jumlah Kejadian',
-                data: dataLokasi,
-                backgroundColor: lokasiKejadianColors,
-                borderWidth: 1
-            }]
-        },
-        options: {
-            scales: {
-                y: {
-                    beginAtZero: true
-                }
-            }
-        }
-    });
-</script>
