@@ -230,7 +230,15 @@ formData.forEach(function(value, key){
         method: 'POST',
         body: imageFormData
       })
-      .then(response => response.json())
+      .then(response => {
+    return response.json().catch(() => {
+      // If parsing as JSON fails, parse as text
+      return response.text().then(text => {
+        console.error('Failed to parse JSON, response as text:', text);
+        throw new Error('Response is not valid JSON');
+      });
+    })
+  })
       .then(data=> {
         if (data.status === 'success'){
           formObject.dokumentasi_laka = data.image_url;

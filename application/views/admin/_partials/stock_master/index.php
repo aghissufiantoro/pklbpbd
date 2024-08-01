@@ -38,7 +38,7 @@
                                     <td><?= $res_stock->kode_barang ?></td>
                                     <td><?= $res_stock->nama_barang ?></td>
                                     <td><?= $res_stock->kategori_barang ?></td>
-                                    <td><?= $res_stock->satuan_barang ?></td>
+                                    <td><?= $res_stock->unit_barang ?></td>
                                     <td><?= $res_stock->qty_masuk ?></td>
                                     <td><?= $res_stock->qty_keluar ?></td>
                                     <td><?= $res_stock->qty_rusak ?></td>
