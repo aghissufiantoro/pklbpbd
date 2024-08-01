@@ -30,62 +30,15 @@ const fetchStockOnChange = () =>{
             console.log(data);
             available_stock_global = data.available_stock;
             var targetSelect = document.getElementById('available-stock');
-            var statusBarang = document.getElementById('status_barang')
             targetSelect.innerHTML = '';
             var qtyBarang = document.getElementById('qty_barang')
            
             targetSelect.innerHTML = data.available_stock > 0 ? `stock tersedia : ${data.available_stock}` : 'stock kosong';
-        
+            
             if(data.available_stock > 0){
               qtyBarang.value = 1
-              const status = [
-              {
-                label:'--- Pilih Status Barang ---',
-                value:''
-              },
-              {
-                label:'masuk',
-                value:'masuk'
-              },
-              {
-                label:'keluar',
-                value:'keluar'
-              },
-              {
-                label:'rusak',
-                value:'rusak'
-              },
-              {
-                label:'tersedia',
-                value:'tersedia'
-              }
-            ]
-              statusBarang.innerHTML = ''
-        
-              status.forEach(item => {
-                      var option = new Option(item.label, item.value);
-                      statusBarang.appendChild(option);
-                  });
-        
-        
             }else{
               qtyBarang.value = 0
-              const status = [
-              {
-                label:'--- Pilih Status Barang ---',
-                value:''
-              },
-              {
-                label:'masuk',
-                value:'masuk'
-              },
-            ]
-              statusBarang.innerHTML = ''
-        
-              status.forEach(item => {
-                      var option = new Option(item.label, item.value);
-                      statusBarang.appendChild(option);
-                  });
         
             }
         

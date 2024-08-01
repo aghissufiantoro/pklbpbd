@@ -126,7 +126,7 @@
             <div class="col-md-4">
               <div class="mb-3">
                 
-                <input type="hidden"  id="status_barang" name="status_barang" data-width="100%" required value="Keluar">
+                <input type="hidden"  id="status_barang" name="status_barang" data-width="100%" required value="keluar">
               </div>
             </div>
 

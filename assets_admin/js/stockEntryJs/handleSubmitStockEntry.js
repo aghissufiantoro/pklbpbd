@@ -10,7 +10,6 @@ const clearAllForm = () =>{
           'kelurahan',
           'penerima_barang',
           'kode_barang',
-          'status_barang',
           'qty_barang',
           'keterangan_barang'
       ];
@@ -19,7 +18,10 @@ const clearAllForm = () =>{
       fields.forEach(function(fieldId) {
           document.getElementById(fieldId).value = '';
       });
-      document.getElementById('tabelBarangSementara').innerHTML = ''
+       const defaultContentTable = '<tr class="odd"><td valign="top" colspan="4" class="dataTables_empty" style="white-space: initial;">No data available in table</td></tr>'
+       document.getElementById('available-stock').innerText = ''
+       document.getElementById('tabelBarangSementara').innerHTML = defaultContentTable
+     
   }
   
   const kejadian = document.getElementById('kejadian');
@@ -44,42 +46,17 @@ const clearAllForm = () =>{
         },
         body: JSON.stringify(arrayBarangSementara)
       })
-      .then(response => response.text())
+      .then(response => response.json())
       .then(data => {
-        let jsonObjects = [];
-  
-      try {
-          // Try to parse as a single JSON object
-          jsonObjects.push(JSON.parse(data));
-      } catch (error) {
-          // If parsing as a single JSON object fails, handle as multiple concatenated JSON objects
-          let jsonStrings = data.split('}{').map((str, index, array) => {
-              if (index === 0) {
-                  // First element, add closing brace at the end
-                  return str + '}';
-              } else if (index === array.length - 1) {
-                  // Last element, add opening brace at the start
-                  return '{' + str;
+        console.log(data)
+    
+    if (data.status !== 'success') {
+                  flash.innerText = 'Data gagal dikirim';
               } else {
-                  // Middle elements, add both braces
-                  return '{' + str + '}';
+                  flash.innerText = 'Data berhasil dikirim';
+                  clearAllForm(); // Assuming clearAllForm is a function that clears the form
               }
-          });
-  
-          // Parse each JSON string
-          jsonObjects = jsonStrings.map(str => JSON.parse(str));
-      }
-  
-      // Handle each parsed object
-      jsonObjects.forEach(jsonObject => {
-          let flash = document.getElementById('flash');
-          if (jsonObject.status !== 'success') {
-              flash.innerText = 'Data gagal dikirim';
-          } else {
-              flash.innerText = 'Data berhasil dikirim';
-              clearAllForm(); // Assuming clearAllForm is a function that clears the form
-          }
-      });
+            
   
       })
       .catch((error) => {

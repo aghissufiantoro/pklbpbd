@@ -12,6 +12,7 @@ $(document).ready(function() {
                 $.each(data, function(key, value) {
                     $('#kelurahan').append('<option value="'+ value.desa +'">'+ value.desa +'</option>');
                 });
+                
             }
         });
     });
