@@ -7,9 +7,9 @@ class M_tugas_harian extends CI_Model
     public function rules_harian()
     {
         return [
-            ['field' => 'nama_staff',
-            'label' => 'Nama Staff',
-            'rules' => 'required'],
+            // ['field' => 'nama_staff',
+            // 'label' => 'Nama Staff',
+            // 'rules' => 'required'],
 
             ['field' => 'tanggal',
             'label' => 'Tanggal',
@@ -27,13 +27,13 @@ class M_tugas_harian extends CI_Model
             'label' => 'Uraian Kegiatan',
             'rules' => 'required'],
 
-            ['field' => 'penanggung_jawab',
-            'label' => 'Penanggung Jawab',
+            ['field' => 'bidang',
+            'label' => 'bidang',
             'rules' => 'required'],
 
-            ['field' => 'hasil_kegiatan',
-            'label' => 'Hasil Kegiatan',
-            'rules' => 'required'],
+            // ['field' => 'hasil_kegiatan',
+            // 'label' => 'Hasil Kegiatan',
+            // 'rules' => 'required'],
 
             
         ];
@@ -44,17 +44,17 @@ class M_tugas_harian extends CI_Model
         $post = $this->input->post();
 
         $this->id_tugas_harian  = $this->generate_id_tugas_harian($post['tanggal']);
-        $this->nama_staff       = $post['nama_staff'];
+        // $this->nama_staff       = $post['nama_staff'];
         $this->tanggal          = $post['tanggal'];
         $this->waktu            = $post['waktu'];
         $this->lokasi           = $post['lokasi'];
         $this->uraian_kegiatan  = $post['uraian_kegiatan'];
-        $this->penanggung_jawab = $post['penanggung_jawab'];
-        if ($this->penanggung_jawab === 'Lain-lain') {
-            $this->penanggung_jawab = $post['penanggung_jawab_lain'];
+        $this->bidang = $post['bidang'];
+        if ($this->bidang === 'Lain-lain') {
+            $this->bidang = $post['bidang_lain'];
         }
-        $this->hasil_kegiatan   = $post['hasil_kegiatan'];
-        $this->dokumentasi      = $this->_uploadImage();
+        // $this->hasil_kegiatan   = $post['hasil_kegiatan'];
+        $this->hasil_kegiatan      = $this->_uploadImage();
 
         $this->db->insert($this->_table, $this);
     }
@@ -62,17 +62,17 @@ class M_tugas_harian extends CI_Model
     public function update($id)
     {
         $post = $this->input->post();
-        $this->nama_staff       = $post["nama_staff"];
+        // $this->nama_staff       = $post["nama_staff"];
         $this->tanggal          = $post["tanggal"];
         $this->waktu            = $post["waktu"];
         $this->lokasi           = $post["lokasi"];
         $this->uraian_kegiatan  = $post["uraian_kegiatan"];
-        $this->penanggung_jawab = $post["penanggung_jawab"];
-        if ($this->penanggung_jawab === 'Lain-lain') {
-            $this->penanggung_jawab = $post['penanggung_jawab_lain'];
+        $this->bidang = $post["bidang"];
+        if ($this->bidang === 'Lain-lain') {
+            $this->bidang = $post['bidang_lain'];
         }
-        $this->hasil_kegiatan   = $post["hasil_kegiatan"];
-        $this->dokumentasi      = $this->_uploadImage();
+        // $this->hasil_kegiatan   = $post["hasil_kegiatan"];
+        $this->hasil_kegiatan      = $this->_uploadImage();
 
         // Tambahkan debug output
         print_r($post); // Lihat data yang diterima
@@ -96,18 +96,18 @@ class M_tugas_harian extends CI_Model
 
     $file_names = array();
 
-    if (isset($_FILES['dokumentasi']) && count($_FILES['dokumentasi']['name']) > 0) {
+    if (isset($_FILES['hasil_kegiatan']) && count($_FILES['hasil_kegiatan']['name']) > 0) {
         $files = $_FILES;
-        $file_count = count($_FILES['dokumentasi']['name']);
+        $file_count = count($_FILES['hasil_kegiatan']['name']);
 
         for ($i = 0; $i < $file_count; $i++) {
-            $_FILES['dokumentasi']['name'] = $files['dokumentasi']['name'][$i];
-            $_FILES['dokumentasi']['type'] = $files['dokumentasi']['type'][$i];
-            $_FILES['dokumentasi']['tmp_name'] = $files['dokumentasi']['tmp_name'][$i];
-            $_FILES['dokumentasi']['error'] = $files['dokumentasi']['error'][$i];
-            $_FILES['dokumentasi']['size'] = $files['dokumentasi']['size'][$i];
+            $_FILES['hasil_kegiatan']['name'] = $files['hasil_kegiatan']['name'][$i];
+            $_FILES['hasil_kegiatan']['type'] = $files['hasil_kegiatan']['type'][$i];
+            $_FILES['hasil_kegiatan']['tmp_name'] = $files['hasil_kegiatan']['tmp_name'][$i];
+            $_FILES['hasil_kegiatan']['error'] = $files['hasil_kegiatan']['error'][$i];
+            $_FILES['hasil_kegiatan']['size'] = $files['hasil_kegiatan']['size'][$i];
 
-            if ($this->upload->do_upload('dokumentasi')) {
+            if ($this->upload->do_upload('hasil_kegiatan')) {
                 $file_data = $this->upload->data();
                 $file_names[] = $file_data['file_name'];
             }
@@ -124,9 +124,9 @@ class M_tugas_harian extends CI_Model
 
     private function _deleteImage($id)
     {
-        $dokumentasi = $this->get_tugas_harian_by_id($id);
-        if ($dokumentasi->dokumentasi != "default.png") {
-            $filename = explode(".", $dokumentasi->dokumentasi)[0];
+        $hasil_kegiatan = $this->get_tugas_harian_by_id($id);
+        if ($hasil_kegiatan->hasil_kegiatan != "default.png") {
+            $filename = explode(".", $hasil_kegiatan->hasil_kegiatan)[0];
             return array_map('unlink', glob(FCPATH."upload/tugas_harian/$filename.*"));
         }
     }
