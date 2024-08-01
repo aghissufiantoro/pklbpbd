@@ -3,11 +3,10 @@
 class DataKompi_model extends CI_Model {
     
     public function get_all_personel() {
-        // Fungsi untuk mendapatkan semua personel
-        $query = $this->db->get('data_kompi');
+        $this->db->select('id_staff, nama_staff');
+        $query = $this->db->get('daftar_nama');
         return $query->result();
     }
-
     public function get_personel_by_kompi($jenis_kompi) {
         // Fungsi untuk mendapatkan personel berdasarkan jenis kompi
         $this->db->where('jenis_kompi', $jenis_kompi);
@@ -20,16 +19,24 @@ class Kegiatan_model extends CI_Model {
 
    private $_table ="tabel_kegiatan";
 
-    public function insert_kegiatan($data) {
-        $data['id_kegiatan'] = $this->generate_id_kegiatan($data['tanggal']);
-        if ($this->db->insert('tabel_kegiatan', $data)) {
-            log_message('debug', 'Kegiatan inserted: ' . $data['id_kegiatan']);
-            return $data['id_kegiatan'];
-        } else {
-            log_message('error', 'Failed to insert kegiatan: ' . $this->db->error()['message']);
-            return false;
-        }
+   public function get_all_personel() {
+    $this->db->distinct();
+    $this->db->select('nama_staff');
+    $this->db->from('daftar_nama');
+    $query = $this->db->get();
+
+    return $query->result();
+}
+
+public function insert_kegiatan($data) {
+    $data['id_kegiatan'] = $this->generate_id_kegiatan($data['tanggal']);
+    if ($this->db->insert($this->_table, $data)) {
+        return $data['id_kegiatan'];
+    } else {
+        log_message('error', 'Failed to insert kegiatan: ' . $this->db->error()['message']);
+        return false;
     }
+}
 
 
     public function delete_kegiatan($id)
@@ -39,19 +46,19 @@ class Kegiatan_model extends CI_Model {
 
 
     private function generate_id_kegiatan($tanggal) {
-        $date = date('dmY', strtotime($tanggal)); // Format tanggal menjadi ddmmyyyy
+        $date = date('dmY', strtotime($tanggal));
         $prefix = 'PL';
         $counter = 1;
         $unique = false;
 
         do {
-            $id = $prefix . $date . str_pad($counter, 3, '0', STR_PAD_LEFT); // Menggunakan 3 digit untuk urutan
+            $id = $prefix . $date . str_pad($counter, 3, '0', STR_PAD_LEFT);
             $this->db->where('id_kegiatan', $id);
-            $exists = $this->db->count_all_results('tabel_kegiatan') > 0;
+            $exists = $this->db->count_all_results($this->_table) > 0;
             if (!$exists) {
-                $unique = true; // Jika ID tidak ada di database, maka ID tersebut unik
+                $unique = true;
             } else {
-                $counter++; // Jika ID sudah ada, tambahkan counter
+                $counter++;
             }
         } while (!$unique);
 
@@ -122,23 +129,11 @@ class PenugasanPetugas_model extends CI_Model {
         return $id;
     }
 
-    public function insert_penugasan($id_kegiatan, $id_penugasan, $id_petugas, $lokasi_kegiatan, $tanggal, $shift, $no_wa, $uraian_kegiatan, $dokumentasi) {
-        $data = array(
-            'id_kegiatan' => $id_kegiatan,
-            'id_penugasan' => $id_penugasan,
-            'id_petugas' => $id_petugas,
-            'lokasi_kegiatan' => $lokasi_kegiatan,
-            'tanggal' => $tanggal,
-            'shift' => $shift,
-            'no_wa' => $no_wa,
-            'uraian_kegiatan' => $uraian_kegiatan,
-            'dokumentasi' => $dokumentasi
-        );
-
+    public function insert_penugasan($data) {
         if ($this->db->insert($this->_table, $data)) {
             return true;
         } else {
-            log_message('error', $this->db->error()['message']);
+            log_message('error', 'Failed to insert penugasan: ' . $this->db->error()['message']);
             return false;
         }
     }
@@ -199,6 +194,17 @@ class PenugasanPetugas_model extends CI_Model {
         $query = $this->db->get('tabel_penugasan_petugas');
         return $query->row();
     }
+
+    public function get_jumlah_personel($id_kegiatan)
+    {
+        $this->db->select('jumlah_personel');
+        $this->db->from('tabel_kegiatan');
+        $this->db->where('id_kegiatan', $id_kegiatan);
+        $query = $this->db->get();
+        $result = $query->row();
+        return $result ? $result->jumlah_personel : 0;
+    }
+
 
 
     public function update_penugasan($id_penugasan, $data) {

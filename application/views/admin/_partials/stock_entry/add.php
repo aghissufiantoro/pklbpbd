@@ -198,7 +198,7 @@
 
 <script>
  const arrayBarangSementara = []
- const BASE_URL = 'http://localhost/bpbd'
+ const BASE_URL = 'http://localhost:8083/bpbd'
 document.addEventListener("DOMContentLoaded", function() {
     
     const tambahBtn = document.getElementById("tambahBtn");

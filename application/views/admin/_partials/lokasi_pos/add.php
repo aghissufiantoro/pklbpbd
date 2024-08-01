@@ -201,8 +201,4 @@ $(document).ready(function() {
         }
     });
 });
-<<<<<<< HEAD
 </script>
-=======
-</script>
->>>>>>> 99da040f34913cbbb9f9f92056669a504913b9ab
