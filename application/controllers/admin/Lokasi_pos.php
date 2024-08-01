@@ -43,27 +43,55 @@ class Lokasi_pos extends CI_Controller
         }
     }
 
+  
+    
     public function add()
     {
-        if ($this->session->userdata('role') == "1")
-        {
-            $front = $this->m_lokasi_pos;
-            $validation = $this->form_validation;
-            $validation->set_rules($front->rules());
+        if ($_POST) {
+            $this->form_validation->set_rules('nama_lokasi_pos', 'Nama Lokasi POS', 'required');
+            // Add validation rules for other fields if necessary
 
-            if ($validation->run())
-            {
-                $front->save();
-                $this->session->set_flashdata('success', '<i class="fa fa-check"></i> Alhamdulillah, Data berhasil disimpan');
+            if ($this->form_validation->run()) {
+                $data = array(
+                    'nama_lokasi_pos' => $this->input->post('nama_lokasi_pos'),
+                    'kecamatan' => $this->input->post('kecamatan'),
+                    'desa' => $this->input->post('desa'),
+                    'kec_lokasi_pos' => $this->input->post('kecamatan'), // sesuaikan dengan nama field di database
+                    'kel_lokasi_pos' => $this->input->post('desa'), // sesuaikan dengan nama field di database
+                    'lat_lokasi_pos' => $this->input->post('lat_lokasi_pos'),
+                    'lon_lokasi_pos' => $this->input->post('lon_lokasi_pos'),
+                    'alamat_lokasi_pos' => $this->input->post('alamat_lokasi_pos'),
+                    'ket_lokasi_pos' => $this->input->post('ket_lokasi_pos')
+                );
+
+                if ($this->db->insert('lokasi_pos', $data)) {
+                    $this->session->set_flashdata('success', 'Data lokasi pos telah ditambahkan.');
+                    redirect('admin/lokasi_pos');
+                } else {
+                    $this->session->set_flashdata('error', 'Terjadi kesalahan saat menambahkan data.');
+                }
             }
+        }
 
-            $this->load->view("admin/lokasi_pos/new_form_lokasi_pos");
-        }
-        else
-        {
-            show_404();
-        }
+        $data['kecamatan'] = $this->db->query('SELECT DISTINCT kecamatan FROM wilayah_2022')->result();
+        $this->load->view('admin/lokasi_pos/new_form_lokasi_pos', $data);
     }
+
+    
+
+
+
+
+
+
+    public function getDesaByKecamatan() {
+        $kecamatan = $this->input->post('kecamatan');
+        $desa = $this->m_lokasi_pos->getDesaByKecamatan($kecamatan);
+        echo json_encode($desa);
+    }
+    
+
+    
 
     public function edit($id = null)
     {
@@ -76,8 +104,9 @@ class Lokasi_pos extends CI_Controller
             $validation->set_rules($lokasi_pos->rules());
 
             if ($validation->run()) {
-                $lokasi_pos->update();
+                $lokasi_pos->update($id);
                 $this->session->set_flashdata('success', '<i class="fa fa-check"></i> Alhamdulillah, Data berhasil diupdate');
+                redirect('admin/lokasi_pos');
             }
 
             $data["lokasi_pos"] = $lokasi_pos->getById($id);

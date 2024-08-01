@@ -54,6 +54,7 @@ class M_stock_entry extends CI_Model
     }
 
 
+
     public function update()
     {
         $post = $this->input->post();

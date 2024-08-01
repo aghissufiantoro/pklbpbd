@@ -16,7 +16,7 @@
 				</div>
 			</div>
 			<div class="card-body">
-				<h6 class="card-title">Data dokumentasitakaan BPBD Kota Surabaya</h6>
+				<h6 class="card-title">Data dokumentasi BPBD Kota Surabaya</h6>
 				<p class="text-muted mb-3">Data berisi data data yang ada di BPBD Kota Surabaya</p>
 				<div class="table-responsive">
 					<table id="dataTableExample" class="table">

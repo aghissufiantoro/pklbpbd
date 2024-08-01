@@ -10,14 +10,14 @@
             </div>
             <div class="card-body">
                 <h6 class="card-title">Tugas Harian Staff BPBD Kota Surabaya</h6>
-                <p class="text-muted mb-3">Data berisi tugas harian Staff BPBD Kota Surabaya</p>
+                <p class="text-muted mb-3">Data berisi tugas harian staff BPBD Kota Surabaya</p>
                 <div class="table-responsive">
                     <table id="dataTableExample" class="table">
                         <thead>
                             <tr>
                                 <th width="20px">No</th>
                                 <th width="20px">ID Tugas Harian</th>
-                                <th width="20px">Nama Staff</th>
+                                <th width="20px">Nama</th>
                                 <th width="30px">Tanggal</th>
                                 <th width="20px">Waktu</th>
                                 <th width="20px">Lokasi</th>
@@ -31,7 +31,7 @@
                         <tbody>
                             <?php
                             $no = 1;
-                            $tugas_harian = $this->db->query("SELECT * FROM tugas_harian")->result();
+                            $tugas_harian = $this->db->query("SELECT * FROM tugas_harian ORDER BY tanggal DESC" )->result();
                             foreach ($tugas_harian as $tugas) {
                             ?>
                                 <tr>

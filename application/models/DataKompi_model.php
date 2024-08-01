@@ -31,6 +31,13 @@ class Kegiatan_model extends CI_Model {
         }
     }
 
+
+    public function delete_kegiatan($id)
+    {
+        return $this->db->delete($this->_table, array("id_kegiatan" => $id));
+    }
+
+
     private function generate_id_kegiatan($tanggal) {
         $date = date('dmY', strtotime($tanggal)); // Format tanggal menjadi ddmmyyyy
         $prefix = 'PL';

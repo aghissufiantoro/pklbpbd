@@ -143,7 +143,7 @@ class Stock_entry extends CI_Controller
                     ];
     
                     $this->m_stock_entry->save($data_to_save);
-    
+
                     // Update data_stock_logistik based on status_barang
                     if ($status_barang == 'masuk') {
                         $this->m_stock_entry->increase_stock($kode_barang, $qty_barang);

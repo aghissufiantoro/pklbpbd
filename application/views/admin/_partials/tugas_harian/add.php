@@ -6,11 +6,11 @@
             <div class="col-md-6">
 
                 <div class="mb-3">
-                    <label for="nama_staff" class="form-label">Nama Staff</label>
+                    <label for="nama_staff" class="form-label">Nama</label>
                     <select class="form-select select2" id="nama_staff" name="nama_staff" required>
-                        <option value="">--- Pilih Nama Staff ---</option>
+                        <option value="">--- Pilih Nama ---</option>
                         <?php foreach ($staff_options as $staff): ?>
-                            <option value="<?= $staff->nama_kontak_opd ?>"><?= $staff->nama_kontak_opd ?></option>
+                            <option value="<?= $staff->nama_staff ?>"><?= $staff->nama_staff ?></option>
                         <?php endforeach; ?>
                     </select>
                 </div>
@@ -43,15 +43,20 @@
 
                 <div class="mb-3">
                     <label class="form-label">Penanggung Jawab</label>
-                    <select class="form-select" required name="penanggung_jawab" autocomplete="off"
-                    id="hurufbesar3" onkeyup="hurufBesar3();">
+                    <select class="form-select" required name="penanggung_jawab" autocomplete="off" id="penanggung_jawab">
                         <option value="">--- Pilih Salah Satu ---</option>
                         <option value="Kepala Badan">Kepala Badan</option>
                         <option value="Sekretaris Badan">Sekretaris Badan</option>
                         <option value="Kasubbag Keuangan">Kasubbag Keuangan</option>
                         <option value="Kabid PK">Kabid PK</option>
                         <option value="Kabid Darlog RR">Kabid Darlog RR</option>
+                        <option value="Lain-lain">Lain-lain</option>
                     </select>
+                </div>
+
+                <div class="mb-3" id="lain_lain_input" style="display: none;">
+                    <label class="form-label">Penanggung Jawab (Lain-lain)</label>
+                    <input type="text" class="form-control" name="penanggung_jawab_lain" id="penanggung_jawab_lain" autocomplete="off" placeholder="Isi penanggung jawab lain">
                 </div>
 
                 <div class="mb-3">
@@ -76,8 +81,8 @@ document.getElementById('nama_staff').addEventListener('change', function() {
     var selectedNamaStaff = this.value;
     
     // Assuming you have a map of nama_staff to id_kontak_opd
-    var staffMap = <?php echo json_encode(array_column($staff_options, 'id_kontak_opd', 'nama_staff')); ?>;
-    document.getElementById('id_kontak_opd').value = staffMap[selectedNamaStaff] || '';
+    var staffMap = <?php echo json_encode(array_column($staff_options, 'id_staff', 'nama_staff')); ?>;
+    document.getElementById('id_staff').value = staffMap[selectedNamaStaff] || '';
 });
 </script>
 <!-- jQuery (required by Select2) -->
@@ -87,8 +92,18 @@ document.getElementById('nama_staff').addEventListener('change', function() {
 <script>
     $(document).ready(function() {
         $('.select2').select2({
-            placeholder: "--- Pilih Nama Staff ---",
+            placeholder: "--- Pilih Nama ---",
             allowClear: true
         });
+    });
+</script>
+<script>
+    document.getElementById('penanggung_jawab').addEventListener('change', function() {
+        var lainLainInput = document.getElementById('lain_lain_input');
+        if (this.value === 'Lain-lain') {
+            lainLainInput.style.display = 'block';
+        } else {
+            lainLainInput.style.display = 'none';
+        }
     });
 </script>
