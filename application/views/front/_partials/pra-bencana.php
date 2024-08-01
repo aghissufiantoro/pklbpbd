@@ -45,8 +45,8 @@
           <div class="btn-square bg-light rounded-circle mb-4" style="width: 200px; height: 200px;">
             <img class="img-fluid" src="<?= base_url('image/support-24.png') ?>" alt="Service-BPBD">
           </div>
-          <h5 class="mb-3">24/7 Support</h5>
-          <p class="mb-0">Kami siap melayani Anda selama 24/7</p>
+          <h5 class="mb-3">24 Jam Support</h5>
+          <p class="mb-0">Kami siap melayani Anda selama 24 Jam Support</p>
         </div>
       </div>
     </div>
@@ -75,10 +75,10 @@
         <form method="GET" action="<?= base_url('view/index') ?>">
             <div class="row mb-4">
                 <div class="col-md-4">
-                    <input type="date" name="start_date" class="form-control" value="<?= htmlspecialchars($this->input->get('start_date')?? '') ?>" />
+                    <input type="date" name="start_date" class="form-control" value="<?= htmlspecialchars($this->input->get('start_date') ?? '') ?>" />
                 </div>
                 <div class="col-md-4">
-                    <input type="date" name="end_date" class="form-control" value="<?= htmlspecialchars($this->input->get('end_date')  ?? '') ?>" />
+                    <input type="date" name="end_date" class="form-control" value="<?= htmlspecialchars($this->input->get('end_date') ?? '') ?>" />
                 </div>
                 <div class="col-md-4">
                     <button type="submit" class="btn btn-primary">Filter</button>

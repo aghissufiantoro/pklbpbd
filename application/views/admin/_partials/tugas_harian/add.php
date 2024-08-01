@@ -1,139 +1,109 @@
-<?php
-if ($this->session->flashdata('success')) {
-  ?>
-  <script>
-    setTimeout(function () {
-      toastr.options = {
-        closeButton: true,
-        progressBar: true,
-        showMethod: 'slideDown',
-        timeOut: 7000
-      };
-      toastr.success('Alhamdulillah, Data laporan berhasil di-TAMBAH', 'SUCCESS!');
+<div class="container mt-2">
+    <h4 class="mb-3">TAMBAH DATA TUGAS HARIAN</h4>
+    <?php echo validation_errors(); ?>
+    <?php echo form_open('admin/tugas_harian/add', 'class="needs-validation" enctype="multipart/form-data"'); ?>
+        <div class="row">
+            <div class="col-md-6">
 
-    }, 1000);
-  </script>
-  <?php
-}
-?>
+                <div class="mb-3">
+                    <label for="nama_staff" class="form-label">Nama</label>
+                    <select class="form-select select2" id="nama_staff" name="nama_staff" required>
+                        <option value="">--- Pilih Nama ---</option>
+                        <?php foreach ($staff_options as $staff): ?>
+                            <option value="<?= $staff->nama_staff ?>"><?= $staff->nama_staff ?></option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
 
-<div class="row wrapper border-bottom white-bg page-heading">
-  <div class="col-lg-10">
-    <h2><i class="fad fa-plus"></i> Tambah Data Laporan Tugas Harian</h2>
-    <ol class="breadcrumb">
-      <li class="breadcrumb-item">
-        <a href="<?= site_url('admin/overview') ?>">Home</a>
-      </li>
-      <li class="breadcrumb-item active">
-        <strong>Tambah data laporan tugas harian</strong>
-      </li>
-    </ol>
-  </div>
-  <div class="col-lg-2"></div>
+                <div class="mb-3">
+                    <label class="form-label">Tanggal Kegiatan</label>
+                    <input type="date" class="form-control" id="datepicker" required name="tanggal" autocomplete="off">
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Waktu Kegiatan</label>
+                    <input type="time" class="form-control" id="jam" required name="waktu" autocomplete="off">
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Lokasi Kegiatan</label>
+                    <input class="form-control" required name="lokasi" autocomplete="off"
+                    placeholder="Masukkan lokasi kegiatan">
+                </div>
+
+            </div>
+
+            <div class="col-md-6">
+
+                <div class="mb-3">
+                    <label class="form-label">Uraian Kegiatan</label>
+                    <input class="form-control" required name="uraian_kegiatan" autocomplete="off"
+                    placeholder="Uraikan kegiatan yang telah dilakukan">
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Penanggung Jawab</label>
+                    <select class="form-select" required name="penanggung_jawab" autocomplete="off" id="penanggung_jawab">
+                        <option value="">--- Pilih Salah Satu ---</option>
+                        <option value="Kepala Badan">Kepala Badan</option>
+                        <option value="Sekretaris Badan">Sekretaris Badan</option>
+                        <option value="Kasubbag Keuangan">Kasubbag Keuangan</option>
+                        <option value="Kabid PK">Kabid PK</option>
+                        <option value="Kabid Darlog RR">Kabid Darlog RR</option>
+                        <option value="Lain-lain">Lain-lain</option>
+                    </select>
+                </div>
+
+                <div class="mb-3" id="lain_lain_input" style="display: none;">
+                    <label class="form-label">Penanggung Jawab (Lain-lain)</label>
+                    <input type="text" class="form-control" name="penanggung_jawab_lain" id="penanggung_jawab_lain" autocomplete="off" placeholder="Isi penanggung jawab lain">
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Hasil Kegiatan</label>
+                    <textarea class="form-control" name="hasil_kegiatan" autocomplete="off"
+                    placeholder="Masukkan hasil kegiatan"></textarea>
+                </div>
+                <label class="form-label">Dokumentasi</label>
+                <input type="file" class="form-control" id="dokumentasi" name="dokumentasi[]" accept="image/*" multiple />
+
+            </div>
+        </div>
+        <a href="<?= base_url("admin/tugas_harian") ?>">
+            <input class="btn btn-warning" type="button" value="Kembali">
+        </a>
+        <button class="btn btn-primary" type="submit">Submit</button>
+    <?php echo form_close(); ?>
 </div>
 
-<div class="wrapper wrapper-content animated fadeInRight">
-  <form action="" method="post" enctype="multipart/form-data">
-    <div class="ibox">
-      <div class="ibox-title">
-        <h5>Laporan Tugas Harian di <small><?= SITE_NAME ?></small></h5>
-        <div class="ibox-tools">
-          <a class="collapse-link">
-            <i class="fa fa-chevron-up"></i>
-          </a>
-        </div>
-      </div>
-      <div class="ibox-content">
-        <div class="row">
-          <div class="col-md-6">
-
-            <div class="form-group">
-              <label>Tanggal Jadwal<span class="text-danger">*</span></label>
-              <input type="date" class="form-control" id="datepicker" required name="tgl_tugas_harian"
-                autocomplete="off" placeholder="Masukkan jadwal kegiatan">
-            </div>
-
-            <div class="form-group">
-              <label>Jam Kegiatan<span class="text-danger">*</span></label>
-              <input type="time" class="form-control" id="jam" required name="jam_tugas_harian" autocomplete="off"
-                placeholder="Masukkan jam kegiatan">
-            </div>
-
-            <div class="form-group">
-              <label>Uraian / Nama Kegiatan<span class="text-danger">*</span></label>
-              <textarea class="form-control" required name="perihal_tugas_harian" autocomplete="off"
-                placeholder="Masukkan nama perihal / kegiatan" id="hurufbesar" onkeyup="hurufBesar();"></textarea>
-            </div>
-
-            <div class="form-group">
-              <label>Tempat Kegiatan<span class="text-danger">*</span></label>
-              <textarea class="form-control" required name="tempat_tugas_harian" autocomplete="off"
-                placeholder="Masukkan tempat tugas harian" id="hurufbesar2" onkeyup="hurufBesar2();"></textarea>
-            </div>
-
-          </div>
-
-          <div class="col-md-6">
-
-            <div class="form-group">
-              <label>No. Surat Tugas<span class="text-danger">*</span></label>
-              <textarea class="form-control" required name="no_surat_tugas_harian" autocomplete="off"
-                placeholder="Masukkan nomor surat tugas harian" id="hurufbesar5" onkeyup="hurufBesar5();"></textarea>
-            </div>
-
-            <div class="form-group">
-              <label>Penanggung Jawab<span class="text-danger">*</span></label>
-              <textarea class="form-control" required name="tanggungjawab_tugas_harian" autocomplete="off"
-                placeholder="Masukkan penanggung jawab" id="hurufbesar3" onkeyup="hurufBesar3();"></textarea>
-            </div>
-
-            <div class="form-group">
-              <label>Keterangan</label>
-              <textarea class="form-control" name="ket_tugas_harian" autocomplete="off"
-                placeholder="Masukkan keterangan" id="hurufbesar4" onkeyup="hurufBesar4();"></textarea>
-              <small>*Tidak perlu di isi jika tidak perlu</small>
-            </div>
-
-
-
-          </div>
-        </div>
-      </div>
-      <div class="ibox-footer">
-        <div class="row">
-          <div class="col-lg-6">
-            <a href="<?= site_url('admin/tugas_harian') ?>">
-              <button type="button" class="btn btn-warning btn-lg"><i class="fa fa-reply"></i> Kembali</button>
-            </a>
-          </div>
-          <div class="col-lg-6" style="text-align: right;">
-            <button type="submit" name="submit" class="btn btn-primary btn-lg"><i class="far fa-save"></i> Tambah
-              Laporan</button>
-          </div>
-        </div>
-      </div>
-    </div>
-  </form>
-</div>
-
-<style>
-  .form-group {
-    margin-bottom: 20px;
-  }
-
-  .form-control {
-    width: 100%;
-  }
-
-  .ibox-title h5 {
-    font-size: 16px;
-  }
-
-  .ibox-footer {
-    padding-top: 20px;
-  }
-
-  .btn {
-    padding: 10px 20px;
-  }
-</style>
+<script>
+document.getElementById('nama_staff').addEventListener('change', function() {
+    var selectedNamaStaff = this.value;
+    
+    // Assuming you have a map of nama_staff to id_kontak_opd
+    var staffMap = <?php echo json_encode(array_column($staff_options, 'id_staff', 'nama_staff')); ?>;
+    document.getElementById('id_staff').value = staffMap[selectedNamaStaff] || '';
+});
+</script>
+<!-- jQuery (required by Select2) -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<!-- Select2 JS -->
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $('.select2').select2({
+            placeholder: "--- Pilih Nama ---",
+            allowClear: true
+        });
+    });
+</script>
+<script>
+    document.getElementById('penanggung_jawab').addEventListener('change', function() {
+        var lainLainInput = document.getElementById('lain_lain_input');
+        if (this.value === 'Lain-lain') {
+            lainLainInput.style.display = 'block';
+        } else {
+            lainLainInput.style.display = 'none';
+        }
+    });
+</script>

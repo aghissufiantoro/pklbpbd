@@ -36,7 +36,7 @@
             <tbody>
               <?php
                 $no = 1;
-                $db_lokasi_pos = $this->db->query("SELECT * FROM lokasi_pos ORDER BY date_created DESC")->result();
+                $db_lokasi_pos = $this->db->query("SELECT * FROM lokasi_pos order by date_created desc")->result();
                 foreach ($db_lokasi_pos as $res_lokasi_pos)
                 {
                   $keca = $res_lokasi_pos->kec_lokasi_pos;

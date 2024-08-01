@@ -7,76 +7,165 @@ class M_tugas_harian extends CI_Model
     public function rules_harian()
     {
         return [
-            ['field' => 'tgl_tugas_harian',
-            'label' => 'Tanggal / jam',
+            ['field' => 'nama_staff',
+            'label' => 'Nama Staff',
             'rules' => 'required'],
 
-            ['field' => 'tempat_tugas_harian',
-            'label' => 'Tempat / lokasi',
+            ['field' => 'tanggal',
+            'label' => 'Tanggal',
             'rules' => 'required'],
 
-            ['field' => 'perihal_tugas_harian',
-            'label' => 'Perihal / nama kegiatan',
-            'rules' => 'required']
+            ['field' => 'waktu',
+            'label' => 'Waktu',
+            'rules' => 'required'],
+
+            ['field' => 'lokasi',
+            'label' => 'Lokasi',
+            'rules' => 'required'],
+
+            ['field' => 'uraian_kegiatan',
+            'label' => 'Uraian Kegiatan',
+            'rules' => 'required'],
+
+            ['field' => 'penanggung_jawab',
+            'label' => 'Penanggung Jawab',
+            'rules' => 'required'],
+
+            ['field' => 'hasil_kegiatan',
+            'label' => 'Hasil Kegiatan',
+            'rules' => 'required'],
+
+            
         ];
-    }
-
-    public function getAll()
-    {
-        return $this->db->get($this->_table)->result();
-    }
-    
-    public function getByDate($date)
-    {
-        return $this->db->get_where($this->_table, ["tgl_tugas_harian" => $date])->row();
-    }
-
-    public function getById($id)
-    {
-        return $this->db->get_where($this->_table, ["id_tugas_harian" => $id])->row();
     }
 
     public function save()
     {
         $post = $this->input->post();
 
-        $this->tanggungjawab_tugas_harian = $post['tanggungjawab_tugas_harian'];
-        $this->tgl_tugas_harian             = $post['tgl_tugas_harian'];
-        $this->jam_tugas_harian             = $post['jam_tugas_harian'];
-        $this->no_surat_tugas_harian        = $post['no_surat_tugas_harian'];
-        $this->tempat_tugas_harian          = strtoupper($post['tempat_tugas_harian']);
-        $this->perihal_tugas_harian         = strtoupper($post['perihal_tugas_harian']);
-        $this->petugas_tugas_harian         = $post['petugas_tugas_harian'];
-        $this->status_tugas_harian          = "Pending";
-        $this->hasil_tugas_harian           = "";
-        $this->ket_tugas_harian             = ucwords($post['ket_tugas_harian']);
-        $this->date_created                 = date('Y-m-d H:i:s');
+        $this->id_tugas_harian  = $this->generate_id_tugas_harian($post['tanggal']);
+        $this->nama_staff       = $post['nama_staff'];
+        $this->tanggal          = $post['tanggal'];
+        $this->waktu            = $post['waktu'];
+        $this->lokasi           = $post['lokasi'];
+        $this->uraian_kegiatan  = $post['uraian_kegiatan'];
+        $this->penanggung_jawab = $post['penanggung_jawab'];
+        if ($this->penanggung_jawab === 'Lain-lain') {
+            $this->penanggung_jawab = $post['penanggung_jawab_lain'];
+        }
+        $this->hasil_kegiatan   = $post['hasil_kegiatan'];
+        $this->dokumentasi      = $this->_uploadImage();
 
         $this->db->insert($this->_table, $this);
     }
 
-    public function update()
+    public function update($id)
     {
         $post = $this->input->post();
-        
-        $this->id_tugas_harian              = $post['id_tugas_harian'];
-        $this->tanggungjawab_tugas_harian   = $post['tanggungjawab_tugas_harian'];
-        $this->tgl_tugas_harian             = $post['tgl_tugas_harian'];
-        $this->jam_tugas_harian             = $post['jam_tugas_harian'];
-        $this->no_surat_tugas_harian        = $post['no_surat_tugas_harian'];
-        $this->tempat_tugas_harian          = strtoupper($post['tempat_tugas_harian']);
-        $this->perihal_tugas_harian         = strtoupper($post['perihal_tugas_harian']);
-        $this->petugas_tugas_harian         = $post['petugas_tugas_harian'];
-        $this->status_tugas_harian          = "Telah dilaksanakan";
-        $this->hasil_tugas_harian           = $post['hasil_tugas_harian'];
-        $this->ket_tugas_harian             = ucwords($post['ket_tugas_harian']);
-        $this->date_updated                 = date('Y-m-d H:i:s');
+        $this->nama_staff       = $post["nama_staff"];
+        $this->tanggal          = $post["tanggal"];
+        $this->waktu            = $post["waktu"];
+        $this->lokasi           = $post["lokasi"];
+        $this->uraian_kegiatan  = $post["uraian_kegiatan"];
+        $this->penanggung_jawab = $post["penanggung_jawab"];
+        if ($this->penanggung_jawab === 'Lain-lain') {
+            $this->penanggung_jawab = $post['penanggung_jawab_lain'];
+        }
+        $this->hasil_kegiatan   = $post["hasil_kegiatan"];
+        $this->dokumentasi      = $this->_uploadImage();
 
-        $this->db->update($this->_table, $this, array('id_tugas_harian' => $post['id_tugas_harian']));
+        // Tambahkan debug output
+        print_r($post); // Lihat data yang diterima
+        $this->db->update($this->_table, $this, array('id_tugas_harian' => $id));
+        echo $this->db->last_query(); // Lihat query yang dihasilkan
     }
 
     public function delete($id)
     {
+        $this->_deleteImage($id);
         return $this->db->delete($this->_table, array("id_tugas_harian" => $id));
+    }
+
+    private function _uploadImage()
+{
+    $config['upload_path'] = './upload/tugas_harian/';
+    $config['allowed_types'] = 'gif|jpg|png|jpeg|bmp';
+    $config['encrypt_name'] = TRUE;
+
+    $this->load->library('upload', $config);
+
+    $file_names = array();
+
+    if (isset($_FILES['dokumentasi']) && count($_FILES['dokumentasi']['name']) > 0) {
+        $files = $_FILES;
+        $file_count = count($_FILES['dokumentasi']['name']);
+
+        for ($i = 0; $i < $file_count; $i++) {
+            $_FILES['dokumentasi']['name'] = $files['dokumentasi']['name'][$i];
+            $_FILES['dokumentasi']['type'] = $files['dokumentasi']['type'][$i];
+            $_FILES['dokumentasi']['tmp_name'] = $files['dokumentasi']['tmp_name'][$i];
+            $_FILES['dokumentasi']['error'] = $files['dokumentasi']['error'][$i];
+            $_FILES['dokumentasi']['size'] = $files['dokumentasi']['size'][$i];
+
+            if ($this->upload->do_upload('dokumentasi')) {
+                $file_data = $this->upload->data();
+                $file_names[] = $file_data['file_name'];
+            }
+        }
+    }
+
+    if (count($file_names) > 0) {
+        return json_encode($file_names);
+    }
+
+    return json_encode(['default.png']);
+}
+
+
+    private function _deleteImage($id)
+    {
+        $dokumentasi = $this->get_tugas_harian_by_id($id);
+        if ($dokumentasi->dokumentasi != "default.png") {
+            $filename = explode(".", $dokumentasi->dokumentasi)[0];
+            return array_map('unlink', glob(FCPATH."upload/tugas_harian/$filename.*"));
+        }
+    }
+
+    private function generate_id_tugas_harian($tanggal) {
+        $date = date('dmY', strtotime($tanggal)); // Format tanggal menjadi ddmmyyyy
+        $prefix = 'TH';
+        $counter = 1;
+        $unique = false;
+
+        do {
+            $id = $prefix . $date . str_pad($counter, 3, '0', STR_PAD_LEFT); // Menggunakan 3 digit untuk urutan
+            $this->db->where('id_tugas_harian', $id);
+            $exists = $this->db->count_all_results('tugas_harian') > 0;
+            if (!$exists) {
+                $unique = true; // Jika ID tidak ada di database, maka ID tersebut unik
+            } else {
+                $counter++; // Jika ID sudah ada, tambahkan counter
+            }
+        } while (!$unique);
+
+        return $id;
+    }
+
+    public function get_tugas_harian_by_id($id_tugas_harian)
+    {
+        $this->db->where('id_tugas_harian', $id_tugas_harian);
+        $query = $this->db->get('tugas_harian');
+        return $query->row();
+    }
+
+    public function get_all_tugas_harian() {
+        $query = $this->db->get('tugas_harian');
+        return $query->result();
+    }
+
+    public function get_all_staff() {
+        // Fungsi untuk mendapatkan semua staff
+        $query = $this->db->get('daftar_nama');
+        return $query->result();
     }
 }

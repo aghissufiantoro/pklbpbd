@@ -73,6 +73,7 @@ class stock_master extends CI_Controller
                 $qty_tersedia = $save_result['qty_tersedia'];
                 $id_transaksi = $this->generateTransactionID();
 
+
                 if ($this->db->where('id_transaksi', $id_transaksi)->get('data_entry_sembako')->num_rows() == 0) {
                     $this->db->insert('data_entry_sembako', [
                         'id_transaksi' => $id_transaksi,
@@ -95,6 +96,7 @@ class stock_master extends CI_Controller
 
                 $this->session->set_flashdata('success', '<i class="fa fa-check"></i> Alhamdulillah, Data berhasil disimpan');
                 // redirect('admin/stock_master');
+
             }
 
             $this->load->view("admin/stock_master/new_form_stock");
@@ -108,9 +110,11 @@ class stock_master extends CI_Controller
         if ($this->session->userdata('role') == "1") {
             if (!isset($id)) redirect('admin/stock_master');
 
+
             $stock = $this->m_stockmaster;
             $validation = $this->form_validation;
             $validation->set_rules($stock->rules());
+
 
             if ($validation->run()) {
                 $stock->update();

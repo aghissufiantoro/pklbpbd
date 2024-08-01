@@ -1,1 +1,8 @@
 image/video_profil.mp4
+system\core\URI.php
+system\core\Router.php
+system\core\Loader.php
+system\core\Controller.php
+system\database\DB_driver.php
+application\libraries\Recaptcha.php
+upload

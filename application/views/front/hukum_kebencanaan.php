@@ -17,8 +17,10 @@
   <!-- Navbar End -->
 
 
-  <?php $this->load->view('front/_partials/page/hukum_kebencanaan') ?>
-  <?php $this->load->view('front/_partials/breaking-news') ?>
+  <?php $this->load->view('front/_partials/page/peraturan_walikota') ?>
+  <?php $this->load->view('front/_partials/page/dokumen_krb') ?>
+  <?php $this->load->view('front/_partials/page/SK_TRC') ?>
+
   <?php $this->load->view('front/_partials/survey') ?>
 
   <?php $this->load->view('front/_partials/footer') ?>

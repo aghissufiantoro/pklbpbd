@@ -8,13 +8,8 @@ class M_stock_entry extends CI_Model
 {
     return [
         [
-            'field' => 'tanggal_entry',
-            'label' => 'Tanggal Entry',
-            'rules' => 'required'
-        ],
-        [
-            'field' => 'nama_barang',
-            'label' => 'Nama Barang',
+            'field' => 'kode_barang',
+            'label' => 'kode Barang',
             'rules' => 'required'
         ],
         [
@@ -26,41 +21,6 @@ class M_stock_entry extends CI_Model
             'field' => 'qty_barang',
             'label' => 'Quantity Barang',
             'rules' => 'required|numeric'
-        ],
-        [
-            'field' => 'penerima_barang',
-            'label' => 'Penerima Barang',
-            'rules' => 'required'
-        ],
-        [
-            'field' => 'lokasi_diterima',
-            'label' => 'Lokasi Diterima',
-            'rules' => 'required'
-        ],
-        [
-            'field' => 'rt',
-            'label' => 'RT',
-            'rules' => 'required|numeric'
-        ],
-        [
-            'field' => 'rw',
-            'label' => 'RW',
-            'rules' => 'required|numeric'
-        ],
-        [
-            'field' => 'kelurahan',
-            'label' => 'Kelurahan',
-            'rules' => 'required'
-        ],
-        [
-            'field' => 'kecamatan',
-            'label' => 'Kecamatan',
-            'rules' => 'required'
-        ],
-        [
-            'field' => 'keterangan_barang',
-            'label' => 'Keterangan Barang',
-            'rules' => 'required'
         ]
     ];
 }
@@ -68,7 +28,8 @@ class M_stock_entry extends CI_Model
 
     public function getAll()
     {
-        return $this->db->get($this->_table)->result();
+        $this->db->order_by('tanggal_entry', 'ASC');
+    return $this->db->get($this->_table)->result();
     }
     
     public function getById($id)
@@ -76,40 +37,38 @@ class M_stock_entry extends CI_Model
         return $this->db->get_where($this->_table, ["id_transaksi" => $id])->row();
     }
 
-    public function save($transaction_id, $id_kejadian)
-    {
-        $post = $this->input->post();
     
-        $this->id_transaksi        = $transaction_id;
-        $this->tanggal_entry       = $post['tanggal_entry'];
-        $this->kode_barang         = $post['kode_barang'];
-        $this->status_barang       = $post['status_barang'];
-        $this->qty_barang          = $post['qty_barang'];
-        $this->penerima_barang     = $post['penerima_barang'];
-        $this->lokasi_diterima     = $post['lokasi_diterima'];
-        $this->rt                  = $post['rt'];
-        $this->rw                  = $post['rw'];
-        $this->kelurahan           = $post['kelurahan'];
-        $this->kecamatan           = $post['kecamatan'];
-        $this->keterangan_barang   = $post['keterangan_barang'];
-        $this->id_kejadian         = $id_kejadian; // Set id_kejadian
+    public function save($data)
+    {
+    
+        // Perform the necessary calculations and insertion
+        if($data['status_barang'] ==='keluar'){
+        $this->db->set('qty_keluar', (int)$data['qty_barang'], FALSE);
+        $this->db->set('qty_masuk', 0, FALSE);
+        $this->db->set('qty_tersedia', (int)$data['qty_awal'].'-'.(int)$data['qty_barang'], FALSE);
+        unset($data['qty_barang']);
+        $this->db->insert($this->_table, $data);
+
         
-        $this->db->insert($this->_table, $this);
-    }  
+    }
+    }
+
+
 
     public function update()
     {
         $post = $this->input->post();
         $this->id_transaksi = $post["id_transaksi"];
         $this->id_kejadian = $post["id_kejadian"];
-        $this->tanggal_entry = $post["tanggal_entry"];
+        $this->tanggal_entry = date('Y-m-d');  // Set current date
         $this->kode_barang = $post["kode_barang"];
         $this->status_barang = $post["status_barang"];
-        $this->qty_barang = $post["qty_barang"];
+        $this->qty_awal =$this->getAvailableStock($this->kode_barang);
+        $this->qty_keluar = $post["qty_barang"];
+        $this->qty_masuk = 0;
+        $this->qty_tersedia = (int)$this->qty_awal - (int)$this->qty_keluar;
         $this->lokasi_diterima = $post["lokasi_diterima"];
         $this->penerima_barang = $post["penerima_barang"];
-        $this->rt = $post["rt"];
-        $this->rw = $post["rw"];
         $this->kelurahan = $post["kelurahan"];
         $this->kecamatan = $post["kecamatan"];
         $this->keterangan_barang = $post["keterangan_barang"];
@@ -122,6 +81,7 @@ class M_stock_entry extends CI_Model
     {
         return $this->db->delete($this->_table, array("id_transaksi" => $id));
     }
+
     public function getLastTransactionID($formatted_date) {
         // Query to fetch the last transaction ID for the given date
         $this->db->select('id_transaksi');
@@ -153,17 +113,15 @@ class M_stock_entry extends CI_Model
     }
     
 
-    public function increase_stock($kode_barang, $qty) {
-        $this->db->set('qty_masuk', 'qty_masuk + ' . (int)$qty, FALSE);
-        $this->db->set('qty_tersedia', 'qty_masuk - qty_keluar - qty_rusak', FALSE);
-        $this->db->where('kode_barang', $kode_barang);
+    public function increase_stock($kode_barang, $qty_keluar) {
+        $this->db->set('qty_tersedia', 'qty_tersedia + ' . (int)$qty_keluar, FALSE);
+        $this->db->where('kode_barang', (string)$kode_barang);
         $this->db->update('data_stock_logistik');
     }
     
-    public function decrease_stock($kode_barang, $qty) {
-        $this->db->set('qty_keluar', 'qty_keluar + ' . (int)$qty, FALSE);
-        $this->db->set('qty_tersedia', 'qty_masuk - qty_keluar - qty_rusak', FALSE);
-        $this->db->where('kode_barang', $kode_barang);
+    public function decrease_stock($kode_barang, $qty_keluar) {
+        $this->db->set('qty_tersedia', 'qty_tersedia - ' . (int)$qty_keluar, FALSE);
+        $this->db->where('kode_barang', (string)$kode_barang);
         $this->db->update('data_stock_logistik');
     }
 
@@ -210,6 +168,14 @@ public function getKodeBarangByName($nama_barang)
     }
     return null;
 }
+public function getKodeBarang($kode_barang)
+{
+    $query = $this->db->get_where('data_master_sembako', ['kode_barang' => $kode_barang]);
+    if ($query->num_rows() > 0) {
+        return $query->row()->kode_barang;
+    }
+    return null;
+}
 
 public function getAvailableStock($kode_barang) {
     $this->db->select('qty_tersedia');
@@ -223,7 +189,24 @@ public function getAvailableStock($kode_barang) {
     return 0;
 }
 
+public function get_all_kecamatan() {
+    $this->db->distinct();
+    $this->db->select('kecamatan');
+    $query = $this->db->get('wilayah_2022');
+    return $query->result();
+}
+
+public function get_desa_by_kecamatan($kecamatan)
+{
+    $this->db->select('desa');
+    $this->db->where('kecamatan', $kecamatan);
+    $query = $this->db->get('wilayah_2022');
+    return $query->result();
+}
+
 
 
 
 }
+
+?>
