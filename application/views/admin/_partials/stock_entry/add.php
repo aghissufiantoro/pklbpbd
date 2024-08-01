@@ -125,14 +125,8 @@
            
             <div class="col-md-4">
               <div class="mb-3">
-                <label class="form-label" for="status_barang">Status Barang</label>
-                <select class="form-select" id="status_barang" name="status_barang" data-width="100%" required>
-                  <option value="">--- Pilih Status Barang ---</option>
-                  <option value="Masuk">Masuk</option>
-                  <option value="Keluar">Keluar</option>
-                  <option value="Rusak">Rusak</option>
-                  <option value="Tersedia">Tersedia</option>
-                </select>
+                
+                <input type="hidden"  id="status_barang" name="status_barang" data-width="100%" required value="keluar">
               </div>
             </div>
 

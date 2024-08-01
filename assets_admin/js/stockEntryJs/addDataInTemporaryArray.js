@@ -1,4 +1,7 @@
+document.addEventListener('DOMContentLoaded', (event) => {
 let namaBarangText 
+
+
 
 function checkIfDataExistOnArray (objectBarangSementara){
     arrayBarangSementara.filter((barang)=>{
@@ -10,7 +13,9 @@ function checkIfDataExistOnArray (objectBarangSementara){
     })
 }
 
+
 document.getElementById('kode_barang').addEventListener('change',function(){
+  
   namaBarangText = this.options[this.selectedIndex].text
 })
 document.getElementById('btnTambahBarang').addEventListener('click', function(){
@@ -28,6 +33,7 @@ const qtyBarang = document.getElementById('qty_barang').value
 const keteranganBarang = document.getElementById('keterangan_barang').value
 
 
+  
 
 const tabelBarangSementara = document.getElementById('tabelBarangSementara')
 
@@ -37,7 +43,7 @@ if(!namaBarang||!statusBarang||!qtyBarang||!keteranganBarang
   ||!tanggalEntry||!kategoriKejadian||!idKejadian||!lokasi_diterima
   ||!penerima_barang||!kecamatan||!kelurahan
 ){
-  alert("Tidak Boleh Kosong")
+  alert("Tidak Boleh Kosong 2")
 }else{
 
 const objectBarangSementara = {
@@ -49,7 +55,10 @@ const objectBarangSementara = {
   keteranganBarang
 }
 
-tabelBarangSementara.firstElementChild.innerText === "No data available in table" ? tabelBarangSementara.firstElementChild.remove() : ''
+const defaultContentTable = '<tr class="odd"><td valign="top" colspan="4" class="dataTables_empty" style="white-space: initial;">No data available in table</td></tr>'
+
+arrayBarangSementara.length >= 0 ? tabelBarangSementara.firstElementChild.remove() : tabelBarangSementara.appendChild(defaultContentTable)
+
 const newRow = document.createElement('tr');
         newRow.innerHTML = `
             <td>${namaBarangText}</td>
@@ -66,7 +75,6 @@ const newRow = document.createElement('tr');
 
 var fields = [
         'kode_barang',
-        'status_barang',
         'qty_barang',
         'keterangan_barang'
     ];
@@ -75,5 +83,7 @@ var fields = [
     fields.forEach(function(fieldId) {
         document.getElementById(fieldId).value = '';
     });
+
+});
 
 });
