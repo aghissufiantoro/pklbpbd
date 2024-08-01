@@ -20,7 +20,7 @@
         <div class="row">
             <div class="col-md-6">
 
-                <div class="mb-3">
+                <!-- <div class="mb-3">
                     <label for="nama_staff" class="form-label">Nama</label>
                     <select class="form-select select2" id="nama_staff" name="nama_staff" required>
                         <option value="">--- Pilih Nama ---</option>
@@ -28,7 +28,7 @@
                             <option value="<?= $staff->nama_staff ?>"><?= $staff->nama_staff ?></option>
                         <?php endforeach; ?>
                     </select>
-                </div>
+                </div> -->
 
                 <div class="mb-3">
                     <label class="form-label">Tanggal Kegiatan</label>
@@ -55,29 +55,27 @@
                 </div>
 
                 <div class="mb-3">
-                    <label class="form-label">Penanggung Jawab</label>
-                    <select class="form-select" required name="penanggung_jawab" id="penanggung_jawab">
+                    <label class="form-label">Bidang</label>
+                    <select class="form-select" required name="bidang" id="bidang">
                         <option value="">--- Pilih Salah Satu ---</option>
-                        <option <?php if ($tugas_harian->penanggung_jawab == "Kepala Badan"){echo "selected";} ?> value="Kepala Badan">Kepala Badan</option>
-                        <option <?php if ($tugas_harian->penanggung_jawab == "Sekretaris Badan"){echo "selected";} ?> value="Sekretaris Badan">Sekretaris Badan</option>
-                        <option <?php if ($tugas_harian->penanggung_jawab == "Kasubbag Keuangan"){echo "selected";} ?> value="Kasubbag Keuangan">Kasubbag Keuangan</option>
-                        <option <?php if ($tugas_harian->penanggung_jawab == "Kabid PK"){echo "selected";} ?> value="Kabid PK">Kabid PK</option>
-                        <option <?php if ($tugas_harian->penanggung_jawab == "Kabid Darlog RR"){echo "selected";} ?> value="Kabid Darlog RR">Kabid Darlog RR</option>
-                        <option <?php if ($tugas_harian->penanggung_jawab == "Lain-lain"){echo "selected";} ?> value="Lain-lain">Lain-lain</option>
+                        <option <?php if ($tugas_harian->bidang == "Kedaruratan Logistik Rehabilitasi dan Rekonstruksi"){echo "selected";} ?> value="Kedaruratan Logistik Rehabilitasi dan Rekonstruksi">Kedaruratan Logistik Rehabilitasi dan Rekonstruksi</option>
+                        <option <?php if ($tugas_harian->bidang == "Pencegahan dan Kesiapsiagaan"){echo "selected";} ?> value="Pencegahan dan Kesiapsiagaan">Pencegahan dan Kesiapsiagaan</option>
+                        <option <?php if ($tugas_harian->bidang == "Sekretariat"){echo "selected";} ?> value="Sekretariat">Sekretariat</option>
                     </select>
                 </div>
 
-                <div class="mb-3" id="lain_lain_input" style="display: none;">
-                    <label class="form-label">Penanggung Jawab (Lain-lain)</label>
-                    <input type="text" class="form-control" name="penanggung_jawab_lain" id="penanggung_jawab_lain" autocomplete="off" placeholder="Isi penanggung jawab lain">
-                </div>
+                <!-- <div class="mb-3" id="lain_lain_input" style="display: none;">
+                    <label class="form-label">bidang (Lain-lain)</label>
+                    <input type="text" class="form-control" name="bidang_lain" id="bidang_lain" autocomplete="off" placeholder="Isi bidang lain">
+                </div> -->
 
-                <div class="mb-3">
+                <!-- <div class="mb-3">
                     <label class="form-label">Hasil Kegiatan</label>
                     <textarea class="form-control" name="hasil_kegiatan" value="<?= $tugas_harian->hasil_kegiatan ?>"></textarea>
-                </div>
-                <label class="form-label">Dokumentasi</label>
-                <input type="file" class="form-control" id="dokumentasi" name="dokumentasi[]" accept="image/*" multiple />
+                </div> -->
+                
+                <label class="form-label">Hasil Kegiatan</label>
+                <input type="file" class="form-control" id="hasil_kegiatan" name="hasil_kegiatan[]" accept="image/*" multiple />
 
             </div>
         </div>   
@@ -117,7 +115,7 @@ document.getElementById('nama_staff').addEventListener('change', function() {
     }, 5000);
 </script>
 <script>
-    document.getElementById('penanggung_jawab').addEventListener('change', function() {
+    document.getElementById('bidang').addEventListener('change', function() {
         var lainLainInput = document.getElementById('lain_lain_input');
         if (this.value === 'Lain-lain') {
             lainLainInput.style.display = 'block';
