@@ -83,7 +83,7 @@
     }
 
     .rating .star.active {
-        opacity: 0;
+        opacity: 1;
         animation: animate .5s calc(var(--i) * .1s) ease-in-out forwards;
     }
 
