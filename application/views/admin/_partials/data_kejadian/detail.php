@@ -24,8 +24,9 @@ if ($kejadian == 'Kecelakaan Lalu Lintas') {
 }
 
 // Query to get the korban kejadian based on the dynamically determined table
-$db_korban_kejadian = $this->db->query("SELECT * FROM $table WHERE id_kejadian = ?", array($id_kejadian))->row();
-if ($db_data_kejadian ) {
+$db_korban_kejadian = $this->db->query("SELECT * FROM $table WHERE id_kejadian = ?", array($id_kejadian))->result();
+
+if ($db_data_kejadian) {
 ?>
 <div class="row">
     <div class="col-md-12 grid-margin stretch-card">
@@ -50,22 +51,42 @@ if ($db_data_kejadian ) {
                     <div class="card-body">
                         <p class="text-muted mb-3">Keterangan Subjek yang Terlibat</p>
                         <div class="table-responsive">
-                        <table id="dataTableExample" class="table">
+                            <?php if (!empty($db_korban_kejadian)): ?>
+                                <table id="dataTableExample" class="table">
                                     <thead>
                                         <tr>
-                                            <?php foreach ($db_korban_kejadian as $column => $value): ?>
-                                                <th><?= $column ?></th>
+                                            <?php foreach (array_keys((array)$db_korban_kejadian[0]) as $column): ?>
+                                                <th><?= htmlspecialchars($column) ?></th>
                                             <?php endforeach; ?>
+                                            <th>Aksi</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr>
-                                            <?php foreach ($db_korban_kejadian as $column => $value): ?>
-                                                <td><?= $value ?></td>
-                                            <?php endforeach; ?>
-                                        </tr>
+                                    <?php foreach ($db_korban_kejadian as $korban): ?>
+    <?php
+    $total = count((array)$korban); // Total count of items in the inner array
+    $current = 0; // Initialize current iteration
+    ?>
+    <tr>
+        <?php foreach ((array)$korban as $value): ?>
+            <?php $current++; // Increment current iteration ?>
+            
+            <?php if ($current == $total): // Check if it's the last iteration ?>
+                <td class="d-flex justify-content-center align-items-center image-container">
+                    <img width="10000px" height="500" class="img-fluid rounded shadow" src="<?= htmlspecialchars(base_url($value)) ?>" alt="Image">
+                </td>
+            <?php else:?>
+                <td><?= htmlspecialchars($value) ?></td>
+            <?php endif; ?>
+        <?php endforeach; ?>
+    </tr>
+<?php endforeach; ?>
+
                                     </tbody>
                                 </table>
+                            <?php else: ?>
+                                <p>Tidak ada data korban</p>
+                            <?php endif; ?>
                         </div>
                     </div>
 
@@ -74,14 +95,13 @@ if ($db_data_kejadian ) {
                             <ol>
                                 <li>Kronologi: <?= $db_data_kejadian->kronologi ?></li>
                                 <li>Catatan Tindaklanjut: <?= $db_data_kejadian->tindak_lanjut ?></li>
-                                <li>Petugas Lapangan: <?= $db_data_kejadian->petugas_lokasi ?></li>
                                 <li>Lokasi Kejadian: <?= $db_data_kejadian->lokasi_kejadian ?></li>
                                 <li>Alamat Lengkap Kejadian: <?= $db_data_kejadian->alamat_kejadian ?></li>
                                 <li class="dokumentasi-section">Dokumentasi:</li>
                                 <?php if ($db_data_kejadian->dokumentasi): ?>
-                                    <li>
-                                        <img src="<?= base_url('upload/dokumentasi/' . $db_data_kejadian->dokumentasi) ?>" alt="Dokumentasi Kejadian">
-                                    </li>
+                                    
+                                        <img src="<?= base_url($db_data_kejadian->dokumentasi) ?>" alt="Dokumentasi Kejadian">
+                                 
                                 <?php else: ?>
                                     <li>Tidak ada dokumentasi.</li>
                                 <?php endif; ?>

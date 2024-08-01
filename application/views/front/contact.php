@@ -45,7 +45,7 @@
                       <span>Jl. Jemursari Timur II No. 2, Surabaya 60237</span>
                   </div>
               </div>
-              <div class="d-flex border-bottom pb-3 mb-3">
+              <!-- <div class="d-flex border-bottom pb-3 mb-3">
                   <div class="flex-shrink-0 btn-square bg-primary rounded-circle">
                       <a href="https://wa.me/62811321323" target="_blank" rel="noreferrer"><i class="bi bi-whatsapp text-white"></i></a>
                   </div>
@@ -53,43 +53,43 @@
                       <h6 class="mb-2">WhatsApp</h6>
                       <span>0811 3213 23</span>
                   </div>
-              </div>
+              </div> -->
               <div class="d-flex border-bottom pb-3 mb-3">
                   <div class="flex-shrink-0 btn-square bg-primary rounded-circle">
-                      <a href="tel:+62318484813"><i class="bi bi-telephone-fill text-white"></i></a>
+                      <a href="tel:+623199860466"><i class="bi bi-telephone-fill text-white"></i></a>
                   </div>
                   <div class="ms-4">
                       <h6 class="mb-2">Telepon</h6>
-                      <span>031 8484813</span>
+                      <span>(031) 99860466</span>
                   </div>
               </div>
               <div class="d-flex border-bottom pb-3 mb-3">
                   <div class="flex-shrink-0 btn-square bg-primary rounded-circle">
-                      <a href="mailto:pertamina.ubpn3@gmail.com" target="_blank" rel="noreferrer"><i class="bi bi-envelope-fill text-white"></i></a>
+                      <a href="mailto:bpbdsurabaya@gmail.com" target="_blank" rel="noreferrer"><i class="bi bi-envelope-fill text-white"></i></a>
                   </div>
                   <div class="ms-4">
                       <h6 class="mb-2">Email</h6>
-                      <span>pertamina.ubpn3@gmail.com</span>
+                      <span>bpbdsurabaya@gmail.com</span>
                   </div>
               </div>
               <div class="d-flex border-bottom pb-3 mb-3">
                   <div class="flex-shrink-0 btn-square bg-primary rounded-circle">
-                      <a href="https://instagram.com/pertaminapatraniaga" target="_blank" rel="noreferrer"><i class="bi bi-instagram text-white"></i></a>
+                      <a href="https://instagram.com/bpbdsurabaya" target="_blank" rel="noreferrer"><i class="bi bi-instagram text-white"></i></a>
                   </div>
                   <div class="ms-4">
                       <h6 class="mb-2">Instagram</h6>
-                      <span>@pertaminapatraniaga</span>
+                      <span>@bpbdsurabaya</span>
                   </div>
               </div>
-              <div class="d-flex border-bottom pb-3 mb-3">
+              <!-- <div class="d-flex border-bottom pb-3 mb-3">
                   <div class="flex-shrink-0 btn-square bg-primary rounded-circle">
-                      <a href="https://www.facebook.com/pertaminapatraniaga" target="_blank" rel="noreferrer"><i class="bi bi-facebook text-white"></i></a>
+                      <a href="https://www.facebook.com/bpbdsurabaya" target="_blank" rel="noreferrer"><i class="bi bi-facebook text-white"></i></a>
                   </div>
                   <div class="ms-4">
                       <h6 class="mb-2">Facebook</h6>
-                      <span>@pertaminapatraniaga</span>
+                      <span>@bpbdsurabaya</span>
                   </div>
-              </div>
+              </div> -->
           </div>
         </div>
       </div>
@@ -104,5 +104,6 @@
     <a href="#" class="btn btn-lg btn-primary btn-lg-square rounded-circle back-to-top"><i class="bi bi-arrow-up"></i></a>
     <?php $this->load->view('front/_partials/js') ?>
     <?php $this->load->view('front/_partials/survey') ?>
+    
 </body>
 </html>

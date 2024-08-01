@@ -2,11 +2,18 @@
     <div class="col-md-12 grid-margin stretch-card">
         <div class="card">
             <div class="card-title">
-                <div style="margin: 20px;">
-                    <!-- Button to add new data -->
-                    <a href="<?= base_url("admin/stock_master/add") ?>">
-                        <button class="btn btn-primary btn-icon-text mb-md-0">Tambah Data</button>
-                    </a>
+                <div class="row">
+                    <div class="col-md-10">
+                        <div style="margin: 20px;">
+                            <!-- Button to add new data -->
+                            <a href="<?= base_url("admin/stock_master/add") ?>">
+                                <button class="btn btn-primary btn-icon-text mb-md-0">Tambah Data</button>
+                            </a>
+                        </div>
+                    </div>
+                    <!-- <div class="col-md-2">
+                        <a href="<?= site_url('admin/stock_master/laporan_logistik/') ?>" class="btn btn-outline-primary btn-xs"><i class='fal  fa-calculator'></i></a>
+                    </div> -->
                 </div>
             </div>
             <div class="card-body">
@@ -20,10 +27,7 @@
                                 <th width="50px">Kode Barang</th>
                                 <th width="90px">Nama Barang</th>
                                 <th width="30px">Kategori Barang</th>
-                                <th width="20px">Unit Barang</th>
-                                <th width="20px">Qty Masuk</th>
-                                <th width="20px">Qty Keluar</th>
-                                <th width="20px">Qty Rusak</th>
+                                <th width="20px">Satuan Barang</th>
                                 <th width="20px">Qty Tersedia</th>
                                 <th width="20px"></th>
                             </tr>
@@ -38,22 +42,24 @@
                                     <td><?= $res_stock->kode_barang ?></td>
                                     <td><?= $res_stock->nama_barang ?></td>
                                     <td><?= $res_stock->kategori_barang ?></td>
-                                    <td><?= $res_stock->unit_barang ?></td>
-                                    <td><?= $res_stock->qty_masuk ?></td>
-                                    <td><?= $res_stock->qty_keluar ?></td>
-                                    <td><?= $res_stock->qty_rusak ?></td>
+                                    <td><?= $res_stock->satuan_barang ?></td>
                                     <td><?= $res_stock->qty_tersedia ?></td>
                                     <td>
                                         <a href="<?= site_url('admin/stock_master/edit/' . $res_stock->kode_barang) ?>" class="btn btn-outline-primary btn-xs"><i class='fal fa-pencil'></i></a>
                                         <a data-bs-toggle="modal" data-bs-target="#deleteConfirm<?= $res_stock->kode_barang ?>" class="ms-3 btn btn-outline-danger btn-xs"><i class="fal fa-trash-alt"></i></a>
-                                        <a href="<?= site_url('admin/stock_master/edit_quantity/' . $res_stock->kode_barang) ?>" class="btn btn-outline-primary btn-xs"><i class='fal  fa-calculator'></i></a>
-                                        </td>
+                                    </td>
                                 </tr>
                             <?php
                             }
                             ?>
                         </tbody>
                     </table>
+                </div>
+                <div class="col-md-12 mt-4">
+                    <a href="<?= site_url("admin/stock_master/laporan_logistik/") ?>">
+                        <input class="btn btn-warning" type="button" value="Lihat Laporan">
+                    </a>
+                    <input class="btn btn-primary" type="submit" value="Cetak PDF">
                 </div>
             </div>
         </div>

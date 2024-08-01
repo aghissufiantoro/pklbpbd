@@ -1,15 +1,4 @@
-<?php
-if ($this->session->flashdata('success')) {
-?>
-  <div class="alert alert-success alert-dismissible fade show" role="alert">
-    <strong>SUKSES!</strong> Data Kejadian telah ditambahkan.
-    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="btn-close"></button>
-  </div>
-<?php
-}
-?>
-
-<div class="row">
+<div id="main-div" class="row">
   <div class="col-md-12 grid-margin stretch-card">
     <div class="card">
       <div class="card-body">
@@ -18,11 +7,11 @@ if ($this->session->flashdata('success')) {
         <form id="addForm" action="<?= base_url("admin/data_kejadian/add") ?>" method="post" enctype="multipart/form-data">
           <div class="row">
             <div class="col-md-15">
-              <div class="mb-3">
+              <div id="tanggal-icon" class="mb-3">
                 <label for="tanggal" class="form-label">Tanggal Kejadian</label>
                 <div class="input-group date datepicker" id="datePickerExample">
-                  <input type="text" class="form-control" name="tanggal" required autocomplete="off">
-                  <span class="input-group-text input-group-addon"><i data-feather="calendar"></i></span>
+                  <input required id="tanggal" type="text" class="form-control" name="tanggal" required autocomplete="off">
+                  <span  class="input-group-text input-group-addon"><i data-feather="calendar"></i></span>
                 </div>
               </div>
             </div>
@@ -32,7 +21,8 @@ if ($this->session->flashdata('success')) {
             <div class="col-md-15">
               <div class="mb-3">
                 <label for="id_kejadian" class="form-label">ID KEJADIAN</label>
-                <input id="id_kejadian" class="form-control" name="id_kejadian" type="text" readonly>
+                <input required id="id_kejadian" class="form-control" name="id_kejadian" type="text"  value="" readonly>
+              
               </div>
             </div>
           </div>
@@ -59,13 +49,13 @@ if ($this->session->flashdata('success')) {
             <div class="col-md-3">
               <div class="mb-3">
                 <label for="waktu_berita" class="form-label">Waktu Berita</label>
-                <input type="time" class="form-control" name="waktu_berita" id="waktu_berita" required autocomplete="off">
+                <input required type="time" class="form-control" name="waktu_berita" id="waktu_berita" required autocomplete="off">
               </div>
             </div>
             <div class="col-md-3">
               <div class="mb-3">
                 <label for="waktu_tiba" class="form-label">Waktu Tiba</label>
-                <input type="time" class="form-control" name="waktu_tiba" id="waktu_tiba" required autocomplete="off">
+                <input required type="time" class="form-control" name="waktu_tiba" id="waktu_tiba" required autocomplete="off">
               </div>
             </div>
           </div>
@@ -76,48 +66,44 @@ if ($this->session->flashdata('success')) {
                 <label class="form-label" for="lokasi_kejadian">Lokasi Kejadian</label>
                 <select class="form-select" id="lokasi_kejadian" name="lokasi_kejadian" data-width="100%">
                   <option value="">--- Pilih Lokasi Kejadian ---</option>
-                  <option value="Surabaya Pusat">Surabaya Pusat</option>
-                  <option value="Surabaya Timur">Surabaya Timur</option>
-                  <option value="Surabaya Barat">Surabaya Barat</option>
-                  <option value="Surabaya Selatan">Surabaya Selatan</option>
-                  <option value="Surabaya Utara">Surabaya Utara</option>
+                  <?php
+                  $ql = $this->db->query('SELECT wilayah FROM wilayah_2022 GROUP BY wilayah')->result();
+                  foreach ($ql as $qz) {
+                  ?>
+                    <option value="<?= $qz->wilayah ?>"><?= $qz->wilayah ?></option>
+                  <?php
+                  }
+                  ?>
                 </select>
               </div>
             </div>
           </div>
 
           <div class="row">
-            <div class="col-md-5">
+            <div class="col-md-12">
               <div class="mb-3">
                 <label for="alamat_kejadian" class="form-label">Alamat Kejadian</label>
-                <input id="alamat_kejadian" class="form-control" name="alamat_kejadian" type="text">
+                <input required id="alamat_kejadian" class="form-control" name="alamat_kejadian" type="text">
               </div>
             </div>
-            <div class="mb-3">
+            <!-- <div class="mb-3">
               <label class="form-label" for="kabkota_kejadian">Kota</label>
               <select class="js-example-basic-single form-select" id="kabkota_kejadian" name="kabkota_kejadian" data-width="100%" required>
-                <option value="">--- Pilih Kota ---</option>
-                <?php
-                $ql = $this->db->query('SELECT kode,nama FROM wilayah_2022 WHERE kode="35.78" ORDER BY nama')->result();
-                foreach ($ql as $qz) {
-                ?>
-                  <option value="<?= $qz->kode ?>"><?= $qz->nama ?></option>
-                <?php
-                }
-                ?>
+                <option value="surabaya">SURABAYA</option>
               </select>
-            </div>
+            </div> -->
             <div class="mb-3">
               <label class="form-label" for="kecamatan_kejadian">Kecamatan</label>
               <select class="js-example-basic-single form-select" id="kecamatan_kejadian" name="kecamatan_kejadian" data-width="100%" required>
-                <option value="">--- Pilih Kota Terlebih Dahulu ---</option>
-                
+
+                <option value="">--- Mohon Pilih Kecamatan ---</option>
+
               </select>
             </div>
-            <div class="mb-3">
+            <div class="mb-3" id="kecamatan">
               <label class="form-label" for="kelurahan_kejadian">Kelurahan / Desa</label>
               <select class="js-example-basic-single form-select" id="kelurahan_kejadian" name="kelurahan_kejadian" data-width="100%" required>
-                <option value="">--- Pilih Kecamatan Terlebih Dahulu ---</option>
+                <option value="">--- Pilih Kelurahan ---</option>
               </select>
             </div>
           </div>
@@ -126,7 +112,7 @@ if ($this->session->flashdata('success')) {
             <div class="col-md-15">
               <div class="mb-3">
                 <label for="kronologi" class="form-label">Kronologi</label>
-                <input id="kronologi" class="form-control" name="kronologi" type="text">
+                <input required id="kronologi" class="form-control" name="kronologi" type="text">
               </div>
             </div>
           </div>
@@ -135,12 +121,12 @@ if ($this->session->flashdata('success')) {
             <div class="col-md-15">
               <div class="mb-3">
                 <label for="tindak_lanjut" class="form-label">Tindak Lanjut</label>
-                <input id="tindak_lanjut" class="form-control" name="tindak_lanjut" type="text">
+                <input required id="tindak_lanjut" class="form-control" name="tindak_lanjut" type="text">
               </div>
             </div>
           </div>
 
-          <div class="row">
+          <!-- <div class="row">
             <div class="col-md-15">
               <div class="mb-3">
                 <label for="petugas_lokasi" class="form-label">Petugas</label>
@@ -149,73 +135,32 @@ if ($this->session->flashdata('success')) {
                 <input id="petugas_lokasi" class="form-control" name="petugas_lokasi" type="text">
               </div>
             </div>
-          </div>
+          </div> -->
 
           <div class="mb-3">
             <label for="foto_artikel" class="form-label">Foto Diri</label>
-            <input type="file" class="form-control" required name="dokumentasi" accept="image/*" />
+            <input id="dokumentasi" type="file" class="form-control" required name="dokumentasi" accept="image/*" />
           </div>
-
-          <input type="submit" value="Submit" class="btn btn-primary" onclick="handleSubmitAndRedirect(event)">
+            
+          <div id="conditional-btn">
+         
+          </div>
         </form>
+        <div id="partialContainer"></div>
       </div>
     </div>
   </div>
 </div>
 
-<script>
-  function handleSubmitAndRedirect(event) {
-    event.preventDefault(); // Mencegah form dikirim secara default
+<script src="<?php echo base_url() ?>/assets_admin/js/dataKejadianJs/dataKejadian.js"></script>
 
-    const kejadian = document.getElementById('kejadian').value;
-
-    let nextFormUrl = '';
-
-    switch (kejadian) {
-      case 'Kecelakaan Lalu Lintas':
-        nextFormUrl = '<?= base_url("admin/data_kejadian/kecelakaan_lalu_lintas") ?>';
-        break;
-      case 'Darurat Medis':
-        nextFormUrl = '<?= base_url("admin/data_kejadian/darurat_medis") ?>';
-        break;
-      case 'Kebakaran':
-        nextFormUrl = '<?= base_url("admin/data_kejadian/kebakaran") ?>';
-        break;
-      case 'Pohon Tumbang':
-        nextFormUrl = '<?= base_url("admin/data_kejadian/pohon_tumbang") ?>';
-        break;
-      case 'Penemuan Jenazah':
-        nextFormUrl = '<?= base_url("admin/data_kejadian/penemuan_jenazah") ?>';
-        break;
-      case 'Orang Tenggelam':
-        nextFormUrl = '<?= base_url("admin/data_kejadian/orang_tenggelam") ?>';
-        break;
-      case 'Lainnya':
-        nextFormUrl = '<?= base_url("admin/data_kejadian/lainnya") ?>';
-        break;
-      default:
-        alert('Pilih kejadian terlebih dahulu.');
-        return;
-    }
-
-    // Kirim form menggunakan JavaScript
-    const form = document.getElementById('addForm');
-    const formData = new FormData(form);
-
-    fetch(form.action, {
-        method: 'POST',
-        body: formData
-      })
-      .then(response => {
-        if (response.ok) {
-          window.location.href = nextFormUrl; // Redirect jika berhasil
-        } else {
-          alert('Gagal mengirim data.'); // Tampilkan pesan jika gagal
-        }
-      })
-      .catch(error => {
-        console.error('Error:', error);
-        alert('Terjadi kesalahan saat mengirim data.');
-      });
-  }
-</script>
+<style>
+  .alert-container {
+  position: fixed;
+  top: 15%;
+  left: 57%;
+  transform: translate(-50%, -50%);
+  width: auto;
+  z-index: 1050;
+}
+  </style>

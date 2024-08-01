@@ -130,10 +130,10 @@ class View extends CI_Controller
     {
         $this->load->view("front/laporan_tahunan");
     }
-    public function laporan()
-    {
-        $this->load->view("front/laporan");
-    }
+    // public function laporan()
+    // {
+    //     $this->load->view("front/laporan");
+    // }
 
     public function laporan_keuangan()
     {
@@ -212,11 +212,13 @@ class View extends CI_Controller
 
     public function get_daerah()
     {
+        // $data = $_POST['data'];
+        // $id   = $_POST['id'];
         $data = $_POST['data'];
-        $id   = $_POST['id'];
+        $value_wilayah = $_POST['wilayah'];
 
-        $n    = strlen($id);
-        $m    = ($n==2?5:($n==5?8:13));
+        // $n    = strlen($id);
+        // $m    = ($n==2?5:($n==5?8:13));
         // $wil=($n==2?'Kota/Kab':($n==5?'Kecamatan':'Desa/Kelurahan'));
 
         if ($data == "kabupaten")
@@ -227,11 +229,11 @@ class View extends CI_Controller
                 <select class="single-select" id="form_kab" name="kota_kab_survey" required>
                     <option value="">--- Pilih Kabupaten / Kota ---</option>
                     <?php
-                        $daerah = $this->db->query("SELECT kode,nama FROM wilayah_2022 WHERE LEFT(kode,'$n')='$id' AND CHAR_LENGTH(kode)=$m ORDER BY nama")->result();
+                        $daerah = $this->db->query("SELECT wilayah,kab_kota FROM wilayah_2022 WHERE wilayah='$value_wilayah' ORDER BY kab_kota")->result();
                         foreach ($daerah as $d)
                         {
                             ?>
-                            <option value="<?= $d->kode ?>"><?= $d->nama ?></option>
+                            <option value="<?= $d->wilayah ?>"><?= $d->kab_kota ?></option>
                             <?php
                         }
                     ?>
@@ -247,11 +249,11 @@ class View extends CI_Controller
                 <select class="single-select" id="form_kec" name="kec_survey" required>
                     <option value="">--- Pilih Kecamatan ---</option>
                     <?php
-                        $daerah = $this->db->query("SELECT kode,nama FROM wilayah_2022 WHERE LEFT(kode,'$n')='$id' AND CHAR_LENGTH(kode)=$m ORDER BY nama")->result();
+                        $daerah = $this->db->query("SELECT wilayah,kecamatan FROM wilayah_2022 WHERE wilayah='$value_wilayah' ORDER BY nama")->result();
                         foreach ($daerah as $d)
                         {
                             ?>
-                            <option value="<?= $d->kode ?>"><?= $d->nama ?></option>
+                            <option value="<?= $d->wilayah ?>"><?= $d->kecamatan ?></option>
                             <?php
                         }
                     ?>
@@ -267,11 +269,11 @@ class View extends CI_Controller
                 <select class="single-select" id="form_kel" name="kel_survey" required>
                     <option value="">--- Pilih Kelurahan / Desa ---</option>
                     <?php
-                        $daerah = $this->db->query("SELECT kode,nama FROM wilayah_2022 WHERE LEFT(kode,'$n')='$id' AND CHAR_LENGTH(kode)=$m ORDER BY nama")->result();
+                        $daerah = $this->db->query("SELECT wilayah,desa FROM wilayah_2022 WHERE wilayah='$value_wilayah' ORDER BY nama")->result();
                         foreach ($daerah as $d)
                         {
                             ?>
-                            <option value="<?= $d->kode ?>"><?= $d->nama ?></option>
+                            <option value="<?= $d->wilayah ?>"><?= $d->desa ?></option>
                             <?php
                         }
                     ?>
