@@ -35,7 +35,7 @@
           <div class="col-md-12">
             <div class="mb-3">
               <label for="nama_barang" class="form-label">Nama Barang</label>
-              <input id="nama_barang" class="form-control" name="nama_barang" type="text">
+              <input id="nama_barang" class="form-control" name="nama_barang" type="text" required>
             </div>
           </div>
           <div class="col-md-12">
@@ -73,12 +73,17 @@
             </div>
           </div>
           <div class="col-md-12">
-            <div class="col-md-12">
+            <div class="mb-3">
+              <label for="qty_tersedia" class="form-label">Kuantitas Awal</label>
+              <input id="qty_tersedia" class="form-control" name="qty_tersedia" type="text" required>
             </div>
+          </div>
+          <div class="col-md-12">
             <a href="<?= base_url("admin/stock_master") ?>">
               <input class="btn btn-warning" type="button" value="Kembali">
             </a>
             <input class="btn btn-primary" type="submit" value="Submit">
+          </div>
         </form>
       </div>
     </div>
@@ -86,16 +91,16 @@
 </div>
 <style>
   .alert-container {
-  position: fixed;
-  top: 15%;
-  left: 57%;
-  transform: translate(-50%, -50%);
-  width: auto;
-  z-index: 1050;
-}
+    position: fixed;
+    top: 15%;
+    left: 57%;
+    transform: translate(-50%, -50%);
+    width: auto;
+    z-index: 1050;
+  }
 
-#success-alert {
-  margin-bottom: 0; /* Remove bottom margin to prevent extra space */
-}
-
-  </style>
+  #success-alert {
+    margin-bottom: 0;
+    /* Remove bottom margin to prevent extra space */
+  }
+</style>

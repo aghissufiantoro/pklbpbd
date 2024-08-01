@@ -1,9 +1,8 @@
-
-<?php if ($this->session->flashdata('success')): ?>
-    <div class="alert alert-success">
-        <?= $this->session->flashdata('success') ?>
-    </div>
-<?php endif; ?> 
+<?php if ($this->session->flashdata('success')) : ?>
+  <div class="alert alert-success">
+    <?= $this->session->flashdata('success') ?>
+  </div>
+<?php endif; ?>
 
 
 <div class="row">
@@ -24,17 +23,17 @@
               </div>
             </div>
             <div class="col-md-4">
-        <div class="mb-3">
-            <label for="nama_barang" class="form-label">Nama Barang</label>
-            <select class="form-select" id="nama_barang" name="nama_barang" required>
-                <option value="">--- Pilih Nama Barang ---</option>
-                <?php foreach ($barang_options as $barang): ?>
+              <div class="mb-3">
+                <label for="nama_barang" class="form-label">Nama Barang</label>
+                <select class="form-select" id="nama_barang" name="nama_barang" required>
+                  <option value="">--- Pilih Nama Barang ---</option>
+                  <?php foreach ($barang_options as $barang) : ?>
                     <option value="<?= $barang->nama_barang ?>"><?= $barang->nama_barang ?></option>
-                <?php endforeach; ?>
-            </select>
-        </div>
-    </div>
-    <input type="hidden" id="kode_barang" name="kode_barang" value="">
+                  <?php endforeach; ?>
+                </select>
+              </div>
+            </div>
+            <input type="hidden" id="kode_barang" name="kode_barang" value="">
             <div class="col-md-4">
               <div class="mb-3">
                 <label class="form-label" for="status_barang">Status Barang</label>
@@ -60,16 +59,16 @@
           </div>
 
           <div class="row">
-          <div class="col-md-2">
-          <div class="mb-3">
-                                <label for="id_kejadian" class="form-label">ID Kejadian</label>
-                                <select class="form-select" id="id_kejadian" name="id_kejadian" required>
-                                    <option value="">--- Pilih ID Kejadian ---</option>
-                                    <?php foreach ($kejadian_options as $kejadian): ?>
-                                        <option value="<?= $kejadian->id_kejadian ?>"><?= $kejadian->id_kejadian ?></option>
-                                    <?php endforeach; ?>
-                                </select>
-                            </div>
+            <div class="col-md-2">
+              <div class="mb-3">
+                <label for="id_kejadian" class="form-label">ID Kejadian</label>
+                <select class="form-select" id="id_kejadian" name="id_kejadian" required>
+                  <option value="">--- Pilih ID Kejadian ---</option>
+                  <?php foreach ($kejadian_options as $kejadian) : ?>
+                    <option value="<?= $kejadian->id_kejadian ?>"><?= $kejadian->id_kejadian ?></option>
+                  <?php endforeach; ?>
+                </select>
+              </div>
             </div>
             <div class="col-md-5">
               <div class="mb-3">
@@ -77,7 +76,7 @@
                 <input id="lokasi_diterima" class="form-control" name="lokasi_diterima" type="text" required>
               </div>
             </div>
-             <div class="col-md-5">
+            <div class="col-md-5">
               <div class="mb-3">
                 <label for="penerima_barang" class="form-label">Penerima Barang</label>
                 <input id="penerima_barang" class="form-control" name="penerima_barang" type="text" required>
@@ -111,7 +110,7 @@
               </div>
             </div>
           </div>
-          
+
           <div class="col-md-12">
             <div class="mb-3">
               <label for="keterangan_barang" class="form-label">Keterangan Barang</label>
@@ -130,74 +129,74 @@
 </div>
 
 <script>
-document.addEventListener("DOMContentLoaded", function() {
+  document.addEventListener("DOMContentLoaded", function() {
     const tambahBtn = document.getElementById("tambahBtn");
     const kurangBtn = document.getElementById("kurangBtn");
     const jmlBrgInput = document.getElementById("qty_barang");
 
     tambahBtn.addEventListener("click", function() {
-        incrementValue();
+      incrementValue();
     });
 
     kurangBtn.addEventListener("click", function() {
-        decrementValue();
+      decrementValue();
     });
 
     function incrementValue() {
-        let currentValue = parseInt(jmlBrgInput.value);
-        if (!isNaN(currentValue)) {
-            jmlBrgInput.value = currentValue + 1;
-        } else {
-            jmlBrgInput.value = 1;
-        }
+      let currentValue = parseInt(jmlBrgInput.value);
+      if (!isNaN(currentValue)) {
+        jmlBrgInput.value = currentValue + 1;
+      } else {
+        jmlBrgInput.value = 1;
+      }
     }
 
     function decrementValue() {
-        let currentValue = parseInt(jmlBrgInput.value);
-        if (!isNaN(currentValue) && currentValue > 0) {
-            jmlBrgInput.value = currentValue - 1;
-        } else {
-            jmlBrgInput.value = 0;
-        }
+      let currentValue = parseInt(jmlBrgInput.value);
+      if (!isNaN(currentValue) && currentValue > 0) {
+        jmlBrgInput.value = currentValue - 1;
+      } else {
+        jmlBrgInput.value = 0;
+      }
     }
 
     // Memastikan input hanya menerima angka
     jmlBrgInput.addEventListener("input", function() {
-        this.value = this.value.replace(/[^0-9]/g, '');
+      this.value = this.value.replace(/[^0-9]/g, '');
     });
-});
+  });
 
-// Membuat event listener untuk input RT dan RW
-document.getElementById("rt").addEventListener("input", function(event) {
+  // Membuat event listener untuk input RT dan RW
+  document.getElementById("rt").addEventListener("input", function(event) {
     // Hapus karakter non-angka dari nilai input
     this.value = this.value.replace(/\D/g, '');
-});
+  });
 
-document.getElementById("rw").addEventListener("input", function(event) {
+  document.getElementById("rw").addEventListener("input", function(event) {
     // Hapus karakter non-angka dari nilai input
     this.value = this.value.replace(/\D/g, '');
-});
+  });
 
-document.addEventListener("DOMContentLoaded", function() {
+  document.addEventListener("DOMContentLoaded", function() {
     setTimeout(function() {
-        const alerts = document.querySelectorAll('.alert');
-        alerts.forEach(alert => {
-            alert.style.transition = 'opacity 1s';
-            alert.style.opacity = '0';
-            setTimeout(() => alert.remove(), 1000);
-        });
+      const alerts = document.querySelectorAll('.alert');
+      alerts.forEach(alert => {
+        alert.style.transition = 'opacity 1s';
+        alert.style.opacity = '0';
+        setTimeout(() => alert.remove(), 1000);
+      });
     }, 2500); // 5 seconds
-});
+  });
 
-document.getElementById('nama_barang').addEventListener('change', function() {
+  document.getElementById('nama_barang').addEventListener('change', function() {
     var selectedNamaBarang = this.value;
-    
+
     // Assuming you have a map of nama_barang to kode_barang
     var barangMap = <?php echo json_encode(array_column($barang_options, 'kode_barang', 'nama_barang')); ?>;
     document.getElementById('kode_barang').value = barangMap[selectedNamaBarang] || '';
-});
+  });
 
-document.getElementById('addForm').addEventListener('submit', function(event) {
+  document.getElementById('addForm').addEventListener('submit', function(event) {
     var qty_barang = parseInt(document.getElementById('qty_barang').value);
     var kode_barang = document.getElementById('kode_barang').value;
 
@@ -207,8 +206,8 @@ document.getElementById('addForm').addEventListener('submit', function(event) {
 
     // Check if the quantity is sufficient
     if (document.getElementById('status_barang').value === 'Keluar' && qty_barang > availableQty) {
-        event.preventDefault(); // Prevent form submission
-        alert('Jumlah barang tidak cukup, yang tersedia adalah : ' + availableQty);
+      event.preventDefault(); // Prevent form submission
+      alert('Jumlah barang tidak cukup, yang tersedia adalah : ' + availableQty);
     }
-});
+  });
 </script>
