@@ -74,7 +74,7 @@
         align-items: center;
         grid-gap: .5rem;
         font-size: 2rem;
-        color: #ecc739;
+        color: black;
         margin-bottom: 2rem;
     }
 
@@ -84,6 +84,7 @@
 
     .rating .star.active {
         opacity: 1;
+        color: orange;
         animation: animate .5s calc(var(--i) * .1s) ease-in-out forwards;
     }
 

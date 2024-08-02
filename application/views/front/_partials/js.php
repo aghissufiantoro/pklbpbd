@@ -87,13 +87,15 @@
         const dontShowAgain = sessionStorage.getItem('dontShowReviewPopup');
         const lastShownTime = sessionStorage.getItem('lastReviewPopupTime');
         const currentTime = new Date().getTime();
-        const fiveMinutes = 5 * 60 * 1000; // 5 minutes in milliseconds
+        // const fiveMinutes = 5 * 60 * 1000; // 5 minutes in milliseconds
+        const fiveMinutes = 1000;
 
         if (!dontShowAgain && (!lastShownTime || (currentTime - lastShownTime > fiveMinutes))) {
             setTimeout(function() {
                 showPopup();
                 sessionStorage.setItem('lastReviewPopupTime', new Date().getTime()); // Set the current time as the last shown time
-            }, 5 * 60 * 1000); // Show popup after 1 second (1000 milliseconds)
+            // }, 5 * 60 * 1000); // Show popup after 1 second (1000 milliseconds)
+        },1000);
         }
     });
 
