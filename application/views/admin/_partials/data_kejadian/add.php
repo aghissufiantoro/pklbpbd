@@ -163,9 +163,4 @@
   width: auto;
   z-index: 1050;
 }
-
-#success-alert {
-  margin-bottom: 0; /* Remove bottom margin to prevent extra space */
-}
-
   </style>
