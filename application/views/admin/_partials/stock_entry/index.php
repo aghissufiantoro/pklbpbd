@@ -17,7 +17,7 @@
       </div>
       <div class="card-body">
         <h6 class="card-title">Data logistik BPBD Kota Surabaya</h6>
-        <p class="text-muted mb-3">Data berisi data logistik yang ada di BPBD Kota Surabaya</p>
+        <p class="text-muted mb-3">Data logistik yang keluar dari  BPBD Kota Surabaya</p>
         <div class="table-responsive">
           <table id="dataTableExample" class="table">
             <thead>
@@ -29,7 +29,6 @@
                 <th width="90px">Nama Barang</th>
                 <th width="30px">Status barang</th>
                 <th width="20px">Quantity Awal</th>
-                <th width="20px">Quantity Masuk</th>
                 <th width="20px">Quantity Keluar</th>
                 <th width="20px">Quantity Tersedia</th>
                 <th width="20px">Penerima Barang</th>
@@ -58,7 +57,6 @@
                     <td><?= $res_data_entry_sembako->nama_barang ?></td>
                     <td><?= $res_data_entry_sembako->status_barang ?></td>
                     <td><?= $res_data_entry_sembako->qty_awal ?></td>
-                    <td><?= $res_data_entry_sembako->qty_masuk ?></td>
                     <td><?= $res_data_entry_sembako->qty_keluar ?></td>
                     <td><?= $res_data_entry_sembako->qty_tersedia ?></td>
                     <td><?= $res_data_entry_sembako->penerima_barang ?></td>
