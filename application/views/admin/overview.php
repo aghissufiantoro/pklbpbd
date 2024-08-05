@@ -32,7 +32,7 @@
                             </div>
                         </div>
                         <div class="card-footer d-flex justify-content-between">
-                            <a class="small text-white stretched-link" href="http://localhost/bpbd/admin/artikel">View Details</a>
+                            <a class="small text-white stretched-link" href="http://localhost:8083/bpbd/admin/artikel">View Details</a>
                             <div class="small text-white"><i class="fas fa-angle-right"></i></div>
                         </div>
                     </div>
@@ -46,7 +46,7 @@
                             </div>
                         </div>
                         <div class="card-footer d-flex justify-content-between">
-                            <a class="small text-white stretched-link" href="http://localhost/bpbd/admin/pegawai">View Details</a>
+                            <a class="small text-white stretched-link" href="http://localhost:8083/bpbd/admin/pegawai">View Details</a>
                             <div class="small text-white"><i class="fas fa-angle-right"></i></div>
                         </div>
                     </div>
@@ -61,7 +61,7 @@
                             </div>
                         </div>
                         <div class="card-footer d-flex justify-content-between">
-                            <a class="small text-white stretched-link" href="http://localhost/bpbd/admin/perpus">View Details</a>
+                            <a class="small text-white stretched-link" href="http://localhost:8083/bpbd/admin/perpus">View Details</a>
                             <div class="small text-white"><i class="fas fa-angle-right"></i></div>
                         </div>
                     </div>
@@ -75,7 +75,7 @@
                             </div>
                         </div>
                         <div class="card-footer d-flex justify-content-between">
-                            <a class="small text-white stretched-link" href="http://localhost/bpbd/admin/kepala_opd">View Details</a>
+                            <a class="small text-white stretched-link" href="http://localhost:8083/bpbd/admin/kepala_opd">View Details</a>
                             <div class="small text-white"><i class="fas fa-angle-right"></i></div>
                         </div>
                     </div>
@@ -89,7 +89,7 @@
                             </div>
                         </div>
                         <div class="card-footer d-flex justify-content-between">
-                            <a class="small text-white stretched-link" href="http://localhost/bpbd/admin/lokasi_pos">View Details</a>
+                            <a class="small text-white stretched-link" href="http://localhost:8083/bpbd/admin/lokasi_pos">View Details</a>
                             <div class="small text-white"><i class="fas fa-angle-right"></i></div>
                         </div>
                     </div>

@@ -19,7 +19,6 @@
 
   <?php $this->load->view('front/_partials/page/edukasi') ?>
   <div style="width:100%;display:flex;flex-direction:column;gap:8px;min-height:635px;"><iframe src="https://quizizz.com/embed/quiz/661f23a1222011e2133dd9f2" title="Kebencanaan - Quizizz" style="flex:1;" frameBorder="0" allowfullscreen></iframe><a href="https://quizizz.com/admin?source=embedFrame" target="_blank">Explore more at Quizizz.</a></div>
-  <?php $this->load->view('front/_partials/breaking-news') ?>
   <?php $this->load->view('front/_partials/survey') ?>
 
   <?php $this->load->view('front/_partials/footer') ?>
