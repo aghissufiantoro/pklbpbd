@@ -10,7 +10,7 @@
         </div>
     </div>
     <div class="sidebar-body">
-        <ul class="nav color-black">
+        <ul class="nav">
             <li class="nav-item nav-category">Main</li>
             <li class="nav-item <?php echo ($this->uri->segment(2) == 'overview') ? 'active' : ''; ?>">
                 <a href="<?= base_url("admin/overview") ?>" class="nav-link">
