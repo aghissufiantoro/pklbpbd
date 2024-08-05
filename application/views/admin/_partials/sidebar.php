@@ -3,7 +3,7 @@
         <a href="#" class="sidebar-brand" style="font-size: 18px;">
             <span>BPBD </span>Kota Surabaya
         </a>
-        <div class="sidebar-toggler active">
+        <div class="sidebar-toggler not-active">
             <span></span>
             <span></span>
             <span></span>
@@ -178,7 +178,7 @@
                 } ?>>
                     <a href="<?= base_url('admin/dokumentasi_sinasini') ?>" class="nav-link ">
                         <i class="link-icon" data-feather="book-open"></i>
-                        <span class="link-title">Dokumentasi Sinasini</span>
+                        <span class="link-title">Dokumentasi</span>
                     </a>
                 </li>
                 <?php
