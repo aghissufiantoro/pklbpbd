@@ -7,9 +7,6 @@ class M_tugas_harian extends CI_Model
     public function rules_harian()
     {
         return [
-            // ['field' => 'nama_staff',
-            // 'label' => 'Nama Staff',
-            // 'rules' => 'required'],
 
             ['field' => 'tanggal',
             'label' => 'Tanggal',
@@ -30,11 +27,6 @@ class M_tugas_harian extends CI_Model
             ['field' => 'bidang',
             'label' => 'bidang',
             'rules' => 'required'],
-
-            // ['field' => 'hasil_kegiatan',
-            // 'label' => 'Hasil Kegiatan',
-            // 'rules' => 'required'],
-
             
         ];
     }
@@ -44,7 +36,6 @@ class M_tugas_harian extends CI_Model
         $post = $this->input->post();
 
         $this->id_tugas_harian  = $this->generate_id_tugas_harian($post['tanggal']);
-        // $this->nama_staff       = $post['nama_staff'];
         $this->tanggal          = $post['tanggal'];
         $this->waktu            = $post['waktu'];
         $this->lokasi           = $post['lokasi'];
@@ -53,7 +44,6 @@ class M_tugas_harian extends CI_Model
         if ($this->bidang === 'Lain-lain') {
             $this->bidang = $post['bidang_lain'];
         }
-        // $this->hasil_kegiatan   = $post['hasil_kegiatan'];
         $this->hasil_kegiatan      = $this->_uploadImage();
 
         $this->db->insert($this->_table, $this);
@@ -62,7 +52,6 @@ class M_tugas_harian extends CI_Model
     public function update($id)
     {
         $post = $this->input->post();
-        // $this->nama_staff       = $post["nama_staff"];
         $this->tanggal          = $post["tanggal"];
         $this->waktu            = $post["waktu"];
         $this->lokasi           = $post["lokasi"];
@@ -71,7 +60,6 @@ class M_tugas_harian extends CI_Model
         if ($this->bidang === 'Lain-lain') {
             $this->bidang = $post['bidang_lain'];
         }
-        // $this->hasil_kegiatan   = $post["hasil_kegiatan"];
         $this->hasil_kegiatan      = $this->_uploadImage();
 
         // Tambahkan debug output

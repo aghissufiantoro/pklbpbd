@@ -5,6 +5,6 @@
   </div>
 </div>
 
-<?php $this->load->view('front/_partials/pra-bencana') ?>
+<?php $this->load->view('front/_partials/pra-bencana2') ?>
 <!-- Page Header End -->
 
