@@ -3,14 +3,14 @@
         <a href="#" class="sidebar-brand" style="font-size: 18px;">
             <span>BPBD </span>Kota Surabaya
         </a>
-        <div class="sidebar-toggler not-active">
+        <div class="sidebar-toggler active">
             <span></span>
             <span></span>
             <span></span>
         </div>
     </div>
     <div class="sidebar-body">
-        <ul class="nav">
+        <ul class="nav color-black">
             <li class="nav-item nav-category">Main</li>
             <li class="nav-item <?php echo ($this->uri->segment(2) == 'overview') ? 'active' : ''; ?>">
                 <a href="<?= base_url("admin/overview") ?>" class="nav-link">
@@ -233,3 +233,4 @@
         dropdown.style.display = (dropdown.style.display == "block") ? "none" : "block";
     }
 </script>
+
