@@ -87,6 +87,20 @@
         animation: animate .5s calc(var(--i) * .1s) ease-in-out forwards;
     }
 
+    .star {
+        cursor: pointer;
+        color: gray;
+        font-size: 36px;
+    }
+    .star.outline {
+        color: transparent;
+        -webkit-text-stroke: 1px gold;
+    }
+    .star.filled {
+        color: gold;
+        -webkit-text-stroke: 0;
+    }
+
     @keyframes animate {
         0% {
             opacity: 0;
@@ -118,11 +132,11 @@
         <p>Tolong berikan review dan saran!</p>
         <div class="rating">
             <input type="hidden" name="rating" id="ratingValue">
-            <i class='bx bx-star star' onclick="setRating(1)"></i>
-            <i class='bx bx-star star' onclick="setRating(2)"></i>
-            <i class='bx bx-star star' onclick="setRating(3)"></i>
-            <i class='bx bx-star star' onclick="setRating(4)"></i>
-            <i class='bx bx-star star' onclick="setRating(5)"></i>
+            <i class='bx bxs-star star outline' onclick="setRating(1)"></i>
+            <i class='bx bxs-star star outline' onclick="setRating(2)"></i>
+            <i class='bx bxs-star star outline' onclick="setRating(3)"></i>
+            <i class='bx bxs-star star outline' onclick="setRating(4)"></i>
+            <i class='bx bxs-star star outline' onclick="setRating(5)"></i>
         </div>
         <input type="text" id="userName" placeholder="Nama (Max 20 Huruf)">
         <div id="nameError" class="error"></div>
@@ -136,12 +150,18 @@
 </div>
 
 <script>
-    function setRating(value) {
-        document.getElementById('ratingValue').value = value;
-        const stars = document.querySelectorAll('.rating .star');
+    function setRating(rating) {
+        const stars = document.querySelectorAll('.star');
         stars.forEach((star, index) => {
-            star.classList.toggle('active', index < value);
+            if (index < rating) {
+                star.classList.add('filled');
+                star.classList.remove('outline');
+            } else {
+                star.classList.add('outline');
+                star.classList.remove('filled');
+            }
         });
+        document.getElementById('ratingValue').value = rating;
     }
 
     function closePopup() {
