@@ -6,16 +6,6 @@
             <div class="col-md-6">
 
                 <div class="mb-3">
-                    <label for="nama_staff" class="form-label">Nama Staff</label>
-                    <select class="form-select select2" id="nama_staff" name="nama_staff" required>
-                        <option value="">--- Pilih Nama Staff ---</option>
-                        <?php foreach ($staff_options as $staff): ?>
-                            <option value="<?= $staff->nama_kontak_opd ?>"><?= $staff->nama_kontak_opd ?></option>
-                        <?php endforeach; ?>
-                    </select>
-                </div>
-
-                <div class="mb-3">
                     <label class="form-label">Tanggal Kegiatan</label>
                     <input type="date" class="form-control" id="datepicker" required name="tanggal" autocomplete="off">
                 </div>
@@ -42,31 +32,17 @@
                 </div>
 
                 <div class="mb-3">
-                    <label class="form-label">Penanggung Jawab</label>
-                    <select class="form-select" required name="penanggung_jawab" autocomplete="off"
-                    id="penanggung_jawab">
+                    <label class="form-label">Bidang</label>
+                    <select class="form-select" required name="bidang" autocomplete="off" id="bidang">
                         <option value="">--- Pilih Salah Satu ---</option>
-                        <option value="Kepala Badan">Kepala Badan</option>
-                        <option value="Sekretaris Badan">Sekretaris Badan</option>
-                        <option value="Kasubbag Keuangan">Kasubbag Keuangan</option>
-                        <option value="Kabid PK">Kabid PK</option>
-                        <option value="Kabid Darlog RR">Kabid Darlog RR</option>
-                        <option value="Lain-lain">Lain-lain</option>
+                        <option value="Kedaruratan Logistik Rehabilitasi dan Rekonstruksi">Kedaruratan Logistik Rehabilitasi dan Rekonstruksi</option>
+                        <option value="Pencegahan dan Kesiapsiagaan">Pencegahan dan Kesiapsiagaan</option>
+                        <option value="Sekretariat">Sekretariat</option>
                     </select>
                 </div>
 
-                <div class="mb-3" id="lain_lain_input" style="display: none;">
-                    <label class="form-label">Penanggung Jawab (Lain-lain)</label>
-                    <input type="text" class="form-control" name="penanggung_jawab_lain" id="penanggung_jawab_lain" autocomplete="off" placeholder="Isi penanggung jawab lain">
-                </div>
-
-                <div class="mb-3">
-                    <label class="form-label">Hasil Kegiatan</label>
-                    <textarea class="form-control" name="hasil_kegiatan" autocomplete="off"
-                    placeholder="Masukkan hasil kegiatan"></textarea>
-                </div>
-                <label class="form-label">Dokumentasi</label>
-                <input type="file" class="form-control" id="dokumentasi" name="dokumentasi[]" accept="image/*" multiple />
+                <label class="form-label">Hasil Kegiatan</label>
+                <input type="file" class="form-control" id="hasil_kegiatan" name="hasil_kegiatan[]" accept="image/*" multiple />
 
             </div>
         </div>
@@ -76,35 +52,3 @@
         <button class="btn btn-primary" type="submit">Submit</button>
     <?php echo form_close(); ?>
 </div>
-
-<script>
-document.getElementById('nama_staff').addEventListener('change', function() {
-    var selectedNamaStaff = this.value;
-    
-    // Assuming you have a map of nama_staff to id_kontak_opd
-    var staffMap = <?php echo json_encode(array_column($staff_options, 'id_kontak_opd', 'nama_staff')); ?>;
-    document.getElementById('id_kontak_opd').value = staffMap[selectedNamaStaff] || '';
-});
-</script>
-<!-- jQuery (required by Select2) -->
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<!-- Select2 JS -->
-<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-<script>
-    $(document).ready(function() {
-        $('.select2').select2({
-            placeholder: "--- Pilih Nama Staff ---",
-            allowClear: true
-        });
-    });
-</script>
-<script>
-    document.getElementById('penanggung_jawab').addEventListener('change', function() {
-        var lainLainInput = document.getElementById('lain_lain_input');
-        if (this.value === 'Lain-lain') {
-            lainLainInput.style.display = 'block';
-        } else {
-            lainLainInput.style.display = 'none';
-        }
-    });
-</script>

@@ -11,7 +11,7 @@
                                 <th width="20px">No</th>
                                 <th width="20px">ID Penugasan</th>
                                 <th width="30px">ID Kegiatan</th>
-                                <th width="30px">ID Petugas</th>
+                                <th width="30px">Nama Petugas</th>
                                 <th width="20px">Lokasi Kegiatan</th>
                                 <th width="20px">Tanggal</th>
                                 <th width="20px">Shift</th>
@@ -24,7 +24,7 @@
                         <tbody>
                             <?php
                             $no = 1;
-                            $penugasan_petugas = $this->db->query("SELECT * FROM tabel_penugasan_petugas")->result();
+                            $penugasan_petugas = $this->db->query("SELECT * FROM tabel_penugasan_petugas ORDER BY tanggal DESC")->result();
                             foreach ($penugasan_petugas as $penugasan) {
                             ?>
                                 <tr>
@@ -44,26 +44,7 @@
 								    </td>
                                     <td>
                                         <a href="<?= site_url('admin/kegiatan/edit_penugasan/' . $penugasan->id_penugasan) ?>" class="btn btn-outline-primary btn-xs"><i class='fal fa-pencil'></i></a>
-                                        <a data-bs-toggle="modal" data-bs-target="#deleteConfirm<?= $penugasan->id_penugasan ?>" class="ms-3 btn btn-outline-danger btn-xs"><i class="fal fa-trash-alt"></i></a>
-                                        <div class="modal fade" id="deleteConfirm<?= $penugasan->id_penugasan ?>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                            <div class="modal-dialog modal-lg">
-                                                <div class="modal-content">
-                                                    <div class="modal-header">
-                                                        <h5 class="modal-title" id="exampleModalLabel">APAKAH ANDA YAKIN INGIN MENGHAPUS DATA INI?</h5>
-                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                    </div>
-                                                    <div class="modal-body">
-                                                        Data yang akan dihapus adalah <?= $penugasan->id_penugasan ?>
-                                                    </div>
-                                                    <div class="modal-footer d-flex align-items-center">
-                                                        <a href="<?= base_url('admin/kegiatan/delete/' . $penugasan->id_penugasan) ?>" class="btn btn-outline-danger">
-                                                            <i class="fad fa-trash-alt"></i>
-                                                        </a>
-                                                        <button class="btn btn-outline-success mr-auto" type="button" data-bs-dismiss="modal"><i class="fa fa-times"></i> Cancel</button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
+                                        
                                     </td>
                                 </tr>
                                 <div class="modal fade" id="view_images-<?= $penugasan->id_penugasan ?>" data-bs-backdrop="static" data-bs-keyboard="false" aria-hidden="true" aria-labelledby="exampleModalToggleLabel2" tabindex="-1">

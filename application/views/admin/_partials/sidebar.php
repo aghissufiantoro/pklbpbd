@@ -3,14 +3,14 @@
         <a href="#" class="sidebar-brand" style="font-size: 18px;">
             <span>BPBD </span>Kota Surabaya
         </a>
-        <div class="sidebar-toggler">
+        <div class="sidebar-toggler active">
             <span></span>
             <span></span>
             <span></span>
         </div>
     </div>
     <div class="sidebar-body">
-        <ul class="nav">
+        <ul class="nav color-black">
             <li class="nav-item nav-category">Main</li>
             <li class="nav-item <?php echo ($this->uri->segment(2) == 'overview') ? 'active' : ''; ?>">
                 <a href="<?= base_url("admin/overview") ?>" class="nav-link">
@@ -56,13 +56,8 @@
                         <span class="link-title">Lokasi POS</span>
                     </a>
                 </li>
-                <?php if ($this->session->userdata('role') == "1" || $this->session->userdata('role') == "13" || $this->session->userdata('role') == "14" || $this->session->userdata('role') == "15" || $this->session->userdata('role') == "16" || $this->session->userdata('role') == "17" || $this->session->userdata('role') == "18" || $this->session->userdata('role') == "21" || $this->session->userdata('role') == "22" || $this->session->userdata('role') == "23" || $this->session->userdata('role') == "24") {
-                    ?>
-                    <li <?php if ($this->uri->segment(2) == "review") {
-                        echo 'class="nav-item active"';
-                    } else {
-                        echo 'class="nav-item"';
-                    } ?>>
+                <?php if (in_array($this->session->userdata('role'), ["1", "13", "14", "15", "16", "17", "18", "21", "22", "23", "24"])) { ?>
+                    <li class="nav-item <?php echo ($this->uri->segment(2) == 'review') ? 'active' : ''; ?>">
                         <a href="<?= base_url('admin/review') ?>" class="nav-link">
                             <i class="link-icon" data-feather="message-square"></i>
                             <span class="link-title">Review</span>
@@ -72,118 +67,57 @@
             <?php } ?>
             <!-- New menu added below -->
             <li class="nav-item nav-category">TIM EMAK</li>
-                <?php
-                if ($this->session->userdata('username') == "kompi" || $this->session->userdata('role') == "1") {
-                ?>
-                    <li <?php if ($this->uri->segment(2) == "kegiatan" && $this->uri->segment(3) == "view_kegiatan") {
-                            echo 'class="nav-item active"';
-                        } else {
-                            echo 'class="nav-item"';
-                        } ?>>
-                        <a href="<?= base_url('admin/kegiatan/view_kegiatan') ?>" class="nav-link">
-                            <i class="link-icon" data-feather="check-square"></i>
-                            <span class="link-title">Jadwal Ploting</span>
-                        </a>
-                    </li>
-                <?php
-                }
-                if ($this->session->userdata('username') == "kegiatan" || $this->session->userdata('role') == "1") {
-                ?>
-                    <li <?php if ($this->uri->segment(2) == "kegiatan" && $this->uri->segment(3) == "view_penugasan_petugas") {
-                            echo 'class="nav-item active"';
-                        } else {
-                            echo 'class="nav-item"';
-                        } ?>>
-                        <a href="<?= base_url('admin/kegiatan/view_penugasan_petugas') ?>" class="nav-link">
-                            <i class="link-icon" data-feather="clipboard"></i>
-                            <span class="link-title">Giat Personil</span>
-                        </a>
-                    </li>
-                <?php
-                }
-                if ($this->session->userdata('username') == "tugas_harian" || $this->session->userdata('role') == "1") {
-                ?>
-                    <li <?php if ($this->uri->segment(2) == "tugas_harian") {
-                            echo 'class="nav-item active"';
-                        } else {
-                            echo 'class="nav-item"';
-                        } ?>>
-                        <a href="<?= base_url('admin/tugas_harian') ?>" class="nav-link ">
-                            <i class="link-icon" data-feather="clipboard"></i>
-                            <span class="link-title">Tugas Harian</span>
-                        </a>
-                    </li>
-                <?php
-                }
-                
-                // if ($this->session->userdata('username') == "kegiatan" || $this->session->userdata('role') == "1") {
-                // ?>
-                     <li <?php if ($this->uri->segment(2) == "kegiatan") {
-                //             echo 'class="nav-item active"';
-                //         } else {
-                //             echo 'class="nav-item"';
-                //         } ?>>
-                        <!-- <a href="<?= base_url('admin/kegiatan/laporan_kegiatan') ?>" class="nav-link">
-                             <i class="link-icon" data-feather="message-square"></i>
-                             <span class="link-title">Stock Master</span>
-                         </a> -->
-                     </li>
-                <?php
-                }
-                ?>
-              
+            <?php if ($this->session->userdata('username') == "kompi" || $this->session->userdata('role') == "1") { ?>
+                <li class="nav-item <?php echo ($this->uri->segment(2) == 'kegiatan' && $this->uri->segment(3) == 'view_kegiatan') ? 'active' : ''; ?>">
+                    <a href="<?= base_url('admin/kegiatan/view_kegiatan') ?>" class="nav-link">
+                        <i class="link-icon" data-feather="check-square"></i>
+                        <span class="link-title">Jadwal Ploting</span>
+                    </a>
+                </li>
+            <?php } ?>
+            <?php if ($this->session->userdata('username') == "kegiatan" || $this->session->userdata('role') == "1") { ?>
+                <li class="nav-item <?php echo ($this->uri->segment(2) == 'kegiatan' && $this->uri->segment(3) == 'view_penugasan_petugas') ? 'active' : ''; ?>">
+                    <a href="<?= base_url('admin/kegiatan/view_penugasan_petugas') ?>" class="nav-link">
+                        <i class="link-icon" data-feather="clipboard"></i>
+                        <span class="link-title">Giat Personil</span>
+                    </a>
+                </li>
+            <?php } ?>
+            <?php if ($this->session->userdata('username') == "tugas_harian" || $this->session->userdata('role') == "1") { ?>
+                <li class="nav-item <?php echo ($this->uri->segment(2) == 'tugas_harian') ? 'active' : ''; ?>">
+                    <a href="<?= base_url('admin/tugas_harian') ?>" class="nav-link">
+                        <i class="link-icon" data-feather="clipboard"></i>
+                        <span class="link-title">Tugas Harian</span>
+                    </a>
+                </li>
+            <?php } ?>
             <li class="nav-item nav-category">SOSIS KETAN</li>
-            <?php
-            if ($this->session->userdata('role') == "1" || $this->session->userdata('role') == "13" || $this->session->userdata('role') == "14" || $this->session->userdata('role') == "15" || $this->session->userdata('role') == "16" || $this->session->userdata('role') == "17" || $this->session->userdata('role') == "20" || $this->session->userdata('role') == "21" || $this->session->userdata('role') == "22" || $this->session->userdata('role') == "23" || $this->session->userdata('role') == "24") {
-                ?>
-                <li <?php if ($this->uri->segment(2) == "artikel") {
-                    echo 'class="nav-item active"';
-                } else {
-                    echo 'class="nav-item"';
-                } ?>>
+            <?php if (in_array($this->session->userdata('role'), ["1", "13", "14", "15", "16", "17", "20", "21", "22", "23", "24"])) { ?>
+                <li class="nav-item <?php echo ($this->uri->segment(2) == 'artikel') ? 'active' : ''; ?>">
                     <a href="<?= base_url('admin/artikel') ?>" class="nav-link">
                         <i class="link-icon" data-feather="message-square"></i>
                         <span class="link-title">Artikel</span>
                     </a>
                 </li>
-                <?php
-            }
-
-            if ($this->session->userdata('username') == "dokumentasi" || $this->session->userdata('role') == "1") {
-                ?>
-                    <li <?php if ($this->uri->segment(2) == "dokumentasi" && $this->uri->segment(3) == "") {
-                        echo 'class="nav-item active"';
-                    } else {
-                        echo 'class="nav-item"';
-                    } ?>>
-                        <a href="<?= base_url('admin/dokumentasi') ?>" class="nav-link ">
-                            <i class="link-icon" data-feather="book-open"></i>
-                            <span class="link-title">Dokumentasi</span>
-                        </a>
-                    </li>
-                <?php
-                }
-                ?>
-
-        <li class="nav-item nav-category">SINA SINI</li>
-            <?php
-            if ($this->session->userdata('username') == "dokumentasi_sinasini" || $this->session->userdata('role') == "1") { 
-                ?>
-                <li <?php if ($this->uri->segment(2) == "dokumentasi_sinasini") {
-                    echo 'class="nav-item active"';
-                } else {
-                    echo 'class="nav-item"';
-                } ?>>
-                    <a href="<?= base_url('admin/dokumentasi_sinasini') ?>" class="nav-link ">
+            <?php } ?>
+            <?php if ($this->session->userdata('username') == "dokumentasi" || $this->session->userdata('role') == "1") { ?>
+                <li class="nav-item <?php echo ($this->uri->segment(2) == 'dokumentasi' && $this->uri->segment(3) == '') ? 'active' : ''; ?>">
+                    <a href="<?= base_url('admin/dokumentasi') ?>" class="nav-link">
                         <i class="link-icon" data-feather="book-open"></i>
-                        <span class="link-title">Dokumentasi Sinasini</span>
+                        <span class="link-title">Dokumentasi</span>
                     </a>
                 </li>
-                <?php
-            }
-            ?>
-
-            <li class="nav-item nav-category">MANAJEMEN KEBENCANAAN</li>
+            <?php } ?>
+            <li class="nav-item nav-category">SINA SINI</li>
+            <?php if ($this->session->userdata('username') == "dokumentasi_sinasini" || $this->session->userdata('role') == "1") { ?>
+                <li class="nav-item <?php echo ($this->uri->segment(2) == 'dokumentasi_sinasini') ? 'active' : ''; ?>">
+                    <a href="<?= base_url('admin/dokumentasi_sinasini') ?>" class="nav-link">
+                        <i class="link-icon" data-feather="book-open"></i>
+                        <span class="link-title">Dokumentasi</span>
+                    </a>
+                </li>
+            <?php } ?>
+            <li class="nav-item nav-category">(Bu Sarkona) MANAJEMEN KEBENCANAAN</li>
             <?php if ($this->session->userdata('username') == "data_kejadian" || $this->session->userdata('role') == "1") { ?>
                 <li class="nav-item <?php echo ($this->uri->segment(2) == 'data_kejadian') ? 'active' : ''; ?> mt-3">
                     <a href="<?= base_url('admin/data_kejadian') ?>" class="nav-link">
@@ -195,12 +129,6 @@
             <!-- End of New menu -->
             <li class="nav-item nav-category">PAK TIKSAN</li>
             <?php if (in_array($this->session->userdata('role'), ["1", "13", "14", "15", "16", "17", "20", "21", "22", "23", "24"])) { ?>
-                <!-- <li class="nav-item <?php echo ($this->uri->segment(2) == 'logistik') ? 'active' : ''; ?>">
-                <a href="<?= base_url('admin/logistik') ?>" class="nav-link">
-                    <i class="link-icon" data-feather="message-square"></i>
-                    <span class="link-title">Logistik</span>
-                </a>
-            </li> -->
                 <li class="nav-item <?php echo ($this->uri->segment(2) == 'stock_master') ? 'active' : ''; ?>">
                     <a href="<?= base_url('admin/stock_master') ?>" class="nav-link">
                         <i class="link-icon" data-feather="message-square"></i>
@@ -213,12 +141,6 @@
                         <span class="link-title">Stock Entry</span>
                     </a>
                 </li>
-                <!-- <li class="nav-item <?php echo ($this->uri->segment(2) == 'data_stock_logistik') ? 'active' : ''; ?>">
-                    <a href="<?= base_url('admin/data_stock_logistik') ?>" class="nav-link">
-                        <i class="link-icon" data-feather="message-square"></i>
-                        <span class="link-title">Stock Logistik</span>
-                    </a>
-                </li> -->
             <?php } ?>
         </ul>
     </div>
@@ -230,3 +152,4 @@
         dropdown.style.display = (dropdown.style.display == "block") ? "none" : "block";
     }
 </script>
+

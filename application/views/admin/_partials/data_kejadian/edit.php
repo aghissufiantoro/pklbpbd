@@ -193,11 +193,10 @@ if ($this->session->flashdata('success')) {
             <input id="dokumentasi" type="file" class="form-control"   name="dokumentasi" accept="image/*"/>
           </div>
 
-          <input type="submit" value="Submit" class="btn btn-primary" >
-          <a href="<?= base_url("admin/data_kejadian") ?>">
-            <button type="button" class="btn btn-outline-warning">Kembali</button>
-          </a>
-        
+          <div class="d-grid gap-2">
+            <button type="submit" class="btn btn-primary btn-block">Submit</button>
+            <a href="<?= base_url("admin/data_kejadian") ?>" class="btn btn-outline-warning btn-block">Kembali</a>
+          </div>
         </form>
       </div>
     </div>

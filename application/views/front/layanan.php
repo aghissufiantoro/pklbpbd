@@ -18,7 +18,7 @@
 
 
   <?php $this->load->view('front/_partials/page/layanan') ?>
-  <?php $this->load->view('front/_partials/breaking-news') ?>
+  <?php $this->load->view('front/_partials/page/agenda') ?>
   <?php $this->load->view('front/_partials/survey') ?>
 
   <?php $this->load->view('front/_partials/footer') ?>

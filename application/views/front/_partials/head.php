@@ -40,7 +40,7 @@
 <style type="text/css">
 	.page-header
 	{
-		background: linear-gradient(rgba(0, 0, 0, .1), rgba(0, 0, 0, .1)), url(<?= base_url('image/background.png') ?>), center center no-repeat;
+		background: linear-gradient(rgba(0, 0, 0, .1), rgba(0, 0, 0, .1)), url(<?= base_url('image/background1.png') ?>), center center no-repeat;
 		background-size: cover;
 	}
 </style>
