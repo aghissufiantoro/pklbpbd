@@ -29,6 +29,11 @@
           </div>
 
           <div class="mb-3">
+                <label for="waktu_kegiatan" class="form-label">Waktu Kegiatan</label>
+                <input type="time" class="form-control" name="waktu_kegiatan" required>
+            </div>
+
+          <div class="mb-3">
             <label for="kegiatan">Kegiatan</label>
             <select class="form-control" name="kegiatan" id="kegiatan" onchange="updateLokasiOptions()" required>
               <option value="">Pilih Kegiatan</option>
