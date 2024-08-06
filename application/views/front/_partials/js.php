@@ -13,6 +13,11 @@
 
 <script>
     // Function to show popup
+    function access() {
+   var iframe = document.getElementById("frame-quiziz");
+   var innerDoc = iframe.contentDocument || iframe.contentWindow.document;
+   console.log(innerDoc.body);
+}
     function showPopup() {
         document.getElementById('reviewPopup').style.display = 'block';
     }

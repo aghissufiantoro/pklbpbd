@@ -77,7 +77,7 @@ class stock_master extends CI_Controller
                 if ($this->db->where('id_transaksi', $id_transaksi)->get('data_entry_sembako')->num_rows() == 0) {
                     $this->db->insert('data_entry_sembako', [
                         'id_transaksi' => $id_transaksi,
-                        'tanggal_entry' => date('Y-m-d'),
+                        'tanggal_entry' => date('Y-m-d H:i:s'),
                         'kode_barang' => $kode_barang,
                         'status_barang' => 'masuk',
                         'qty_awal' => 0,
@@ -155,7 +155,7 @@ class stock_master extends CI_Controller
             if ($this->db->where('id_transaksi', $id_transaksi)->get('data_entry_sembako')->num_rows() == 0) {
                 $this->db->insert('data_entry_sembako', [
                     'id_transaksi' => $id_transaksi,
-                    'tanggal_entry' => date('Y-m-d'),
+                    'tanggal_entry' => date('Y-m-d H:i:s'),
                     'kode_barang' => $id,
                     'status_barang' => 'keluar',
                     'keterangan_barang' => 'barang telah dihapus',
@@ -238,7 +238,7 @@ class stock_master extends CI_Controller
             if ($this->db->where('id_transaksi', $id_transaksi)->get('data_entry_sembako')->num_rows() == 0) {
                 $this->db->insert('data_entry_sembako', [
                     'id_transaksi' => $id_transaksi,
-                    'tanggal_entry' => date('Y-m-d'),
+                    'tanggal_entry' => date('Y-m-d H:i:s'),
                     'kode_barang' => $kode_barang,
                     'status_barang' => 'masuk',
                     'qty_awal' => $current_qty_tersedia,

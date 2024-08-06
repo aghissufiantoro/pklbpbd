@@ -20,7 +20,7 @@
         <div class="container">
             <!-- Embed PPT Viewer -->
             <div class="ppt-viewer mb-5">
-            <iframe src="https://docs.google.com/presentation/d/e/2PACX-1vQQpSQeTC1V8WtGqdwnrCMkahtvSTwGeOsaIFiPGaKTPr5oDhGZ9IGHY_B_37gldA/embed?start=false&loop=false&delayms=3000" frameborder="0" width="1440" height="839" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true"></iframe>
+            <iframe src="https://docs.google.com/presentation/d/e/2PACX-1vQQpSQeTC1V8WtGqdwnrCMkahtvSTwGeOsaIFiPGaKTPr5oDhGZ9IGHY_B_37gldA/embed?start=false&loop=false&delayms=10000" frameborder="0" width="1256" height="743" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true"></iframe>
             </div>
         </div>
     </div>
