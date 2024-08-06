@@ -60,7 +60,7 @@ class M_stock_entry extends CI_Model
         $post = $this->input->post();
         $this->id_transaksi = $post["id_transaksi"];
         $this->id_kejadian = $post["id_kejadian"];
-        $this->tanggal_entry = date('Y-m-d');  // Set current date
+        $this->tanggal_entry = date('Y-m-d H:i:s');  // Set current date
         $this->kode_barang = $post["kode_barang"];
         $this->status_barang = $post["status_barang"];
         $this->qty_awal =$this->getAvailableStock($this->kode_barang);
