@@ -1,4 +1,4 @@
-const BASE_URL = 'http://localhost:8083/bpbd';
+const BASE_URL = 'http://localhost/bpbd';
 
 document.addEventListener('DOMContentLoaded', function() {
     var pastValue = '';
