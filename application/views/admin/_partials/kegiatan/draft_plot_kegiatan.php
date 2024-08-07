@@ -37,15 +37,7 @@
                 <input type="text" class="form-control" name="keterangan" required>
             </div>
 
-            <div class="form-group">
-                <label for="jenis_kompi">Jenis Kompi</label>
-                <select class="form-control" name="jenis_kompi" id="jenis_kompi" required>
-                    <option value="A">A</option>
-                    <option value="B">B</option>
-                    <option value="C">C</option>
-                </select>
-            </div>
-
+           
             <div id="petugas-container"></div>
 
             <button type="submit" class="btn btn-primary mt-3">Submit</button>
@@ -54,7 +46,7 @@
 
   
 
-    <script>
+    <!-- <script>
         function loadPetugasOptions(jenisKompi, jumlahPersonel) {
             if (jenisKompi && jumlahPersonel > 0) {
                 $.ajax({
@@ -97,4 +89,4 @@
             loadPetugasOptions(initialKompi, initialJumlah);
         });
     </script>
-
+ -->
