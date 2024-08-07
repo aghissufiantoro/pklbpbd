@@ -57,17 +57,7 @@
                 </select>
             </div>
 
-            <div class="mb-3">
-                <label for="jenis_kompi" class="form-label">Jenis Kompi</label>
-                <select class="form-control" name="jenis_kompi" id="jenis_kompi" required>
-                    <option value="">--- Pilih Jenis Kompi ---</option>
-                    <option value="BKO">BKO</option>
-                    <option value="DANKI A - YUDA WIDAS P">DANKI A - YUDA WIDAS P</option>
-                    <option value="DANKI B - EKO SUPRIYANTO">DANKI B - EKO SUPRIYANTO</option>
-                    <option value="DANKI C - MOCHAMAD CHAIRUL TAKWOLO">DANKI C - MOCHAMAD CHAIRUL TAKWOLO</option>
-                    <option value="BKO">BKO</option>
-                </select>
-            </div>
+            
         
 
        

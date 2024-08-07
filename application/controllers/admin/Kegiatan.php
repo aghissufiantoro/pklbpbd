@@ -37,11 +37,10 @@ class Kegiatan extends CI_Controller {
         $this->form_validation->set_rules('shift', 'Shift', 'required');
         $this->form_validation->set_rules('kegiatan', 'Kegiatan', 'required');
         $this->form_validation->set_rules('lokasi_kegiatan', 'Lokasi Kegiatan', 'required');
-        $this->form_validation->set_rules('jenis_kompi', 'Jenis Kompi', 'required');
         $this->form_validation->set_rules('jumlah_personel', 'Jumlah Personel', 'required|numeric');
         $this->form_validation->set_rules('jumlah_jarko', 'Jumlah Jarko', 'required|numeric');
-        $this->form_validation->set_rules('no_wa', 'No WA', 'required|numeric');
-        $this->form_validation->set_rules('keterangan', 'Keterangan', 'required');
+        $this->form_validation->set_rules('keterangan', 'keterangan', 'required');
+
     
         if ($this->form_validation->run() == FALSE) {
             $this->load->view('admin/kegiatan/plot_kegiatan');
@@ -57,11 +56,10 @@ class Kegiatan extends CI_Controller {
                 $kegiatan = $this->input->post('kegiatan_lain');
             }
             $lokasi_kegiatan = $this->input->post('lokasi_kegiatan');
-            $jenis_kompi = $this->input->post('jenis_kompi');
             $jumlah_personel = $this->input->post('jumlah_personel');
             $jumlah_jarko = $this->input->post('jumlah_jarko');
             $keterangan = $this->input->post('keterangan');
-            $no_wa = $this->input->post('no_wa');
+
 
           
     
@@ -79,43 +77,9 @@ class Kegiatan extends CI_Controller {
     
             $id_kegiatan = $this->Kegiatan_model->insert_kegiatan($data_kegiatan);
     
-            if ($id_kegiatan) {
-                // Handle dokumentasi upload
-                $dokumentasi = $this->PenugasanPetugas_model->_uploadImage();
-    
-                // Gabungkan nama-nama petugas menjadi satu string
-                $jarko = $this->input->post('jarko');
-                $jarko_string = implode(',', $jarko);
-                $petugas = $this->input->post('petugas');
-                $petugas_string = implode(',', $petugas);
-    
-                // Data untuk tabel_penugasan_petugas
-                $id_penugasan = $this->PenugasanPetugas_model->generate_id_penugasan($tanggal);
-                $data_penugasan = array(
-                    'id_kegiatan' => $id_kegiatan,
-                    'id_penugasan' => $id_penugasan,
-                    'jenis_kompi' => $jenis_kompi,
-                    'id_jarko'=> $jarko_string,
-                    'id_petugas' => $petugas_string,
-                    'lokasi_kegiatan' => $lokasi_kegiatan,
-                    'tanggal' => $tanggal,
-                    'kegiatan' => $kegiatan,
-                    'waktu_kegiatan' => $waktu_kegiatan,
-                    'shift' => $shift,
-                    'no_wa' => $no_wa,
-                    'keterangan' => $keterangan,
-                    'dokumentasi' => $dokumentasi
-                );
-    
-                $this->PenugasanPetugas_model->insert_penugasan($data_penugasan);
-    
-                $this->session->set_flashdata('success', 'Data kegiatan dan penugasan berhasil disimpan.');
-                redirect('admin/kegiatan/view_kegiatan');
-            } else {
-                $this->session->set_flashdata('error', 'Gagal menyimpan data kegiatan.');
-                redirect('admin/kegiatan/plot_kegiatan');
-            }
+            redirect('admin/kegiatan/view_kegiatan');
         }
+        
     }
     
     public function edit_plot_kegiatan($id = null)
@@ -133,11 +97,9 @@ class Kegiatan extends CI_Controller {
         $validation->set_rules('waktu_kegiatan', 'Waktu Kegiatan', 'required');
         $validation->set_rules('kegiatan', 'Kegiatan', 'required');
         $validation->set_rules('lokasi_kegiatan', 'Lokasi Kegiatan', 'required');
-        $validation->set_rules('jenis_kompi', 'Jenis Kompi', 'required');
         $validation->set_rules('jumlah_personel', 'Jumlah Personel', 'required|numeric');
         $validation->set_rules('jumlah_jarko', 'Jumlah Jarko', 'required|numeric');
-        $validation->set_rules('no_wa', 'No WA', 'required|numeric');
-        $validation->set_rules('keterangan', 'Keterangan', 'required');
+        
 
         if ($validation->run()) {
             $kegiatan->update_kegiatan();

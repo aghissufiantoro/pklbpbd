@@ -89,17 +89,17 @@ public function insert_kegiatan($data) {
     public function update_kegiatan()
     {
         $post = $this->input->post();
-    
+        if ($post['kegiatan'] === 'Lain-lain') {
+            $post['kegiatan'] = $this->input->post('kegiatan_lain');
+        }
         $data = [
             'tanggal' => $post['tanggal'],
             'shift' => $post['shift'],
             'waktu_kegiatan' => $post['waktu_kegiatan'],
             'kegiatan' => $post['kegiatan'],
             'lokasi_kegiatan' => $post['lokasi_kegiatan'],
-            'jenis_kompi' => $post['jenis_kompi'],
             'jumlah_personel' => $post['jumlah_personel'],
             'jumlah_jarko' => $post['jumlah_jarko'],
-            'no_wa' => $post['no_wa'],
             'keterangan' => $post['keterangan']
         ];
     
