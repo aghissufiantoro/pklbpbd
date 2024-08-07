@@ -19,24 +19,28 @@
         <div class="col-md-6">
 
           <div class="mb-3">
-            <label for="tanggal">Tanggal</label>
+            <label for="tanggal" class="form-label">Tanggal</label>
             <input type="date" class="form-control" name="tanggal" value="<?= $kegiatan->tanggal ?>" required>
           </div>
 
           <div class="mb-3">
-            <label for="shift">Shift</label>
-            <input type="text" class="form-control" name="shift" value="<?= $kegiatan->shift ?>" required>
+            <label for="shift" class="form-label">Shift</label>
+            <select class="form-select" required name="shift" autocomplete="off" id="shift">
+                  <option value="">--- Pilih Salah Satu ---</option>
+                  <option value="Pagi" <?= $kegiatan->shift == 'Pagi' ? 'selected' : '' ?>>Pagi</option>
+                  <option value="Malam" <?= $kegiatan->shift == 'Malam' ? 'selected' : '' ?>>Malam</option>
+            </select>
           </div>
 
           <div class="mb-3">
                 <label for="waktu_kegiatan" class="form-label">Waktu Kegiatan</label>
-                <input type="time" class="form-control" name="waktu_kegiatan" required>
+                <input type="time" class="form-control" name="waktu_kegiatan" value="<?= $kegiatan->waktu_kegiatan ?>" required>
             </div>
 
           <div class="mb-3">
-            <label for="kegiatan">Kegiatan</label>
+            <label for="kegiatan" class="form-label">Kegiatan</label>
             <select class="form-control" name="kegiatan" id="kegiatan" onchange="updateLokasiOptions()" required>
-              <option value="">Pilih Kegiatan</option>
+              <option value="">--- Pilih Kegiatan ---</option>
               <option value="Pos Pantau" <?= $kegiatan->kegiatan == 'Pos Pantau' ? 'selected' : '' ?>>Pos Pantau</option>
               <option value="Gudang Peralatan" <?= $kegiatan->kegiatan == 'Gudang Peralatan' ? 'selected' : '' ?>>Gudang Peralatan</option>
               <option value="Posko Terpadu" <?= $kegiatan->kegiatan == 'Posko Terpadu' ? 'selected' : '' ?>>Posko Terpadu</option>
@@ -47,32 +51,56 @@
             </select>
           </div>
 
+          <div class="mb-3" id="lain_lain_input" style="display: none;">
+              <label class="form-label">Kegiatan (Lain-lain)</label>
+              <input type="text" class="form-control" name="kegiatan_lain" id="kegiatan_lain" autocomplete="off" placeholder="Isi kegiatan lain">
+          </div>
+
           <div class="mb-3">
-            <label for="lokasi_kegiatan">Lokasi Kegiatan</label>
+            <label for="lokasi_kegiatan" class="form-label">Lokasi Kegiatan</label>
             <select class="form-control" name="lokasi_kegiatan" id="lokasi_kegiatan" required>
-              <option value="">Pilih Lokasi</option>
+              <option value="">--- Pilih Lokasi ---</option>
             </select>
           </div>
             
+          <div class="mb-3">
+            <label for="jenis_kompi" class="form-label">Jenis Kompi</label>
+            <select class="form-control" name="jenis_kompi" id="jenis_kompi" required>
+                <option value="">--- Pilih Jenis Kompi ---</option>
+                <option value="BKO" <?= $kegiatan->jenis_kompi == 'BKO' ? 'selected' : '' ?>>BKO</option>
+                <option value="DANKI A - YUDA WIDAS P" <?= $kegiatan->jenis_kompi == 'DANKI A - YUDA WIDAS P' ? 'selected' : '' ?>>DANKI A - YUDA WIDAS P</option>
+                <option value="DANKI B - EKO SUPRIYANTO" <?= $kegiatan->jenis_kompi == 'DANKI B - EKO SUPRIYANTO' ? 'selected' : '' ?>>DANKI B - EKO SUPRIYANTO</option>
+                <option value="DANKI C - MOCHAMAD CHAIRUL TAKWOLO" <?= $kegiatan->jenis_kompi == 'DANKI C - MOCHAMAD CHAIRUL TAKWOLO' ? 'selected' : '' ?>>DANKI C - MOCHAMAD CHAIRUL TAKWOLO</option>
+            </select>
+          </div>
         </div>
 
         <div class="col-md-6">
 
           <div class="mb-3">
-            <label for="jumlah_personel">Jumlah Personel</label>
+            <label for="jumlah_personel" class="form-label">Jumlah Personel</label>
             <input type="number" class="form-control" name="jumlah_personel" value="<?= $kegiatan->jumlah_personel ?>" required>
           </div>
 
           <div class="mb-3">
-            <label for="jumlah_jarko">Jumlah Jarko</label>
+            <label for="jumlah_jarko" class="form-label">Jumlah Jarko</label>
             <input type="number" class="form-control" name="jumlah_jarko" value="<?= $kegiatan->jumlah_jarko ?>" required>
           </div>
 
           <div class="mb-3">
-            <label for="keterangan">Keterangan</label>
-            <input type="text" class="form-control" name="keterangan" value="<?= $kegiatan->keterangan ?>" required>
-          </div>
+                <label for="keterangan" class="form-label">Keterangan</label>
+                <textarea class="form-control" name="keterangan" value="<?= $kegiatan->keterangan ?>" required></textarea>
+            </div>
 
+            <div class="mb-3">
+                <label for="no_wa" class="form-label">No WA</label>
+                <input type="number" class="form-control" name="no_wa" id="no_wa" value="<?= $kegiatan->no_wa ?>" required>
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label">Dokumentasi</label>
+                <input type="file" class="form-control" id="dokumentasi" name="dokumentasi[]" accept="image/*" multiple />
+            </div>
         </div>
       </div>
       <a href="<?= base_url("admin/kegiatan/view_kegiatan") ?>">
@@ -145,4 +173,14 @@
             successAlert.style.display = 'none';
         }
     }, 5000);
+</script>
+<script>
+    document.getElementById('kegiatan').addEventListener('change', function() {
+        var lainLainInput = document.getElementById('lain_lain_input');
+        if (this.value === 'Lain-lain') {
+            lainLainInput.style.display = 'block';
+        } else {
+            lainLainInput.style.display = 'none';
+        }
+    });
 </script>
