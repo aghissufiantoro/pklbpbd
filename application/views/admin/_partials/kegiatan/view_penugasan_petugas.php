@@ -15,10 +15,8 @@
                                 <th width="20px">Waktu Kegiatan</th>
                                 <th width="20px">Tanggal</th>
                                 <th width="20px">Shift</th>
-                                <th width="20px">Kegiatan</th>
                                 <th width="20px">Lokasi Kegiatan</th>
                                 <th width="20px">No WA</th>
-                                <th width="20px">Uraian Kegiatan</th>
                                 <th width="20px">Dokumentasi</th>
                             </tr>
                         </thead>
@@ -37,10 +35,8 @@
                                     <td><?php echo $penugasan->waktu_kegiatan; ?></td>
                                     <td><?php echo $penugasan->tanggal; ?></td>
                                     <td><?php echo $penugasan->shift; ?></td>
-                                    <td><?php echo $penugasan->kegiatan; ?></td>
                                     <td><?php echo $penugasan->lokasi_kegiatan; ?></td>
                                     <td><?php echo $penugasan->no_wa; ?></td>
-                                    <td><?php echo $penugasan->keterangan; ?></td>
                                     <td>
 									<button type="button" class="btn btn-outline-danger" data-bs-target="#view_images-<?= $penugasan->id_penugasan ?>" data-bs-toggle="modal">
 										<i class="far fa-file-image"></i> Lihat Foto
