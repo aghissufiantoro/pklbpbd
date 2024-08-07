@@ -96,10 +96,11 @@ public function insert_kegiatan($data) {
             'waktu_kegiatan' => $post['waktu_kegiatan'],
             'kegiatan' => $post['kegiatan'],
             'lokasi_kegiatan' => $post['lokasi_kegiatan'],
+            'jenis_kompi' => $post['jenis_kompi'],
             'jumlah_personel' => $post['jumlah_personel'],
             'jumlah_jarko' => $post['jumlah_jarko'],
-            'keterangan' => $post['keterangan'],
-            'date_updated' => date('Y-m-d H:i:s')
+            'no_wa' => $post['no_wa'],
+            'keterangan' => $post['keterangan']
         ];
     
         $this->db->update($this->_table, $data, array('id_kegiatan' => $post['id_kegiatan']));
@@ -206,7 +207,15 @@ class PenugasanPetugas_model extends CI_Model {
         return $result ? $result->jumlah_personel : 0;
     }
 
-
+    public function get_jumlah_jarko($id_kegiatan)
+    {
+        $this->db->select('jumlah_jarko');
+        $this->db->from('tabel_kegiatan');
+        $this->db->where('id_kegiatan', $id_kegiatan);
+        $query = $this->db->get();
+        $result = $query->row();
+        return $result ? $result->jumlah_jarko : 0;
+    }
 
     public function update_penugasan($id_penugasan, $data) {
         $this->db->where('id_penugasan', $id_penugasan);
