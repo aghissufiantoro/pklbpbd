@@ -63,6 +63,7 @@
                     <option value="DANKI A - YUDA WIDAS P">DANKI A - YUDA WIDAS P</option>
                     <option value="DANKI B - EKO SUPRIYANTO">DANKI B - EKO SUPRIYANTO</option>
                     <option value="DANKI C - MOCHAMAD CHAIRUL TAKWOLO">DANKI C - MOCHAMAD CHAIRUL TAKWOLO</option>
+                    <option value="BKO">BKO</option>
                 </select>
             </div>
         </div>
@@ -179,6 +180,13 @@
             lainLainInput.style.display = 'none';
         }
     });
+
+    document.querySelector('form').addEventListener('submit', function(e) {
+        var kegiatanSelect = document.getElementById('kegiatan');
+        if (kegiatanSelect.value === 'Lain-lain') {
+            var lainLainValue = document.getElementById('kegiatan_lain').value;
+            kegiatanSelect.innerHTML += '<option value="' + lainLainValue + '" selected>' + lainLainValue + '</option>';
+        }
 </script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>

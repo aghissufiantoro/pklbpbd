@@ -44,6 +44,9 @@ class Kegiatan extends CI_Controller {
         if ($this->form_validation->run() == FALSE) {
             $this->load->view('admin/kegiatan/plot_kegiatan');
         } else {
+            
+
+
             $tanggal = $this->input->post('tanggal');
             $shift = $this->input->post('shift');
             $waktu_kegiatan = $this->input->post('waktu_kegiatan');
@@ -53,6 +56,8 @@ class Kegiatan extends CI_Controller {
             $jumlah_jarko = $this->input->post('jumlah_jarko');
             $keterangan = $this->input->post('keterangan');
             $no_wa = $this->input->post('no_wa');
+
+          
     
             // Data untuk tabel_kegiatan
             $data_kegiatan = array(
