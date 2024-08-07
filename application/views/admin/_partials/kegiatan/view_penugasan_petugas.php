@@ -15,8 +15,9 @@
                                 <th width="20px">Lokasi Kegiatan</th>
                                 <th width="20px">Tanggal</th>
                                 <th width="20px">Shift</th>
+                                <th width="20px">Waktu Kegiatan</th>
                                 <th width="20px">No WA</th>
-                                <th width="20px">Laporan</th>
+                                <th width="20px">Keteranagan</th>
                                 <th width="20px">Dokumentasi</th>
                                 <th width="20px">Aksi</th>
                             </tr>
@@ -35,6 +36,7 @@
                                     <td><?php echo $penugasan->lokasi_kegiatan; ?></td>
                                     <td><?php echo $penugasan->tanggal; ?></td>
                                     <td><?php echo $penugasan->shift; ?></td>
+                                    <td><?php echo $penugasan->waktu_kegiatan; ?></td>
                                     <td><?php echo $penugasan->no_wa; ?></td>
                                     <td><?php echo $penugasan->uraian_kegiatan; ?></td>
                                     <td>

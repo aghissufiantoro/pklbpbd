@@ -19,6 +19,7 @@
                                 <th width="20px">ID Kegiatan</th>
                                 <th width="30px">Tanggal</th>
                                 <th width="20px">Shift</th>
+                                <th width="30px">Waktu Kegiatan</th>
                                 <th width="30px">Kegiatan</th>
                                 <th width="20px">Lokasi Kegiatan</th>
                                 <th width="20px">Jumlah Personel</th>
@@ -39,6 +40,7 @@
                                     <td><?= $kg->id_kegiatan; ?></td>
                                     <td><?= $kg->tanggal; ?></td>
                                     <td><?= $kg->shift; ?></td>
+                                    <td><?= $kg->waktu_kegiatan; ?></td>
                                     <td><?= $kg->kegiatan; ?></td>
                                     <td><?= $kg->lokasi_kegiatan; ?></td>
                                     <td><?= $kg->jumlah_personel; ?></td>

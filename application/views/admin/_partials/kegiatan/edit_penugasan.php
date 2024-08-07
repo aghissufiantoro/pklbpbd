@@ -36,15 +36,23 @@ if ($this->session->flashdata('success'))
                     <label for="shift">Shift</label>
                     <input type="text" class="form-control" name="shift" id="shift" value="<?= $kegiatan->shift ?>" required>
                 </div>
+
                 <div class="mb-3">
-                        <label for="jenis_kompi">Jenis Kompi</label>
-                        <select class="form-control" name="jenis_kompi" id="jenis_kompi" required>
-                            <option value="">Pilih Jenis Kompi</option>
-                            <option value="A">A</option>
-                            <option value="B">B</option>
-                            <option value="C">C</option>
-                        </select>
-                    </div>
+                <label for="waktu_kegiatan" class="form-label">Waktu Kegiatan</label>
+                <input type="time" class="form-control" name="waktu_kegiatan" required>
+            </div>
+
+
+            <div class="mb-3">
+                <label for="jenis_kompi" class="form-label">Jenis Kompi</label>
+                <select class="form-control" name="jenis_kompi" id="jenis_kompi" required>
+                    <option value="">--- Pilih Jenis Kompi ---</option>
+                    <option value="DANKI A - YUDA WIDAS P">DANKI A - YUDA WIDAS P</option>
+                    <option value="DANKI B - EKO SUPRIYANTO">DANKI B - EKO SUPRIYANTO</option>
+                    <option value="DANKI C - MOCHAMAD CHAIRUL TAKWOLO">DANKI C - MOCHAMAD CHAIRUL TAKWOLO</option>
+                    <option value="BKO">BKO</option>
+                </select>
+            </div>
             </div>
             <div class="col-md-6">
                 <div class="mb-3">
@@ -53,7 +61,7 @@ if ($this->session->flashdata('success'))
                 </div>
                 <div class="mb-3" id="petugas-container"></div>
                 <div class="mb-3">
-                    <label for="uraian_kegiatan">Uraian Kegiatan</label>
+                    <label for="uraian_kegiatan">Keterangan</label>
                     <input type="text" class="form-control" name="uraian_kegiatan" id="uraian_kegiatan" value="<?= $kegiatan->uraian_kegiatan ?>" required>
                 </div>
                 <div class="mb-3">

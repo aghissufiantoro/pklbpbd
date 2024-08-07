@@ -93,6 +93,7 @@ public function insert_kegiatan($data) {
         $data = [
             'tanggal' => $post['tanggal'],
             'shift' => $post['shift'],
+            'waktu_kegiatan' => $post['waktu_kegiatan'],
             'kegiatan' => $post['kegiatan'],
             'lokasi_kegiatan' => $post['lokasi_kegiatan'],
             'jumlah_personel' => $post['jumlah_personel'],

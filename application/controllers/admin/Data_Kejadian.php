@@ -644,7 +644,7 @@ public function save_kebakaran()
             $response = [
                 'status' => 'error',
                 'message' => validation_errors() // Return validation errors as a string
-            ];
+            ]; 
 
             // Log the validation errors
             log_message('error', 'Validation errors: ' . validation_errors());

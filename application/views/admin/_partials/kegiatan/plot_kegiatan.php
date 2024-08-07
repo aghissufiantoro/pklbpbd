@@ -3,15 +3,14 @@
     <?php echo validation_errors(); ?>
     <?php echo form_open_multipart('admin/kegiatan/plot_kegiatan', 'class="needs-validation"'); ?>
 
-    <?php if($this->session->flashdata('success')): ?>
-    <div class="alert alert-success" id="success-alert">
-        <?php echo $this->session->flashdata('success'); ?>
-    </div>
+    <?php if ($this->session->flashdata('success')): ?>
+        <div class="alert alert-success" id="success-alert">
+            <?php echo $this->session->flashdata('success'); ?>
+        </div>
     <?php endif; ?>
 
     <div class="row">
         <div class="col-md-6">
-
             <div class="mb-3">
                 <label for="tanggal" class="form-label">Tanggal</label>
                 <input type="date" class="form-control" name="tanggal" required>
@@ -24,6 +23,11 @@
                     <option value="Pagi">Pagi</option>
                     <option value="Malam">Malam</option>
                 </select>
+            </div>
+
+            <div class="mb-3">
+                <label for="waktu_kegiatan" class="form-label">Waktu Kegiatan</label>
+                <input type="time" class="form-control" name="waktu_kegiatan" required>
             </div>
 
             <div class="mb-3">
@@ -61,11 +65,9 @@
                     <option value="DANKI C - MOCHAMAD CHAIRUL TAKWOLO">DANKI C - MOCHAMAD CHAIRUL TAKWOLO</option>
                 </select>
             </div>
-
         </div>
 
         <div class="col-md-6">
-
             <div class="mb-3">
                 <label for="jumlah_personel" class="form-label">Jumlah Personel</label>
                 <input type="number" class="form-control" name="jumlah_personel" id="jumlah_personel" required>

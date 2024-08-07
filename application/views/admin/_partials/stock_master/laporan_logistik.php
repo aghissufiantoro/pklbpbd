@@ -21,10 +21,11 @@
                             <?php
                             $no = 1;
                             foreach ($laporan_logistik as $laporan) {
+                                $timestamp = strtotime($laporan->tanggal_entry); // Pastikan timestamp adalah integer
                             ?>
                                 <tr>
                                     <td><?= $no++ ?></td>
-                                    <td><?= $laporan->tanggal_entry ?></td>
+                                    <td><?= date('Y-m-d', $timestamp) ?></td>
                                     <td><?= $laporan->nama_barang ?></td>
                                     <td><?= $laporan->qty_awal ?></td>
                                     <td><?= $laporan->qty_masuk ?></td>

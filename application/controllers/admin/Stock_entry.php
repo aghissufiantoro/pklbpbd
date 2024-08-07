@@ -130,7 +130,7 @@ class Stock_entry extends CI_Controller
                     $data_to_save = [
                         'id_transaksi' => $new_transaction_id,
                         'id_kejadian' => $id_kejadian,
-                        'tanggal_entry' => $entry['tanggalEntry'] ?? date('Y-m-d'),  // Use provided date or current date
+                        'tanggal_entry' => $entry['tanggalEntry'] ?? date('Y-m-d H:i:s'),  // Use provided date or current date
                         'kode_barang' => $kode_barang,
                         'status_barang' => $status_barang,
                         'qty_awal' => $this->m_stock_entry->getAvailableStock($kode_barang),
