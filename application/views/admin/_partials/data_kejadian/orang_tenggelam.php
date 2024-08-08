@@ -296,7 +296,7 @@
         }
 
         function handleResponse(data, form){
-            const baseUrl = 'http://localhost:8083/bpbd';
+            const baseUrl = 'http://localhost/bpbd';
             if(data.status === 'success') {
                 const data1 = data.data;
                 const newRow = document.createElement('tr');

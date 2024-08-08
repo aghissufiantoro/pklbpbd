@@ -9,43 +9,43 @@
                         <thead>
                             <tr>
                                 <th width="20px">No</th>
-                                <th width="20px">ID Penugasan</th>
-                                <th width="30px">ID Kegiatan</th>
+                                <th width="20px">Jenis Kompi</th>
+                                <th width="30px">Jarko</th>
                                 <th width="30px">Nama Petugas</th>
-                                <th width="20px">Lokasi Kegiatan</th>
+                                <th width="20px">Waktu Kegiatan</th>
                                 <th width="20px">Tanggal</th>
                                 <th width="20px">Shift</th>
+                                <th width="20px">Kegiatan</th>
+                                <th width="20px">Lokasi Kegiatan</th>
                                 <th width="20px">No WA</th>
-                                <th width="20px">Laporan</th>
+                                <th width="20px">Uraian Kegiatan</th>
                                 <th width="20px">Dokumentasi</th>
-                                <th width="20px">Aksi</th>
                             </tr>
                         </thead>
                         <tbody>
                             <?php
                             $no = 1;
                             $penugasan_petugas = $this->db->query("SELECT * FROM tabel_penugasan_petugas ORDER BY tanggal DESC")->result();
+                            $penugasan_petugas = $this->db->query("SELECT * FROM tabel_penugasan_petugas ORDER BY tanggal DESC")->result();
                             foreach ($penugasan_petugas as $penugasan) {
                             ?>
                                 <tr>
                                     <td><?= $no++ ?></td>
-                                    <td><?php echo $penugasan->id_penugasan; ?></td>
-                                    <td><?php echo $penugasan->id_kegiatan; ?></td>
+                                    <td><?php echo $penugasan->jenis_kompi; ?></td>
+                                    <td><?php echo $penugasan->id_jarko; ?></td>
                                     <td><?php echo $penugasan->id_petugas; ?></td>
-                                    <td><?php echo $penugasan->lokasi_kegiatan; ?></td>
+                                    <td><?php echo $penugasan->waktu_kegiatan; ?></td>
                                     <td><?php echo $penugasan->tanggal; ?></td>
                                     <td><?php echo $penugasan->shift; ?></td>
+                                    <td><?php echo $penugasan->kegiatan; ?></td>
+                                    <td><?php echo $penugasan->lokasi_kegiatan; ?></td>
                                     <td><?php echo $penugasan->no_wa; ?></td>
-                                    <td><?php echo $penugasan->uraian_kegiatan; ?></td>
+                                    <td><?php echo $penugasan->keterangan; ?></td>
                                     <td>
 									<button type="button" class="btn btn-outline-danger" data-bs-target="#view_images-<?= $penugasan->id_penugasan ?>" data-bs-toggle="modal">
 										<i class="far fa-file-image"></i> Lihat Foto
 									</button>
 								    </td>
-                                    <td>
-                                        <a href="<?= site_url('admin/kegiatan/edit_penugasan/' . $penugasan->id_penugasan) ?>" class="btn btn-outline-primary btn-xs"><i class='fal fa-pencil'></i></a>
-                                        
-                                    </td>
                                 </tr>
                                 <div class="modal fade" id="view_images-<?= $penugasan->id_penugasan ?>" data-bs-backdrop="static" data-bs-keyboard="false" aria-hidden="true" aria-labelledby="exampleModalToggleLabel2" tabindex="-1">
 								<div class="modal-dialog modal-xl">

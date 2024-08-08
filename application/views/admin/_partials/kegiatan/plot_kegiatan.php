@@ -3,15 +3,14 @@
     <?php echo validation_errors(); ?>
     <?php echo form_open_multipart('admin/kegiatan/plot_kegiatan', 'class="needs-validation"'); ?>
 
-    <?php if($this->session->flashdata('success')): ?>
-    <div class="alert alert-success" id="success-alert">
-        <?php echo $this->session->flashdata('success'); ?>
-    </div>
+    <?php if ($this->session->flashdata('success')): ?>
+        <div class="alert alert-success" id="success-alert">
+            <?php echo $this->session->flashdata('success'); ?>
+        </div>
     <?php endif; ?>
 
     <div class="row">
         <div class="col-md-6">
-
             <div class="mb-3">
                 <label for="tanggal" class="form-label">Tanggal</label>
                 <input type="date" class="form-control" name="tanggal" required>
@@ -24,6 +23,11 @@
                     <option value="Pagi">Pagi</option>
                     <option value="Malam">Malam</option>
                 </select>
+            </div>
+
+            <div class="mb-3">
+                <label for="waktu_kegiatan" class="form-label">Waktu Kegiatan</label>
+                <input type="time" class="form-control" name="waktu_kegiatan" required>
             </div>
 
             <div class="mb-3">
@@ -56,16 +60,15 @@
                 <label for="jenis_kompi" class="form-label">Jenis Kompi</label>
                 <select class="form-control" name="jenis_kompi" id="jenis_kompi" required>
                     <option value="">--- Pilih Jenis Kompi ---</option>
+                    <option value="BKO">BKO</option>
                     <option value="DANKI A - YUDA WIDAS P">DANKI A - YUDA WIDAS P</option>
                     <option value="DANKI B - EKO SUPRIYANTO">DANKI B - EKO SUPRIYANTO</option>
                     <option value="DANKI C - MOCHAMAD CHAIRUL TAKWOLO">DANKI C - MOCHAMAD CHAIRUL TAKWOLO</option>
                 </select>
             </div>
-
         </div>
 
         <div class="col-md-6">
-
             <div class="mb-3">
                 <label for="jumlah_personel" class="form-label">Jumlah Personel</label>
                 <input type="number" class="form-control" name="jumlah_personel" id="jumlah_personel" required>
@@ -74,11 +77,12 @@
 
             <div class="mb-3">
                 <label for="jumlah_jarko" class="form-label">Jumlah Jarko</label>
-                <input type="number" class="form-control" name="jumlah_jarko" required>
+                <input type="number" class="form-control" name="jumlah_jarko" id="jumlah_jarko" required>
             </div>
+            <div class="mb-3" id="jarko-container"></div>
 
             <div class="mb-3">
-                <label for="keterangan" class="form-label">Uraian Kegiatan</label>
+                <label for="keterangan" class="form-label">Keterangan</label>
                 <textarea class="form-control" name="keterangan" autocomplete="off"></textarea>
             </div>
 
@@ -230,5 +234,56 @@
         var initialKompi = $('#jenis_kompi').val();
         var initialJumlah = $('#jumlah_personel').val();
         loadPetugasOptions(initialKompi, initialJumlah);
+    });
+</script>
+<script>
+    function loadJarkoOptions(jenisKompi, jumlahJarko) {
+        if (jenisKompi && jumlahJarko > 0) {
+            $.ajax({
+                url: "<?php echo base_url('admin/kegiatan/get_all_personel1'); ?>",
+                method: 'GET',
+                success: function(data) {
+                    try {
+                        var jarkoData = JSON.parse(data);
+                        $('#jarko-container').empty();
+                        for (var i = 0; i < jumlahJarko; i++) {
+                            var select = $('<select class="form-control jarko-select" name="jarko[]" required></select>');
+                            select.append('<option value="">--- Pilih Petugas ---</option>');
+                            $.each(jarkoData, function(index, jarko) {
+                                var option = $('<option></option>').attr('value', jarko.id_staff).text(jarko.nama_staff);
+                                select.append(option);
+                            });
+                            $('#jarko-container').append('<div class="form-group"><label>Petugas ' + (i + 1) + '</label>' + select.prop('outerHTML') + '</div>');
+                        }
+                        $('.jarko-select').select2();
+                    } catch (e) {
+                        console.error("Error parsing JSON:", e);
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error("Failed to load jarko data:", error);
+                }
+            });
+        } else {
+            $('#jarko-container').empty();
+        }
+    }
+
+    $(document).ready(function() {
+        $('#jenis_kompi').change(function() {
+            var jenisKompi = $(this).val();
+            var jumlahJarko = $('#jumlah_jarko').val();
+            loadJarkoOptions(jenisKompi, jumlahJarko);
+        });
+
+        $('#jumlah_jarko').change(function() {
+            var jumlahJarko = $(this).val();
+            var jenisKompi = $('#jenis_kompi').val();
+            loadJarkoOptions(jenisKompi, jumlahJarko);
+        });
+
+        var initialKompi = $('#jenis_kompi').val();
+        var initialJumlah = $('#jumlah_jarko').val();
+        loadJarkoOptions(initialKompi, initialJumlah);
     });
 </script>

@@ -4,7 +4,10 @@
       <div class="card-title">
         <div style="margin: 20px;">
           <a href="<?= base_url("admin/data_kejadian/add") ?>">
-            <button class="btn btn-primary btn-icon-text mb-md-0">Tambah Data</button>
+            <button class="btn btn-primary btn-icon-text mb-md-0">Tambah Data</button>  
+          </a>
+          <a href="<?= base_url("admin/data_kejadian/export") ?>">
+            <button class="btn btn-success btn-icon-text mb-md-0" type="submit" name="export">Export to Excel</button>
           </a>
         </div>
       </div>
