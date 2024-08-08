@@ -19,13 +19,13 @@
                                 <th width="20px">ID Kegiatan</th>
                                 <th width="30px">Tanggal</th>
                                 <th width="20px">Shift</th>
+                                <th width="30px">Waktu Kegiatan</th>
                                 <th width="30px">Kegiatan</th>
                                 <th width="20px">Lokasi Kegiatan</th>
                                 <th width="20px">Jumlah Personel</th>
                                 <th width="30px">Jumlah Jarko</th>
                                 <th width="30px">Keterangan</th>
                                 <th width="20px">Aksi</th>
-                                <th width="20px">#</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -40,14 +40,12 @@
                                     <td><?= $kg->id_kegiatan; ?></td>
                                     <td><?= $kg->tanggal; ?></td>
                                     <td><?= $kg->shift; ?></td>
+                                    <td><?= $kg->waktu_kegiatan; ?></td>
                                     <td><?= $kg->kegiatan; ?></td>
                                     <td><?= $kg->lokasi_kegiatan; ?></td>
                                     <td><?= $kg->jumlah_personel; ?></td>
                                     <td><?= $kg->jumlah_jarko; ?></td>
                                     <td><?= $kg->keterangan; ?></td>
-                                    <td>
-                                        <a href="<?php echo base_url('admin/kegiatan/tambah_petugas/' . $kg->id_kegiatan); ?>">Tambah Petugas</a>
-                                    </td>
                                     <td>
                                         <a href="<?= site_url('admin/kegiatan/edit_plot_kegiatan/'.$kg->id_kegiatan) ?>" class="btn btn-outline-primary btn-xs"><i class='fal fa-pencil'></i></a>
                             

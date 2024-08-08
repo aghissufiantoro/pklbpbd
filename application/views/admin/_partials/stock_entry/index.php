@@ -17,7 +17,23 @@
       </div>
       <div class="card-body">
         <h6 class="card-title">Data logistik BPBD Kota Surabaya</h6>
-        <p class="text-muted mb-3">Data berisi data logistik yang ada di BPBD Kota Surabaya</p>
+        <p class="text-muted mb-3">Data logistik yang keluar dari  BPBD Kota Surabaya</p>
+        
+        <!-- Filter by Date Range -->
+        <div class="row mb-4">
+          <div class="col-md-3">
+            <label for="startDate">Start Date</label>
+            <input type="date" id="startDate" class="form-control">
+          </div>
+          <div class="col-md-3">
+            <label for="endDate">End Date</label>
+            <input type="date" id="endDate" class="form-control">
+          </div>
+          <div class="col-md-3 align-self-end">
+            <button id="filterButton" class="btn btn-primary">Filter</button>
+          </div>
+        </div>
+
         <div class="table-responsive">
           <table id="dataTableExample" class="table">
             <thead>
@@ -29,7 +45,6 @@
                 <th width="90px">Nama Barang</th>
                 <th width="30px">Status barang</th>
                 <th width="20px">Quantity Awal</th>
-                <th width="20px">Quantity Masuk</th>
                 <th width="20px">Quantity Keluar</th>
                 <th width="20px">Quantity Tersedia</th>
                 <th width="20px">Penerima Barang</th>
@@ -54,11 +69,10 @@
                     <td><?= $no++ ?></td>
                     <td><?= $res_data_entry_sembako -> id_transaksi?></td>
                     <td><?= $res_data_entry_sembako -> id_kejadian ?></td>
-                    <td><?= date('d-m-Y', strtotime($res_data_entry_sembako->tanggal_entry)) ?></td>
+                    <td><?= $res_data_entry_sembako->tanggal_entry ?></td>
                     <td><?= $res_data_entry_sembako->nama_barang ?></td>
                     <td><?= $res_data_entry_sembako->status_barang ?></td>
                     <td><?= $res_data_entry_sembako->qty_awal ?></td>
-                    <td><?= $res_data_entry_sembako->qty_masuk ?></td>
                     <td><?= $res_data_entry_sembako->qty_keluar ?></td>
                     <td><?= $res_data_entry_sembako->qty_tersedia ?></td>
                     <td><?= $res_data_entry_sembako->penerima_barang ?></td>
@@ -122,3 +136,24 @@
     </div>
 	</div>
 </div>
+
+<script>
+document.getElementById('filterButton').addEventListener('click', function() {
+  var startDate = new Date(document.getElementById('startDate').value);
+  var endDate = new Date(document.getElementById('endDate').value);
+  var table = document.getElementById('dataTableExample');
+  var rows = table.getElementsByTagName('tbody')[0].getElementsByTagName('tr');
+
+  for (var i = 0; i < rows.length; i++) {
+    var dateCell = rows[i].getElementsByTagName('td')[3]; // Assuming the date is in the 4th column (index 3)
+    var dateValue = new Date(dateCell.textContent);
+    
+    if (dateValue >= startDate && dateValue <= endDate) {
+      rows[i].style.display = '';
+    } else {
+      rows[i].style.display = 'none';
+    }
+  }
+});
+
+</script>
