@@ -17,7 +17,8 @@ class m_stockmaster extends CI_Model
 
     public function getAll()
     {
-        return $this->db->get($this->_table)->result();
+        $this->db->where('is_deleted', 0);
+        $this->db->get($this->_table)->result();
     }
 
     public function getById($id)
@@ -32,6 +33,7 @@ class m_stockmaster extends CI_Model
 
         // Generate kode_barang
         $kode_barang = $this->generate_kode_barang();
+        $qty_tersedia = $post['qty_tersedia'];
 
         // Prepare data array for insertion
         $data = array(
@@ -43,7 +45,11 @@ class m_stockmaster extends CI_Model
 
         // Insert data into the database
         $this->db->insert($this->_table, $data);
-        return $kode_barang;
+
+        return array(
+            'kode_barang' => $kode_barang,
+            'qty_tersedia' => $qty_tersedia
+        );
     }
 
     // public function update()
@@ -54,6 +60,9 @@ class m_stockmaster extends CI_Model
         // $this->nama_barang     = $post['nama_barang'];
         // $this->kategori_barang = $post['kategori_barang'];
         // $this->satuan_barang     = $post['satuan_barang'];
+        $this->nama_barang     = $post['nama_barang'];
+        $this->kategori_barang = $post['kategori_barang'];
+        $this->satuan_barang     = $post['satuan_barang'];
 
 
     //     $this->db->update($this->_table, $this, array('kode_barang' => $post['kode_barang']));
@@ -62,7 +71,9 @@ class m_stockmaster extends CI_Model
     public function delete($id)
     {
         // Remove the recursive call $this->delete($id);
-        return $this->db->delete($this->_table, array("kode_barang" => $id));
+        $this->db->where('kode_barang', $id);
+        return $this->db->update($this->_table, array('is_deleted' => 1));
+        // return $this->db->update($this->_table, array("kode_barang" => $id));
     }
 
     public function generate_kode_barang()
@@ -84,5 +95,36 @@ class m_stockmaster extends CI_Model
         }
 
         return $new_kode_barang;
+    }
+
+    public function getLastTransactionID($formatted_date)
+    {
+        // Query to fetch the last transaction ID for the given date
+        $this->db->select('id_transaksi');
+        $this->db->from('data_entry_sembako');
+        $this->db->like('id_transaksi', 'T' . $formatted_date, 'after');
+        $this->db->order_by('id_transaksi', 'DESC');
+        $this->db->limit(1);
+        $query = $this->db->get();
+
+        if ($query->num_rows() > 0) {
+            // If there are transactions for the given date, extract the last transaction ID
+            $last_transaction_id = $query->row()->id_transaksi;
+            // Extract the numeric part of the transaction ID
+            $numeric_part = substr($last_transaction_id, -2);
+            // Convert the numeric part to an integer and increment by 1
+            $new_numeric_part = (int)$numeric_part + 1;
+        } else {
+            // If there are no transactions for the given date, start with 1
+            $new_numeric_part = 1;
+        }
+
+        // Pad the numeric part with leading zeros
+        $padded_new_numeric_part = str_pad($new_numeric_part, 2, '0', STR_PAD_LEFT);
+
+        // Construct the new transaction ID
+        $new_transaction_id = 'T' . $formatted_date . $padded_new_numeric_part;
+
+        return $new_transaction_id;
     }
 }

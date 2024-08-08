@@ -68,16 +68,7 @@ if ($this->session->flashdata('success')) {
             <div class="col-md-6">
               <div class="mb-3">
                 <label class="form-label" for="status_barang">Status Barang</label>
-                <select class="form-select" id="status_barang" name="status_barang" data-width="100%" required>
-    <?php 
-    $arrayStatus = array('masuk', 'keluar', 'rusak');
-    foreach($arrayStatus as $status):
-        $selected = ($data_entry_sembako->status_barang == $status) ? 'selected' : '';
-    ?>
-        <option value="<?= $status ?>" <?= $selected ?>><?= $status ?></option>
-    <?php endforeach; ?>
-</select>
-
+                <input readonly class="form-select" id="status_barang" name="status_barang" data-width="100%" required value="keluar">
               </div>
             </div>
             <div class="col-md-6">
@@ -86,7 +77,7 @@ if ($this->session->flashdata('success')) {
                 <i id="available-stock"></i>
                 <div class="input-group">
                   <button class="btn btn-outline-secondary" type="button" id="kurangBtn">-</button>
-                  <input id="qty_barang" class="form-control" name="qty_barang" type="text" value="<?= $data_entry_sembako->qty_barang ?>" required>
+                  <input id="qty_barang" class="form-control" name="qty_barang" type="text" value="<?= $data_entry_sembako->qty_keluar ?>" required>
                   <button class="btn btn-outline-secondary" type="button" id="tambahBtn">+</button>
                 </div>
               </div>

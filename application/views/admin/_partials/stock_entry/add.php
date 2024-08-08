@@ -1,10 +1,8 @@
-
-
-<?php if ($this->session->flashdata('success')): ?>
-    <div class="alert alert-success">
-        <?= $this->session->flashdata('success') ?>
-    </div>
-<?php endif; ?> 
+<?php if ($this->session->flashdata('success')) : ?>
+  <div class="alert alert-success">
+    <?= $this->session->flashdata('success') ?>
+  </div>
+<?php endif; ?>
 
 
 <div class="row">
@@ -25,7 +23,6 @@
                 </div>
               </div>
             </div>
-
             <div class="col-md-3">
             <div class="mb-3">
               <label for="kejadian" class="form-label">Kategori Kejadian</label>
@@ -69,6 +66,7 @@
                   <label for="lokasi_diterima" class="form-label">Lokasi Diterima</label>
                   <input id="lokasi_diterima" class="form-control" name="lokasi_diterima" type="text" required>
                 </div>
+
             </div>
             <div class="col-md-3">
                 <div class="mb-3">
@@ -76,7 +74,6 @@
                   <input id="penerima_barang" class="form-control" name="penerima_barang" type="text" required>
                 </div>
             </div>
-
             <div class="col-md-2 d-flex align-items-end">
               <div class="mb-3">
               <label for="kecamatan">Kecamatan</label>
@@ -125,14 +122,8 @@
            
             <div class="col-md-4">
               <div class="mb-3">
-                <label class="form-label" for="status_barang">Status Barang</label>
-                <select class="form-select" id="status_barang" name="status_barang" data-width="100%" required>
-                  <option value="">--- Pilih Status Barang ---</option>
-                  <option value="Masuk">Masuk</option>
-                  <option value="Keluar">Keluar</option>
-                  <option value="Rusak">Rusak</option>
-                  <option value="Tersedia">Tersedia</option>
-                </select>
+                
+                <input type="hidden"  id="status_barang" name="status_barang" data-width="100%" required value="keluar">
               </div>
             </div>
 
@@ -149,6 +140,7 @@
               <i id='available-stock'></i>
               </div>
             </div>
+
           </div>  
 
         <div class="row">
@@ -163,7 +155,13 @@
               <input id="btnTambahBarang" class="btn btn-success" type="button" value="     Add     ">
             </div>
             <div class="mb-3">
+<<<<<<< HEAD
               <input oncLick="clearAll();" class="btn btn-danger" type="button" value="    clear    ">
+=======
+              <input id="btnTambahBarang" class="btn btn-success" type="button" value="              Add              ">
+              <input oncLick="clearAll();" class="btn btn-success" type="button" value="             clear             ">
+
+>>>>>>> b35d9fa0aab760b578ebf4b4d05630b57406e327
             </div>
           </div>
         </div>

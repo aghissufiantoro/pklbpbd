@@ -37,10 +37,22 @@ class M_stock_entry extends CI_Model
         return $this->db->get_where($this->_table, ["id_transaksi" => $id])->row();
     }
 
+    
     public function save($data)
-    {   
+    {
+    
+        // Perform the necessary calculations and insertion
+        if($data['status_barang'] ==='keluar'){
+        $this->db->set('qty_keluar', (int)$data['qty_barang'], FALSE);
+        $this->db->set('qty_masuk', 0, FALSE);
+        $this->db->set('qty_tersedia', (int)$data['qty_awal'].'-'.(int)$data['qty_barang'], FALSE);
+        unset($data['qty_barang']);
         $this->db->insert($this->_table, $data);
-    }  
+
+        
+    }
+    }
+
 
 
     public function update()
@@ -48,10 +60,13 @@ class M_stock_entry extends CI_Model
         $post = $this->input->post();
         $this->id_transaksi = $post["id_transaksi"];
         $this->id_kejadian = $post["id_kejadian"];
-        $this->tanggal_entry = date('Y-m-d');  // Set current date
+        $this->tanggal_entry = date('Y-m-d H:i:s');  // Set current date
         $this->kode_barang = $post["kode_barang"];
         $this->status_barang = $post["status_barang"];
-        $this->qty_barang = $post["qty_barang"];
+        $this->qty_awal =$this->getAvailableStock($this->kode_barang);
+        $this->qty_keluar = $post["qty_barang"];
+        $this->qty_masuk = 0;
+        $this->qty_tersedia = (int)$this->qty_awal - (int)$this->qty_keluar;
         $this->lokasi_diterima = $post["lokasi_diterima"];
         $this->penerima_barang = $post["penerima_barang"];
         $this->kelurahan = $post["kelurahan"];
@@ -66,7 +81,7 @@ class M_stock_entry extends CI_Model
     {
         return $this->db->delete($this->_table, array("id_transaksi" => $id));
     }
-    
+
     public function getLastTransactionID($formatted_date) {
         // Query to fetch the last transaction ID for the given date
         $this->db->select('id_transaksi');
@@ -98,17 +113,15 @@ class M_stock_entry extends CI_Model
     }
     
 
-    public function increase_stock($kode_barang, $qty) {
-        $this->db->set('qty_masuk', 'qty_masuk + ' . (int)$qty, FALSE);
-        $this->db->set('qty_tersedia', 'qty_masuk - qty_keluar - qty_rusak', FALSE);
-        $this->db->where('kode_barang', $kode_barang);
+    public function increase_stock($kode_barang, $qty_keluar) {
+        $this->db->set('qty_tersedia', 'qty_tersedia + ' . (int)$qty_keluar, FALSE);
+        $this->db->where('kode_barang', (string)$kode_barang);
         $this->db->update('data_stock_logistik');
     }
     
-    public function decrease_stock($kode_barang, $qty) {
-        $this->db->set('qty_keluar', 'qty_keluar + ' . (int)$qty, FALSE);
-        $this->db->set('qty_tersedia', 'qty_masuk - qty_keluar - qty_rusak', FALSE);
-        $this->db->where('kode_barang', $kode_barang);
+    public function decrease_stock($kode_barang, $qty_keluar) {
+        $this->db->set('qty_tersedia', 'qty_tersedia - ' . (int)$qty_keluar, FALSE);
+        $this->db->where('kode_barang', (string)$kode_barang);
         $this->db->update('data_stock_logistik');
     }
 

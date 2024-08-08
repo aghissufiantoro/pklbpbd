@@ -15,10 +15,10 @@
   </div>
     <div class="row g-5 md-6">
         <div class="col-md-6">
-            <iframe src='https://widgets.sociablekit.com/instagram-feed/iframe/25401071' frameborder='0' width='100%' height='800px'></iframe>
+            <iframe src='https://www.instagram.com/bpbdsurabaya/embed' frameborder='0' width='100%' height='800px'></iframe>
         </div>
         <div class="col-md-6">
-            <iframe src='https://widgets.sociablekit.com/tiktok-feed/iframe/25401050' frameborder='0' width='100%' height='800px'></iframe>
-        </div>
+        <blockquote class="tiktok-embed" cite="https://www.tiktok.com/@officialbpbdsurabaya" data-unique-id="officialbpbdsurabaya" data-embed-type="creator" style="max-width: 780px; min-width: 288px;" > <section> <a target="_blank" href="https://www.tiktok.com/@officialbpbdsurabaya?refer=creator_embed">@officialbpbdsurabaya</a> </section> </blockquote> <script async src="https://www.tiktok.com/embed.js"></script>   
+      </div>
     </div>
 </div>

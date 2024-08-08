@@ -10,40 +10,36 @@
             </div>
             <div class="card-body">
                 <h6 class="card-title">Tugas Harian Staff BPBD Kota Surabaya</h6>
-                <p class="text-muted mb-3">Data berisi tugas harian Staff BPBD Kota Surabaya</p>
+                <p class="text-muted mb-3">Data berisi tugas harian staff BPBD Kota Surabaya</p>
                 <div class="table-responsive">
                     <table id="dataTableExample" class="table">
                         <thead>
                             <tr>
                                 <th width="20px">No</th>
                                 <th width="20px">ID Tugas Harian</th>
-                                <th width="20px">Nama Staff</th>
                                 <th width="30px">Tanggal</th>
                                 <th width="20px">Waktu</th>
                                 <th width="20px">Lokasi</th>
                                 <th width="20px">Uraian Kegiatan</th>
-                                <th width="30px">Penanggung Jawab</th>
+                                <th width="30px">Bidang</th>
                                 <th width="20px">Hasil Kegiatan</th>
-                                <th width="20px">Dokumentasi</th>
                                 <th width="20px">Aksi</th>
                             </tr>
                         </thead>
                         <tbody>
                             <?php
                             $no = 1;
-                            $tugas_harian = $this->db->query("SELECT * FROM tugas_harian")->result();
+                            $tugas_harian = $this->db->query("SELECT * FROM tugas_harian ORDER BY tanggal DESC" )->result();
                             foreach ($tugas_harian as $tugas) {
                             ?>
                                 <tr>
                                     <td><?= $no++ ?></td>
                                     <td><?= $tugas->id_tugas_harian; ?></td>
-                                    <td><?= $tugas->nama_staff; ?></td>
                                     <td><?= $tugas->tanggal; ?></td>
                                     <td><?= $tugas->waktu; ?></td>
                                     <td><?= $tugas->lokasi; ?></td>
                                     <td><?= $tugas->uraian_kegiatan; ?></td>
-                                    <td><?= $tugas->penanggung_jawab; ?></td>
-                                    <td><?= $tugas->hasil_kegiatan; ?></td>
+                                    <td><?= $tugas->bidang; ?></td>
                                     <td>
 									<button type="button" class="btn btn-outline-danger" data-bs-target="#view_images-<?= $tugas->id_tugas_harian?>" data-bs-toggle="modal">
 										<i class="far fa-file-image"></i> Lihat Foto
@@ -77,25 +73,25 @@
 								<div class="modal-dialog modal-xl">
 									<div class="modal-content">
 										<div class="modal-header">
-											<h5 class="modal-title" id="exampleModalToggleLabel2"><?= $tugas->uraian_kegiatan ?></h5>
+											<h5 class="modal-title" id="exampleModalToggleLabel2">Hasil Kegiatan</h5>
 											<button type="button" class="btn-close" data-bs-target="#alur_pelayanan" data-bs-toggle="modal" aria-label="Close"></button>
 										</div>
 										<div class="modal-body">
 											<div class="row">
 												<?php
-												$images = json_decode($tugas->dokumentasi);
+												$images = json_decode($tugas->hasil_kegiatan);
 												if (is_array($images)) {
 													foreach ($images as $image) {
 														?>
 														<div class="col-md-4 mb-3">
-															<img src="<?= base_url('upload/tugas_harian/' . $image) ?>" class="img-fluid" alt="<?= $tugas->uraian_kegiatan ?>">
+															<img src="<?= base_url('upload/tugas_harian/' . $image) ?>" class="img-fluid" alt="Hasil Kegiatan">
 														</div>
 														<?php
 													}
 												} else {
 													?>
 													<div class="col-md-4 mb-3">
-														<img src="<?= base_url('upload/tugas_harian/' . $tugas->dokumentasi) ?>" class="img-fluid" alt="<?= $tugas->uraian_kegiatan ?>">
+														<img src="<?= base_url('upload/tugas_harian/' . $tugas->hasil_kegiatan) ?>" class="img-fluid" alt="Hasil Kegiatan">
 													</div>
 													<?php
 												}

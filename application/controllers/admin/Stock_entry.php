@@ -83,6 +83,9 @@ class Stock_entry extends CI_Controller
             return;
         }
     
+        $success_count = 0;
+        $errors = [];
+    
         foreach ($input as $entry) {
             // Ensure required fields are set to avoid passing null to validation
             $entry['kode_barang'] = $entry['id_barang'] ?? '';
@@ -115,9 +118,8 @@ class Stock_entry extends CI_Controller
                     if ($status_barang == 'Keluar') {
                         $available_stock = $this->m_stock_entry->getAvailableStock($kode_barang);
                         if ($available_stock < $qty_barang) {
-                            $response = ['status' => 'error', 'message' => 'Jumlah barang yang tersedia tidak cukup.'];
-                            echo json_encode($response);
-                            return;
+                            $errors[] = ['status' => 'error', 'message' => 'Jumlah barang yang tersedia tidak cukup.'];
+                            continue;
                         }
                     }
                     
@@ -128,9 +130,10 @@ class Stock_entry extends CI_Controller
                     $data_to_save = [
                         'id_transaksi' => $new_transaction_id,
                         'id_kejadian' => $id_kejadian,
-                        'tanggal_entry' => $entry['tanggalEntry'] ?? date('Y-m-d'),  // Use provided date or current date
+                        'tanggal_entry' => $entry['tanggalEntry'] ?? date('Y-m-d H:i:s'),  // Use provided date or current date
                         'kode_barang' => $kode_barang,
                         'status_barang' => $status_barang,
+                        'qty_awal' => $this->m_stock_entry->getAvailableStock($kode_barang),
                         'qty_barang' => $qty_barang,
                         'lokasi_diterima' => $lokasi_diterima,
                         'penerima_barang' => $penerima_barang,
@@ -140,26 +143,30 @@ class Stock_entry extends CI_Controller
                     ];
     
                     $this->m_stock_entry->save($data_to_save);
-    
+
                     // Update data_stock_logistik based on status_barang
                     if ($status_barang == 'masuk') {
                         $this->m_stock_entry->increase_stock($kode_barang, $qty_barang);
                     } elseif ($status_barang == 'keluar') {
                         $this->m_stock_entry->decrease_stock($kode_barang, $qty_barang);
-                    } elseif ($status_barang == 'rusak') {
-                        $this->m_stock_entry->mark_as_damaged($kode_barang, $qty_barang);
-                    }
+                    } 
     
-                    $response = ['status' => 'success', 'message' => 'Data berhasil disimpan.'];
+                    $success_count++;
                 } else {
-                    $response = ['status' => 'error', 'message' => 'Kode Barang tidak ditemukan.'];
+                    $errors[] = ['status' => 'error', 'message' => 'Kode Barang tidak ditemukan.'];
                 }
             } else {
-                $response = ['status' => 'error', 'message' => validation_errors()];
+                $errors[] = ['status' => 'error', 'message' => validation_errors()];
             }
-    
-            echo json_encode($response);
         }
+    
+        $response = [
+            'status' => 'success',
+            'message' => "Data berhasil disimpan: $success_count, Data gagal: " . count($errors),
+            'errors' => $errors
+        ];
+    
+        echo json_encode($response);
     }
     
     
@@ -218,20 +225,14 @@ class Stock_entry extends CI_Controller
 
                 // Fetch the previous entry values
                 $previous_entry = $data_entry_sembako->getById($id);
-                $old_qty_barang = $previous_entry->qty_barang;
+                $old_qty_barang = $previous_entry->qty_keluar;
                 $old_status_barang = $previous_entry->status_barang;
 
                 // Adjust stock based on the previous values
-                if ($old_status_barang == 'Masuk') {
-                    $this->m_stock_entry->decrease_stock($kode_barang, $old_qty_barang);
-                } elseif ($old_status_barang == 'Keluar') {
-                    $this->m_stock_entry->increase_stock($kode_barang, $old_qty_barang);
-                } elseif ($old_status_barang == 'Rusak') {
-                    $this->m_stock_entry->repair_stock($kode_barang, $old_qty_barang);
-                }
-
+                $this->m_stock_entry->increase_stock( $previous_entry->kode_barang, $old_qty_barang);
+                
                 // Check stock availability for new 'Keluar' status
-                if ($new_status_barang == 'Keluar') {
+                if ($new_status_barang == 'keluar') {
                     $available_stock = $this->m_stock_entry->getAvailableStock($kode_barang);
                     if ($available_stock < $new_qty_barang) {
                         $this->session->set_flashdata('error', 'Jumlah barang yang tersedia tidak cukup.');
@@ -242,15 +243,8 @@ class Stock_entry extends CI_Controller
                 // Update the entry data
                 $data_entry_sembako->update();
 
-                // Adjust stock based on the new values
-                if ($new_status_barang == 'Masuk') {
-                    $this->m_stock_entry->increase_stock($kode_barang, $new_qty_barang);
-                } elseif ($new_status_barang == 'Keluar') {
-                    $this->m_stock_entry->decrease_stock($kode_barang, $new_qty_barang);
-                } elseif ($new_status_barang == 'Rusak') {
-                    $this->m_stock_entry->mark_as_damaged($kode_barang, $new_qty_barang);
-                }
-
+                $this->m_stock_entry->decrease_stock($kode_barang, $new_qty_barang);
+                
                 $this->session->set_flashdata('success', '<i class="fa fa-check"></i> Data logistik telah dirubah.');
                 redirect(site_url('admin/stock_entry/edit/' . $id));
             }

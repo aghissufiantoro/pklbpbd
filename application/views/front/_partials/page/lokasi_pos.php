@@ -4,13 +4,27 @@
 <!-- Page Header Start -->
 <div class="container-fluid page-header py-5 mb-5 wow fadeIn" data-wow-delay="0.1s">
   <div class="container text-center py-5">
-    <h1 class="display-2 text-white mb-4 animated slideInDown">Lokasi POS Pantau BPBD Kota Surabaya</h1>
+    <h1 class="display-2 text-white mb-4 animated slideInDown">Lokasi POS BPBD Kota Surabaya</h1>
   </div>
 </div>
 <!-- Page Header End -->
 
 
 <!-- Contact Start -->
+<div class="position-relative">
+    <div class="position-absolute top-0 start-50 translate-middle-x mt-3 w-50">
+        <div class="btn-group w-100" role="group" aria-label="Basic radio toggle button group">
+            <input type="radio" class="btn-check" name="btnradio" id="btnradio-pos" autocomplete="off" checked>
+            <label class="btn btn-outline-primary w-50 rounded-start" for="btnradio-pos">Lokasi Pos</label>
+
+            <input type="radio" class="btn-check" name="btnradio" id="btnradio-cuaca" autocomplete="off">
+            <label class="btn btn-outline-primary w-50 rounded-end" for="btnradio-cuaca">Peta Cuaca</label>
+        </div>
+    </div>
+</div>
+
+
+<div class="container-xxl py-5">
 <div class="container-xxl py-5">
   <div class="container">
     <!-- <div class="text-center mx-auto wow fadeInUp" data-wow-delay="0.1s">
@@ -35,47 +49,126 @@
 <script src="https://unpkg.com/esri-leaflet-geocoder@2.3.2/dist/esri-leaflet-geocoder.js" integrity="sha512-8twnXcrOGP3WfMvjB0jS5pNigFuIWj4ALwWEgxhZ+mxvjF5/FBPVd5uAxqT8dd2kUmTVK9+yQJ4CmTmSg/sXAQ==" crossorigin=""></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.js"></script>
 <script src="<?=base_url('assets_admin/js/leaflet.ajax.js')?>"></script>
-<script type="text/javascript">
-  var marker;
-  var map = L.map('map').setView([-7.273314, 112.77047], 12);
 
-  var Layer=L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
-    maxZoom: 18,
-    id: 'mapbox.streets',
-    accessToken: 'pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw'
-  });
-  map.addLayer(Layer);
-  <?php
-$db_lokasi_pos = $this->db->query("SELECT * FROM lokasi_pos ORDER BY date_created DESC")->result();
-foreach ($db_lokasi_pos as $peta_lokasi) {
-    ?>
-    marker = L.marker([<?= $peta_lokasi->lat_lokasi_pos ?>, <?= $peta_lokasi->lon_lokasi_pos ?>]).addTo(map).bindPopup('<?= $peta_lokasi->nama_lokasi_pos."<br> Alamat: ".$peta_lokasi->alamat_lokasi_pos ?>');
-    <?php
-    // Assign different CSS classes based on the value of ket_lokasi_pos
-    $css_class = '';
-    if (strpos(strtolower($peta_lokasi->ket_lokasi_pos), 'pos pantau') !== false) {
-        $css_class = 'huechange1'; // Assigning first CSS class
-    } elseif (strpos(strtolower($peta_lokasi->ket_lokasi_pos), 'terpadu') !== false) {
-        $css_class = 'huechange2'; // Assigning second CSS class
-    } elseif (strpos(strtolower($peta_lokasi->ket_lokasi_pos), 'mako pmi') !== false) {
-        $css_class = 'huechange3'; // Assigning third CSS class
+<script type="text/javascript">
+  var map; // Global variable to store the map instance
+
+  document.getElementById('btnradio-pos').addEventListener('change', function() {
+    if (this.checked) {
+        // Check if the map instance exists
+        if (map !== undefined && map !== null) {
+            map.remove(); // Remove the existing map instance
+        }
+        
+        var mapContainer = document.getElementById('map');
+        mapContainer.innerHTML = ''; // Clear the map container
+
+        var script = document.createElement('script');
+        script.type = 'text/javascript';
+        script.innerHTML = `
+            var marker;
+            map = L.map('map').setView([-7.273314, 112.77047], 12); // Initialize the map
+
+            var Layer = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+                maxZoom: 18,
+                id: 'mapbox.streets',
+                accessToken: 'pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw'
+            });
+            map.addLayer(Layer);
+            <?php
+            $db_lokasi_pos = $this->db->query("SELECT * FROM lokasi_pos ORDER BY date_created DESC")->result();
+            foreach ($db_lokasi_pos as $peta_lokasi) {
+            ?>
+                marker = L.marker([<?= $peta_lokasi->lat_lokasi_pos ?>, <?= $peta_lokasi->lon_lokasi_pos ?>]).addTo(map).bindPopup('<?= $peta_lokasi->nama_lokasi_pos."<br> Alamat: ".$peta_lokasi->alamat_lokasi_pos ?>');
+                <?php
+                // Assign different CSS classes based on the value of ket_lokasi_pos
+                $css_class = '';
+                if (strpos(strtolower($peta_lokasi->ket_lokasi_pos), 'pos pantau') !== false) {
+                    $css_class = 'huechange1'; // Assigning first CSS class
+                } elseif (strpos(strtolower($peta_lokasi->ket_lokasi_pos), 'terpadu') !== false) {
+                    $css_class = 'huechange2'; // Assigning second CSS class
+                } elseif (strpos(strtolower($peta_lokasi->ket_lokasi_pos), 'mako pmi') !== false) {
+                    $css_class = 'huechange3'; // Assigning third CSS class
+                }
+                ?>
+                marker._icon.classList.add("<?= $css_class ?>");
+                marker.on('click', function(e) {
+                    // Construct Google Maps URL with latitude and longitude
+                    var googleMapsUrl = 'https://www.google.com/maps/search/?api=1&query=' + e.latlng.lat + ',' + e.latlng.lng;
+
+                    // Open Google Maps in a new window/tab
+                    window.open(googleMapsUrl, '_blank');
+                })
+            <?php
+            }
+            ?>
+        `;
+        mapContainer.appendChild(script);
     }
+});
+
+document.getElementById('btnradio-cuaca').addEventListener('change', function() {
+    if (this.checked) {
+        // Check if the map instance exists
+        if (map !== undefined && map !== null) {
+            map.remove(); // Remove the existing map instance
+            map = null; // Clear the map variable
+        }
+        
+        document.getElementById('map').innerHTML = '<iframe src="https://stamet-juanda.bmkg.go.id/radar/" style="width: 100%; height: 100%; border-radius: 20px;" frameborder="0"></iframe>';
+    }
+});
+
+// Initialize with the default map
+var mapContainer = document.getElementById('map');
+mapContainer.innerHTML = ''; // Clear the map container
+
+var script = document.createElement('script');
+script.type = 'text/javascript';
+script.innerHTML = `
+    var marker;
+    map = L.map('map').setView([-7.273314, 112.77047], 12); // Initialize the map
+
+    var Layer = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+        maxZoom: 18,
+        id: 'mapbox.streets',
+        accessToken: 'pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw'
+    });
+    map.addLayer(Layer);
+    <?php
+    $db_lokasi_pos = $this->db->query("SELECT * FROM lokasi_pos ORDER BY date_created DESC")->result();
+    foreach ($db_lokasi_pos as $peta_lokasi) {
     ?>
-    marker._icon.classList.add("<?= $css_class ?>");
-    marker.on('click', function(e) {
+        marker = L.marker([<?= $peta_lokasi->lat_lokasi_pos ?>, <?= $peta_lokasi->lon_lokasi_pos ?>]).addTo(map).bindPopup('<?= $peta_lokasi->nama_lokasi_pos."<br> Alamat: ".$peta_lokasi->alamat_lokasi_pos ?>');
+        <?php
+        // Assign different CSS classes based on the value of ket_lokasi_pos
+        $css_class = '';
+        if (strpos(strtolower($peta_lokasi->ket_lokasi_pos), 'pos pantau') !== false) {
+            $css_class = 'huechange1'; // Assigning first CSS class
+        } elseif (strpos(strtolower($peta_lokasi->ket_lokasi_pos), 'terpadu') !== false) {
+            $css_class = 'huechange2'; // Assigning second CSS class
+        } elseif (strpos(strtolower($peta_lokasi->ket_lokasi_pos), 'mako pmi') !== false) {
+            $css_class = 'huechange3'; // Assigning third CSS class
+        }
+        ?>
+        marker._icon.classList.add("<?= $css_class ?>");
+        marker.on('click', function(e) {
             // Construct Google Maps URL with latitude and longitude
             var googleMapsUrl = 'https://www.google.com/maps/search/?api=1&query=' + e.latlng.lat + ',' + e.latlng.lng;
 
             // Open Google Maps in a new window/tab
             window.open(googleMapsUrl, '_blank');
-    })
+        })
     <?php
-    
-}
-?>
+    }
+    ?>
+`;
+mapContainer.appendChild(script);
 
 </script>
+
 
 <style>
 img.huechange1 { filter: hue-rotate(172.65deg); }
