@@ -158,10 +158,12 @@
               <input id="keterangan_barang" class="form-control" name="keterangan_barang" type="text" required>
             </div>
           </div>
-          <div class="col-md-3 d-flex align-items-end">
+          <div class="col-md-2 d-flex align-items-end">
+            <div class="mb-3 me-2">
+              <input id="btnTambahBarang" class="btn btn-success" type="button" value="     Add     ">
+            </div>
             <div class="mb-3">
-              <input id="btnTambahBarang" class="btn btn-success" type="button" value="              Add              ">
-              <input oncLick="clearAll();" class="btn btn-success" type="button" value="             clear             ">
+              <input oncLick="clearAll();" class="btn btn-danger" type="button" value="    clear    ">
             </div>
           </div>
         </div>
