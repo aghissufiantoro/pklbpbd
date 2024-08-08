@@ -1,28 +1,49 @@
-<!-- <nav class="page-breadcrumb">
-	<ol class="breadcrumb">
-		<li class="breadcrumb-item"><a href="#">Tables</a></li>
-		<li class="breadcrumb-item active" aria-current="page">Data Table</li>
-	</ol>
-</nav> -->
+<?php
 
-<div class="row">
-	<div class="col-md-12 grid-margin stretch-card">
-		<div class="card">
-			<div class="card-title">
-				<div style="margin: 20px;">
-					<a href="<?= base_url("admin/dokumentasi_sinasini/add") ?>">
-						<button class="btn btn-primary btn-icon-text mb-md-0">Tambah Data</button>
-					</a>
-					<a href="<?= base_url("application\controllers\admin\PDF_Sinasini.php") ?>">
-            			<button class="btn btn-primary btn-icon-text mb-md-0">Simpan PDF</button>
-        			</a>
-				</div>
-			</div>
-			<div class="card-body">
-				<h6 class="card-title">Data dokumentasi SINA-SINI BPBD Kota Surabaya</h6>
-				<p class="text-muted mb-3">Data berisi data data yang ada di BPBD Kota Surabaya</p>
-				<div class="table-responsive">
-					<table id="dataTableExample" class="table">
+defined('BASEPATH') OR exit('No direct script access allowed');
+
+class PDF_Sinasini extends CI_Controller
+{
+    private $filename = "import_data";
+
+    public function __construct()
+    {
+        parent::__construct();
+
+        if($this->session->userdata('status') != "login")
+        {
+            $this->session->set_flashdata('peringatan_login', 'Akses anda ditolak!. Silahkan login terlebih dahulu');
+            redirect(base_url("login"));
+        }
+        
+        $this->load->model("M_dokumentasi_sinasini");
+        $this->load->library('form_validation');
+        $this->load->helper('indonesian_date');
+        
+    }
+}
+?>
+
+<html>
+<head>
+  <title>SINASINI</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.css">
+  <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/1.6.5/css/buttons.dataTables.min.css">
+  <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css">
+  <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.js"></script>
+</head>
+
+<body>
+<div class="container">
+			<h2>SINASINI</h2>
+			<h4>Dokumentasi Edukasi Bencana Usia Dini</h4>
+				<div class="data-tables datatable-dark">
+					
+                <table id="dataTableExample" class="table">
 						<thead>
 						<tr>
 							<th width="20px">No</th>
@@ -32,7 +53,6 @@
 							<th width="20px">Tanggal</th>
 							<th width="40px">Link Video Dokumentasi</th>
 							<th width="20px">Dokumentasi</th>
-							<th width="20px">Edit</th>
 						</tr>
 						</thead>
 						<tbody>
@@ -61,22 +81,10 @@
 									<div class="modal fade" id="deleteConfirm<?= $res_dokumentasi_snn->id_dokumentasi_sinasini ?>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
 										<div class="modal-dialog modal-lg">
 											<div class="modal-content">
-												<div class="modal-header">
-													<h5 class="modal-title" id="exampleModalLabel">APAKAH ANDA YAKIN
-														INGIN MENGHAPUS DATA INI?</h5>
-													<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-												</div>
-												<div class="modal-body">
-													Data yang akan dihapus adalah data dokumentasi yang
-													berjudul <?= $res_dokumentasi_snn->nama_kegiatan_sinasini ?>
-												</div>
 												<div class="modal-footer d-flex align-items-center">
 													<a href="<?= base_url('admin/dokumentasi_sinasini/delete/' . $res_dokumentasi_snn->id_dokumentasi_sinasini) ?>" class="btn btn-outline-danger">
 														<i class="fad fa-trash-alt"></i>
 													</a>
-													<button class="btn btn-outline-success mr-auto" type="button" data-bs-dismiss="modal">
-														<i class="fa fa-times"></i> Cancel
-													</button>
 												</div>
 											</div>
 										</div>
@@ -112,11 +120,6 @@
 												?>
 											</div>
 										</div>
-										<div class="modal-footer">
-											<button class="btn btn-primary" data-bs-target="#alur_pelayanan" data-bs-toggle="modal">
-												Kembali
-											</button>
-										</div>
 									</div>
 								</div>
 							</div>
@@ -126,8 +129,32 @@
 						?>
 						</tbody>
 					</table>
+					
 				</div>
-			</div>
-		</div>
-	</div>
 </div>
+	
+<script>
+$(document).ready(function() {
+    $('#mauexport').DataTable( {
+        dom: 'Bfrtip',
+        buttons: [
+            'copy','csv','excel', 'pdf', 'print'
+        ]
+    } );
+} );
+
+</script>
+
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<script src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/1.6.5/js/dataTables.buttons.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/1.6.5/js/buttons.flash.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+<script src="https://cdn.datatables.net/buttons/1.6.5/js/buttons.html5.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/1.6.5/js/buttons.print.min.js"></script>
+
+	
+
+</body>

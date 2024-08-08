@@ -106,4 +106,10 @@ class Dokumentasi_sinasini extends CI_Controller
             show_404();
         }
     }
+    
+    // Method untuk mengatur tabel secara dinamis
+    public function setTable($tableName)
+    {
+        $this->table = $tableName;
+    }
 }
