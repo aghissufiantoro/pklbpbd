@@ -2,69 +2,56 @@
     <h4 class="mb-3">TAMBAH PETUGAS</h4>
     <?php echo form_open('admin/kegiatan/tambah_petugas', 'class="needs-validation" enctype="multipart/form-data"'); ?>
         <div class="row">
-            <div class="col-md-6">            
+            <div class="col-md-6"> 
 
-                <div class="mb-3">
+
+            <div class="mb-3">
                     <label for="id_kegiatan">ID Kegiatan</label>
                     <input type="text" class="form-control" name="id_kegiatan" id="id_kegiatan" value="<?php echo isset($id_kegiatan) ? $id_kegiatan : ''; ?>" readonly>
                 </div>
-                
-                <div class="mb-3">
-                    <label for="lokasi_kegiatan" class="form-label">Lokasi Kegiatan</label>
-                    <input type="text" class="form-control" name="lokasi_kegiatan" id="lokasi_kegiatan" value="<?php echo isset($lokasi_kegiatan) ? $lokasi_kegiatan : ''; ?>" readonly>
-                </div>
 
-                <div class="mb-3">
-                    <label for="tanggal" class="form-label">Tanggal</label>
-                    <input type="date" class="form-control" name="tanggal" id="tanggal" required>
-                </div>
+            <div class="mb-3">
+            <label for="jenis_kompi" class="form-label">Jenis Kompi</label>
+            <select class="form-control" name="jenis_kompi" id="jenis_kompi" required>
+                <option value="">--- Pilih Jenis Kompi ---</option>
+                <option value="BKO" >BKO</option>
+                <option value="DANKI A - YUDA WIDAS P" >DANKI A - YUDA WIDAS P</option>
+                <option value="DANKI B - EKO SUPRIYANTO" >DANKI B - EKO SUPRIYANTO</option>
+                <option value="DANKI C - MOCHAMAD CHAIRUL TAKWOLO" >DANKI C - MOCHAMAD CHAIRUL TAKWOLO</option>
+            </select>
+          </div>
 
-                <div class="mb-3">
-                    <label for="shift" class="form-label">Shift</label>
-                    <input type="text" class="form-control" name="shift" id="shift" required>
-                </div>
+          <div class="mb-3">
+    <label for="jumlah_personel" class="form-label">Jumlah Personel</label>
+    <input type="number" class="form-control" name="jumlah_personel" id="jumlah_personel" value="<?= $kegiatan->jumlah_personel ?>" required readonly>
+</div>
 
-                <div class="mb-3">
-                    <label for="jenis_kompi" class="form-label">Jenis Kompi</label>
-                    <select class="form-control" name="jenis_kompi" id="jenis_kompi" required>
-                        <option value="">Pilih Jenis Kompi</option>
-                        <option value="A">A</option>
-                        <option value="B">B</option>
-                        <option value="C">C</option>
-                    </select>
-                </div>
+<div id="petugas-container"></div> <!-- Kontainer untuk dropdown personel -->
 
+<div class="mb-3">
+    <label for="jumlah_jarko" class="form-label">Jumlah Jarko</label>
+    <input type="number" class="form-control" name="jumlah_jarko" id="jumlah_jarko" value="<?= $kegiatan->jumlah_jarko ?>" required readonly>
+</div>
+
+<div id="jarko-container"></div> <!-- Kontainer untuk dropdown jarko -->
+
+
+            <div class="mb-3">
+                <label for="no_wa" class="form-label">No WA</label>
+                <input type="number" class="form-control" name="no_wa" id="no_wa"  required>
             </div>
-
-            <div class="col-md-6">
-
-                <div class="mb-3">
-                    <label for="jumlah_personel" class="form-label">Jumlah Personel</label>
-                    <input type="number" class="form-control" name="jumlah_personel" id="jumlah_personel" required>
-                </div>
-                <div class="mb-3" id="petugas-container"></div>
-
-                <div class="mb-3">
-                    <label for="uraian_kegiatan" class="form-label">Uraian Kegiatan</label>
-                    <input type="text" class="form-control" name="uraian_kegiatan" id="uraian_kegiatan" required>
-                </div>
-
-                <div class="mb-3">
-                    <label for="no_wa" class="form-label">No WA</label>
-                    <input type="number" class="form-control" name="no_wa" id="no_wa" required>
-                </div>
-                
-                <div class="form-group">
-                    <label class="form-label">Dokumentasi</label>
-                    <input type="file" class="form-control" id="dokumentasi" name="dokumentasi[]" accept="image/*" multiple />
-                </div>
-
+            
+            <div class="form-group">
+                <label class="form-label">Dokumentasi</label>
+                <input type="file" class="form-control" id="dokumentasi" name="dokumentasi[]" accept="image/*" multiple />
             </div>
-        </div>
-        <a href="<?= base_url("admin/kegiatan/view_kegiatan") ?>">
+       
+            <a href="<?= base_url("admin/kegiatan/view_kegiatan") ?>">
             <input class="btn btn-warning" type="button" value="Kembali">
         </a>
         <button type="submit" class="btn btn-success">Submit</button>
+        </div>
+        </div>
     <?php echo form_close(); ?>
 </div>
 
@@ -81,7 +68,7 @@
         "Resepsionis": ["Mako BPBD"],
         "Siaga Mako": ["Mako BPBD"],
         "Posko PMI": ["Jl Sumatera"],
-        "Lain-lain": ["isi manual"]
+        "Lain-Lain": ["isi manual"]
     };
 
     function updateLokasiOptions() {
@@ -100,7 +87,7 @@
                 lokasiSelect.appendChild(option);
             });
 
-            if (selectedKegiatan === 'Lain-lain') {
+            if (selectedKegiatan === 'Lain-Lain') {
                 const input = document.createElement('input');
                 input.type = 'text';
                 input.className = 'form-control';
@@ -127,41 +114,20 @@
     // Hide flash messages after 5 seconds
     setTimeout(function() {
         const successAlert = document.getElementById('success-alert');
-        const errorAlert = document.getElementById('error-alert');
         if (successAlert) {
             successAlert.style.display = 'none';
         }
-        if (errorAlert) {
-            errorAlert.style.display = 'none';
-        }
     }, 5000);
 </script>
-<script>
-    document.getElementById('kegiatan').addEventListener('change', function() {
-        var lainLainInput = document.getElementById('lain_lain_input');
-        if (this.value === 'Lain-lain') {
-            lainLainInput.style.display = 'block';
-        } else {
-            lainLainInput.style.display = 'none';
-        }
-    });
 
-    document.querySelector('form').addEventListener('submit'), function(e) {
-        var kegiatanSelect = document.getElementById('kegiatan');
-        if (kegiatanSelect.value === 'Lain-lain') {
-            var lainLainValue = document.getElementById('kegiatan_lain').value;
-            kegiatanSelect.innerHTML += '<option value="' + lainLainValue + '" selected>' + lainLainValue + '</option>';
-        }
-    }
-</script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
 <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
- <script>
+<script>
     function loadPetugasOptions(jenisKompi, jumlahPersonel) {
         if (jenisKompi && jumlahPersonel > 0) {
             $.ajax({
-                url: "<?php //echo base_url('admin/kegiatan/get_all_personel1'); ?>",
+                url: "<?php echo base_url('admin/kegiatan/get_all_personel1'); ?>",
                 method: 'GET',
                 success: function(data) {
                     try {
@@ -207,12 +173,12 @@
         var initialJumlah = $('#jumlah_personel').val();
         loadPetugasOptions(initialKompi, initialJumlah);
     });
- </script>
- <script>
+</script>
+<script>
     function loadJarkoOptions(jenisKompi, jumlahJarko) {
         if (jenisKompi && jumlahJarko > 0) {
             $.ajax({
-                url: "<?php //echo base_url('admin/kegiatan/get_all_personel1'); ?>",
+                url: "<?php echo base_url('admin/kegiatan/get_all_personel1'); ?>",
                 method: 'GET',
                 success: function(data) {
                     try {
@@ -257,5 +223,15 @@
         var initialKompi = $('#jenis_kompi').val();
         var initialJumlah = $('#jumlah_jarko').val();
         loadJarkoOptions(initialKompi, initialJumlah);
+    });
+</script>
+<script>
+    document.getElementById('kegiatan').addEventListener('change', function() {
+        var lainLainInput = document.getElementById('lain_lain_input');
+        if (this.value === 'Lain-lain') {
+            lainLainInput.style.display = 'block';
+        } else {
+            lainLainInput.style.display = 'none';
+        }
     });
 </script>

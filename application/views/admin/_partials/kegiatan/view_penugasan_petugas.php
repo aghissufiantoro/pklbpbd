@@ -12,9 +12,7 @@
                                 <th width="20px">Jenis Kompi</th>
                                 <th width="30px">Jarko</th>
                                 <th width="30px">Nama Petugas</th>
-                                <th width="20px">Waktu Kegiatan</th>
                                 <th width="20px">Tanggal</th>
-                                <th width="20px">Shift</th>
                                 <th width="20px">Lokasi Kegiatan</th>
                                 <th width="20px">No WA</th>
                                 <th width="20px">Dokumentasi</th>
@@ -32,9 +30,7 @@
                                     <td><?php echo $penugasan->jenis_kompi; ?></td>
                                     <td><?php echo $penugasan->id_jarko; ?></td>
                                     <td><?php echo $penugasan->id_petugas; ?></td>
-                                    <td><?php echo $penugasan->waktu_kegiatan; ?></td>
                                     <td><?php echo $penugasan->tanggal; ?></td>
-                                    <td><?php echo $penugasan->shift; ?></td>
                                     <td><?php echo $penugasan->lokasi_kegiatan; ?></td>
                                     <td><?php echo $penugasan->no_wa; ?></td>
                                     <td>

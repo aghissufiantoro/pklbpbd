@@ -131,8 +131,8 @@ class PenugasanPetugas_model extends CI_Model {
         return $id;
     }
 
-    public function insert_penugasan($data) {
-        if ($this->db->insert($this->_table, $data)) {
+    public function insert_penugasan($data_penugasan) {
+        if ($this->db->insert($this->_table, $data_penugasan)) {
             return true;
         } else {
             log_message('error', 'Failed to insert penugasan: ' . $this->db->error()['message']);

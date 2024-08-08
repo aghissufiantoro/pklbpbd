@@ -29,14 +29,19 @@ if ($this->session->flashdata('success'))
           </div>
 
           <div class="mb-3">
-            <label for="jumlah_personel" class="form-label">Jumlah Personel</label>
-            <input type="number" class="form-control" name="jumlah_personel" value="<?= $kegiatan->jumlah_personel ?>" required>
-          </div>
+    <label for="jumlah_personel" class="form-label">Jumlah Personel</label>
+    <input type="number" class="form-control" name="jumlah_personel" id="jumlah_personel" value="<?= $kegiatan->jumlah_personel ?>" required readonly>
+</div>
 
-          <div class="mb-3">
-            <label for="jumlah_jarko" class="form-label">Jumlah Jarko</label>
-            <input type="number" class="form-control" name="jumlah_jarko" value="<?= $kegiatan->jumlah_jarko ?>" required>
-          </div>
+<div id="petugas-container"></div> <!-- Kontainer untuk dropdown personel -->
+
+<div class="mb-3">
+    <label for="jumlah_jarko" class="form-label">Jumlah Jarko</label>
+    <input type="number" class="form-control" name="jumlah_jarko" id="jumlah_jarko" value="<?= $kegiatan->jumlah_jarko ?>" required readonly>
+</div>
+
+<div id="jarko-container"></div> <!-- Kontainer untuk dropdown jarko -->
+
 
             <div class="mb-3">
                 <label for="no_wa" class="form-label">No WA</label>
@@ -47,11 +52,12 @@ if ($this->session->flashdata('success'))
                 <label class="form-label">Dokumentasi</label>
                 <input type="file" class="form-control" id="dokumentasi" name="dokumentasi[]" accept="image/*" multiple />
             </div>
-        </div>
+       
       <a href="<?= base_url("admin/kegiatan/view_penugasan_petugas") ?>">
             <input class="btn btn-warning" type="button" value="Kembali">
         </a>
         <button type="submit" class="btn btn-success">Submit</button>
+        </div>
         </div>
     <?php echo form_close(); ?>
     </form>
