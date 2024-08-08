@@ -6,7 +6,7 @@
           <a href="<?= base_url("admin/data_kejadian/add") ?>">
             <button class="btn btn-primary btn-icon-text mb-md-0">Tambah Data</button>  
           </a>
-          <a href="<?= base_url("admin/data_kejadian/export") ?>">
+          <a href="<?= base_url("admin/dataexport/export_to_excel") ?>">
             <button class="btn btn-success btn-icon-text mb-md-0" type="submit" name="export">Export to Excel</button>
           </a>
         </div>

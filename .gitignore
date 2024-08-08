@@ -6,3 +6,4 @@ system\core\Controller.php
 system\database\DB_driver.php
 application\libraries\Recaptcha.php
 upload
+/vendor/
