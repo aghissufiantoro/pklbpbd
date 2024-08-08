@@ -4,13 +4,32 @@
       <div class="card-title">
         <div style="margin: 20px;">
           <a href="<?= base_url("admin/data_kejadian/add") ?>">
-            <button class="btn btn-primary btn-icon-text mb-md-0">Tambah Data</button>
+            <button class="btn btn-primary btn-icon-text mb-md-0">Tambah Data</button>  
+          </a>
+          <a href="<?= base_url("admin/data_kejadian/export") ?>">
+            <button class="btn btn-success btn-icon-text mb-md-0" type="submit" name="export">Export to Excel</button>
           </a>
         </div>
       </div>
       <div class="card-body">
         <h6 class="card-title">Data Kejadian di Kota Surabaya</h6>
         <p class="text-muted mb-3">Data Kejadian di Pemerintah Kota Surabaya</p>
+
+        <!-- Filter by Date Range -->
+        <div class="row mb-4">
+          <div class="col-md-3">
+            <label for="startDate">Start Date</label>
+            <input type="date" id="startDate" class="form-control">
+          </div>
+          <div class="col-md-3">
+            <label for="endDate">End Date</label>
+            <input type="date" id="endDate" class="form-control">
+          </div>
+          <div class="col-md-3 align-self-end">
+            <button id="filterButton" class="btn btn-primary">Filter</button>
+          </div>
+        </div>
+
         <div class="table-responsive">
           <table id="dataTableExample" class="table">
             <thead>
@@ -100,3 +119,25 @@
     </div>
   </div>
 </div>
+
+<script>
+document.getElementById('filterButton').addEventListener('click', function() {
+  var startDate = document.getElementById('startDate').value;
+  var endDate = document.getElementById('endDate').value;
+  var table = document.getElementById('dataTableExample');
+  var rows = table.getElementsByTagName('tbody')[0].getElementsByTagName('tr');
+  
+  for (var i = 0; i < rows.length; i++) {
+    var dateCell = rows[i].getElementsByTagName('td')[2];
+    var dateValue = new Date(dateCell.textContent);
+    var start = new Date(startDate);
+    var end = new Date(endDate);
+    
+    if (dateValue >= start && dateValue <= end) {
+      rows[i].style.display = '';
+    } else {
+      rows[i].style.display = 'none';
+    }
+  }
+});
+</script>
