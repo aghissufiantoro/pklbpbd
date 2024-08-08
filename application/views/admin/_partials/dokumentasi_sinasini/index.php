@@ -13,6 +13,9 @@
 					<a href="<?= base_url("admin/dokumentasi_sinasini/add") ?>">
 						<button class="btn btn-primary btn-icon-text mb-md-0">Tambah Data</button>
 					</a>
+					<a href="<?= base_url("http://localhost/bpbd/application/controllers/admin/Controller_pdf.php") ?>">
+            			<button class="btn btn-primary btn-icon-text mb-md-0">Simpan PDF</button>
+        			</a>
 				</div>
 			</div>
 			<div class="card-body">

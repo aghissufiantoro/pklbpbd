@@ -29,7 +29,7 @@ date_default_timezone_set('Asia/Jakarta');
 $config['base_url'] .= "://".$_SERVER['HTTP_HOST'];
 $config['base_url'] .= str_replace(basename($_SERVER['SCRIPT_NAME']),"",$_SERVER['SCRIPT_NAME']);*/
 
-$config['base_url'] = 'http://localhost:8083/bpbd/';
+$config['base_url'] = 'http://localhost/bpbd/';
 /*
 |--------------------------------------------------------------------------
 | Index File
@@ -539,3 +539,6 @@ $config['rewrite_short_tags'] = FALSE;
 | Array:		array('10.0.1.200', '192.168.5.0/24')
 */
 $config['proxy_ips'] = '';
+
+
+$route['pdf'] = 'PdfController/index';
