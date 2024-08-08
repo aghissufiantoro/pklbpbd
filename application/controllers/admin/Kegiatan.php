@@ -341,7 +341,7 @@ class Kegiatan extends CI_Controller {
                 'jenis_kompi' => $jenis_kompi,
                 'id_jarko' => $jarko_string,
                 'id_petugas' => $petugas_string,
-                'no_wa' => $no_wa,
+                 'no_wa' => $no_wa,
                 'keterangan' => $keterangan,
                 'dokumentasi' => $dokumentasi
             );

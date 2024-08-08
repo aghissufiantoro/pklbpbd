@@ -68,40 +68,127 @@
     <?php echo form_close(); ?>
 </div>
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script>
-    function loadPetugasOptions(jenisKompi, jumlahPersonel) {
-    if (jenisKompi && jumlahPersonel > 0) {
-        $.ajax({
-            url: "<?php echo base_url('admin/kegiatan/get_personel_by_kompi/'); ?>" + jenisKompi,
-            method: 'GET',
-            success: function(data) {
-                try {
-                    var petugasData = JSON.parse(data);
-                    console.log("Received data:", petugasData);
-                    $('#petugas-container').empty();
-                    for (var i = 0; i < jumlahPersonel; i++) {
-                        var select = $('<select class="form-control" name="petugas[]" required></select>');
-                        select.append('<option value="">Pilih Petugas</option>');
-                        $.each(petugasData, function(index, petugas) {
-                            var option = $('<option></option>').attr('value', petugas.id_petugas).text(petugas.nama_petugas);
-                            select.append(option);
-                        });
-                        $('#petugas-container').append('<div class="form-group"><label>Petugas ' + (i + 1) + '</label>' + select.prop('outerHTML') + '</div>');
-                    }
-                } catch (e) {
-                    console.error("Error parsing JSON:", e);
-                }
-            },
-            error: function(xhr, status, error) {
-                console.error("Failed to load petugas data:", error);
-            }
-        });
-    } else {
-        $('#petugas-container').empty();
-    }
-}
+    const lokasiOptions = {
+        "Pos Pantau": [
+            "Sedap Malam", "Genteng Besar", "Tidar", "Tugu Pahlawan", "Taman Kalongan",
+            "Taman Bungkul", "KBS", "Dupak", "RSIA", "UKM Merr", "Panjang Jiwo", 
+            "Wiyung", "Taman Pelangi", "Gelora Pancasila", "Bambu Runcing", "Gunung Anyar",
+            "PMK Pakal", "Karang Pilang", "TOW"
+        ],
+        "Gudang Peralatan": ["Menur", "Hitech Mall"],
+        "Posko Terpadu": ["Barat", "Utara", "Timur", "Kedung Cowek", "Dukuh Pakis", "Selatan", "Pusat"],
+        "Resepsionis": ["Mako BPBD"],
+        "Siaga Mako": ["Mako BPBD"],
+        "Posko PMI": ["Jl Sumatera"],
+        "Lain-lain": ["isi manual"]
+    };
 
+    function updateLokasiOptions() {
+        const kegiatanSelect = document.getElementById('kegiatan');
+        const lokasiSelect = document.getElementById('lokasi_kegiatan');
+        const selectedKegiatan = kegiatanSelect.value;
+
+        // Clear existing options
+        lokasiSelect.innerHTML = '';
+
+        if (lokasiOptions[selectedKegiatan]) {
+            lokasiOptions[selectedKegiatan].forEach(function(lokasi) {
+                const option = document.createElement('option');
+                option.value = lokasi;
+                option.text = lokasi;
+                lokasiSelect.appendChild(option);
+            });
+
+            if (selectedKegiatan === 'Lain-lain') {
+                const input = document.createElement('input');
+                input.type = 'text';
+                input.className = 'form-control';
+                input.name = 'lokasi_kegiatan';
+                input.required = true;
+                lokasiSelect.parentNode.replaceChild(input, lokasiSelect);
+            } else {
+                const select = document.createElement('select');
+                select.className = 'form-control';
+                select.name = 'lokasi_kegiatan';
+                select.id = 'lokasi_kegiatan';
+                select.required = true;
+                lokasiOptions[selectedKegiatan].forEach(function(lokasi) {
+                    const option = document.createElement('option');
+                    option.value = lokasi;
+                    option.text = lokasi;
+                    select.appendChild(option);
+                });
+                lokasiSelect.parentNode.replaceChild(select, document.querySelector('input[name="lokasi_kegiatan"]'));
+            }
+        }
+    }
+
+    // Hide flash messages after 5 seconds
+    setTimeout(function() {
+        const successAlert = document.getElementById('success-alert');
+        const errorAlert = document.getElementById('error-alert');
+        if (successAlert) {
+            successAlert.style.display = 'none';
+        }
+        if (errorAlert) {
+            errorAlert.style.display = 'none';
+        }
+    }, 5000);
+</script>
+<script>
+    document.getElementById('kegiatan').addEventListener('change', function() {
+        var lainLainInput = document.getElementById('lain_lain_input');
+        if (this.value === 'Lain-lain') {
+            lainLainInput.style.display = 'block';
+        } else {
+            lainLainInput.style.display = 'none';
+        }
+    });
+
+    document.querySelector('form').addEventListener('submit'), function(e) {
+        var kegiatanSelect = document.getElementById('kegiatan');
+        if (kegiatanSelect.value === 'Lain-lain') {
+            var lainLainValue = document.getElementById('kegiatan_lain').value;
+            kegiatanSelect.innerHTML += '<option value="' + lainLainValue + '" selected>' + lainLainValue + '</option>';
+        }
+    }
+</script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
+ <script>
+    function loadPetugasOptions(jenisKompi, jumlahPersonel) {
+        if (jenisKompi && jumlahPersonel > 0) {
+            $.ajax({
+                url: "<?php //echo base_url('admin/kegiatan/get_all_personel1'); ?>",
+                method: 'GET',
+                success: function(data) {
+                    try {
+                        var petugasData = JSON.parse(data);
+                        $('#petugas-container').empty();
+                        for (var i = 0; i < jumlahPersonel; i++) {
+                            var select = $('<select class="form-control petugas-select" name="petugas[]" required></select>');
+                            select.append('<option value="">--- Pilih Petugas ---</option>');
+                            $.each(petugasData, function(index, petugas) {
+                                var option = $('<option></option>').attr('value', petugas.id_staff).text(petugas.nama_staff);
+                                select.append(option);
+                            });
+                            $('#petugas-container').append('<div class="form-group"><label>Petugas ' + (i + 1) + '</label>' + select.prop('outerHTML') + '</div>');
+                        }
+                        $('.petugas-select').select2();
+                    } catch (e) {
+                        console.error("Error parsing JSON:", e);
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error("Failed to load petugas data:", error);
+                }
+            });
+        } else {
+            $('#petugas-container').empty();
+        }
+    }
 
     $(document).ready(function() {
         $('#jenis_kompi').change(function() {
@@ -119,5 +206,56 @@
         var initialKompi = $('#jenis_kompi').val();
         var initialJumlah = $('#jumlah_personel').val();
         loadPetugasOptions(initialKompi, initialJumlah);
+    });
+ </script>
+ <script>
+    function loadJarkoOptions(jenisKompi, jumlahJarko) {
+        if (jenisKompi && jumlahJarko > 0) {
+            $.ajax({
+                url: "<?php //echo base_url('admin/kegiatan/get_all_personel1'); ?>",
+                method: 'GET',
+                success: function(data) {
+                    try {
+                        var jarkoData = JSON.parse(data);
+                        $('#jarko-container').empty();
+                        for (var i = 0; i < jumlahJarko; i++) {
+                            var select = $('<select class="form-control jarko-select" name="jarko[]" required></select>');
+                            select.append('<option value="">--- Pilih Petugas ---</option>');
+                            $.each(jarkoData, function(index, jarko) {
+                                var option = $('<option></option>').attr('value', jarko.id_staff).text(jarko.nama_staff);
+                                select.append(option);
+                            });
+                            $('#jarko-container').append('<div class="form-group"><label>Petugas ' + (i + 1) + '</label>' + select.prop('outerHTML') + '</div>');
+                        }
+                        $('.jarko-select').select2();
+                    } catch (e) {
+                        console.error("Error parsing JSON:", e);
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error("Failed to load jarko data:", error);
+                }
+            });
+        } else {
+            $('#jarko-container').empty();
+        }
+    }
+
+    $(document).ready(function() {
+        $('#jenis_kompi').change(function() {
+            var jenisKompi = $(this).val();
+            var jumlahJarko = $('#jumlah_jarko').val();
+            loadJarkoOptions(jenisKompi, jumlahJarko);
+        });
+
+        $('#jumlah_jarko').change(function() {
+            var jumlahJarko = $(this).val();
+            var jenisKompi = $('#jenis_kompi').val();
+            loadJarkoOptions(jenisKompi, jumlahJarko);
+        });
+
+        var initialKompi = $('#jenis_kompi').val();
+        var initialJumlah = $('#jumlah_jarko').val();
+        loadJarkoOptions(initialKompi, initialJumlah);
     });
 </script>

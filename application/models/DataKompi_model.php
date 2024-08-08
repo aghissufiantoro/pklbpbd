@@ -191,27 +191,30 @@ class PenugasanPetugas_model extends CI_Model {
     }
 
     public function get_penugasan_by_id($id_penugasan)
-    {
-        $this->db->where('id_penugasan', $id_penugasan);
-        $query = $this->db->get('tabel_penugasan_petugas');
-        return $query->row();
-    }
+{
+    $this->db->select('*, (SELECT jumlah_personel FROM tabel_kegiatan WHERE id_kegiatan = tabel_penugasan_petugas.id_kegiatan) as jumlah_personel, 
+                             (SELECT jumlah_jarko FROM tabel_kegiatan WHERE id_kegiatan = tabel_penugasan_petugas.id_kegiatan) as jumlah_jarko');
+    $this->db->where('id_penugasan', $id_penugasan);
+    $query = $this->db->get($this->_table);
+    return $query->row();
+}
 
-    public function get_jumlah_personel($id_kegiatan)
+
+    public function get_jumlah_personel($id)
     {
         $this->db->select('jumlah_personel');
         $this->db->from('tabel_kegiatan');
-        $this->db->where('id_kegiatan', $id_kegiatan);
+        $this->db->where('id_kegiatan', $id);
         $query = $this->db->get();
         $result = $query->row();
         return $result ? $result->jumlah_personel : 0;
     }
 
-    public function get_jumlah_jarko($id_kegiatan)
+    public function get_jumlah_jarko($id)
     {
         $this->db->select('jumlah_jarko');
         $this->db->from('tabel_kegiatan');
-        $this->db->where('id_kegiatan', $id_kegiatan);
+        $this->db->where('id_kegiatan', $id);
         $query = $this->db->get();
         $result = $query->row();
         return $result ? $result->jumlah_jarko : 0;

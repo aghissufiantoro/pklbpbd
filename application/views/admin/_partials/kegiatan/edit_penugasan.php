@@ -38,11 +38,6 @@ if ($this->session->flashdata('success'))
             <input type="number" class="form-control" name="jumlah_jarko" value="<?= $kegiatan->jumlah_jarko ?>" required>
           </div>
 
-          <div class="mb-3">
-                <label for="keterangan" class="form-label">Keterangan</label>
-                <textarea class="form-control" name="keterangan" value="<?= $kegiatan->keterangan ?>" required></textarea>
-            </div>
-
             <div class="mb-3">
                 <label for="no_wa" class="form-label">No WA</label>
                 <input type="number" class="form-control" name="no_wa" id="no_wa" value="<?= $kegiatan->no_wa ?>" required>
