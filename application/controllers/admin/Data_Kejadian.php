@@ -2,7 +2,8 @@
 
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-require 'assets_admin/vendors/PhpSpreadsheet-2.2.1/src/PhpSpreadsheet/Spreadsheet.php';
+require 'assets_admin/vendors/PhpSpreadsheet-2.0.0/src/PhpSpreadsheet/Spreadsheet.php';
+// require 'assets_admin/vendors/PhpSpreadsheet-2.1.0/src/PhpSpreadsheet/Writer/Xlsx.php';
 
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
@@ -1113,7 +1114,6 @@ public function save_kebakaran()
 
 
     public function export() {
-
         if (isset($_POST['export'])) {
             $spreadsheet = new Spreadsheet();
             $sheet = $spreadsheet->getActiveSheet();
