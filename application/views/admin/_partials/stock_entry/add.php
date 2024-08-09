@@ -130,12 +130,14 @@
             <div class="col-md-2">
               <div class="mb-3">
                 <label for="qty_barang" class="form-label">Quantity Barang</label>
-                <i id='available-stock'></i>
                 <div class="input-group">
                   <button class="btn btn-outline-secondary" type="button" id="kurangBtn">-</button>
                   <input id="qty_barang" class="form-control" name="qty_barang" type="text" value="1" required>
                   <button class="btn btn-outline-secondary" type="button" id="tambahBtn">+</button>
                 </div>
+              </div>
+              <div class="mb-3">
+              <i id='available-stock'></i>
               </div>
             </div>
 
@@ -148,11 +150,18 @@
               <input id="keterangan_barang" class="form-control" name="keterangan_barang" type="text" required>
             </div>
           </div>
-          <div class="col-md-3 d-flex align-items-end">
+          <div class="col-md-2 d-flex align-items-end">
+            <div class="mb-3 me-2">
+              <input id="btnTambahBarang" class="btn btn-success" type="button" value="     Add     ">
+            </div>
             <div class="mb-3">
+<<<<<<< HEAD
+              <input oncLick="clearAll();" class="btn btn-danger" type="button" value="    clear    ">
+=======
               <input id="btnTambahBarang" class="btn btn-success" type="button" value="              Add              ">
               <input oncLick="clearAll();" class="btn btn-success" type="button" value="             clear             ">
 
+>>>>>>> b35d9fa0aab760b578ebf4b4d05630b57406e327
             </div>
           </div>
         </div>

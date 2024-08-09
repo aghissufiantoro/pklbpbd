@@ -52,17 +52,21 @@ class m_stockmaster extends CI_Model
         );
     }
 
-    public function update()
-    {
-        $post = $this->input->post();
+    // public function update()
+    // {
+    //     $post = $this->input->post();
 
+        // // $this->kode_barang     = 
+        // $this->nama_barang     = $post['nama_barang'];
+        // $this->kategori_barang = $post['kategori_barang'];
+        // $this->satuan_barang     = $post['satuan_barang'];
         $this->nama_barang     = $post['nama_barang'];
         $this->kategori_barang = $post['kategori_barang'];
         $this->satuan_barang     = $post['satuan_barang'];
 
 
-        $this->db->update($this->_table, $this, array('kode_barang' => $post['kode_barang']));
-    }
+    //     $this->db->update($this->_table, $this, array('kode_barang' => $post['kode_barang']));
+    // }
 
     public function delete($id)
     {
