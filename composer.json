@@ -1,7 +1,7 @@
 {
     "name": "bpbd/bpbd",
     "require": {
-        "phpoffice/phpspreadsheet": "^2.2"
+        "phpoffice/phpspreadsheet": "^2.1"
     },
     "autoload": {
         "psr-4": {
