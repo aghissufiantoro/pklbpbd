@@ -25,15 +25,18 @@
                                 <th width="20px">Jumlah Personel</th>
                                 <th width="30px">Jumlah Jarko</th>
                                 <th width="30px">Keterangan</th>
+                                <th width="20px">Ploting Personil</th>
                                 <th width="20px">Aksi</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <?php
+                        <?php
                             $no = 1;
                             $kegiatan = $this->db->query("SELECT * FROM tabel_kegiatan ORDER BY tanggal DESC;")->result();
                             foreach ($kegiatan as $kg) 
                             {
+                                // Check if id_kegiatan exists in tabel_penugasan_petugas
+                                $penugasan = $this->db->query("SELECT id_penugasan FROM tabel_penugasan_petugas WHERE id_kegiatan = ?", [$kg->id_kegiatan])->row();
                             ?>
                                 <tr>
                                     <td><?= $no++ ?></td>
@@ -46,6 +49,13 @@
                                     <td><?= $kg->jumlah_personel; ?></td>
                                     <td><?= $kg->jumlah_jarko; ?></td>
                                     <td><?= $kg->keterangan; ?></td>
+                                    <td>
+                                        <?php if ($penugasan): ?>
+                                            <a href="<?= base_url('admin/kegiatan/edit_penugasan/' . $penugasan->id_penugasan); ?>">Edit Penugasan</a>
+                                        <?php else: ?>
+                                            <a href="<?= base_url('admin/kegiatan/tambah_petugas/' . $kg->id_kegiatan); ?>">Tambah Petugas</a>
+                                        <?php endif; ?>
+                                    </td>
                                     <td>
                                         <a href="<?= site_url('admin/kegiatan/edit_plot_kegiatan/'.$kg->id_kegiatan) ?>" class="btn btn-outline-primary btn-xs"><i class='fal fa-pencil'></i></a>
                             

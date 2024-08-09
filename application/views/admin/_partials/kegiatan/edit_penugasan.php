@@ -15,77 +15,52 @@ if ($this->session->flashdata('success'))
     <h4 class="mb-3">UBAH PENUGASAN</h4>
     <form id="editForm" action="<?= site_url('admin/kegiatan/edit_penugasan/'.$kegiatan->id_penugasan) ?>" method="post" enctype="multipart/form-data">
         <div class="row">
-            <div class="col-md-6">
+        <div class="col-md-6">
 
-                <div class="mb-3">
-                    <label for="kegiatan" class="form-label">Kegiatan</label>
-                    <input class="form-control" name="kegiatan" id="kegiatan" value="<?= $kegiatan->kegiatan ?>" readonly>
-                </div>
+          <div class="mb-3">
+            <label for="jenis_kompi" class="form-label">Jenis Kompi</label>
+            <select class="form-control" name="jenis_kompi" id="jenis_kompi" required>
+                <option value="">--- Pilih Jenis Kompi ---</option>
+                <option value="BKO" <?= $kegiatan->jenis_kompi == 'BKO' ? 'selected' : '' ?>>BKO</option>
+                <option value="DANKI A - YUDA WIDAS P" <?= $kegiatan->jenis_kompi == 'DANKI A - YUDA WIDAS P' ? 'selected' : '' ?>>DANKI A - YUDA WIDAS P</option>
+                <option value="DANKI B - EKO SUPRIYANTO" <?= $kegiatan->jenis_kompi == 'DANKI B - EKO SUPRIYANTO' ? 'selected' : '' ?>>DANKI B - EKO SUPRIYANTO</option>
+                <option value="DANKI C - MOCHAMAD CHAIRUL TAKWOLO" <?= $kegiatan->jenis_kompi == 'DANKI C - MOCHAMAD CHAIRUL TAKWOLO' ? 'selected' : '' ?>>DANKI C - MOCHAMAD CHAIRUL TAKWOLO</option>
+            </select>
+          </div>
 
-                <div class="mb-3">
-                    <label for="lokasi_kegiatan" class="form-label">Lokasi Kegiatan</label>
-                    <input type="text" class="form-control" name="lokasi_kegiatan" id="lokasi_kegiatan" value="<?= $kegiatan->lokasi_kegiatan ?>" readonly>
-                </div>
+          <div class="mb-3">
+    <label for="jumlah_personel" class="form-label">Jumlah Personel</label>
+    <input type="number" class="form-control" name="jumlah_personel" id="jumlah_personel" value="<?= $kegiatan->jumlah_personel ?>" required readonly>
+</div>
 
-                <div class="mb-3">
-                    <label for="tanggal" class="form-label">Tanggal</label>
-                    <input type="date" class="form-control" name="tanggal" id="tanggal" value="<?= $kegiatan->tanggal ?>" readonly>
-                </div>
+<div id="petugas-container"></div> <!-- Kontainer untuk dropdown personel -->
 
-                <div class="mb-3">
-                    <label for="shift" class="form-label">Shift</label>
-                    <input type="text" class="form-control" name="shift" id="shift" value="<?= $kegiatan->shift ?>" readonly>
-                </div>
+<div class="mb-3">
+    <label for="jumlah_jarko" class="form-label">Jumlah Jarko</label>
+    <input type="number" class="form-control" name="jumlah_jarko" id="jumlah_jarko" value="<?= $kegiatan->jumlah_jarko ?>" required readonly>
+</div>
 
-                <div class="mb-3">
-                <label for="waktu_kegiatan" class="form-label">Waktu Kegiatan</label>
-                <input type="time" class="form-control" name="waktu_kegiatan" id="waktu_kegiatan" value="<?= $kegiatan->waktu_kegiatan ?>" readonly>
-            </div>
+<div id="jarko-container"></div> <!-- Kontainer untuk dropdown jarko -->
 
 
             <div class="mb-3">
-                <label for="jenis_kompi" class="form-label">Jenis Kompi</label>
-                <select class="form-control" name="jenis_kompi" id="jenis_kompi" required>
-                    <option value="">--- Pilih Jenis Kompi ---</option>
-                    <option value="BKO">BKO</option>
-                    <option value="DANKI A - YUDA WIDAS P">DANKI A - YUDA WIDAS P</option>
-                    <option value="DANKI B - EKO SUPRIYANTO">DANKI B - EKO SUPRIYANTO</option>
-                    <option value="DANKI C - MOCHAMAD CHAIRUL TAKWOLO">DANKI C - MOCHAMAD CHAIRUL TAKWOLO</option>
-                </select>
+                <label for="no_wa" class="form-label">No WA</label>
+                <input type="number" class="form-control" name="no_wa" id="no_wa" value="<?= $kegiatan->no_wa ?>" required>
             </div>
+            
+            <div class="form-group">
+                <label class="form-label">Dokumentasi</label>
+                <input type="file" class="form-control" id="dokumentasi" name="dokumentasi[]" accept="image/*" multiple />
             </div>
-            <div class="col-md-6">
-                <div class="mb-3">
-                    <label for="jumlah_personel" class="form-label">Jumlah Personel</label>
-                    <input type="number" class="form-control" name="jumlah_personel" id="jumlah_personel" value="<?= isset($jumlah_personel) ? $jumlah_personel : $kegiatan->jumlah_personel ?>" readonly>
-                </div>
-                <div class="mb-3" id="petugas-container"></div>
-
-                <div class="mb-3">
-                    <label for="jumlah_jarko" class="form-label">Jumlah Jarko</label>
-                    <input type="number" class="form-control" name="jumlah_jarko" id="jumlah_jarko" value="<?= isset($jumlah_jarko) ? $jumlah_jarko : $kegiatan->jumlah_jarko ?>" readonly>
-                </div>
-                <div class="mb-3" id="jarko-container"></div>
-
-                <div class="mb-3">
-                    <label for="keterangan" class="form-label">Keterangan</label>
-                    <input type="text" class="form-control" name="keterangan" id="keterangan" value="<?= $kegiatan->keterangan ?>" required>
-                </div>
-                <div class="mb-3">
-                    <label for="no_wa" class="form-label">No WA</label>
-                    <input type="number" class="form-control" name="no_wa" id="no_wa" value="<?= $kegiatan->no_wa ?>" required>
-                </div>
-                <div class="mb-3">
-                    <label class="form-label">Dokumentasi</label>
-                    <input type="file" class="form-control" id="dokumentasi" name="dokumentasi[]" accept="image/*" multiple />
-                </div>
-            </div>
-        </div>
-        <a href="<?= base_url("admin/kegiatan/view_penugasan_petugas") ?>">
+       
+      <a href="<?= base_url("admin/kegiatan/view_penugasan_petugas") ?>">
             <input class="btn btn-warning" type="button" value="Kembali">
         </a>
         <button type="submit" class="btn btn-success">Submit</button>
+        </div>
+        </div>
     <?php echo form_close(); ?>
+    </form>
 </div>
 
 <script>

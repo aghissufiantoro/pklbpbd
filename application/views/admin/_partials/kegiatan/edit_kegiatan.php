@@ -37,45 +37,38 @@
                 <input type="time" class="form-control" name="waktu_kegiatan" value="<?= $kegiatan->waktu_kegiatan ?>" required>
             </div>
 
-          <div class="mb-3">
-            <label for="kegiatan" class="form-label">Kegiatan</label>
-            <select class="form-control" name="kegiatan" id="kegiatan" onchange="updateLokasiOptions()" required>
-              <option value="">--- Pilih Kegiatan ---</option>
-              <option value="Pos Pantau" <?= $kegiatan->kegiatan == 'Pos Pantau' ? 'selected' : '' ?>>Pos Pantau</option>
-              <option value="Gudang Peralatan" <?= $kegiatan->kegiatan == 'Gudang Peralatan' ? 'selected' : '' ?>>Gudang Peralatan</option>
-              <option value="Posko Terpadu" <?= $kegiatan->kegiatan == 'Posko Terpadu' ? 'selected' : '' ?>>Posko Terpadu</option>
-              <option value="Resepsionis" <?= $kegiatan->kegiatan == 'Resepsionis' ? 'selected' : '' ?>>Resepsionis</option>
-              <option value="Siaga Mako" <?= $kegiatan->kegiatan == 'Siaga Mako' ? 'selected' : '' ?>>Siaga Mako</option>
-              <option value="Posko PMI" <?= $kegiatan->kegiatan == 'Posko PMI' ? 'selected' : '' ?>>Posko PMI</option>
-              <option value="Lain-Lain" <?= $kegiatan->kegiatan == 'Lain-Lain' ? 'selected' : '' ?>>Lain-Lain</option>
-            </select>
-          </div>
+            <div class="mb-3">
+                <label for="kegiatan" class="form-label">Kegiatan</label>
+                <select class="form-control" name="kegiatan" id="kegiatan" onchange="updateLokasiOptions()" required>
+                    <option value="">--- Pilih Kegiatan ---</option>
+                    <option value="Pos Pantau">Pos Pantau</option>
+                    <option value="Gudang Peralatan">Gudang Peralatan</option>
+                    <option value="Posko Terpadu">Posko Terpadu</option>
+                    <option value="Resepsionis">Resepsionis</option>
+                    <option value="Siaga Mako">Siaga Mako</option>
+                    <option value="Posko PMI">Posko PMI</option>
+                    <option value="Lain-lain">Lain-lain</option>
+                </select>
+            </div>
 
           <div class="mb-3" id="lain_lain_input" style="display: none;">
-              <label class="form-label">Kegiatan (Lain-lain)</label>
-              <input type="text" class="form-control" name="kegiatan_lain" id="kegiatan_lain" autocomplete="off" placeholder="Isi kegiatan lain">
-          </div>
+                <label class="form-label">Kegiatan (Lain-lain)</label>
+                <input type="text" class="form-control" name="kegiatan_lain" id="kegiatan_lain" autocomplete="off" placeholder="Isi kegiatan lain">
+            </div>
 
-          <div class="mb-3">
+
+            
+        </div>
+        <div class="col-md-6">
+
+          
+        <div class="mb-3">
             <label for="lokasi_kegiatan" class="form-label">Lokasi Kegiatan</label>
             <select class="form-control" name="lokasi_kegiatan" id="lokasi_kegiatan" required>
               <option value="">--- Pilih Lokasi ---</option>
             </select>
           </div>
-            
-          <div class="mb-3">
-            <label for="jenis_kompi" class="form-label">Jenis Kompi</label>
-            <select class="form-control" name="jenis_kompi" id="jenis_kompi" required>
-                <option value="">--- Pilih Jenis Kompi ---</option>
-                <option value="BKO" <?= $kegiatan->jenis_kompi == 'BKO' ? 'selected' : '' ?>>BKO</option>
-                <option value="DANKI A - YUDA WIDAS P" <?= $kegiatan->jenis_kompi == 'DANKI A - YUDA WIDAS P' ? 'selected' : '' ?>>DANKI A - YUDA WIDAS P</option>
-                <option value="DANKI B - EKO SUPRIYANTO" <?= $kegiatan->jenis_kompi == 'DANKI B - EKO SUPRIYANTO' ? 'selected' : '' ?>>DANKI B - EKO SUPRIYANTO</option>
-                <option value="DANKI C - MOCHAMAD CHAIRUL TAKWOLO" <?= $kegiatan->jenis_kompi == 'DANKI C - MOCHAMAD CHAIRUL TAKWOLO' ? 'selected' : '' ?>>DANKI C - MOCHAMAD CHAIRUL TAKWOLO</option>
-            </select>
-          </div>
-        </div>
-
-        <div class="col-md-6">
+       
 
           <div class="mb-3">
             <label for="jumlah_personel" class="form-label">Jumlah Personel</label>
@@ -92,15 +85,6 @@
                 <textarea class="form-control" name="keterangan" value="<?= $kegiatan->keterangan ?>" required></textarea>
             </div>
 
-            <div class="mb-3">
-                <label for="no_wa" class="form-label">No WA</label>
-                <input type="number" class="form-control" name="no_wa" id="no_wa" value="<?= $kegiatan->no_wa ?>" required>
-            </div>
-            
-            <div class="form-group">
-                <label class="form-label">Dokumentasi</label>
-                <input type="file" class="form-control" id="dokumentasi" name="dokumentasi[]" accept="image/*" multiple />
-            </div>
         </div>
       </div>
       <a href="<?= base_url("admin/kegiatan/view_kegiatan") ?>">
@@ -123,7 +107,7 @@
         "Resepsionis": ["Mako BPBD"],
         "Siaga Mako": ["Mako BPBD"],
         "Posko PMI": ["Jl Sumatera"],
-        "Lain-Lain": ["isi manual"]
+        "Lain-lain": ["isi manual"]
     };
 
     function updateLokasiOptions() {
@@ -142,7 +126,7 @@
                 lokasiSelect.appendChild(option);
             });
 
-            if (selectedKegiatan === 'Lain-Lain') {
+            if (selectedKegiatan === 'Lain-lain') {
                 const input = document.createElement('input');
                 input.type = 'text';
                 input.className = 'form-control';
@@ -169,8 +153,12 @@
     // Hide flash messages after 5 seconds
     setTimeout(function() {
         const successAlert = document.getElementById('success-alert');
+        const errorAlert = document.getElementById('error-alert');
         if (successAlert) {
             successAlert.style.display = 'none';
+        }
+        if (errorAlert) {
+            errorAlert.style.display = 'none';
         }
     }, 5000);
 </script>
@@ -183,4 +171,117 @@
             lainLainInput.style.display = 'none';
         }
     });
+
+    document.querySelector('form').addEventListener('submit'), function(e) {
+        var kegiatanSelect = document.getElementById('kegiatan');
+        if (kegiatanSelect.value === 'Lain-lain') {
+            var lainLainValue = document.getElementById('kegiatan_lain').value;
+            kegiatanSelect.innerHTML += '<option value="' + lainLainValue + '" selected>' + lainLainValue + '</option>';
+        }
+    }
 </script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
+ <script>
+//     function loadPetugasOptions(jenisKompi, jumlahPersonel) {
+//         if (jenisKompi && jumlahPersonel > 0) {
+//             $.ajax({
+//                 url: "<?php //echo base_url('admin/kegiatan/get_all_personel1'); ?>",
+//                 method: 'GET',
+//                 success: function(data) {
+//                     try {
+//                         var petugasData = JSON.parse(data);
+//                         $('#petugas-container').empty();
+//                         for (var i = 0; i < jumlahPersonel; i++) {
+//                             var select = $('<select class="form-control petugas-select" name="petugas[]" required></select>');
+//                             select.append('<option value="">--- Pilih Petugas ---</option>');
+//                             $.each(petugasData, function(index, petugas) {
+//                                 var option = $('<option></option>').attr('value', petugas.id_staff).text(petugas.nama_staff);
+//                                 select.append(option);
+//                             });
+//                             $('#petugas-container').append('<div class="form-group"><label>Petugas ' + (i + 1) + '</label>' + select.prop('outerHTML') + '</div>');
+//                         }
+//                         $('.petugas-select').select2();
+//                     } catch (e) {
+//                         console.error("Error parsing JSON:", e);
+//                     }
+//                 },
+//                 error: function(xhr, status, error) {
+//                     console.error("Failed to load petugas data:", error);
+//                 }
+//             });
+//         } else {
+//             $('#petugas-container').empty();
+//         }
+//     }
+
+//     $(document).ready(function() {
+//         $('#jenis_kompi').change(function() {
+//             var jenisKompi = $(this).val();
+//             var jumlahPersonel = $('#jumlah_personel').val();
+//             loadPetugasOptions(jenisKompi, jumlahPersonel);
+//         });
+
+//         $('#jumlah_personel').change(function() {
+//             var jumlahPersonel = $(this).val();
+//             var jenisKompi = $('#jenis_kompi').val();
+//             loadPetugasOptions(jenisKompi, jumlahPersonel);
+//         });
+
+//         var initialKompi = $('#jenis_kompi').val();
+//         var initialJumlah = $('#jumlah_personel').val();
+//         loadPetugasOptions(initialKompi, initialJumlah);
+//     });
+// </script>
+ <script>
+//     function loadJarkoOptions(jenisKompi, jumlahJarko) {
+//         if (jenisKompi && jumlahJarko > 0) {
+//             $.ajax({
+//                 url: "<?php //echo base_url('admin/kegiatan/get_all_personel1'); ?>",
+//                 method: 'GET',
+//                 success: function(data) {
+//                     try {
+//                         var jarkoData = JSON.parse(data);
+//                         $('#jarko-container').empty();
+//                         for (var i = 0; i < jumlahJarko; i++) {
+//                             var select = $('<select class="form-control jarko-select" name="jarko[]" required></select>');
+//                             select.append('<option value="">--- Pilih Petugas ---</option>');
+//                             $.each(jarkoData, function(index, jarko) {
+//                                 var option = $('<option></option>').attr('value', jarko.id_staff).text(jarko.nama_staff);
+//                                 select.append(option);
+//                             });
+//                             $('#jarko-container').append('<div class="form-group"><label>Petugas ' + (i + 1) + '</label>' + select.prop('outerHTML') + '</div>');
+//                         }
+//                         $('.jarko-select').select2();
+//                     } catch (e) {
+//                         console.error("Error parsing JSON:", e);
+//                     }
+//                 },
+//                 error: function(xhr, status, error) {
+//                     console.error("Failed to load jarko data:", error);
+//                 }
+//             });
+//         } else {
+//             $('#jarko-container').empty();
+//         }
+//     }
+
+//     $(document).ready(function() {
+//         $('#jenis_kompi').change(function() {
+//             var jenisKompi = $(this).val();
+//             var jumlahJarko = $('#jumlah_jarko').val();
+//             loadJarkoOptions(jenisKompi, jumlahJarko);
+//         });
+
+//         $('#jumlah_jarko').change(function() {
+//             var jumlahJarko = $(this).val();
+//             var jenisKompi = $('#jenis_kompi').val();
+//             loadJarkoOptions(jenisKompi, jumlahJarko);
+//         });
+
+//         var initialKompi = $('#jenis_kompi').val();
+//         var initialJumlah = $('#jumlah_jarko').val();
+//         loadJarkoOptions(initialKompi, initialJumlah);
+//     });
+// </script>

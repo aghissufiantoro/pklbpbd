@@ -37,15 +37,17 @@ class Kegiatan extends CI_Controller {
         $this->form_validation->set_rules('shift', 'Shift', 'required');
         $this->form_validation->set_rules('kegiatan', 'Kegiatan', 'required');
         $this->form_validation->set_rules('lokasi_kegiatan', 'Lokasi Kegiatan', 'required');
-        $this->form_validation->set_rules('jenis_kompi', 'Jenis Kompi', 'required');
         $this->form_validation->set_rules('jumlah_personel', 'Jumlah Personel', 'required|numeric');
         $this->form_validation->set_rules('jumlah_jarko', 'Jumlah Jarko', 'required|numeric');
-        $this->form_validation->set_rules('no_wa', 'No WA', 'required|numeric');
-        $this->form_validation->set_rules('keterangan', 'Keterangan', 'required');
+        $this->form_validation->set_rules('keterangan', 'keterangan', 'required');
+
     
         if ($this->form_validation->run() == FALSE) {
             $this->load->view('admin/kegiatan/plot_kegiatan');
         } else {
+            
+
+
             $tanggal = $this->input->post('tanggal');
             $shift = $this->input->post('shift');
             $waktu_kegiatan = $this->input->post('waktu_kegiatan');
@@ -54,11 +56,12 @@ class Kegiatan extends CI_Controller {
                 $kegiatan = $this->input->post('kegiatan_lain');
             }
             $lokasi_kegiatan = $this->input->post('lokasi_kegiatan');
-            $jenis_kompi = $this->input->post('jenis_kompi');
             $jumlah_personel = $this->input->post('jumlah_personel');
             $jumlah_jarko = $this->input->post('jumlah_jarko');
             $keterangan = $this->input->post('keterangan');
-            $no_wa = $this->input->post('no_wa');
+
+
+          
     
             // Data untuk tabel_kegiatan
             $data_kegiatan = array(
@@ -74,43 +77,9 @@ class Kegiatan extends CI_Controller {
     
             $id_kegiatan = $this->Kegiatan_model->insert_kegiatan($data_kegiatan);
     
-            if ($id_kegiatan) {
-                // Handle dokumentasi upload
-                $dokumentasi = $this->PenugasanPetugas_model->_uploadImage();
-    
-                // Gabungkan nama-nama petugas menjadi satu string
-                $jarko = $this->input->post('jarko');
-                $jarko_string = implode(',', $jarko);
-                $petugas = $this->input->post('petugas');
-                $petugas_string = implode(',', $petugas);
-    
-                // Data untuk tabel_penugasan_petugas
-                $id_penugasan = $this->PenugasanPetugas_model->generate_id_penugasan($tanggal);
-                $data_penugasan = array(
-                    'id_kegiatan' => $id_kegiatan,
-                    'id_penugasan' => $id_penugasan,
-                    'jenis_kompi' => $jenis_kompi,
-                    'id_jarko'=> $jarko_string,
-                    'id_petugas' => $petugas_string,
-                    'lokasi_kegiatan' => $lokasi_kegiatan,
-                    'tanggal' => $tanggal,
-                    'kegiatan' => $kegiatan,
-                    'waktu_kegiatan' => $waktu_kegiatan,
-                    'shift' => $shift,
-                    'no_wa' => $no_wa,
-                    'keterangan' => $keterangan,
-                    'dokumentasi' => $dokumentasi
-                );
-    
-                $this->PenugasanPetugas_model->insert_penugasan($data_penugasan);
-    
-                $this->session->set_flashdata('success', 'Data kegiatan dan penugasan berhasil disimpan.');
-                redirect('admin/kegiatan/view_kegiatan');
-            } else {
-                $this->session->set_flashdata('error', 'Gagal menyimpan data kegiatan.');
-                redirect('admin/kegiatan/plot_kegiatan');
-            }
+            redirect('admin/kegiatan/view_kegiatan');
         }
+        
     }
     
     public function edit_plot_kegiatan($id = null)
@@ -128,11 +97,9 @@ class Kegiatan extends CI_Controller {
         $validation->set_rules('waktu_kegiatan', 'Waktu Kegiatan', 'required');
         $validation->set_rules('kegiatan', 'Kegiatan', 'required');
         $validation->set_rules('lokasi_kegiatan', 'Lokasi Kegiatan', 'required');
-        $validation->set_rules('jenis_kompi', 'Jenis Kompi', 'required');
         $validation->set_rules('jumlah_personel', 'Jumlah Personel', 'required|numeric');
         $validation->set_rules('jumlah_jarko', 'Jumlah Jarko', 'required|numeric');
-        $validation->set_rules('no_wa', 'No WA', 'required|numeric');
-        $validation->set_rules('keterangan', 'Keterangan', 'required');
+        
 
         if ($validation->run()) {
             $kegiatan->update_kegiatan();
@@ -175,61 +142,85 @@ class Kegiatan extends CI_Controller {
         $this->load->library('form_validation');
     
         $this->form_validation->set_rules('id_kegiatan', 'ID Kegiatan', 'required');
-        $this->form_validation->set_rules('petugas[]', 'ID Petugas', 'required');
+        $this->form_validation->set_rules('jumlah_personel', 'Jumlah Personel', 'required|integer');
+        $this->form_validation->set_rules('jumlah_jarko', 'Jumlah Jarko', 'required|integer');
     
         if ($this->form_validation->run() === FALSE) {
             $data['personel'] = $this->DataKompi_model->get_all_personel();
             $data['id_kegiatan'] = $id_kegiatan;
-
-            // Get lokasi kegiatan from the database
-            $kegiatan = $this->Kegiatan_model->get_kegiatan_by_id($id_kegiatan);
-            if ($kegiatan) {
-                $data['lokasi_kegiatan'] = $kegiatan->lokasi_kegiatan;
+    
+            $data['kegiatan'] = $this->Kegiatan_model->get_kegiatan_by_id($id_kegiatan);
+            
+            if ($data['kegiatan']) {
+                $data['jumlah_personel'] = $data['kegiatan']->jumlah_personel;
+                $data['jumlah_jarko'] = $data['kegiatan']->jumlah_jarko;
             } else {
-                $data['lokasi_kegiatan'] = ''; // Handle the case where the kegiatan is not found
+                $data['jumlah_personel'] = 0;
+                $data['jumlah_jarko'] = 0;
             }
-
+    
             $this->load->view('admin/kegiatan/tambah_petugas', $data);
         } else {
             $id_kegiatan = $this->input->post('id_kegiatan');
-            $id_petugas = $this->input->post('petugas');
+            $jumlah_personel = $this->input->post('jumlah_personel');
+            $jumlah_jarko = $this->input->post('jumlah_jarko');
+            $jenis_kompi = $this->input->post('jenis_kompi');
+            $no_wa = $this->input->post('no_wa');
     
             $kegiatan = $this->Kegiatan_model->get_kegiatan_by_id($id_kegiatan);
             if (!$kegiatan) {
                 show_error('Kegiatan tidak ditemukan');
                 return;
             }
+    
             $tanggal = $kegiatan->tanggal;
             $lokasi_kegiatan = $kegiatan->lokasi_kegiatan;
-            $shift = $kegiatan->shift;
-            $no_wa = $this->input->post('no_wa');
-            $uraian_kegiatan = $this->input->post('uraian_kegiatan');
+    
+            // Ambil data petugas dan jarko dalam bentuk array dan konversi ke string
+            $petugas = $this->input->post('petugas');
+            $petugas_string = implode(',', $petugas);
+    
+            $jarko = $this->input->post('jarko');
+            $jarko_string = implode(',', $jarko);
     
             // Validasi apakah file diunggah
-            
             $dokumentasi = $this->PenugasanPetugas_model->_uploadImage();
-           
     
             $this->db->trans_start();
     
-            foreach ($id_petugas as $petugas) {
-                $id_penugasan = $this->PenugasanPetugas_model->generate_id_penugasan($tanggal);
-                $this->PenugasanPetugas_model->insert_penugasan($id_kegiatan, $id_penugasan, $petugas, $lokasi_kegiatan, $tanggal, $shift, $no_wa, $uraian_kegiatan, $dokumentasi);
-            }
+            // Buat array asosiatif untuk data yang akan diinsert
+            $id_penugasan = $this->PenugasanPetugas_model->generate_id_penugasan($tanggal);
+            $data_penugasan = array(
+                'id_penugasan' => $id_penugasan,
+                'id_kegiatan' => $id_kegiatan,
+                'jenis_kompi' => $jenis_kompi,
+                'id_petugas' => $petugas_string,
+                'lokasi_kegiatan' => $lokasi_kegiatan,
+                'tanggal' => $tanggal,
+                'id_jarko' => $jarko_string,
+                'no_wa' => $no_wa,
+                'dokumentasi' => $dokumentasi
+            );
+    
+            // Panggil model untuk insert data
+            $this->PenugasanPetugas_model->insert_penugasan($data_penugasan);
     
             $this->db->trans_complete();
     
             if ($this->db->trans_status() === FALSE) {
                 $this->session->set_flashdata('error', 'Failed to save the data. Please try again.');
-                log_message('error', 'Transaction failed.');
             } else {
                 $this->session->set_flashdata('success', 'Penugasan berhasil disimpan.');
-                log_message('debug', 'Transaction succeeded.');
             }
     
             redirect('admin/kegiatan/view_penugasan_petugas');
         }
     }
+    
+    
+    
+    
+    
     
     
     public function get_all_personel1() {
@@ -346,33 +337,18 @@ class Kegiatan extends CI_Controller {
         $this->load->library('form_validation');
 
         // Set validation rules
-        $this->form_validation->set_rules('id_penugasan', 'Id Penugasan', 'required');
-        $this->form_validation->set_rules('id_kegiatan', 'Id Kegiatan', 'required');
-        $this->form_validation->set_rules('tanggal', 'Tanggal', 'required');
-        $this->form_validation->set_rules('shift', 'Shift', 'required');
-        $this->form_validation->set_rules('waktu_kegiatan', 'Waktu Kegiatan', 'required');
-        $this->form_validation->set_rules('lokasi_kegiatan', 'Lokasi Kegiatan', 'required');
         $this->form_validation->set_rules('jenis_kompi', 'Jenis Kompi', 'required');
         $this->form_validation->set_rules('jumlah_personel', 'Jumlah Personel', 'required|numeric');
         $this->form_validation->set_rules('jumlah_jarko', 'Jumlah Jarko', 'required|numeric');
-        $this->form_validation->set_rules('keterangan', 'Keterangan', 'required');
         $this->form_validation->set_rules('no_wa', 'No WA', 'required|numeric');
         $this->form_validation->set_rules('petugas[]', 'ID Petugas', 'required');
         $this->form_validation->set_rules('jarko[]', 'ID Jarko', 'required');
 
-
         if ($this->form_validation->run()) {
-            $id_penugasan = $this->input->post('id_penugasan'); // Pastikan id_penugasan dikirim
+            
             $id_kegiatan = $this->input->post('id_kegiatan');
             $jenis_kompi = $this->input->post('jenis_kompi');
-            $tanggal = $this->input->post('tanggal');
-            $shift = $this->input->post('shift');
-            $waktu_kegiatan = $this->input->post('waktu_kegiatan');
-            $lokasi_kegiatan = $this->input->post('lokasi_kegiatan');
-            $keterangan = $this->input->post('keterangan');
             $no_wa = $this->input->post('no_wa');
-
-            // Gabungkan nama-nama petugas menjadi satu string
             $jarko = $this->input->post('jarko');
             $jarko_string = implode(',', $jarko);
             $petugas = $this->input->post('petugas');
@@ -380,22 +356,27 @@ class Kegiatan extends CI_Controller {
 
             // Validasi apakah file diunggah
             $dokumentasi = $this->PenugasanPetugas_model->_uploadImage();
+            $idpenugasan = $this->PenugasanPetugas_model->get_penugasan_by_id($id);
 
+            // Periksa apakah data yang dikembalikan adalah objek atau array
+            if (is_object($idpenugasan)) {
+                // Jika data yang dikembalikan adalah objek
+                $id_penugasan = $idpenugasan->id_penugasan;
+            } elseif (is_array($idpenugasan)) {
+                // Jika data yang dikembalikan adalah array
+                $id_penugasan = $idpenugasan['id_penugasan'];
+            } else {
+                // Tangani kasus jika data tidak sesuai dengan yang diharapkan
+                $id_penugasan = null; // Atau lakukan penanganan kesalahan yang sesuai
+            }
             $this->db->trans_start();
 
-            // Perbarui penugasan lama
+            // Perbarui penugasan
             $data_penugasan = array(
-                'id_kegiatan' => $id_kegiatan,
-                'id_penugasan' => $id_penugasan,
                 'jenis_kompi' => $jenis_kompi,
                 'id_jarko' => $jarko_string,
                 'id_petugas' => $petugas_string,
-                'lokasi_kegiatan' => $lokasi_kegiatan,
-                'tanggal' => $tanggal,
-                'shift' => $shift,
-                'waktu_kegiatan' => $waktu_kegiatan,
-                'no_wa' => $no_wa,
-                'keterangan' => $keterangan,
+                 'no_wa' => $no_wa,
                 'dokumentasi' => $dokumentasi
             );
             $this->PenugasanPetugas_model->update_penugasan($id_penugasan, $data_penugasan);
@@ -410,15 +391,15 @@ class Kegiatan extends CI_Controller {
                 log_message('debug', 'Transaction succeeded.');
             }
 
-            redirect('admin/kegiatan/edit_penugasan/'.$id);
+            redirect('admin/kegiatan/edit_penugasan/'.$id); // Redirect to the appropriate page
         } else {
             $data['kegiatan'] = $this->PenugasanPetugas_model->get_penugasan_by_id($id);
             $data['personel'] = $this->DataKompi_model->get_all_personel();
             if (!$data['kegiatan']) show_404();
 
-            // Menggunakan metode get_jumlah_personel dari model
+            // Menggunakan metode get_jumlah_personel dan get_jumlah_jarko dari model
             $data['jumlah_personel'] = $this->PenugasanPetugas_model->get_jumlah_personel($data['kegiatan']->id_kegiatan);
-            $data['jumlah_jarko'] = $this->PenugasanPetugas_model->get_jumlah_personel($data['kegiatan']->id_kegiatan);
+            $data['jumlah_jarko'] = $this->PenugasanPetugas_model->get_jumlah_jarko($data['kegiatan']->id_kegiatan);
 
             $data['assigned_petugas'] = $this->PenugasanPetugas_model->get_penugasan_by_kegiatan($id);
             $this->load->view('admin/kegiatan/edit_penugasan', $data);
@@ -427,6 +408,7 @@ class Kegiatan extends CI_Controller {
         show_404();
     }
 }
+
 
 
     
