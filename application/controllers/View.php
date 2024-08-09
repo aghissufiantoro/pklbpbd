@@ -130,10 +130,10 @@ class View extends CI_Controller
     {
         $this->load->view("front/laporan_tahunan");
     }
-    public function laporan()
-    {
-        $this->load->view("front/laporan");
-    }
+    // public function laporan()
+    // {
+    //     $this->load->view("front/laporan");
+    // }
 
     public function laporan_keuangan()
     {
